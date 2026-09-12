@@ -1,0 +1,23 @@
+﻿Train No,Name,Type,Zone,Date From,Date To,From,Dep,To,Arr,Duration,Halts,Dep Days,Classes,Distance,Speed,Return
+04166,Shakur Basti - Prayagraj Special Fare Rakshabandhan Special,Exp,NCR,30-Aug,30-Aug,SSB,12:00,PRYJ,22:30,10h 30m,6,S,SL 3A,641 km,61 km/hr,4165
+02456,New Delhi - Kanpur Central Special Fare SF Special,SF,NCR,28-Aug,4-Sep,NDLS,7:15,CNB,12:30,5h 15m,3,M T F S,SL 3A,440 km,84 km/hr,2455
+04164,Shakur Basti - Subedarganj Special Fare Special,Exp,NCR,28-Aug,28-Aug,SSB,12:00,SFG,22:30,10h 30m,6,F,SL 3A,637 km,61 km/hr,4163
+04148,Shakur Basti - Subedarganj Special Fare Special,Exp,NCR,27-Aug,27-Aug,SSB,12:00,SFG,22:30,10h 30m,6,T,SL 3A,637 km,61 km/hr,4147
+09806,Sogaria (Kota) - Jabalpur Special Fare Rakshabandan Special,Exp,WCR,21-Aug,27-Aug,SGAC,18:35,JBP,6:55,12h 20m,13,S T T F,SL 3A 2A,649 km,53 km/hr,9805
+09805,Jabalpur - Sogaria (Kota) Special Fare Rakshabandan Special,Exp,WCR,22-Aug,28-Aug,JBP,9:10,SGAC,22:30,13h 20m,13,M W F S,SL 3A 2A,649 km,49 km/hr,9806
+01702,Hazrat Nizamuddin - Jabalpur Special Fare Rakshabandhan Special,Exp,WCR,30-Aug,30-Aug,NZM,15:45,JBP,9:30,17h 45m,9,S,SL 3A 2A,904 km,51 km/hr,1701
+01701,Jabalpur - Hazrat Nizamuddin Special Fare Rakshabandhan Special,Exp,WCR,29-Aug,29-Aug,JBP,20:20,NZM,14:25,18h 5m,9,S,SL 3A 2A,904 km,50 km/hr,1702
+06120,Kollam - MGR Chennai Central Special Fare AC Festival Special (PT),ACExp,SR,13-Aug,3-Sep,QLN,10:40,MAS,3:30,16h 50m,20,T,3E,841 km,50 km/hr,6119
+06119,MGR Chennai Central - Kollam Special Fare AC Festival Special (PT),ACExp,SR,12-Aug,2-Sep,MAS,15:10,QLN,7:20,16h 10m,19,W,3E,841 km,52 km/hr,6120
+07126,Velankanni - Charlapalli Special Fare Festival Special,Exp,SCR,29-Aug,5-Sep,VLNK,19:30,CHZ,22:00,26h 30m,18,S,SL 3A 2A,1115 km,42 km/hr,7125
+07125,Charlapalli - Velankanni Special Fare Festival Special,Exp,SCR,28-Aug,4-Sep,CHZ,7:40,VLNK,9:10,25h 30m,18,F,SL 3A 2A,1115 km,44 km/hr,7126
+07128,Velankanni - Charlapalli Special Fare Festival Special,Exp,SCR,9-Sep,9-Sep,VLNK,23:00,CHZ,22:15,23h 15m,19,W,SL 3A,1105 km,48 km/hr,7127
+07127,Charlapalli - Velankanni Special Fare Festival Special,Exp,SCR,8-Sep,8-Sep,CHZ,7:40,VLNK,9:10,25h 30m,19,T,SL 3A 2A,1105 km,43 km/hr,7128
+03572,Gorakhpur - Asansol Shravani Mela Special (UnReserved),Exp,ER,19-Aug,26-Aug,GKP,5:15,ASN,21:00,15h 45m,20,W,,574 km,36 km/hr,3571
+01162,Velankanni - Mumbai LTT Festival Special Fare Special,Exp,CR,28-Aug,9-Sep,VLNK,5:15,LTT,16:40,35h 25m,24,W F,SL 3A 2A,1600 km,45 km/hr,1161
+01161,Mumbai LTT - Velankanni Festival Special Fare Special,Exp,CR,26-Aug,7-Sep,LTT,11:50,VLNK,2:00,38h 10m,25,M W,SL 3A 2A,1600 km,42 km/hr,1162
+09060,Velankanni - Bandra Terminus Special Fare Festival Special,Exp,WR,30-Aug,4-Sep,VLNK,0:45,BDTS,15:00,38h 15m,27,S F,SL 3A 2A,1648 km,43 km/hr,9059
+09059,Bandra Terminus - Velankanni Special Fare Festival Special,Exp,WR,27-Aug,1-Sep,BDTS,21:30,VLNK,10:05,36h 35m,27,T T,SL 3A 2A,1648 km,45 km/hr,9060
+04329,Lucknow - Haridwar Rakshabandhan Special (UnReserved),Exp,NR,28-Aug,30-Aug,LKO,1:15,HW,11:55,10h 40m,8,S F S,,493 km,46 km/hr,4330
+02156,Rewa - Bhopal Special Fare Rakshabandhan SF Special,SF,WCR,26-Aug,26-Aug,REWA,18:35,BPL,4:30,9h 55m,7,W,SL 3A 2A 1A,549 km,55 km/hr,2155
+03528,Gorakhpur - Asansol Shravani Mela Special (UnReserved),Exp,ER,30-Jul,30-Aug,GKP,16:15,ASN,8:20,16h 5m,17,S M T W T F S,,574 km,36 km/hr,3527

@@ -1,0 +1,163 @@
+﻿Train No,Name,Type,Zone,Date From,Date To,From,Dep,To,Arr,Duration,Halts,Dep Days,Classes,Distance,Speed,Return
+20978,Chandigarh - Ajmer Vande Bharat Express,VB,NWR,,,CDG,15:15,AII,23:58,8h 43m,8,S M T T F S,CC Ex,678 km,78 km/hr,20977
+22436,New Delhi - Varanasi Vande Bharat Express,VB,NR,,,NDLS,6:00,BSB,14:00,8h 0m,2,S M T W F S,CC Ex,759 km,95 km/hr,22435
+22435,Varanasi - New Delhi Vande Bharat Express,VB,NR,,,BSB,15:00,NDLS,23:00,8h 0m,2,S M T W F S,CC Ex,759 km,95 km/hr,22436
+22439,New Delhi - Shri Mata Vaishno Devi Katra Vande Bharat Express,VB,NR,,,NDLS,6:00,SVDK,14:20,8h 20m,5,S M T T F S,CC Ex,655 km,79 km/hr,22440
+22440,Shri Mata Vaishno Devi Katra - New Delhi Vande Bharat Express,VB,NR,,,SVDK,14:55,NDLS,23:10,8h 15m,5,S M T T F S,CC Ex,655 km,79 km/hr,22439
+20901,Mumbai Central - Gandhinagar Capital Vande Bharat Express (PT),VB,WR,,,MMCT,6:00,GNC,12:30,6h 30m,8,S M T T F S,CC Ex,522 km,80 km/hr,20902
+20902,Gandhinagar Capital - Mumbai Central Vande Bharat Express (PT),VB,WR,,,GNC,14:00,MMCT,20:35,6h 35m,8,S M T T F S,CC Ex,522 km,79 km/hr,20901
+22447,New Delhi - Amb Andaura Vande Bharat Express,VB,NR,,,NDLS,5:50,AADR,11:10,5h 20m,5,S M W T F S,CC Ex,412 km,77 km/hr,22448
+22448,Amb Andaura - New Delhi Vande Bharat Express,VB,NR,,,AADR,13:00,NDLS,18:25,5h 25m,5,S M W T F S,CC Ex,412 km,76 km/hr,22447
+20607,MGR Chennai Central - Mysuru Vande Bharat Express,VB,SR,,,MAS,5:50,MYS,12:20,6h 30m,2,S M T T F S,CC Ex,497 km,76 km/hr,20608
+20608,Mysuru - MGR Chennai Central Vande Bharat Express,VB,SR,,,MYS,13:05,MAS,19:20,6h 15m,2,S M T T F S,CC Ex,497 km,79 km/hr,20607
+20826,Nagpur - Bilaspur Vande Bharat Express,VB,SECR,,,NGP,14:05,BSP,19:25,5h 20m,5,S M T W T F,CC Ex,412 km,77 km/hr,20825
+20825,Bilaspur - Nagpur Vande Bharat Express,VB,SECR,,,BSP,6:45,NGP,12:15,5h 30m,5,S M T W T F,CC Ex,412 km,75 km/hr,20826
+22301,Howrah - New Jalpaiguri Vande Bharat Express,VB,ER,,,HWH,5:55,NJP,13:30,7h 35m,4,S M T T F S,CC Ex,566 km,75 km/hr,22302
+22302,New Jalpaiguri - Howrah Vande Bharat Express,VB,ER,,,NJP,14:55,HWH,22:30,7h 35m,4,S M T T F S,CC Ex,566 km,75 km/hr,22301
+20833,Visakhapatnam - Secunderabad Vande Bharat Express,VB,SCoR,,,VSKP,5:45,SC,14:20,8h 35m,5,S M W T F S,CC Ex,698 km,81 km/hr,20834
+20834,Secunderabad - Visakhapatnam Vande Bharat Express,VB,SCoR,,,SC,15:00,VSKP,23:35,8h 35m,5,S M W T F S,CC Ex,698 km,81 km/hr,20833
+22225,Mumbai CSMT - Solapur Vande Bharat Express,VB,SCR,,,CSMT,16:05,SUR,22:40,6h 35m,6,S M T T F S,CC Ex,454 km,69 km/hr,22226
+22226,Solapur - Mumbai CSMT Vande Bharat Express,VB,SCR,,,SUR,6:05,CSMT,12:35,6h 30m,7,S M T W F S,CC Ex,454 km,70 km/hr,22225
+22224,Sainagar Shirdi - Mumbai CSMT Vande Bharat Express,VB,CR,,,SNSI,17:45,CSMT,22:50,5h 5m,4,S M W T F S,CC Ex,343 km,68 km/hr,22223
+22223,Mumbai CSMT - Sainagar Shirdi Vande Bharat Express,VB,CR,,,CSMT,6:20,SNSI,11:30,5h 10m,4,S M W T F S,CC Ex,343 km,66 km/hr,22224
+20171,Rani Kamalapati (Habibganj) - Hazrat Nizamuddin Vande Bharat Express,VB,WCR,,,RKMP,5:40,NZM,13:16,7h 36m,3,S M T W T F,CC Ex,702 km,92 km/hr,20172
+20172,Hazrat Nizamuddin - Rani Kamalapati (Habibganj) Vande Bharat Express,VB,WCR,,,NZM,14:40,RKMP,22:16,7h 36m,3,S M T W T F,CC Ex,702 km,92 km/hr,20171
+20702,Tirupati - Secunderabad Vande Bharat Express,VB,SCR,,,TPTY,15:15,SC,23:42,8h 27m,5,S M W T F S,CC Ex,662 km,78 km/hr,20701
+20701,Secunderabad - Tirupati Vande Bharat Express,VB,SCR,,,SC,6:10,TPTY,14:35,8h 25m,5,S M W T F S,CC Ex,662 km,79 km/hr,20702
+20643,MGR Chennai Central - Coimbatore Vande Bharat Express,VB,SR,,,MAS,14:15,CBE,20:15,6h 0m,3,S M T T F S,CC Ex,495 km,82 km/hr,20644
+20644,Coimbatore - MGR Chennai Central Vande Bharat Express,VB,SR,,,CBE,6:00,MAS,11:50,5h 50m,3,S M T T F S,CC Ex,495 km,85 km/hr,20643
+22227,New Jalpaiguri - Guwahati Vande Bharat Express,VB,NFR,,,NJP,6:10,GHY,11:40,5h 30m,8,S M W T F S,CC Ex,407 km,74 km/hr,22228
+22228,Guwahati - New Jalpaiguri Vande Bharat Express,VB,NFR,,,GHY,16:30,NJP,22:00,5h 30m,8,S M W T F S,CC Ex,407 km,74 km/hr,22227
+20977,Ajmer - Chandigarh Vande Bharat Express,VB,NWR,,,AII,6:10,CDG,14:45,8h 35m,8,S M T T F S,CC Ex,678 km,79 km/hr,20978
+20633,Kasaragod - Thiruvananthapuram Central Vande Bharat Express,VB,SR,,,KGQ,14:30,TVC,22:40,8h 10m,8,S M T W F S,CC Ex,586 km,72 km/hr,20634
+20634,Thiruvananthapuram Central - Kasaragod Vande Bharat Express,VB,SR,,,TVC,5:15,KGQ,13:20,8h 5m,8,S M T W F S,CC Ex,586 km,73 km/hr,20633
+22895,Howrah - Puri Vande Bharat Express,VB,SER,,,HWH,6:10,PURI,13:00,6h 50m,7,S M T W F S,CC Ex,500 km,73 km/hr,22896
+22896,Puri - Howrah Vande Bharat Express,VB,SER,,,PURI,13:40,HWH,20:30,6h 50m,7,S M T W F S,CC Ex,500 km,73 km/hr,22895
+22458,Dehradun - Anand Vihar Terminal Vande Bharat Express,VB,NR,,,DDN,7:00,ANVT,11:45,4h 45m,6,S M T W F S,CC Ex,302 km,64 km/hr,22457
+22457,Anand Vihar Terminal - Dehradun Vande Bharat Express,VB,NR,,,ANVT,17:50,DDN,22:35,4h 45m,6,S M T W F S,CC Ex,302 km,64 km/hr,22458
+22229,Mumbai CSMT - Madgaon Vande Bharat Express,VB,CR,,,CSMT,5:25,MAO,16:00,10h 35m,7,M W F,CC Ex,581 km,55 km/hr,22230
+22230,Madgaon - Mumbai CSMT Vande Bharat Express,VB,CR,,,MAO,12:20,CSMT,22:30,10h 10m,7,T T S,CC Ex,581 km,57 km/hr,22229
+22349,Patna - Ranchi Vande Bharat Express,VB,ECR,,,PNBE,7:00,RNC,13:05,6h 5m,6,S M W T F S,CC Ex,379 km,62 km/hr,22350
+22350,Ranchi - Patna Vande Bharat Express,VB,ECR,,,RNC,16:15,PNBE,22:10,5h 55m,6,S M W T F S,CC Ex,379 km,64 km/hr,22349
+20911,Indore - Nagpur Vande Bharat Express,VB,WR,,,INDB,6:10,NGP,14:35,8h 25m,5,M T W T F S,CC Ex,636 km,76 km/hr,20912
+20912,Nagpur - Indore Vande Bharat Express,VB,WR,,,NGP,15:20,INDB,23:50,8h 30m,5,M T W T F S,CC Ex,636 km,75 km/hr,20911
+20661,KSR Bengaluru - Dharwad Vande Bharat Express,VB,SWR,,,SBC,5:45,DWR,12:00,6h 15m,5,S M W T F S,CC Ex,490 km,78 km/hr,20662
+20662,Dharwad - KSR Bengaluru Vande Bharat Express,VB,SWR,,,DWR,13:30,SBC,19:45,6h 15m,5,S M W T F S,CC Ex,490 km,78 km/hr,20661
+20174,Rewa - Rani Kamalapati (Habibganj) Vande Bharat Express,VB,WCR,,,REWA,5:20,RKMP,13:30,8h 10m,8,S M W T F S,CC Ex,568 km,70 km/hr,20173
+20173,Rani Kamalapati (Habibganj) - Rewa Vande Bharat Express,VB,WCR,,,RKMP,15:30,REWA,23:35,8h 5m,8,S M W T F S,CC Ex,568 km,70 km/hr,20174
+12461,Jodhpur - Sabarmati Vande Bharat Express,VB,NWR,,,JU,6:05,SBIB,12:05,6h 0m,5,S M W T F S,CC Ex,451 km,75 km/hr,12462
+12462,Sabarmati - Jodhpur Vande Bharat Express,VB,NWR,,,SBIB,16:55,JU,22:50,5h 55m,5,S M W T F S,CC Ex,451 km,76 km/hr,12461
+22550,Prayagraj - Gorakhpur Vande Bharat Express,VB,NER,,,PRYJ,15:15,GKP,22:40,7h 25m,4,S M T W T F,CC Ex,497 km,67 km/hr,22549
+22549,Gorakhpur - Prayagraj Vande Bharat Express,VB,NER,,,GKP,6:05,PRYJ,13:35,7h 30m,4,S M T W T F,CC Ex,497 km,66 km/hr,22550
+22348,Patna - Howrah Vande Bharat Express,VB,ECR,,,PNBE,8:00,HWH,14:35,6h 35m,9,S M T T F S,CC Ex,532 km,81 km/hr,22347
+22347,Howrah - Patna Vande Bharat Express,VB,ECR,,,HWH,15:50,PNBE,22:40,6h 50m,9,S M T T F S,CC Ex,532 km,78 km/hr,22348
+20836,Puri - Rourkela Vande Bharat Express,VB,ECoR,,,PURI,5:00,ROU,12:45,7h 45m,9,S M W T F S,CC Ex,506 km,65 km/hr,20835
+20835,Rourkela - Puri Vande Bharat Express,VB,ECoR,,,ROU,14:00,PURI,21:40,7h 40m,9,S M W T F S,CC Ex,506 km,66 km/hr,20836
+20666,Tirunelveli - Chennai Egmore Vande Bharat Express,VB,SR,,,TEN,6:00,MS,14:00,8h 0m,8,S M W T F S,CC Ex,650 km,81 km/hr,20665
+20665,Chennai Egmore - Tirunelveli Vande Bharat Express,VB,SR,,,MS,15:10,TEN,23:00,7h 50m,8,S M W T F S,CC Ex,650 km,83 km/hr,20666
+20703,Kacheguda - Yesvantpur Vande Bharat Express,VB,SCR,,,KCG,5:45,YPR,14:00,8h 15m,5,S M T T F S,CC Ex,612 km,74 km/hr,20704
+20704,Yesvantpur - Kacheguda Vande Bharat Express,VB,SCR,,,YPR,14:45,KCG,23:00,8h 15m,5,S M T T F S,CC Ex,612 km,74 km/hr,20703
+20631,Mangaluru Central - Thiruvananthapuram Central Vande Bharat Express,VB,SR,,,MAQ,6:25,TVC,15:05,8h 40m,9,S M T T F S,CC Ex,620 km,72 km/hr,20632
+20632,Thiruvananthapuram Central - Mangaluru Central Vande Bharat Express,VB,SR,,,TVC,16:05,MAQ,0:45,8h 40m,9,S M T T F S,CC Ex,620 km,72 km/hr,20631
+20677,MGR Chennai Central - Narasapur Vande Bharat Express,VB,SR,,,MAS,5:30,NS,14:10,8h 40m,7,S M W T F S,CC Ex,652 km,75 km/hr,20678
+20678,Narasapur - MGR Chennai Central Vande Bharat Express,VB,SR,,,NS,14:50,MAS,23:45,8h 55m,7,S M W T F S,CC Ex,652 km,73 km/hr,20677
+20897,Howrah - Ranchi Vande Bharat Express,VB,SER,,,HWH,14:35,RNC,22:00,7h 25m,6,S M W T F S,CC Ex,458 km,62 km/hr,20898
+20898,Ranchi - Howrah Vande Bharat Express,VB,SER,,,RNC,6:00,HWH,13:10,7h 10m,6,S M W T F S,CC Ex,458 km,64 km/hr,20897
+22926,Okha - Sabarmati Jn. Vande Bharat Express,VB,WR,,,OKHA,16:45,SBT,23:10,6h 25m,8,S M W T F S,CC Ex,493 km,77 km/hr,22925
+22925,Sabarmati Jn. - Okha Vande Bharat Express,VB,WR,,,SBT,6:15,OKHA,13:20,7h 5m,8,S M W T F S,CC Ex,493 km,70 km/hr,22926
+22415,Varanasi - New Delhi Vande Bharat Express,VB,NR,,,BSB,6:00,NDLS,14:05,8h 5m,2,S M W T F S,CC Ex,759 km,94 km/hr,22416
+22416,New Delhi - Varanasi Vande Bharat Express,VB,NR,,,NDLS,15:00,BSB,23:05,8h 5m,2,S M W T F S,CC Ex,759 km,94 km/hr,22415
+22488,Amritsar - Delhi Vande Bharat Express,VB,NR,,,ASR,8:20,DLI,13:50,5h 30m,5,S M T W T S,CC Ex,447 km,81 km/hr,22487
+22487,Delhi - Amritsar Vande Bharat Express,VB,NR,,,DLI,15:15,ASR,20:45,5h 30m,5,S M T W T S,CC Ex,447 km,81 km/hr,22488
+20646,Mangaluru Central - Madgaon Vande Bharat Express,VB,SR,,,MAQ,8:30,MAO,14:10,5h 40m,2,S M T W F S,CC Ex,319 km,56 km/hr,20645
+20645,Madgaon - Mangaluru Central Vande Bharat Express,VB,SR,,,MAO,17:35,MAQ,22:45,5h 10m,2,S M T W F S,CC Ex,319 km,62 km/hr,20646
+20705,Hazur Sahib Nanded - Mumbai CSMT Vande Bharat Express,VB,SCR,,,NED,5:20,CSMT,14:15,8h 55m,8,S M T T F S,CC Ex,608 km,68 km/hr,20706
+20706,Mumbai CSMT - Hazur Sahib Nanded Vande Bharat Express,VB,SCR,,,CSMT,13:15,NED,22:25,9h 10m,8,S M T W F S,CC Ex,608 km,66 km/hr,20705
+20642,Coimbatore - Bengaluru Cantt. Vande Bharat Express,VB,SR,,,CBE,7:25,BNC,13:45,6h 20m,5,S M T W F S,CC Ex,374 km,59 km/hr,20641
+20641,Bengaluru Cantt. - Coimbatore Vande Bharat Express,VB,SR,,,BNC,14:20,CBE,20:40,6h 20m,5,S M T W F S,CC Ex,374 km,59 km/hr,20642
+22478,Shri Mata Vaishno Devi Katra - New Delhi Vande Bharat Express,VB,NR,,,SVDK,5:45,NDLS,14:00,8h 15m,5,S M T T F S,CC Ex,655 km,79 km/hr,22477
+22477,New Delhi - Shri Mata Vaishno Devi Katra Vande Bharat Express,VB,NR,,,NDLS,15:00,SVDK,23:20,8h 20m,5,S M T T F S,CC Ex,655 km,79 km/hr,22478
+22425,Ayodhya Cantt. - Anand Vihar Terminal Vande Bharat Express,VB,NR,,,AYC,15:25,ANVT,23:40,8h 15m,4,S M T T F S,CC Ex,628 km,76 km/hr,22426
+22426,Anand Vihar Terminal - Ayodhya Cantt. Vande Bharat Express,VB,NR,,,ANVT,6:10,AYC,14:30,8h 20m,4,S M T T F S,CC Ex,628 km,75 km/hr,22425
+20888,Varanasi - Ranchi Vande Bharat Express,VB,SER,,,BSB,16:05,RNC,23:55,7h 50m,8,S M W T F S,CC Ex,538 km,69 km/hr,20887
+20887,Ranchi - Varanasi Vande Bharat Express,VB,SER,,,RNC,5:10,BSB,13:00,7h 50m,8,S M W T F S,CC Ex,538 km,69 km/hr,20888
+20841,Bhubaneswar - Visakhapatnam Vande Bharat Express,VB,ECoR,,,BBS,5:15,VSKP,11:00,5h 45m,7,S T W T F S,CC Ex,444 km,77 km/hr,20842
+20842,Visakhapatnam - Bhubaneswar Vande Bharat Express,VB,ECoR,,,VSKP,15:30,BBS,21:30,6h 0m,7,S T W T F S,CC Ex,444 km,74 km/hr,20841
+22469,Khajuraho - Hazrat Nizamuddin Vande Bharat Express,VB,NR,,,KURJ,14:50,NZM,23:10,8h 20m,7,S T W T F S,CC Ex,660 km,79 km/hr,22470
+22470,Hazrat Nizamuddin - Khajuraho Vande Bharat Express,VB,NR,,,NZM,6:00,KURJ,14:20,8h 20m,7,S T W T F S,CC Ex,660 km,79 km/hr,22469
+22231,Kalaburagi - SMVT Bengaluru Vande Bharat Express,VB,CR,,,KLBG,6:10,SMVB,14:10,8h 0m,7,S M T W T S,CC Ex,560 km,70 km/hr,22232
+22232,SMVT Bengaluru - Kalaburagi Vande Bharat Express,VB,CR,,,SMVB,14:40,KLBG,22:40,8h 0m,7,S M T W F S,CC Ex,560 km,70 km/hr,22231
+20663,Mysuru - MGR Chennai Central Vande Bharat Express,VB,SWR,,,MYS,6:00,MAS,12:30,6h 30m,4,S M T W F S,CC Ex,497 km,76 km/hr,20664
+20664,MGR Chennai Central - Mysuru Vande Bharat Express,VB,SWR,,,MAS,17:00,MYS,23:30,6h 30m,4,S M T W F S,CC Ex,497 km,76 km/hr,20663
+20707,Secunderabad - Visakhapatnam Vande Bharat Express,VB,SCR,,,SC,5:00,VSKP,13:50,8h 50m,6,S T W T F S,CC Ex,698 km,79 km/hr,20708
+20708,Visakhapatnam - Secunderabad Vande Bharat Express,VB,SCR,,,VSKP,14:30,SC,23:25,8h 55m,6,S T W T F S,CC Ex,698 km,78 km/hr,20707
+22962,Ahmedabad - Mumbai Central Vande Bharat Express (PT),VB,WR,,,ADI,6:05,MMCT,11:45,5h 40m,4,M T W T F S,CC Ex,493 km,87 km/hr,22961
+22961,Mumbai Central - Ahmedabad Vande Bharat Express,VB,WR,,,MMCT,15:45,ADI,21:15,5h 30m,4,M T W T F S,CC Ex,493 km,90 km/hr,22962
+22233,New Jalpaiguri - Patna Vande Bharat Express,VB,NFR,,,NJP,5:10,PNBE,12:10,7h 0m,7,S M W T F S,CC Ex,473 km,68 km/hr,22234
+22234,Patna - New Jalpaiguri Vande Bharat Express,VB,NFR,,,PNBE,13:00,NJP,20:05,7h 5m,7,S M W T F S,CC Ex,473 km,67 km/hr,22233
+22345,Patna - Gomti Nagar Vande Bharat Express,VB,ECR,,,PNBE,6:05,GTNR,14:35,8h 30m,5,S M T W T S,CC Ex,545 km,64 km/hr,22346
+22346,Gomti Nagar - Patna Vande Bharat Express,VB,ECR,,,GTNR,15:20,PNBE,23:45,8h 25m,5,S M T W T S,CC Ex,545 km,65 km/hr,22345
+22546,Dehradun - Lucknow Jn. Vande Bharat Express,VB,NER,,,DDN,14:25,LJN,22:40,8h 15m,5,S T W T F S,CC Ex,545 km,66 km/hr,22545
+22545,Lucknow Jn. - Dehradun Vande Bharat Express,VB,NER,,,LJN,5:15,DDN,13:40,8h 25m,5,S T W T F S,CC Ex,545 km,65 km/hr,22546
+20671,Madurai - Bengaluru Cantt. Vande Bharat Express,VB,SR,,,MDU,5:15,BNC,13:00,7h 45m,6,S M W T F S,CC Ex,573 km,74 km/hr,20672
+20672,Bengaluru Cantt. - Madurai Vande Bharat Express,VB,SR,,,BNC,13:30,MDU,21:40,8h 10m,6,S M W T F S,CC Ex,573 km,70 km/hr,20671
+20627,Chennai Egmore - Nagercoil Vande Bharat Express,VB,SR,,,MS,5:00,NCJ,13:50,8h 50m,7,S M T T F S,CC Ex,724 km,82 km/hr,20628
+20628,Nagercoil - Chennai Egmore Vande Bharat Express,VB,SR,,,NCJ,14:20,MS,23:05,8h 45m,7,S M T T F S,CC Ex,724 km,83 km/hr,20627
+22489,Varanasi - Meerut City Vande Bharat Express,VB,NR,,,BSB,9:10,MTC,21:05,11h 55m,5,S M W T F S,CC Ex,783 km,66 km/hr,22490
+22490,Meerut City - Varanasi Vande Bharat Express,VB,NR,,,MTC,6:35,BSB,18:25,11h 50m,5,S M W T F S,CC Ex,783 km,66 km/hr,22489
+20669,SSS Hubballi - Pune Vande Bharat Express,VB,SWR,,,UBL,5:00,PUNE,13:30,8h 30m,7,S W F,CC Ex,559 km,66 km/hr,20670
+20670,Pune - SSS Hubballi Vande Bharat Express,VB,SWR,,,PUNE,14:15,UBL,22:45,8h 30m,7,M T S,CC Ex,559 km,66 km/hr,20669
+20176,Agra Cantt. - Banaras Vande Bharat Express,VB,NCR,,,AGC,6:00,BNRS,13:00,7h 0m,4,S M T T F S,CC Ex,575 km,82 km/hr,20175
+20175,Banaras - Agra Cantt. Vande Bharat Express,VB,NCR,,,BNRS,15:20,AGC,22:20,7h 0m,4,S M T T F S,CC Ex,580 km,83 km/hr,20176
+22500,Varanasi - Deoghar Vande Bharat Express,VB,NR,,,BSB,6:20,DGHR,13:40,7h 20m,6,S M W T F S,CC Ex,456 km,62 km/hr,22499
+22499,Deoghar - Varanasi Vande Bharat Express,VB,NR,,,DGHR,15:10,BSB,22:30,7h 20m,6,S M W T F S,CC Ex,456 km,62 km/hr,22500
+20830,Visakhapatnam - Durg Vande Bharat Express,VB,SECR,,,VSKP,14:50,DURG,22:50,8h 0m,9,S M T W F S,CC Ex,566 km,71 km/hr,20829
+20829,Durg - Visakhapatnam Vande Bharat Express,VB,SECR,,,DURG,5:45,VSKP,13:55,8h 10m,9,S M T W F S,CC Ex,566 km,69 km/hr,20830
+22304,Gaya - Howrah Vande Bharat Express,VB,ER,,,GAYA,15:15,HWH,21:10,5h 55m,5,S M T W F S,CC Ex,458 km,77 km/hr,22303
+22303,Howrah - Gaya Vande Bharat Express,VB,ER,,,HWH,6:45,GAYA,12:30,5h 45m,5,S M T W F S,CC Ex,458 km,80 km/hr,22304
+22309,Howrah - Jamalpur Vande Bharat Express,VB,ER,,,HWH,7:45,JMP,14:15,6h 30m,8,S M T W T S,CC Ex,440 km,68 km/hr,22310
+22310,Jamalpur - Howrah Vande Bharat Express,VB,ER,,,JMP,15:30,HWH,22:05,6h 35m,8,S M T W T S,CC Ex,440 km,67 km/hr,22309
+20892,Brahmapur - Tatanagar Vande Bharat Express,VB,SER,,,BAM,5:15,TATA,14:50,9h 35m,9,S M W T F S,CC Ex,587 km,61 km/hr,20891
+20872,Rourkela - Howrah Vande Bharat Express,VB,SER,,,ROU,13:30,HWH,19:50,6h 20m,3,S M W T F S,CC Ex,412 km,65 km/hr,20871
+20871,Howrah - Rourkela Vande Bharat Express,VB,SER,,,HWH,6:00,ROU,12:05,6h 5m,3,S M W T F S,CC Ex,412 km,68 km/hr,20872
+20891,Tatanagar - Brahmapur Vande Bharat Express,VB,SER,,,TATA,14:20,BAM,23:55,9h 35m,9,S M W T F S,CC Ex,587 km,61 km/hr,20892
+20673,SCSMT Kolhapur - Pune Vande Bharat Express,VB,SWR,,,KOP,8:15,PUNE,13:30,5h 15m,5,M T S,CC Ex,326 km,62 km/hr,20674
+20674,Pune - SCSMT Kolhapur Vande Bharat Express,VB,SWR,,,PUNE,14:15,KOP,19:40,5h 25m,5,S W F,CC Ex,326 km,60 km/hr,20673
+20893,Tatanagar - Patna Vande Bharat Express (via Gomoh),VB,SER,,,TATA,5:25,PNBE,12:45,7h 20m,7,W T F S,CC Ex,450 km,61 km/hr,20894
+20894,Patna - Tatanagar Vande Bharat Express (via Gomoh),VB,SER,,,PNBE,14:05,TATA,21:40,7h 35m,7,W T F S,CC Ex,450 km,59 km/hr,20893
+20101,Nagpur - Secunderabad Vande Bharat Express,VB,CR,,,NGP,5:00,SC,12:15,7h 15m,7,S M W T F S,CC Ex,575 km,79 km/hr,20102
+20102,Secunderabad - Nagpur Vande Bharat Express,VB,CR,,,SC,13:00,NGP,20:20,7h 20m,7,S M W T F S,CC Ex,575 km,78 km/hr,20101
+21894,Patna - Tatanagar Vande Bharat Express (via Barkakana),VB,SER,,,PNBE,13:20,TATA,23:55,10h 35m,7,M,CC Ex,642 km,61 km/hr,21893
+21895,Tatanagar - Patna Vande Bharat Express (via Gomoh),VB,SER,,,TATA,5:25,PNBE,12:45,7h 20m,7,M,CC Ex,450 km,61 km/hr,21896
+21896,Patna - Tatanagar Vande Bharat Express (via Gomoh),VB,SER,,,PNBE,16:45,TATA,23:55,7h 10m,7,S,CC Ex,450 km,63 km/hr,21895
+26901,Sabarmati BG - Veraval Vande Bharat Express,VB,WR,,,SBIB,6:00,VRL,12:55,6h 55m,8,S M T W F S,CC Ex,450 km,65 km/hr,26902
+26902,Veraval - Sabarmati BG Vande Bharat Express,VB,WR,,,VRL,15:50,SBIB,22:25,6h 35m,7,S M T W F S,CC Ex,450 km,68 km/hr,26901
+26401,Jammu Tawi - Srinagar Vande Bharat Express,VB,NR,,,JAT,6:20,SINA,11:10,4h 50m,4,S M W T F S,CC Ex,267 km,55 km/hr,26402
+26402,Srinagar - Jammu Tawi Vande Bharat Express,VB,NR,,,SINA,14:00,JAT,18:50,4h 50m,4,S M W T F S,CC Ex,267 km,55 km/hr,26401
+26404,Srinagar - Jammu Tawi Vande Bharat Express,VB,NR,,,SINA,8:00,JAT,12:40,4h 40m,3,S M T T F S,CC Ex,267 km,57 km/hr,26403
+26403,Jammu Tawi - Srinagar Vande Bharat Express,VB,NR,,,JAT,13:20,SINA,18:05,4h 45m,3,S M T T F S,CC Ex,267 km,56 km/hr,26404
+26502,Gorakhpur - Patliputra Vande Bharat Express,VB,NER,,,GKP,5:40,PPTA,12:45,7h 5m,8,S M T W T F,CC Ex,384 km,54 km/hr,26501
+26501,Patliputra - Gorakhpur Vande Bharat Express,VB,NER,,,PPTA,15:30,GKP,22:30,7h 0m,8,S M T W T F,CC Ex,384 km,55 km/hr,26502
+26102,Ajni (Nagpur) - Pune Vande Bharat Express,VB,CR,,,AJNI,9:50,PUNE,21:50,12h 0m,10,S T W T F S,CC Ex,882 km,73 km/hr,26101
+26101,Pune - Ajni (Nagpur) Vande Bharat Express,VB,CR,,,PUNE,6:25,AJNI,18:25,12h 0m,10,S M W T F S,CC Ex,882 km,73 km/hr,26102
+26751,Belagavi - KSR Bengaluru Vande Bharat Express,VB,SWR,,,BGM,5:35,SBC,13:50,8h 15m,6,S M T T F S,CC Ex,612 km,74 km/hr,26752
+26752,KSR Bengaluru - Belagavi Vande Bharat Express,VB,SWR,,,SBC,14:20,BGM,22:30,8h 10m,6,S M T T F S,CC Ex,612 km,75 km/hr,26751
+26406,SMVD Katra - Amritsar Vande Bharat Express,VB,NR,,,SVDK,6:40,ASR,11:40,5h 0m,4,S M T W T F,CC Ex,284 km,57 km/hr,26405
+26405,Amritsar - SMVD Katra Vande Bharat Express,VB,NR,,,ASR,16:40,SVDK,21:45,5h 5m,4,S M T W T F,CC Ex,284 km,56 km/hr,26406
+26302,Danapur - Jogbani Vande Bharat Express,VB,ECR,,,DNR,17:10,JBN,1:20,8h 10m,12,S M W T F S,CC Ex,449 km,55 km/hr,26301
+26301,Jogbani - Danapur Vande Bharat Express,VB,ECR,,,JBN,3:30,DNR,11:40,8h 10m,12,S M T T F S,CC Ex,449 km,55 km/hr,26302
+26481,Jodhpur - Delhi Cantt. Vande Bharat Express,VB,NWR,,,JU,5:30,DEC,13:30,8h 0m,9,S M W T F S,CC Ex,604 km,75 km/hr,26482
+26471,Bikaner - Delhi Cantt Vande Bharat Express,VB,NWR,,,BKN,5:40,DEC,11:55,6h 15m,7,S M T T F S,CC Ex,447 km,72 km/hr,26472
+26482,Delhi Cantt. - Jodhpur Vande Bharat Express,VB,NWR,,,DEC,15:10,JU,23:20,8h 10m,9,S M W T F S,CC Ex,604 km,74 km/hr,26481
+26472,Delhi Cantt - Bikaner Vande Bharat Express,VB,NWR,,,DEC,16:45,BKN,22:50,6h 5m,7,S M T T F S,CC Ex,447 km,74 km/hr,26471
+26462,Firozpur Cantt. - Delhi Vande Bharat Express,VB,NR,,,FZR,7:55,DLI,14:35,6h 40m,8,S M T T F S,CC Ex,487 km,73 km/hr,26461
+26461,Delhi - Firozpur Cantt. Vande Bharat Express,VB,NR,,,DLI,16:00,FZR,22:35,6h 35m,8,S M T T F S,CC Ex,487 km,74 km/hr,26462
+26651,KSR Bengaluru - Ernakulam Jn. Vande Bharat Express,VB,SWR,,,SBC,5:10,ERS,13:50,8h 40m,7,S M T T F S,CC Ex,625 km,72 km/hr,26652
+26652,Ernakulam Jn. - KSR Bengaluru Vande Bharat Express,VB,SWR,,,ERS,14:20,SBC,23:00,8h 40m,7,S M T T F S,CC Ex,625 km,72 km/hr,26651
+26506,Banaras - Khajuraho Vande Bharat Express,VB,NER,,,BNRS,5:15,KURJ,13:10,7h 55m,5,S M T W F S,CC Ex,469 km,59 km/hr,26505
+26505,Khajuraho - Banaras Vande Bharat Express,VB,NER,,,KURJ,15:20,BNRS,23:10,7h 50m,5,S M T W F S,CC Ex,469 km,60 km/hr,26506
+26504,Gomti Nagar - Saharanpur Vande Bharat Express,VB,NER,,,GTNR,15:10,SRE,23:50,8h 40m,7,S T W T F S,CC Ex,535 km,62 km/hr,26503
+26503,Saharanpur - Gomti Nagar Vande Bharat Express,VB,NER,,,SRE,5:05,GTNR,14:05,9h 0m,7,S M W T F S,CC Ex,535 km,59 km/hr,26504
+26963,Udaipur City - Asarva (Ahmedabad) Vande Bharat Express,VB,NWR,,,UDZ,6:10,ASV,10:25,4h 15m,4,S M W T F S,CC Ex,296 km,70 km/hr,26964
+26964,Asarva (Ahmedabad) - Udaipur City Vande Bharat Express,VB,NWR,,,ASV,17:45,UDZ,22:00,4h 15m,4,S M W T F S,CC Ex,296 km,70 km/hr,26963
+21893,Tatanagar - Patna Vande Bharat Express (via Barkakana),VB,SER,,,TATA,5:25,PNBE,15:55,10h 30m,7,S,CC Ex,642 km,61 km/hr,21894

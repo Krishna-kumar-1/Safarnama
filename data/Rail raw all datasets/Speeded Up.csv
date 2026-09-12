@@ -1,0 +1,957 @@
+﻿Train No,Name,Type,Zone,Date From,Date To,From,Dep,To,Arr,Duration,Halts,Dep Days,Classes,Distance,Speed,Return
+09423,Mangaluru Jn. - Ahmedabad Special Fare Special,Exp,WR,28-Mar,28-Nov,MAJN,22:30,ADI,2:15,27h 45m,39,S,SL 3A 2A,1338 km,48 km/hr,9424
+05493,Durgapura - Sawai Madhopur Rakshabandhan Special (UnReserved),Exp,WCR,29-Aug,8-Sep,DPA,2:30,SWM,5:20,2h 50m,3,S M T W T F S,,124 km,44 km/hr,5494
+06028,Podanur - MGR Chennai Central Special Fare Special (PT),Exp,SR,3-Jul,27-Sep,PTJ,7:40,MAS,16:45,9h 5m,8,S F S,2S CC,488 km,54 km/hr,6027
+06165,Tambaram - Tirunelveli Special Fare Summer Special (PT),Exp,SR,13-Apr,28-Sep,TBM,13:55,TEN,2:00,12h 5m,15,M,SL 3A 2A 3E,643 km,53 km/hr,6166
+09718,Madar - Rewari Raksha Bandhan Special (UnReserved),Exp,NWR,29-Aug,31-Aug,MDJN,11:50,RE,17:30,5h 40m,14,S M S,,289 km,51 km/hr,9717
+06045,Chennai Egmore - Kanniyakumari Special Fare SF Summer Special (PT),SF,SR,4-Sep,25-Sep,MS,23:50,CAPE,13:00,13h 10m,17,F,SL 3A,739 km,56 km/hr,6046
+06072,Mangaluru Jn. - SMVT Bengaluru Special Fare One Way Special,Exp,SR,29-Aug,29-Aug,MAJN,11:15,SMVB,4:00,16h 45m,17,S,SL 3A 2A,806 km,48 km/hr,
+09016,Satna - Katni Rakshabandhan Special (UnReserved),Exp,WCR,28-Aug,31-Aug,STA,18:30,KTE,20:50,2h 20m,9,S M F S,,98 km,42 km/hr,9015
+09015,Katni - Satna Rakshabandhan Special (UnReserved),Exp,WR,28-Aug,31-Aug,KTE,5:45,STA,8:45,3h 0m,9,S M F S,,98 km,33 km/hr,9016
+09709,Khatipura - Howrah Special Fare Rakshabandhan Special,Exp,NWR,29-Aug,29-Aug,KWP,17:00,HWH,22:15,29h 15m,23,S,SL 3A 2A,1498 km,51 km/hr,9710
+04123,Prayagraj - Hazrat Nizamuddin Special Fare Special,Exp,NCR,15-Mar,29-Nov,PRYJ,15:25,NZM,11:35,20h 10m,16,S W,SL 3A 2A 1A,794 km,39 km/hr,4124
+09034,Malda Town - Udhna Special Fare Special,Exp,WR,12-Apr,29-Nov,MLDT,9:30,UDN,1:20,39h 50m,23,S,SL 3A,1999 km,50 km/hr,9033
+09033,Udhna - Malda Town Special Fare Special (PT),Exp,WR,9-Apr,26-Nov,UDN,23:00,MLDT,11:00,36h 0m,23,T,SL 3A,1999 km,56 km/hr,9034
+09298,Shakur Basti - Bhavnagar Terminus Special Fare Special,Exp,WR,17-Oct,28-Nov,SSB,13:15,BVC,8:50,19h 35m,23,S,SL 3A 2A 3E,1118 km,57 km/hr,9297
+09297,Bhavnagar Terminus - Shakur Basti Special Fare Special,Exp,WR,16-Oct,27-Nov,BVC,14:20,SSB,10:55,20h 35m,23,F,SL 3A 2A 3E,1118 km,54 km/hr,9298
+08833,Raigarh - Durg Rakshabandhan Passenger Special (UnReserved),Pass,SECR,27-Aug,29-Aug,RIG,19:40,DURG,2:00,6h 20m,35,T F S,,279 km,44 km/hr,8834
+06861,Thanjavur - Tiruchchirappalli DEMU Special,DEMU,SR,29-Aug,8-Sep,TJ,21:10,TPJ,22:10,1h 0m,2,M T W T F S,,50 km,50 km/hr,
+04412,Ghaziabad - Aligarh Rakshabandhan MEMU Special,MEMU,NR,27-Aug,28-Aug,GZB,11:00,ALJN,13:00,2h 0m,15,T F,,106 km,53 km/hr,4411
+04410,Hazrat Nizamuddin - Mathura Raksha Bandhan Special,Del,NR,27-Aug,28-Aug,NZM,10:00,MTJ,12:45,2h 45m,16,T F,,134 km,49 km/hr,4409
+07540,Katihar - Manihari Shravani Mela Special (UnReserved),Pass,NFR,25-Jul,30-Aug,KIR,19:00,MHI,19:45,0h 45m,2,S T W F S,,24 km,32 km/hr,7539
+04125,Subedarganj - Bandra Terminus Special Fare SF Summer Special,SF,NCR,2-Mar,31-Aug,SFG,5:50,BDTS,9:30,27h 40m,16,M,SL 3A 2A 3E,1685 km,61 km/hr,4126
+07539,Manihari - Katihar Shravani Mela Special (UnReserved),Pass,NFR,26-Jul,31-Aug,MHI,3:30,KIR,4:15,0h 45m,2,S M W T S,,24 km,32 km/hr,7540
+04079,Thiruvananthapuram Central - Hazrat Nizamuddin Special Fare SF Special,SF,NR,27-Aug,27-Aug,TVC,5:00,NZM,6:40,49h 40m,29,T,SL 3A,2857 km,58 km/hr,4080
+07040,Kakinada Town - Charlapalli Special Fare Special,Exp,SCR,28-Aug,28-Aug,CCT,18:50,CHZ,7:30,12h 40m,9,F,SL 2A 1A,539 km,43 km/hr,7039
+07039,Charlapalli - Kakinada Town Special Fare Special (PT),Exp,SCR,27-Aug,27-Aug,CHZ,19:50,CCT,9:30,13h 40m,9,T,SL 2A 1A,539 km,39 km/hr,7040
+06580,Thiruvananthapuram North - Bengaluru Cant. Special Fare Onam Special,Exp,SWR,29-Aug,29-Aug,TVCN,12:40,BNC,5:15,16h 35m,21,S,SL 3A 2A,818 km,49 km/hr,6579
+07197,Charlapalli - Kottayam Special Fare Onam Special,Exp,SCR,16-Aug,30-Aug,CHZ,7:15,KTYM,12:25,29h 10m,19,S,SL 3A 2A,1380 km,47 km/hr,7198
+06038,Velankanni - Tambaram Special Fare Special (PT),Exp,SR,26-Aug,9-Sep,VLNK,0:45,TBM,7:30,6h 45m,9,W,SL,324 km,48 km/hr,6037
+04155,Subedarganj - Udhna Special Fare Special,Exp,NCR,9-Mar,17-Sep,SFG,11:40,UDN,13:15,25h 35m,14,M T,SL 3A,1430 km,56 km/hr,4156
+01910,Agra Cantt. - Asarva Special Fare Special,Exp,NCR,8-Jun,28-Sep,AGC,18:10,ASV,11:10,17h 0m,16,M,SL 3A 2A,892 km,52 km/hr,1909
+09419,Ahmedabad - Tiruchchirappalli Special Fare Special,Exp,WR,,17-Sep,ADI,9:30,TPJ,3:35,42h 5m,32,T,SL 3A 2A,2124 km,50 km/hr,9420
+01024,SCSMT Kolhapur - Pune Special Fare Special,Exp,CR,,19-Oct,KOP,23:30,PUNE,7:05,7h 35m,20,S M T W T F S,SL 3A 2A,326 km,43 km/hr,1023
+04741,Shri Ganganagar - Pokaran Mela Special (UnReserved),Exp,NWR,12-Sep,26-Sep,SGNR,10:15,POK,19:50,9h 35m,15,S M T W T F S,,531 km,55 km/hr,4742
+01134,Chiplun - Diva MEMU Express Ganpati Special (UnReserved),Exp,CR,12-Sep,27-Sep,CHI,7:30,DIVA,13:00,5h 30m,26,S M T W T F S,,228 km,42 km/hr,1133
+07195,Charlapalli - Kollam Special Fare Onam Special,Exp,SCR,14-Aug,4-Sep,CHZ,7:15,QLN,14:00,30h 45m,26,F,SL 3A 2A,1476 km,48 km/hr,7196
+07196,Kollam - Charlapalli Special Fare Onam Special,Exp,SCR,15-Aug,5-Sep,QLN,17:20,CHZ,0:30,31h 10m,26,S,SL 3A 2A,1476 km,47 km/hr,7195
+02878,Anand Vihar Terminal - Ranchi Special Fare Special,Exp,SER,9-Aug,27-Sep,ANVT,19:30,RNC,18:35,23h 5m,18,S,SL 3A 2A 1A,1236 km,54 km/hr,2877
+02877,Ranchi - Anand Vihar Terminal Special Fare Special (PT),Exp,SER,8-Aug,26-Sep,RNC,17:40,ANVT,18:00,24h 20m,18,S,SL 3A 2A 1A,1236 km,51 km/hr,2878
+09060,Velankanni - Bandra Terminus Special Fare Festival Special,Exp,WR,30-Aug,4-Sep,VLNK,0:45,BDTS,15:00,38h 15m,27,S F,SL 3A 2A,1648 km,43 km/hr,9059
+09059,Bandra Terminus - Velankanni Special Fare Festival Special,Exp,WR,27-Aug,1-Sep,BDTS,21:30,VLNK,10:05,36h 35m,27,T T,SL 3A 2A,1648 km,45 km/hr,9060
+04330,Haridwar - Lucknow Rakshabandhan Special (UnReserved),Exp,NR,27-Aug,29-Aug,HW,15:10,LKO,0:10,9h 0m,8,T F S,,493 km,55 km/hr,4329
+04796,Gogameri - Rewari Mela Special (UnReserved),Exp,NWR,30-Aug,9-Sep,GAMI,23:40,RE,5:15,5h 35m,3,S M T W T F S,,219 km,39 km/hr,4795
+04743,Hanumangarh - Sadulpur Mela Special,Exp,NWR,3-Sep,6-Sep,HMH,10:00,SDLP,13:50,3h 50m,7,S T F S,SL,178 km,47 km/hr,4744
+04791,Rewari - Gogameri Mela Special (UnReserved),Exp,NWR,31-Aug,9-Sep,RE,6:15,GAMI,10:15,4h 0m,3,S M T W T F S,,219 km,55 km/hr,4792
+09324,Indore - Khadki (Pune) Special Fare Special (PT),Exp,WR,,26-Aug,INDB,11:15,KK,2:50,15h 35m,13,W,SL 3A 2A,960 km,62 km/hr,9323
+07366,Velankanni - Vasco Da Gama Special Fare Special (PT),Exp,SWR,9-Sep,9-Sep,VLNK,1:00,VSG,3:00,26h 0m,22,W,SL 3A,1225 km,47 km/hr,7365
+03527,Asansol - Gorakhpur Shravani Mela Special (UnReserved),Exp,ER,29-Jul,29-Aug,ASN,21:00,GKP,11:00,14h 0m,17,S M T W T F S,,574 km,41 km/hr,3528
+05580,Anand Vihar Terminal - Purnia Court Special Fare Summer Special,Exp,ECR,28-Apr,1-Sep,ANVT,5:15,PRNC,11:30,30h 15m,28,S T,SL 3E,1283 km,42 km/hr,5579
+05579,Purnia Court - Anand Vihar Terminal Special Fare Summer Special,Exp,ECR,26-Apr,30-Aug,PRNC,19:00,ANVT,1:05,30h 5m,28,S F,SL 3E,1283 km,43 km/hr,5580
+07352,Kottayam - SSS Hubballi Special Fare Onam Special,Exp,SWR,26-Aug,26-Aug,KTYM,22:30,UBL,20:00,21h 30m,16,W,SL 3A 2A,1136 km,53 km/hr,7351
+07354,Kottayam - SSS Hubballi Special Fare Onam Special,Exp,SWR,30-Aug,30-Aug,KTYM,22:30,UBL,20:05,21h 35m,16,S,SL 3A 2A,1136 km,53 km/hr,7353
+01167,Mumbai LTT - Ratnagiri Special Fare Ganpati Special,Exp,CR,12-Sep,26-Sep,LTT,21:00,RN,5:00,8h 0m,11,S T W T S,SL 3A,328 km,41 km/hr,1168
+04138,Barauni - Gwalior Special Fare Special,Exp,NCR,20-May,27-Sep,BJU,13:45,GWL,12:20,22h 35m,20,S W,2S SL 3A 2A,926 km,41 km/hr,4137
+04137,Gwalior - Barauni Special Fare Special,Exp,NCR,19-May,26-Sep,GWL,14:15,BJU,12:15,22h 0m,20,T S,2S SL 3A 2A,926 km,42 km/hr,4138
+01132,Sawantwadi Road - Mumbai LTT Special Fare Ganapati Special,Exp,CR,17-Sep,27-Sep,SWV,23:20,LTT,11:45,12h 25m,20,S T,SL 3A,488 km,39 km/hr,1131
+01131,Mumbai LTT - Sawantwadi Road Special Fare Ganapati Special,Exp,CR,17-Sep,27-Sep,LTT,8:45,SWV,22:10,13h 25m,20,S T,SL 3A,488 km,36 km/hr,1132
+08645,Bhagalpur - Ranchi Special Fare Shravani Mela Special (via Barkakana),Exp,SER,28-Jul,12-Sep,BGP,9:10,RNC,21:40,12h 30m,12,T S,SL 3A,546 km,44 km/hr,8646
+08646,Ranchi - Bhagalpur Special Fare Shravani Mela Special (via Barkakana),Exp,SER,27-Jul,11-Sep,RNC,17:30,BGP,6:30,13h 0m,12,M F,SL 3A,546 km,42 km/hr,8645
+09344,Patna - Dr. Ambedkar Nagar Special Fare Special,Exp,WR,27-Feb,2-Oct,PNBE,21:30,DADN,23:55,26h 25m,18,F,SL 3A 2A 3E,1289 km,49 km/hr,9343
+09018,Veraval - Bandra Terminus Special Fare Summer Special (PT),Exp,WR,26-Jan,31-Aug,VRL,11:05,BDTS,4:55,17h 50m,12,M,SL 3A 2A,913 km,51 km/hr,9017
+09017,Bandra Terminus - Veraval Special Fare Summer Special (PT),Exp,WR,25-Jan,30-Aug,BDTS,14:40,VRL,8:05,17h 25m,12,S,SL 3A 2A,913 km,52 km/hr,9018
+09009,Bandra Terminus - Bhuj Special Fare SF Special (PT),SF,WR,25-Jan,30-Aug,BDTS,19:25,BHUJ,9:50,14h 25m,9,S,SL 3A 2A,840 km,58 km/hr,9010
+06062,Velankanni - Ernakulam Jn. Special Fare Special (PT),Exp,SR,28-Aug,11-Sep,VLNK,18:40,ERS,11:50,17h 10m,32,F,SL 3A 2A,690 km,40 km/hr,6061
+01912,Kolkata - Agra Cantt. Special Fare Special,Exp,NCR,24-Jul,25-Sep,KOAA,7:25,AGC,8:00,24h 35m,18,F,SL 3A 2A,1285 km,52 km/hr,1911
+01911,Agra Cantt. - Kolkata Special Fare Special,Exp,NCR,23-Jul,24-Sep,AGC,3:40,KOAA,4:05,24h 25m,18,T,SL 3A 2A,1285 km,53 km/hr,1912
+07092,Danapur - Charlapalli Special Fare Special,Exp,SCR,8-Jun,28-Sep,DNR,3:00,CHZ,10:00,31h 0m,15,M,SL 3A 2A,1545 km,50 km/hr,7091
+08689,Bhagalpur - Ranchi Special Fare Shravani Mela Special (via Gomoh),Exp,SER,27-Jul,10-Sep,BGP,9:10,RNC,22:20,13h 10m,16,M T,SL 3A,533 km,40 km/hr,8690
+08690,Ranchi - Bhagalpur Special Fare Shravani Mela Special (via Gomoh),Exp,SER,26-Jul,9-Sep,RNC,17:40,BGP,6:30,12h 50m,16,S W,SL 3A,530 km,41 km/hr,8689
+06117,MGR Chennai Central - Kollam Special Fare Onam Special,Exp,SR,13-Aug,5-Sep,MAS,23:50,QLN,16:20,16h 30m,19,T S,SL 3A 2A 1A,841 km,51 km/hr,6118
+06118,Kollam - MGR Chennai Central Special Fare Onam Special (PT),Exp,SR,14-Aug,6-Sep,QLN,18:45,MAS,11:35,16h 50m,19,S F,SL 3A 2A 1A,841 km,50 km/hr,6117
+12307,Howrah - Jodhpur Superfast Express (PT),SF,ER,,,HWH,23:30,JU,5:15,29h 45m,28,S T W S,SL 3A 2A 1A,1814 km,61 km/hr,12308
+22698,MGR Chennai Central - SSS Hubballi Weekly SF Express (via SMVT Bengaluru) (PT),SF,SWR,,,MAS,15:00,UBL,5:00,14h 0m,15,S,SL 3A 2A 1A 3E,826 km,59 km/hr,22697
+12692,Shivamogga Town - MGR Chennai Central Weekly SF Express,SF,SR,,,SMET,17:40,MAS,4:55,11h 15m,18,S,SL 3A 2A 1A 3E,631 km,56 km/hr,12691
+12840,MGR Chennai Central - Howrah Mail (PT),SF,SER,,,MAS,19:00,HWH,23:20,28h 20m,34,S M T W T F S,SL 3A 2A 1A,1663 km,59 km/hr,12839
+12864,SMVT Bengaluru - Howrah SF Express (PT),SF,SER,,,SMVB,10:40,HWH,20:10,33h 30m,33,S M T W T F S,SL 3A 2A 1A 3E,1942 km,58 km/hr,12863
+22662,Sethu SF Express (PT),SF,SR,,,RMM,21:10,MS,7:20,10h 10m,16,S M T W T F S,SL 3A 2A 1A,601 km,59 km/hr,22661
+22948,Bhagalpur - Surat SF Express (PT),SF,WR,,,BGP,6:50,UDN,15:23,32h 33m,34,M T,SL 3A 2A,1818 km,56 km/hr,22947
+12324,Barmer - Howrah SF Express (PT),SF,ER,,,BME,17:00,HWH,5:45,36h 45m,24,W S,SL 3A 2A 1A,2279 km,62 km/hr,12323
+16787,Tirunelveli - Shri Mata Vaishno Devi Katra Express (PT),Exp,SR,,,TEN,18:00,SVDK,10:45,64h 45m,58,M,SL 3A 2A 3E,3633 km,56 km/hr,16788
+16128,Guruvayur - Chennai Egmore Express (PT),Exp,SR,,,GUV,23:15,TBM,19:28,20h 13m,45,S M T W T F S,SL 3A 2A,1072 km,53 km/hr,16127
+16318,Himsagar Express (PT),Exp,SR,,,SVDK,22:30,CAPE,22:00,71h 30m,68,M,SL 3A 2A 3E,3789 km,53 km/hr,16317
+16127,Chennai Egmore - Guruvayur Express (PT),Exp,SR,,,TBM,11:07,GUV,7:40,20h 33m,47,S M T W T F S,SL 3A 2A,1072 km,52 km/hr,16128
+15930,New Tinsukia - Tambaram Express (PT),Exp,NFR,,,NTSK,6:30,TBM,20:35,62h 5m,44,M,SL 3A 2A 1A,3218 km,52 km/hr,15929
+18203,Betwa Express (PT),Exp,SECR,,,DURG,20:05,CNB,13:20,17h 15m,19,S T,SL 3A 2A 1A 3E,875 km,51 km/hr,18204
+12691,MGR Chennai Central - Shivamogga Town Weekly SF Express (PT),SF,SR,,,MAS,23:30,SMET,10:55,11h 25m,15,F,SL 3A 2A 1A 3E,631 km,55 km/hr,12692
+12901,Gujarat Mail (PT),SF,WR,,,DDR,21:40,ADI,5:40,8h 0m,11,S M T W T F S,SL 3A 2A 1A 3E,487 km,61 km/hr,12902
+12616,Grand Trunk Express (PT),SF,SR,,,NDLS,16:10,MAS,4:40,36h 30m,36,S M T W T F S,SL 3A 2A 1A,2182 km,60 km/hr,12615
+15630,Nagaon Express (PT),Exp,NFR,,,SHTT,10:50,TBM,20:35,57h 45m,48,F,SL 3A 2A,2970 km,51 km/hr,15629
+12615,Grand Trunk Express (PT),SF,SR,,,MAS,18:15,NDLS,5:10,34h 55m,37,S M T W T F S,SL 3A 2A 1A,2182 km,63 km/hr,12616
+18205,Durg - Nautanwa Express (via Ayodhya Cantt.) (PT),Exp,SECR,,,DURG,20:05,NTV,21:55,25h 50m,25,T,SL 3A 2A 1A 3E,1144 km,44 km/hr,18206
+16216,Chamundi Express,Exp,SWR,,,SBC,18:25,MYS,21:10,2h 45m,8,S M T W T F S,2S CC,138 km,50 km/hr,16215
+14236,Bareilly - Varanasi Express,Exp,NR,,,BE,16:45,BSB,7:00,14h 15m,25,S M T W T F S,SL 3A 2A 1A,558 km,39 km/hr,14235
+18201,Durg - Nautanwa Express (via Varanasi) (PT),Exp,SECR,,,DURG,20:05,NTV,21:55,25h 50m,24,W F,SL 3A 2A 1A 3E,1197 km,46 km/hr,18202
+15006,Dehradun - Gorakhpur Rapti Ganga Express,Exp,NER,,,DDN,15:15,GKP,7:50,16h 35m,14,T T,SL 3A 2A 1A,814 km,49 km/hr,15005
+13248,Ara - Kamakhya Capital Express (PT),Exp,ECR,,,ARA,21:05,KYQ,22:20,25h 15m,48,S M T W,SL 3A 2A 1A 3E,1005 km,40 km/hr,13247
+16733,Rameswaram - Okha Weekly Express (PT),Exp,SR,,,RMM,22:50,OKHA,10:20,59h 30m,45,F,SL 3A 2A,3153 km,53 km/hr,16734
+14864,Marudhar Express (Via Sultanpur),Exp,NWR,,,JU,8:35,BCY,7:00,22h 25m,34,S T F,SL 3A 2A 3E,1163 km,52 km/hr,14863
+12592,Yesvantpur - Gorakhpur SF Express (PT),SF,NER,,,YPR,17:30,GKP,15:10,45h 40m,35,M,SL 3A 2A 1A,2512 km,55 km/hr,12591
+14112,Bapudham Express,Exp,NCR,,,PRYJ,4:50,MFP,18:10,13h 20m,21,M W,SL 3A 2A 1A 3E,665 km,50 km/hr,14111
+16231,Cuddalore Port - Mysuru Express (PT),Exp,SWR,,,CUPJ,16:30,MYS,8:35,16h 5m,25,S M T W T F S,SL CC 3A 2A,753 km,47 km/hr,16232
+12323,Howrah - Barmer SF Express (PT),SF,ER,,,HWH,18:50,BME,6:30,35h 40m,24,T F,SL 3A 2A 1A,2279 km,64 km/hr,12324
+20811,Visakhapatnam - Hazur Sahib Nanded SF Express (PT),SF,SCoR,,,VSKP,20:00,NED,13:40,17h 40m,11,T W S,SL 3A 2A 3E,959 km,54 km/hr,20812
+12638,Pandian SF Express (PT),SF,SR,,,MDU,21:25,MS,5:20,7h 55m,10,S M T W T F S,SL 3A 2A 1A,493 km,62 km/hr,12637
+17610,Purna - Patna Express (PT),Exp,SCR,,,PAU,14:25,PNBE,23:15,32h 50m,17,T,SL 3A 2A,1734 km,53 km/hr,17609
+12694,Pearl City Superfast Express (PT),SF,SR,,,TN,21:05,MS,7:35,10h 30m,19,S M T W T F S,SL 3A 2A 1A,652 km,62 km/hr,12693
+22132,Gyan Ganga SF Express (PT),SF,CR,,,BNRS,4:25,PUNE,7:15,26h 50m,17,W,SL 3A 2A,1531 km,57 km/hr,22131
+11089,Bhagat Ki Kothi - Pune Express,Exp,CR,,,BGKT,12:15,PUNE,7:35,19h 20m,25,T,SL 3A 2A,1082 km,56 km/hr,11090
+17480,Tirupati - Puri Express (PT),Exp,SCoR,,,TPTY,11:05,PURI,14:50,27h 45m,59,M T W F S,SL 3A 2A,1233 km,44 km/hr,17479
+12463,Delhi Sarai Rohilla - Jodhpur Rajasthan Sampark Kranti Express,SKr,NWR,,,DEE,21:25,JU,6:40,9h 15m,6,W,SL 3A 2A,614 km,66 km/hr,12464
+12434,Hazrat Nizamuddin - M.G.R.Chennai Central Rajdhani Express,Raj,NR,,,NZM,15:35,MAS,20:50,29h 15m,8,W F,3A 2A 1A,2175 km,74 km/hr,12433
+13241,Banka - Rajendra Nagar Terminal Intercity Express,Exp,ECR,,,BAKA,8:45,RJPB,15:55,7h 10m,17,S M T W T F,2S SL 3A 2A 1A 3E,272 km,38 km/hr,13242
+22661,Sethu SF Express (PT),SF,SR,,,MS,17:55,RMM,4:00,10h 5m,16,S M T W T F S,SL 3A 2A 1A,601 km,60 km/hr,22662
+14708,Ranakpur Express (PT),Exp,NWR,,,DDR,12:35,HMH,15:55,27h 20m,38,S M T W T F S,SL 3A 2A,1452 km,53 km/hr,14707
+12512,Thiruvananthapuram North - Gorakhpur Rapti Sagar SF Express (PT),SF,NER,,,TVCN,6:35,GKP,15:15,56h 40m,57,S T W,SL 3A 2A 1A,3236 km,57 km/hr,12511
+12188,Mumbai CSMT - Jabalpur Garib Rath Express,GR,WCR,,,CSMT,13:30,JBP,5:05,15h 35m,14,S T T,3A,992 km,64 km/hr,12187
+12883,Rupasi Bangla Express,SF,SER,,,SRC,6:30,PRR,12:05,5h 35m,10,S M T W T F S,2S CC 3A,315 km,56 km/hr,12884
+19167,Ahmedabad - Varanasi City Sabarmati Express (PT),Exp,WR,,,ADI,23:10,BCY,10:00,34h 50m,51,M T T S,SL 3A 2A 1A 3E,1592 km,46 km/hr,19168
+14164,Sangam Express,Exp,NCR,,,MTC,19:00,SFG,8:25,13h 25m,18,S M T W T F S,SL 3A 2A 3E,637 km,47 km/hr,14163
+16057,Sapthagiri Express,Exp,SR,,,MAS,6:30,TPTY,9:50,3h 20m,7,S M T W T F S,2S CC,147 km,44 km/hr,16058
+15160,Sarnath Express (PT),Exp,NER,,,DURG,20:30,CPR,21:35,25h 5m,45,S M T W T F S,SL 3A 2A 1A 3E,1076 km,43 km/hr,15159
+19217,Saurashtra Janta Express (PT),Exp,WR,,,BDTS,13:35,VRL,6:50,17h 15m,33,S M T W T F S,SL 3A 2A 1A,913 km,53 km/hr,19218
+22717,Rajkot - Secunderabad SF Express (PT),SF,SCR,,,RJT,5:30,SC,7:30,26h 0m,26,M W T,SL 3A 2A,1473 km,57 km/hr,22718
+22738,Hisar - Secunderabad SF Express (PT),SF,SCR,,,HSR,13:50,SC,8:50,43h 0m,34,S F,SL 3A 2A,2418 km,56 km/hr,22737
+12749,Machilipatnam - Bidar SF Express (PT),SF,SCoR,,,MTM,20:50,BIDR,7:38,10h 48m,15,S M T W T F S,SL 3A 2A 1A,592 km,55 km/hr,12750
+19310,Shanti Express (PT),Exp,WR,,,INDB,23:00,ADI,8:20,9h 20m,14,S M T W T F S,SL 3A 2A 1A,526 km,56 km/hr,19309
+11035,Sharavati Express (PT),Exp,CR,,,DR,21:30,MYS,21:00,23h 30m,25,T,SL 3A 2A,1211 km,52 km/hr,11036
+14863,Marudhar Express (Via Sultanpur),Exp,NWR,,,BCY,16:40,JU,17:30,24h 50m,33,S T F,SL 3A 2A 3E,1163 km,47 km/hr,14864
+14854,Marudhar Express (via Ayodhya Cantt),Exp,NWR,,,JU,8:35,BCY,10:00,25h 25m,38,M T S,SL 3A 2A 3E,1203 km,47 km/hr,14853
+12779,Goa Express (PT),SF,SWR,,,VSG,15:10,NZM,6:25,39h 15m,31,S M T W T F S,SL 3A 2A 1A 3E,2163 km,55 km/hr,12780
+13246,Ara - New Jalpaiguri Capital Express (PT),Exp,ECR,,,ARA,21:05,NJP,12:45,15h 40m,41,T F S,SL 3A 2A 1A 3E,567 km,36 km/hr,13245
+12658,KSR Bengaluru - MGR Chennai Central SF Mail (PT),SF,SWR,,,SBC,22:40,MAS,4:05,5h 25m,6,S M T W T F S,SL 3A 2A 1A,359 km,66 km/hr,12657
+12591,Gorakhpur - Yesvantpur SF Express (PT),SF,NER,,,GKP,6:33,YPR,2:30,43h 57m,35,S,SL 3A 2A 1A,2512 km,57 km/hr,12592
+13005,Howrah - Amritsar Mail (PT),Exp,ER,,,HWH,19:20,ASR,8:40,37h 20m,59,S M T W T F S,SL 3A 2A 1A,1911 km,51 km/hr,13006
+14853,Marudhar Express (via Ayodhya Cantt),Exp,NWR,,,BCY,16:40,JU,17:30,24h 50m,37,M W S,SL 3A 2A 3E,1203 km,48 km/hr,14854
+16232,Mysuru - Cuddalore Port Express,Exp,SWR,,,MYS,16:15,CUPJ,8:35,16h 20m,25,S M T W T F S,SL CC 3A 2A,753 km,46 km/hr,16231
+12738,Gowthami SF Express (PT),SF,SCoR,,,LPI,20:30,COA,7:08,10h 38m,20,S M T W T F S,SL 3A 2A 1A 3E,582 km,55 km/hr,12737
+22101,Mumbai LTT - Madurai Weekly SF Express (PT),SF,CR,,,LTT,13:15,MDU,18:30,29h 15m,24,W,SL 3A 2A,1695 km,58 km/hr,22102
+14887,Rishikesh - Barmer Express,Exp,NWR,,,RKSH,19:40,BME,19:50,24h 10m,42,S M T W T F S,SL 3A 2A,1190 km,49 km/hr,14888
+18403,Bhubaneswar - Dhanbad Express,Exp,ECoR,,,BBS,20:25,DHN,11:00,14h 35m,13,S M T W T F S,SL 3A 2A,776 km,53 km/hr,18404
+16382,Kanniyakumari - Pune Express (PT),Exp,SR,,,CAPE,8:40,PUNE,21:40,37h 0m,56,S M T W T F S,SL 3A 2A 3E,1941 km,52 km/hr,16381
+12607,Lalbagh SF Express,SF,SWR,,,MAS,15:30,SBC,21:55,6h 25m,11,S M T W T F S,2S CC,359 km,56 km/hr,12608
+15008,Krishak Express,Exp,NER,,,LJN,23:10,BCY,12:15,13h 5m,32,S M T W T F S,SL 3A 2A 1A 3E,504 km,39 km/hr,15007
+16532,KSR Bengaluru - Ajmer Garib Nawaz Express (PT),Exp,SWR,,,SBC,17:00,AII,14:25,45h 25m,35,F,SL 3A 2A 1A,2221 km,49 km/hr,16531
+15007,Krishak Express,Exp,NER,,,BCY,17:00,LJN,5:50,12h 50m,30,S M T W T F S,SL 3A 2A 1A 3E,504 km,39 km/hr,15008
+12647,Kongu SF Express (PT),SF,SR,,,CBE,16:30,NZM,14:15,45h 45m,23,S,SL 3A 2A,2687 km,59 km/hr,12648
+20686,KSR Bengaluru - Gandhidham SF Express (PT),SF,SWR,,,SBC,23:50,GIMB,10:55,35h 5m,30,S,SL 3A 2A 1A,1958 km,56 km/hr,20685
+12640,Brindavan SF Express,SF,SR,,,SBC,15:15,MAS,21:15,6h 0m,12,S M T W T F S,2S CC,359 km,60 km/hr,12639
+20693,Jodhpur - KSR Bengaluru SF Express (via Davangere) (PT),SF,SWR,,,JU,6:15,SBC,20:30,38h 15m,43,T S,SL 3A 2A 1A,2115 km,55 km/hr,20694
+16315,Mysuru - Thiruvananthapuram North (Kochuveli) Express,Exp,SR,,,MYS,13:15,TVCN,9:15,20h 0m,25,S M T W T F S,SL 3A 2A 3E,961 km,48 km/hr,16316
+14732,Kisan Express,Exp,NWR,,,BTI,5:00,DLI,12:25,7h 25m,18,S M T W T F S,2S SL CC 3E,332 km,45 km/hr,14731
+13018,Ganadevta Express,Exp,ER,,,AZ,16:00,HWH,21:50,5h 50m,13,S M T W T F S,2S SL CC 3A,279 km,48 km/hr,13017
+12650,Karnataka Sampark Kranti Express (Via Ballari) (PT),SKr,SWR,,,NZM,8:20,YPR,4:15,43h 55m,18,S M T T S,SL 3A 2A 1A,2746 km,63 km/hr,12649
+12649,Karnataka Sampark Kranti Express (Via Ballari) (PT),SKr,SWR,,,YPR,13:30,NZM,8:10,42h 40m,18,S M W F S,SL 3A 2A 1A,2747 km,64 km/hr,12650
+14233,Saryu Express,Exp,NR,,,PYGS,18:50,MUR,0:55,6h 5m,13,S M T W T F S,CC,199 km,33 km/hr,14234
+18236,Bilaspur - Bhopal Express Cum Passenger,Exp,SECR,,,BSP,22:20,BPL,17:00,18h 40m,48,S M T W T F S,SL 2A,719 km,39 km/hr,18235
+12630,Karnataka Sampark Kranti Express (Via Pune) (PT),SKr,SWR,,,NZM,8:30,YPR,5:25,44h 55m,14,W F,SL 3A 2A 1A,2610 km,58 km/hr,12629
+12629,Karnataka Sampark Kranti Express (Via Pune) (PT),SKr,SWR,,,YPR,15:00,NZM,11:40,44h 40m,15,T T,SL 3A 2A 1A,2610 km,58 km/hr,12630
+16342,Thiruvananthapuram Central - Guruvayur InterCity Express,Exp,SR,,,TVC,17:30,GUV,0:20,6h 50m,20,S M T W T F S,2S CC,303 km,44 km/hr,16341
+19315,Veer Bhumi Express,Exp,WR,,,INDB,18:20,ASV,10:15,15h 55m,31,S M T W T F S,SL 3A 2A 1A,774 km,49 km/hr,19316
+12850,Pune - Bilaspur SF Express (PT),SF,SECR,,,PUNE,17:35,BSP,15:50,22h 15m,16,F,SL 3A 2A 1A 3E,1297 km,58 km/hr,12849
+13150,Kanchankanya Express (PT),Exp,ER,,,APDJ,15:40,SDAH,8:20,16h 40m,28,S M T W T F S,SL 3A 2A 1A 3E,753 km,45 km/hr,13149
+17643,Chengalpattu - Kakinada Port Circar Express (PT),Exp,SCR,,,CGL,16:00,COA,9:25,17h 25m,32,S T W F,SL 3A 2A,756 km,43 km/hr,17644
+19818,Haldighati Express,Exp,WCR,,,JAB,20:05,RTM,15:20,19h 15m,64,S M T W T F S,SL,695 km,36 km/hr,19817
+16219,Chamarajanagar - Tirupati Express,Exp,SWR,,,CMNR,15:50,TPTY,4:05,12h 15m,31,S M T W T F S,SL 3A 2A 1A,532 km,43 km/hr,16220
+16752,Rameswaram - Chennai Egmore Express (PT),Exp,SR,,,RMM,18:00,TBM,6:28,12h 28m,20,S M T W T F S,SL 3A 2A 1A,641 km,51 km/hr,16751
+17330,Vijayawada - SSS Hubballi Express,Exp,SWR,,,BZA,13:10,UBL,5:35,16h 25m,40,S M T W T F S,SL 3A 2A,691 km,42 km/hr,17329
+17329,SSS Hubballi - Vijayawada Express,Exp,SWR,,,UBL,19:30,BZA,12:00,16h 30m,40,S M T W T F S,SL 3A 2A,691 km,42 km/hr,17330
+12252,Wainganga SF Express (PT),SF,SWR,,,KRBA,8:05,YPR,13:15,29h 10m,21,S T,SL 3A 2A 1A,1605 km,55 km/hr,12251
+12210,Kathgodam - Kanpur Central Garib Rath Express,GR,NR,,,KGM,18:15,CNB,4:35,10h 20m,8,M,3A,459 km,44 km/hr,12209
+55810,Guwahati - New Bongaigaon Passenger (via Rangiya) (UnReserved),Pass,NFR,,,GHY,5:00,NBQ,10:10,5h 10m,20,S M T W T F S,,157 km,30 km/hr,55809
+55809,New Bongaigaon - Guwahati Passenger (via Rangiya) (UnReserved),Pass,NFR,,,NBQ,17:20,GHY,22:00,4h 40m,20,S M T W T F S,,157 km,34 km/hr,55810
+17212,Kondaveedu Express (PT),Exp,SCoR,,,YPR,12:45,MTM,5:15,16h 30m,18,T T S,SL 3A 2A 1A,778 km,47 km/hr,17211
+14866,Marudhar Express (Via MBDD Pratapgarh) (PT),Exp,NWR,,,JU,8:35,BCY,7:40,23h 5m,35,W,SL 3A 2A 3E,1181 km,51 km/hr,14865
+14865,Marudhar Express (Via MBDD Pratapgarh),Exp,NWR,,,BCY,16:40,JU,17:30,24h 50m,34,T,SL 3A 2A 3E,1181 km,48 km/hr,14866
+67767,Dornakal - Vijayawada MEMU,MEMU,SCR,,,DKJ,9:10,BZA,12:10,3h 0m,14,S M T W T F S,,122 km,41 km/hr,67768
+67205,Tirupati - Katpadi MEMU,MEMU,SCoR,,,TPTY,6:40,KPD,9:15,2h 35m,11,S M T W T F S,,105 km,41 km/hr,67210
+17261,Guntur - Tirupati Express,Exp,SCoR,,,GNT,16:30,TPTY,3:50,11h 20m,18,S M T W T F S,SL 3A 2A,555 km,49 km/hr,17262
+66035,Sullurupeta - Nellore MEMU,MEMU,SR,,,SPE,8:05,NLR,10:05,2h 0m,10,S M T W T F S,,93 km,47 km/hr,66036
+56812,Erode - Jolarpettai Passenger (UnReserved),Pass,SR,,,ED,17:50,JTJ,22:30,4h 40m,21,S M T W T F S,,180 km,39 km/hr,56811
+69146,Godhra - Anand MEMU,MEMU,WR,,,GDA,8:30,ANND,10:45,2h 15m,11,S M T W T F S,,79 km,35 km/hr,69145
+18038,Jajpur Keonjhar Road - Kharagpur Express (UnReserved),Exp,SER,,,JJKR,6:20,KGP,12:20,6h 0m,34,S M T W T F S,,222 km,37 km/hr,18037
+18027,Kharagpur - Asansol MEMU Express (UnReserved),Exp,SER,,,KGP,6:10,ASN,11:35,5h 25m,29,S M T W T F S,,210 km,39 km/hr,18028
+17334,Castle Rock - Miraj Express (UnReserved),Exp,SWR,,,CLR,18:45,MRJ,0:30,5h 45m,19,S M T W T F S,,213 km,37 km/hr,17333
+56932,Londa - Miraj Passenger (UnReserved),Pass,SWR,,,LD,6:45,MRJ,11:20,4h 35m,20,S M T W T F S,,189 km,41 km/hr,56931
+17332,SSS Hubballi - Miraj Express (UnReserved),Exp,SWR,,,UBL,11:45,MRJ,18:30,6h 45m,28,S M T W T F S,,280 km,41 km/hr,17331
+54611,Amritsar - Pathankot Passenger (UnReserved),Pass,NR,,,ASR,3:45,PTK,6:50,3h 5m,14,S M T W T F S,,107 km,35 km/hr,54614
+11115,Bhusaval - Itarsi MEMU Express (UnReserved),Exp,CR,,,BSL,20:40,ET,5:50,9h 10m,27,S M T W T F S,,307 km,33 km/hr,11116
+74915,Hoshiarpur - Jalandhar City DEMU,DEMU,NR,,,HSX,15:05,JUC,16:10,1h 5m,5,S M T W T F S,,43 km,39 km/hr,74914
+74917,Hoshiarpur - Jalandhar City DEMU,DEMU,NR,,,HSX,17:55,JUC,19:00,1h 5m,5,S M T W T F S,,43 km,39 km/hr,74916
+74919,Hoshiarpur - Jalandhar City DEMU,DEMU,NR,,,HSX,20:50,JUC,21:55,1h 5m,5,S M T W T F S,,43 km,39 km/hr,74918
+14654,Amritsar - Hisar Express,Exp,NR,,,ASR,18:05,HSR,0:40,6h 35m,15,S M T W T F S,SL,346 km,53 km/hr,14653
+74939,Jalandhar City - Firozpur Cantt DEMU,DEMU,NR,,,JUC,21:30,FZR,23:58,2h 28m,12,S M T W T F S,,117 km,48 km/hr,74938
+54051,Ludhiana - Firozpur Cantt Passenger (UnReserved),Pass,NR,,,LDH,10:05,FZR,13:15,3h 10m,12,S M T W T F S,,124 km,39 km/hr,54052
+54645,Ludhiana - Firozpur Cantt Passenger (UnReserved),Pass,NR,,,LDH,20:50,FZR,23:20,2h 30m,11,S M T W T F S,,124 km,49 km/hr,54646
+54562,Firozpur Cantt - Bathinda Passenger (UnReserved),Pass,NR,,,FZR,6:25,BTI,8:45,2h 20m,11,S M T W T F S,,88 km,38 km/hr,54563
+54754,Shri Ganganagar - Bathinda Passenger (UnReserved),Pass,NWR,,,SGNR,6:35,BTI,9:30,2h 55m,16,S M T W T F S,,126 km,43 km/hr,54753
+14729,Rewari - Fazilka Express (UnReserved),Exp,NWR,,,RE,4:40,FKA,15:45,11h 5m,58,S M T W T F S,,423 km,38 km/hr,14730
+74988,Fazilka - Bathinda DEMU,DEMU,NR,,,FKA,16:15,BTI,19:20,3h 5m,17,S M T W T F S,,123 km,40 km/hr,74985
+54564,Firozpur Cantt - Bathinda Passenger (UnReserved),Pass,NR,,,FZR,17:40,BTI,20:00,2h 20m,11,S M T W T F S,,88 km,38 km/hr,54561
+67771,Sirpur Town - Karimnagar MEMU,MEMU,SCR,,,SRUR,10:55,KRMR,14:30,3h 35m,11,S M T W T F S,,143 km,40 km/hr,67772
+17033,Singareni MEMU Express (UnReserved),Exp,SCR,,,BDCR,6:00,BPQ,15:45,9h 45m,31,S M T W T F S,,382 km,39 km/hr,17034
+67766,Dornakal - Kazipet MEMU,MEMU,SCR,,,DKJ,21:50,KZJ,23:55,2h 5m,10,S M T W T F S,,95 km,46 km/hr,67765
+14814,Bhopal - Jodhpur Express,Exp,NWR,,,BPL,16:40,JU,18:20,25h 40m,72,S M T W T F S,SL 3A 2A 3E,992 km,39 km/hr,14813
+58028,Tatanagar - Kharagpur Passenger (UnReserved),Pass,SER,,,TATA,3:15,KGP,6:10,2h 55m,15,S M T W T F S,,134 km,46 km/hr,58027
+18529,Durg - Visakhapatnam Express,Exp,SCoR,,,DURG,18:33,VSKP,10:05,15h 32m,47,S M T W T F S,SL 3A 2A,566 km,36 km/hr,18530
+68714,NSC Bose Itwari - Balaghat MEMU,MEMU,SECR,,,NITR,10:40,BTC,14:25,3h 45m,27,S M T W T F S,,185 km,49 km/hr,68715
+11116,Itarsi - Bhusaval MEMU Express (UnReserved),Exp,CR,,,ET,20:30,BSL,4:20,7h 50m,27,S M T W T F S,,307 km,39 km/hr,11115
+64957,Agra Cantt. - Palwal MEMU,MEMU,NR,,,AGC,17:50,PWL,21:20,3h 30m,17,S M T W T F S,,138 km,39 km/hr,64958
+63422,Sahibganj - Azimganj MEMU,MEMU,ER,,,SBG,14:45,AZ,18:50,4h 5m,24,S M T W T F S,,150 km,37 km/hr,63421
+16214,SSS Hubballi - Arsikere MEMU Express (UnReserved),Exp,SWR,,,UBL,15:00,ASK,21:55,6h 55m,34,S M T W T F S,,304 km,44 km/hr,16213
+55337,Kasganj - Bharatpur Passenger (UnReserved),Pass,NER,,,KSJ,17:40,BTE,23:40,6h 0m,21,S M T W T F S,,168 km,28 km/hr,55338
+56905,Solapur - Hubballi Passenger (UnReserved),Pass,SWR,,,SUR,4:45,UBL,14:25,9h 40m,41,S M T W T F S,,359 km,37 km/hr,56906
+56912,Guntakal - Hubballi MEMU,MEMU,SWR,,,GTL,15:30,UBL,22:00,6h 30m,26,S M T W T F S,,258 km,40 km/hr,56911
+75602,Tinsukia - Lumding DEMU Express (UnReserved),Exp,NFR,,,TSK,7:40,LMG,19:05,11h 25m,42,S M T W T F S,,337 km,29 km/hr,75601
+19819,Vadodara - Kota Express (UnReserved),Exp,WCR,,,BRC,7:10,KOTA,21:25,14h 15m,55,S M T W T F S,,527 km,37 km/hr,19820
+69181,Dahod - Ratlam MEMU,MEMU,WR,,,DHD,17:30,RTM,19:40,2h 10m,12,S M T W T F S,,114 km,53 km/hr,69182
+19817,Haldighati Express,Exp,WCR,,,RTM,9:00,AF,4:40,19h 40m,63,S M T W T F S,SL,693 km,35 km/hr,19818
+63271,Mokama - Patna MEMU,MEMU,ECR,,,MKA,16:15,PNBE,20:20,4h 5m,25,S M T W T F S,,89 km,22 km/hr,63272
+63212,Patna - Jhajha MEMU,MEMU,ECR,,,PNBE,15:30,JAJ,20:45,5h 15m,36,S M T W T F S,,177 km,34 km/hr,63207
+63268,Patliputra - Muzaffarpur MEMU,MEMU,ECR,,,PPTA,20:05,MFP,23:00,2h 55m,13,S M T W T F S,,74 km,26 km/hr,63267
+63234,Pt. Deen Dayal Upadhyaya Jn. - Patna MEMU,MEMU,ECR,,,DDU,8:45,PNBE,17:05,8h 20m,37,S M T W T F S,,211 km,25 km/hr,63235
+13210,Pt. Deen Dayal Upadhyaya Jn. - Patna MEMU Express (UnReserved),Exp,ECR,,,DDU,15:35,PNBE,22:00,6h 25m,39,S M T W T F S,,211 km,33 km/hr,13209
+15129,Gorakhpur Cantt - Varanasi City InterCity Express (UnReserved),Exp,NER,,,GKC,10:30,BCY,16:00,5h 30m,15,S M T W T F S,,224 km,41 km/hr,15130
+54263,Varanasi - Sultanpur Passenger (UnReserved),Pass,NR,,,BSB,16:55,SLN,20:50,3h 55m,19,S M T W T F S,,143 km,37 km/hr,54264
+65304,Ramnagar - Moradabad MEMU,MEMU,NER,,,RMR,7:20,MB,10:05,2h 45m,11,S M T W T F S,,77 km,28 km/hr,65303
+64511,Haridwar - Amb Andaura MEMU,MEMU,NR,,,HW,4:40,AADR,13:25,8h 45m,31,S M T W T F S,,358 km,41 km/hr,64512
+64516,Nangal Dam - Ambala Cantt MEMU (via Chandigarh),MEMU,NR,,,NLDM,11:00,UMB,14:20,3h 20m,15,S M T W T F S,,170 km,51 km/hr,64515
+54646,Firozpur Cantt - Ludhiana Passenger (UnReserved),Pass,NR,,,FZR,5:20,LDH,8:30,3h 10m,17,S M T W T F S,,124 km,39 km/hr,54645
+74962,Firozpur Cantt - Ludhiana DEMU,DEMU,NR,,,FZR,9:00,LDH,12:05,3h 5m,17,S M T W T F S,,124 km,40 km/hr,74961
+74692,Qadian - Amritsar DEMU,DEMU,NR,,,QDN,16:25,ASR,18:05,1h 40m,4,S M T W T F S,,58 km,35 km/hr,74691
+74658,Dera Baba Nanak - Amritsar DEMU,DEMU,NR,,,DBNK,19:30,ASR,21:10,1h 40m,6,S M T W T F S,,54 km,32 km/hr,74657
+74676,Pathankot - Amritsar DEMU,DEMU,NR,,,PTK,19:00,ASR,21:35,2h 35m,14,S M T W T F S,,107 km,41 km/hr,74671
+54086,Satrod - Delhi Passenger (UnReserved),Pass,NR,,,STD,14:20,DLI,21:10,6h 50m,24,S M T W T F S,,215 km,31 km/hr,54085
+54309,Delhi - Hisar Passenger (via Sadulpur) (UnReserved),Pass,NR,,,DLI,5:00,HSR,13:05,8h 5m,43,S M T W T F S,,293 km,36 km/hr,54310
+54085,Delhi - Satrod Passenger (UnReserved),Pass,NR,,,DLI,7:10,STD,13:05,5h 55m,24,S M T W T F S,,215 km,36 km/hr,54086
+67288,Vizianagaram - Visakhapatnam MEMU,MEMU,SCoR,,,VZM,6:00,VSKP,7:30,1h 30m,8,S M T W T F S,,61 km,41 km/hr,67287
+58221,Chirimiri - Chandia Road Passenger (UnReserved),Pass,SECR,,,CHRM,8:25,CHD,13:45,5h 20m,18,S M T W T F S,,212 km,40 km/hr,58222
+64955,Agra Cantt. - Tundla MEMU,MEMU,NR,,,AGC,8:15,TDL,9:45,1h 30m,6,S M T W T F S,,29 km,19 km/hr,64956
+54214,Jaunpur - Prayagraj Sangam Passenger (UnReserved),Pass,NR,,,JNU,6:00,PYGS,9:40,3h 40m,17,S M T W T F S,,111 km,30 km/hr,54213
+54341,Saharanpur - Dehradun Passenger (UnReserved),Pass,NR,,,SRE,14:15,DDN,20:25,6h 10m,19,S M T W T F S,,132 km,21 km/hr,54342
+50104,Ratnagiri - Diva Passenger (UnReserved),Pass,KR,,,RN,5:50,DIVA,13:25,7h 35m,27,S M T W T F S,,304 km,40 km/hr,50103
+11603,Kota - Bina MEMU Express (UnReserved),Exp,WCR,,,KOTA,8:35,BINA,16:50,8h 15m,37,S M T W T F S,,303 km,37 km/hr,11604
+17252,Kacheguda - Guntur Express (PT),Exp,SCoR,,,KCG,20:45,GNT,11:00,14h 15m,31,S M T W T F S,SL 3A,623 km,44 km/hr,17251
+57204,Macherla - Guntur Passenger (UnReserved),Pass,SCoR,,,MCLA,16:30,GNT,19:55,3h 25m,12,S M T W T F S,,130 km,38 km/hr,57203
+15130,Varanasi City - Gorakhpur Cantt InterCity Express (UnReserved),Exp,NER,,,BCY,11:50,GKC,17:00,5h 10m,15,S M T W T F S,,224 km,43 km/hr,15129
+53483,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,5:05,RJL,5:30,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53484
+63233,Patna - Varanasi MEMU,MEMU,ECR,,,PNBE,5:45,BSB,13:20,7h 35m,38,S M T W T F S,,230 km,30 km/hr,63226
+63223,Patna - Ara MEMU,MEMU,ECR,,,PNBE,22:40,ARA,0:25,1h 45m,8,S M T W T F S,,49 km,28 km/hr,63224
+54049,Rohtak - Jind Passenger (via Panipat) (UnReserved),Pass,NR,,,ROK,3:55,JIND,8:10,4h 15m,24,S M T W T F S,,141 km,33 km/hr,54050
+54006,Jind - Rohtak Passenger (via Panipat) (UnReserved),Pass,NR,,,JIND,4:30,ROK,9:10,4h 40m,24,S M T W T F S,,141 km,30 km/hr,54007
+54007,Rohtak - Jind Passenger (via Panipat) (UnReserved),Pass,NR,,,ROK,9:30,JIND,13:35,4h 5m,24,S M T W T F S,,141 km,35 km/hr,54006
+54008,Jind - Rohtak Passenger (via Panipat) (UnReserved),Pass,NR,,,JIND,10:10,ROK,14:10,4h 0m,24,S M T W T F S,,141 km,35 km/hr,54009
+54050,Jind - Rohtak Passenger (via Panipat) (UnReserved),Pass,NR,,,JIND,16:15,ROK,20:25,4h 10m,24,S M T W T F S,,141 km,34 km/hr,54049
+59632,Rewari - Hisar Passenger (UnReserved),Pass,NWR,,,RE,18:10,HSR,22:15,4h 5m,19,S M T W T F S,,143 km,35 km/hr,59631
+17302,Belagavi - Mysuru Express (Via Hassan),Exp,SWR,,,BGM,19:40,MYS,7:10,11h 30m,18,S M T W T F S,SL 3A 2A,614 km,53 km/hr,17301
+14118,Kalindi Express,Exp,NCR,,,BNW,19:35,PRYJ,12:50,17h 15m,31,S M T W T F S,SL 3A 2A 3E,800 km,46 km/hr,14117
+22644,Patna - Ernakulam Jn. SF Express (via Asansol) (PT),SF,SR,,,PNBE,14:00,ERS,15:20,49h 20m,41,T F,SL 3A 2A,2788 km,57 km/hr,22643
+17482,Tirupati - Bilaspur Express (PT),Exp,SCoR,,,TPTY,11:05,BSP,17:25,30h 20m,59,S T,SL 3A 2A,1403 km,46 km/hr,17481
+20685,Gandhidham - KSR Bengaluru SF Express (PT),SF,SWR,,,GIMB,9:25,SBC,20:40,35h 15m,31,T,SL 3A 2A 1A,1958 km,56 km/hr,20686
+12707,Andhra Pradesh Sampark Kranti Express (PT),SKr,SCoR,,,TPTY,6:00,NZM,18:35,36h 35m,20,M W F,SL 3A 2A 1A,2304 km,63 km/hr,12708
+17301,Mysuru - Belagavi Express (Via Hassan),Exp,SWR,,,MYS,22:45,BGM,9:55,11h 10m,18,S M T W T F S,SL 3A 2A,614 km,55 km/hr,17302
+16159,Chennai Egmore - Mangaluru Central Express (PT),Exp,SR,,,MS,23:10,MAQ,19:15,20h 5m,48,S M T W T F S,2S SL 3A 2A,986 km,49 km/hr,16160
+20694,KSR Bengaluru - Jodhpur SF Express (via Davangere) (PT),SF,SWR,,,SBC,23:50,JU,13:50,38h 0m,42,M W,SL 3A 2A 1A,2115 km,56 km/hr,20693
+18241,Durg - Ambikapur Express (PT),Exp,SECR,,,DURG,21:05,ABKP,8:00,10h 55m,19,S M T W T F S,SL 3A 2A 1A,467 km,43 km/hr,18242
+14308,Bareilly - Prayagraj Sangam Express,Exp,NR,,,BE,17:45,PYGS,3:10,9h 25m,15,S M T W T F S,SL 3A 2A,433 km,46 km/hr,14307
+12806,Lingampalli - Visakhapatnam Janmabhoomi SF Express (PT),SF,SCoR,,,LPI,6:55,VSKP,19:50,12h 55m,23,S M T W T F S,2S CC 3E,711 km,55 km/hr,12805
+12055,New Delhi - Dehradun Jan Shatabdi Express,JShtb,NR,,,NDLS,15:20,DDN,21:05,5h 45m,7,S M T W T F S,2S CC,305 km,53 km/hr,12056
+12819,Odisha Sampark Kranti Express,SKr,ECoR,,,BBS,16:17,ANVT,19:35,27h 18m,11,S W,SL 3A 2A 1A,1784 km,65 km/hr,12820
+17253,Guntur - Chhatrapati Sambhajinagar Express,Exp,SCoR,,,GNT,7:20,CPSN,12:40,29h 20m,75,S M T W T F S,SL 3A,1211 km,41 km/hr,17254
+12080,SSS Hubballi - K.S.R. Bengaluru Jan Shatabdi Express,JShtb,SWR,,,UBL,14:10,SBC,21:15,7h 5m,10,S M T W T F S,2S CC,470 km,66 km/hr,12079
+15078,Gomti Nagar - Kamakhya Express,Exp,NER,,,GTNR,10:30,KYQ,14:00,27h 30m,13,M,SL 3A 2A,1379 km,50 km/hr,15077
+15077,Kamakhya - Gomti Nagar Express (PT),Exp,NER,,,KYQ,21:20,GTNR,1:40,28h 20m,14,T,SL 3A 2A,1379 km,49 km/hr,15078
+12079,K.S.R Bengaluru - SSS Hubballi Jan Shatabdi Express,JShtb,SWR,,,SBC,6:00,UBL,12:50,6h 50m,10,S M T W T F S,2S CC,470 km,69 km/hr,12080
+19020,Haridwar - Bandra Terminus Express,Exp,WR,,,HW,13:30,BDTS,22:30,33h 0m,70,S M T W T F S,SL 3A 2A 1A 3E,1619 km,49 km/hr,19019
+20850,Rameswaram - Bhubaneswar Weekly SF Express (PT),SF,ECoR,,,RMM,9:45,BBS,18:25,32h 40m,25,S,SL 3A 2A,1895 km,58 km/hr,20849
+12207,Kathgodam - Jammu Tawi Garib Rath Express,GR,NR,,,KGM,18:15,JAT,9:15,15h 0m,14,T,3A,768 km,51 km/hr,12208
+19328,Udaipur City - Ratlam Express (UnReserved),Exp,WCR,,,UDZ,1:35,RTM,7:50,6h 15m,14,S M T W T F S,,302 km,48 km/hr,19327
+11465,Veraval - Jabalpur Express (via Bina) (PT),Exp,WCR,,,VRL,10:10,JBP,16:15,30h 5m,47,M S,SL 3A 2A 1A 3E,1552 km,52 km/hr,11466
+19327,Ratlam - Udaipur City Express (UnReserved),Exp,WCR,,,RTM,17:10,UDZ,23:35,6h 25m,14,S M T W T F S,,302 km,47 km/hr,19328
+16210,Mysuru - Ajmer Express (PT),Exp,SWR,,,MYS,20:30,AII,14:25,41h 55m,44,T T,SL CC 3A 2A 1A,2288 km,55 km/hr,16209
+11463,Veraval - Jabalpur Express (via Itarsi) (PT),Exp,WCR,,,VRL,10:10,JBP,14:10,28h 0m,50,S T W T F,SL 3A 2A 1A 3E,1398 km,50 km/hr,11464
+14631,Dehradun - Amritsar Express,Exp,NR,,,DDN,19:30,ASR,8:20,12h 50m,22,S M T W T F S,SL 3A,505 km,39 km/hr,14632
+16209,Ajmer - Mysuru Express (PT),Exp,SWR,,,AII,6:15,MYS,0:05,41h 50m,45,S F,SL 3A 2A 1A,2288 km,55 km/hr,16210
+12835,Hatia - SMVT Bengaluru SF Express (PT),SF,SER,,,HTE,17:25,SMVB,3:15,33h 50m,24,S T,SL 3A 2A 1A 3E,1884 km,56 km/hr,12836
+19324,Bhopal - Dr. Ambedkar Nagar Intercity Express,Exp,WR,,,BPL,17:10,DADN,22:05,4h 55m,8,S M T W T F S,2S CC,238 km,48 km/hr,19323
+64515,Ambala Cantt - Nangal Dam MEMU (via Sirhind),MEMU,NR,,,UMB,6:10,NLDM,9:30,3h 20m,19,S M T W T F S,,157 km,47 km/hr,64516
+64219,Mankapur - Ayodhya Cantt MEMU,MEMU,NR,,,MUR,9:35,AYC,11:15,1h 40m,5,S M T W T F S,,45 km,27 km/hr,64220
+20679,MGR Chennai Central - SSS Hubballi Weekly SF Express (via SMVT Bengaluru) (PT),SF,SWR,,,MAS,15:00,UBL,5:00,14h 0m,15,F,SL 3A 2A 1A 3E,826 km,59 km/hr,20680
+77614,Akola - Parli Vaijnath DEMU,DEMU,SCR,,,AK,14:20,PRLI,22:25,8h 5m,32,S M T W T F S,,300 km,37 km/hr,77613
+11414,Pandharpur - Nizamabad Express (UnReserved),Exp,CR,,,PVR,5:30,NZB,21:25,15h 55m,40,S M T W T F S,,535 km,34 km/hr,11413
+76820,Tiruchchirappalli - Karaikal DEMU,DEMU,SR,,,TPJ,8:40,KIK,13:40,5h 0m,27,S M T W T F S,,145 km,29 km/hr,76819
+74914,Jalandhar City - Hoshiarpur DEMU,DEMU,NR,,,JUC,6:50,HSX,7:50,1h 0m,5,S M T W T F S,,43 km,43 km/hr,74913
+16861,Puducherry - Kanniyakumari Express,Exp,SR,,,PDY,13:10,CAPE,3:15,14h 5m,20,S,SL 3A 2A,700 km,50 km/hr,16862
+58830,Betul - Seoni Passenger (UnReserved),Pass,SECR,,,BZU,16:00,SEY,22:00,6h 0m,17,S M T W T F S,,203 km,34 km/hr,58829
+61111,Badnera - Amravati MEMU,MEMU,CR,,,BD,22:30,AMI,22:45,0h 15m,0,S M T W T F S,,9 km,37 km/hr,61112
+61113,Badnera - Amravati MEMU,MEMU,CR,,,BD,23:55,AMI,0:10,0h 15m,0,S M T W T F S,,9 km,37 km/hr,61114
+14604,Amritsar - Narpatganj Jansadharan Express (UnReserved),Exp,NR,,,ASR,13:25,NPV,23:25,34h 0m,37,W,,1663 km,49 km/hr,14603
+59555,Gandhigram - Botad Passenger (UnReserved),Pass,WR,,,GG,19:00,BTD,22:55,3h 55m,21,S M T W T F S,,155 km,40 km/hr,59556
+79431,Sabarmati - Mahesana DEMU,DEMU,WR,,,SBIB,17:10,MSH,18:28,1h 18m,7,S M T W T F S,,63 km,48 km/hr,79432
+58207,Raipur - Junagarh Road Passenger (UnReserved),Pass,SECR,,,R,14:00,JNRD,21:45,7h 45m,24,S M T W T F S,,304 km,39 km/hr,58208
+54636,Ludhiana - Hisar Passenger (UnReserved),Pass,NR,,,LDH,9:15,HSR,14:20,5h 5m,14,S M T W T F S,,210 km,41 km/hr,54635
+15667,Gandhidham - Kamakhya Express (PT),Exp,NFR,,,GIMB,14:05,KYQ,5:20,63h 15m,34,S,SL 3A 2A 1A,3123 km,49 km/hr,15668
+57203,Guntur - Macherla Passenger (UnReserved),Pass,SCoR,,,GNT,7:45,MCLA,11:20,3h 35m,12,S M T W T F S,,130 km,36 km/hr,57204
+77621,Jalna - Nagarsol DEMU,DEMU,SCR,,,J,5:50,NSL,9:20,3h 30m,12,S W F S,,151 km,43 km/hr,77622
+55059,Sitapur Jn. - Shahjahanpur Passenger (UnReserved),Pass,NER,,,STP,9:30,SPN,12:10,2h 40m,12,S M T W T F S,,91 km,34 km/hr,55060
+54158,Farrukhabad - Kanpur Anwarganj Passenger (UnReserved),Pass,NCR,,,FBD,20:40,CPA,0:55,4h 15m,24,S M T W T F S,,137 km,32 km/hr,54157
+18755,Shahdol - Ambikapur Express,Exp,SECR,,,SDL,14:30,ABKP,20:15,5h 45m,11,S M T W T F S,SL,214 km,37 km/hr,18756
+20809,Nagawali SF Express (PT),SF,ECoR,,,SBP,10:50,NED,13:40,26h 50m,21,S M F,SL 3A 2A 1A,1467 km,55 km/hr,20810
+22357,Mumbai LTT - Gaya SF Express,SF,ECR,,,LTT,13:15,GAYA,22:00,32h 45m,21,F,SL 3A 2A 1A 3E,1990 km,61 km/hr,22358
+17347,SSS Hubballi - Chitradurga MEMU Express (UnReserved),Exp,SWR,,,UBL,7:20,CTA,13:25,6h 5m,25,S M T W T F S,,224 km,37 km/hr,17348
+20968,Porbandar - Secunderabad Weekly SF Express (PT),SF,WR,,,PBR,1:15,SC,7:30,30h 15m,26,T,SL 3A 2A 1A,1686 km,56 km/hr,20967
+56744,Sengottai - Tirunelveli Passenger (UnReserved),Pass,SR,,,SCT,18:10,TEN,20:10,2h 0m,15,S M T W T F S,,80 km,40 km/hr,56743
+64603,Kanpur Central - Etawah MEMU,MEMU,NCR,,,CNB,6:50,ETW,10:00,3h 10m,18,S M T W T F S,,139 km,44 km/hr,64604
+13030,Mokama - Howrah Express,Exp,ER,,,MKA,15:00,HWH,3:25,12h 25m,50,S M T W T F S,SL,455 km,37 km/hr,13029
+57401,Tirupati - Hubballi Intercity Passenger,Pass,SCoR,,,TPTY,6:15,UBL,21:30,15h 15m,61,S M T W T F S,SL 3A,578 km,38 km/hr,57402
+64204,Kanpur Central - Lucknow MEMU,MEMU,NR,,,CNB,7:00,LKO,9:20,2h 20m,11,S M T W T F S,,72 km,31 km/hr,64203
+16862,Kanniyakumari - Puducherry Express,Exp,SR,,,CAPE,14:30,PDY,4:25,13h 55m,19,M,SL 3A 2A,700 km,50 km/hr,16861
+17317,SSS Hubballi - Dadar Central Express,Exp,SWR,,,UBL,16:30,DR,7:00,14h 30m,19,S M T W T F S,SL 3A 2A,736 km,51 km/hr,17318
+55309,Lalkuan - Kashipur Passenger (UnReserved),Pass,NER,,,LKU,12:45,KPV,14:25,1h 40m,5,S M T W T F S,,58 km,35 km/hr,55310
+68082,Adra - Bishnupur MEMU,MEMU,SER,,,ADRA,22:05,VSU,23:55,1h 50m,11,S M T W T F S,,83 km,45 km/hr,68083
+59553,Gandhigram - Botad Passenger (UnReserved),Pass,WR,,,GG,7:00,BTD,11:05,4h 5m,21,S M T W T F S,,155 km,38 km/hr,59554
+16545,Yesvantpur - Sindhanur Express,Exp,SWR,,,YPR,20:25,SNNR,10:55,14h 30m,41,S M T W T F S,SL 3A,623 km,43 km/hr,16546
+15035-Slip,Uttarakhand Sampark Kranti Express Slip,SKr,NER,,,DLI,16:00,RMR,20:55,4h 55m,5,S M T W T F S,2S CC,238 km,48 km/hr,25036
+22473,Bikaner - Bandra Terminus SF Express (via Jodhpur),SF,NWR,,,BKN,15:30,BDTS,12:00,20h 30m,21,M,SL 3A 2A 3E,1214 km,59 km/hr,22474
+15081,Gorakhpur - Gomti Nagar InterCity Express,Exp,NER,,,GKP,12:35,GTNR,20:45,8h 10m,16,S M T W T F S,2S CC,331 km,40 km/hr,15082
+15132,Varanasi City - Gorakhpur Express,Exp,NER,,,BCY,22:20,GKP,4:25,6h 5m,13,S M T W T F S,SL 3A 2A 3E,228 km,37 km/hr,15131
+15106,Nautanwa - Chhapra InterCity Express (UnReserved),Exp,NER,,,NTV,15:10,CPR,21:40,6h 30m,20,M T W T F S,,262 km,40 km/hr,15105
+55341,Shikohabad - Kasganj Passenger (UnReserved),Pass,NER,,,SKB,16:20,KSJ,22:55,6h 35m,31,S M T W T F S,,214 km,32 km/hr,55342
+55048,Gorakhpur Cantt. - Narkatiaganj Passenger (UnReserved),Pass,NER,,,GKC,18:20,NKE,22:25,4h 5m,18,S M T W T F S,,146 km,36 km/hr,55047
+13034,Katihar - Howrah Express (PT),Exp,ER,,,KIR,15:30,HWH,2:40,11h 10m,42,S M T W T F S,SL 3A,424 km,38 km/hr,13033
+63309,Muzaffarpur - Narkatiaganj MEMU,MEMU,ECR,,,MFP,15:35,NKE,20:35,5h 0m,27,S M T W T F S,,160 km,32 km/hr,63310
+56821,Mayiladuturai - Tiruchchirappalli Passenger (UnReserved),Pass,SR,,,MV,18:20,TPJ,21:30,3h 10m,23,S M T W T F S,,120 km,38 km/hr,56826
+64602,Kanpur Central - Manikpur MEMU,MEMU,NCR,,,CNB,6:10,MKP,13:45,7h 35m,26,S M T W T F S,,244 km,32 km/hr,64601
+61114,Amravati - Badnera MEMU,MEMU,CR,,,AMI,6:00,BD,6:15,0h 15m,0,S M T W T F S,,9 km,37 km/hr,61113
+15039,Kanpur Anwarganj - Kasganj Express (UnReserved),Exp,NER,,,CPA,15:10,KSJ,20:55,5h 45m,17,S M T W T F S,,245 km,43 km/hr,15040
+55343,Farrukhabad - Kasganj Passenger (UnReserved),Pass,NER,,,FBD,4:50,KSJ,7:45,2h 55m,15,S M T W T F S,,107 km,37 km/hr,55344
+55097,Narkatiaganj - Gorakhpur Cantt. Passenger (UnReserved),Pass,NER,,,NKE,5:30,GKC,10:05,4h 35m,18,S M T W T F S,,146 km,32 km/hr,55098
+59214,Porbandar - Bhanvad Passenger (UnReserved),Pass,WR,,,PBR,6:35,BNVD,7:50,1h 15m,5,S M T W T F S,,52 km,42 km/hr,59213
+52004,Waghai - Bilimora NG Mix Passenger,Pass,WR,,,WGI,6:10,BIM,9:20,3h 10m,9,S M T W T F S,CC,63 km,20 km/hr,52003
+56834,Virudhunagar - Karaikkudi Passenger (UnReserved),Pass,SR,,,VPT,6:40,KKDI,9:30,2h 50m,9,S M T W T F S,,128 km,45 km/hr,56833
+74984,Fazilka - Kot Kapura DEMU,DEMU,NR,,,FKA,20:10,KKP,21:55,1h 45m,11,S M T W T F S,,80 km,46 km/hr,74981
+57606,Vikarabad - Kacheguda Passenger (UnReserved),Pass,SCR,,,VKB,10:55,KCG,13:45,2h 50m,10,S M T W T F S,,79 km,28 km/hr,57605
+56718,Madurai - Dindigul Passenger (UnReserved),Pass,SR,,,MDU,18:30,DG,19:55,1h 25m,6,S M T W T F S,,62 km,44 km/hr,56717
+12270,Hazrat Nizamuddin - MGR Chennai Central Duronto Express,Drnt,SR,,,NZM,15:55,MAS,20:50,28h 55m,6,T S,2S SL 3A 2A 1A,2175 km,75 km/hr,12269
+17307,Basava Express,Exp,SWR,,,MYS,13:25,BGK,10:55,21h 30m,37,S M T W T F S,SL CC 3A 2A,1018 km,47 km/hr,17308
+17308,Basava Express,Exp,SWR,,,BGK,14:50,MYS,11:15,20h 25m,37,S M T W T F S,SL 3A 2A,1018 km,50 km/hr,17307
+56903,Solapur - Dharwad Passenger,Pass,SWR,,,SUR,0:40,DWR,9:45,9h 5m,27,S M T W T F S,SL,379 km,42 km/hr,56904
+17331,Miraj - SSS Hubballi Express (UnReserved),Exp,SWR,,,MRJ,6:15,UBL,13:30,7h 15m,27,S M T W T F S,,280 km,39 km/hr,17332
+59718,Anupgarh - Suratgarh Passenger (UnReserved),Pass,NWR,,,APH,20:15,SOG,22:00,1h 45m,7,S M T W T F S,,77 km,44 km/hr,59717
+68114,Digha - Panskura EMU,Klkt,SER,,,DGHA,5:45,PKU,8:10,2h 25m,17,S M T W T F S,,118 km,49 km/hr,68115
+12778,Thiruvananthapuram North (Kochuveli) - SSS Hubballi Weekly SF Express (PT),SF,SWR,,,TVCN,12:50,UBL,12:15,23h 25m,21,T,SL 3A 2A 3E,1290 km,55 km/hr,12777
+12777,SSS Hubballi - Thiruvananthapuram North (Kochuveli) Weekly SF Express,SF,SWR,,,UBL,7:05,TVCN,6:35,23h 30m,22,W,SL 3A 2A 3E,1290 km,55 km/hr,12778
+22966,Bhagat Ki Kothi - Bandra Terminus SF Express,SF,WR,,,BGKT,19:30,BDTS,11:20,15h 50m,9,S,SL 3A 2A 1A 3E,935 km,59 km/hr,22965
+22965,Bandra Terminus - Bhagat Ki Kothi SF Express (PT),SF,WR,,,BDTS,23:55,BGKT,15:25,15h 30m,9,F,SL 3A 2A 1A 3E,935 km,60 km/hr,22966
+12245,Howrah - SMVT Bengaluru Duronto Express,Drnt,SER,,,HWH,10:40,SMVB,15:45,29h 5m,5,S T W F S,2S SL 3A 2A 1A,1937 km,67 km/hr,12246
+22501,SMVT Bengaluru - New Tinsukia SF Express (PT),SF,NFR,,,SMVB,3:30,NTSK,16:25,60h 55m,40,T,SL 3A 2A 1A,3543 km,58 km/hr,22502
+64650,Khajuraho - Mahoba MEMU,MEMU,NCR,,,KURJ,16:40,MBA,18:25,1h 45m,4,S M T W T F S,,63 km,36 km/hr,64649
+63347,Saharsa - Samastipur MEMU,MEMU,ECR,,,SHC,22:20,SPJ,3:05,4h 45m,25,S M T W T F S,,137 km,29 km/hr,63348
+55565,Saharsa - Samastipur Passenger (UnReserved),Pass,ECR,,,SHC,18:15,SPJ,22:53,4h 38m,25,S M T W T F S,,137 km,29 km/hr,55566
+12194,Jabalpur - Yesvantpur SF Express,SF,WCR,,,JBP,6:50,YPR,13:15,30h 25m,17,S,SL 3A 2A 1A 3E,1735 km,57 km/hr,12193
+22623,Mahal SF Express (PT),SF,SR,,,TBM,22:30,MDU,7:55,9h 25m,8,S F,SL 3A 2A,533 km,57 km/hr,22624
+20404,Lalgarh - Prayagraj SF Express (Via Loharu),SF,NCR,,,LGH,4:50,PRYJ,4:50,24h 0m,33,M T S,SL 3A 2A 1A 3E,1322 km,55 km/hr,20403
+57403,Tirupati - Guntakal Passenger (UnReserved),Pass,SCoR,,,TPTY,7:50,GTL,16:30,8h 40m,36,S M T W T F S,,371 km,43 km/hr,57404
+54330,Shahjahanpur - Balamau Passenger (UnReserved),Pass,NR,,,SPN,6:35,BLM,10:05,3h 30m,13,S M T W T F S,,96 km,27 km/hr,54329
+54291,Varanasi - MBDD Pratapgarh Passenger (UnReserved),Pass,NR,,,BSB,17:30,MBDP,21:00,3h 30m,16,S M T W T F S,,128 km,37 km/hr,54292
+06594,Chikkaballapur - Yesvantpur MEMU Special,MEMU,SWR,,,CBP,13:05,YPR,14:50,1h 45m,8,M T W T F S,,59 km,34 km/hr,6593
+59118,Alirajpur - Pratapnagar Passenger (UnReserved),Pass,WR,,,ARPR,5:15,PRTN,8:50,3h 35m,20,S M T W T F S,,147 km,41 km/hr,59119
+59117,Pratapnagar - Chhota Udepur Passenger (UnReserved),Pass,WR,,,PRTN,7:15,CTD,9:50,2h 35m,16,S M T W T F S,,99 km,38 km/hr,59122
+59121,Pratapnagar - Alirajpur Passenger (UnReserved),Pass,WR,,,PRTN,10:15,ARPR,13:55,3h 40m,20,S M T W T F S,,147 km,40 km/hr,59120
+63363,Rajgir - Bakhtiyarpur MEMU,MEMU,ECR,,,RGD,18:15,BKP,20:10,1h 55m,9,M T W T F S,,53 km,28 km/hr,63364
+67773,Karimnagar - Bodhan MEMU,MEMU,SCR,,,KRMR,14:50,BDHN,20:10,5h 20m,9,S M T W T F S,,169 km,32 km/hr,67774
+53404,Gaya - Jamalpur Passenger (UnReserved),Pass,ER,,,GAYA,6:00,JMP,12:25,6h 25m,30,S M T W T F S,,174 km,27 km/hr,53403
+68177,Rupsa - Baripada MEMU,MEMU,SER,,,ROP,9:40,BPO,10:45,1h 5m,6,M T W T F S,,52 km,48 km/hr,68184
+55566,Samastipur - Saharsa Passenger (UnReserved),Pass,ECR,,,SPJ,4:20,SHC,9:45,5h 25m,25,S M T W T F S,,137 km,25 km/hr,55565
+63348,Samastipur - Saharsa MEMU,MEMU,ECR,,,SPJ,12:45,SHC,18:55,6h 10m,24,S M T W T F S,,137 km,22 km/hr,63347
+63346,Samastipur - Saharsa MEMU,MEMU,ECR,,,SPJ,15:30,SHC,21:50,6h 20m,23,S M T W T F S,,137 km,22 km/hr,63345
+53349,Barwadih - Dehri On Sone Passenger (UnReserved),Pass,ECR,,,BRWD,17:50,DOS,22:45,4h 55m,23,S M T W T F S,,159 km,32 km/hr,53350
+53348,Barwadih - NSCB Jn. Gomoh Passenger (UnReserved),Pass,ECR,,,BRWD,6:20,GMO,14:50,8h 30m,37,S M T W T F S,,256 km,30 km/hr,53347
+64613,VGL Jhansi - Banda MEMU,MEMU,NCR,,,VGLJ,12:30,BNDA,16:50,4h 20m,18,S M T W T F S,,191 km,44 km/hr,64614
+19713,Jaipur - Kurnool City Express (PT),Exp,NWR,,,JP,22:35,KRNT,11:10,36h 35m,35,S,SL 3A 2A 1A 3E,1977 km,54 km/hr,19714
+16542,Pandharpur - Yesvantpur Weekly Express,Exp,SWR,,,PVR,13:35,YPR,5:25,15h 50m,13,F,SL 3A 2A 1A,880 km,56 km/hr,16541
+66591,KSR Bengaluru - Kolar MEMU (via Chikkaballapur),MEMU,SWR,,,SBC,8:25,KQZ,12:20,3h 55m,20,M T W T F S,,158 km,40 km/hr,66592
+66592,Kolar - Bengaluru Cantt. MEMU (via Chikkaballapur),MEMU,SWR,,,KQZ,13:50,BNC,17:25,3h 35m,20,M T W T F S,,154 km,43 km/hr,66591
+66572,Tumakuru - KSR Bengaluru MEMU,MEMU,SWR,,,TK,11:35,SBC,13:20,1h 45m,12,S M T W T F S,,69 km,40 km/hr,66567
+16226,Shivamogga Town - Mysuru Express (UnReserved),Exp,SWR,,,SMET,11:25,MYS,17:05,5h 40m,14,S M T W T F S,,276 km,49 km/hr,16225
+56224,Arsikere - KSR Bengaluru Passenger (UnReserved),Pass,SWR,,,ASK,5:30,SBC,9:20,3h 50m,27,S M T W T F S,,166 km,43 km/hr,56223
+56282,Tumakuru - Chamarajanagar Passenger (UnReserved),Pass,SWR,,,TK,13:50,CMNR,20:50,7h 0m,46,S M T W T F S,,267 km,38 km/hr,56281
+56266,Mysuru - Arsikere Passenger (UnReserved),Pass,SWR,,,MYS,6:30,ASK,10:15,3h 45m,19,S M T W T F S,,168 km,45 km/hr,56265
+16213,Arsikere - SSS Hubballi MEMU Express (UnReserved),Exp,SWR,,,ASK,5:45,UBL,12:35,6h 50m,34,S M T W T F S,,304 km,44 km/hr,16214
+17348,Chitradurga - SSS Hubballi MEMU Express (UnReserved),Exp,SWR,,,CTA,13:35,UBL,18:35,5h 0m,25,S M T W T F S,,224 km,45 km/hr,17347
+20494,Chandigarh - Madurai SF Express,SF,NR,,,CDG,8:05,MDU,13:40,53h 35m,29,M F,SL 3A 2A 3E,3075 km,57 km/hr,20493
+19815,Mandsor - Kota InterCity Express,Exp,WCR,,,MDS,12:05,KOTA,17:15,5h 10m,9,S M T W T F S,SL CC,276 km,53 km/hr,19816
+68020,Gua - Tatanagar MEMU,MEMU,SER,,,GUA,13:40,TATA,19:20,5h 40m,16,S M T W T F S,,147 km,26 km/hr,68019
+63301,Katihar - Barauni MEMU,MEMU,ECR,,,KIR,18:10,BJU,23:45,5h 35m,23,S M T W T F S,,181 km,32 km/hr,63302
+67204,Renigunta - Nellore MEMU,MEMU,SCoR,,,RU,8:30,NLR,12:00,3h 30m,10,S M T W T F S,,122 km,35 km/hr,67203
+17392,Sindhanur - KSR Bengaluru Express (PT),Exp,SWR,,,SNNR,13:40,SBC,3:50,14h 10m,47,S M T W T F S,SL,681 km,48 km/hr,17391
+15082,Gomti Nagar - Gorakhpur InterCity Express,Exp,NER,,,GTNR,6:10,GKP,14:10,8h 0m,16,S M T W T F S,2S CC,331 km,41 km/hr,15081
+68757,Manendragarh - Ambikapur MEMU,MEMU,SECR,,,MDGR,7:25,ABKP,11:15,3h 50m,13,S M T W T F S,,142 km,37 km/hr,68758
+68758,Ambikapur - Anuppur MEMU,MEMU,SECR,,,ABKP,18:10,APR,22:00,3h 50m,18,S M T W T F S,,173 km,45 km/hr,68759
+51861,Ait - Konch Shuttle (UnReserved),Pass,NCR,,,AIT,5:30,KNH,6:05,0h 35m,0,S M T W T F S,,13 km,23 km/hr,51862
+51865,Ait - Konch Shuttle (UnReserved),Pass,NCR,,,AIT,12:20,KNH,12:55,0h 35m,0,S M T W T F S,,13 km,23 km/hr,51866
+75727,Guwahati - Haibargaon DEMU,DEMU,NFR,,,GHY,10:25,HBN,13:00,2h 35m,7,S M T W T F S,,116 km,45 km/hr,75728
+54009,Rohtak - Jind Passenger (via Panipat) (UnReserved),Pass,NR,,,ROK,18:10,JIND,22:20,4h 10m,24,S M T W T F S,,141 km,34 km/hr,54008
+55040,Barhni - Narkatiaganj Passenger (UnReserved),Pass,NER,,,BNY,8:50,NKE,17:55,9h 5m,31,S M T W T F S,,263 km,29 km/hr,55039
+74924,Jalandhar City - Hoshiarpur DEMU,DEMU,NR,,,JUC,13:45,HSX,14:45,1h 0m,5,S M T W T F S,,43 km,43 km/hr,74641
+74923,Hoshiarpur - Jalandhar City DEMU,DEMU,NR,,,HSX,5:00,JUC,6:00,1h 0m,5,S M T W T F S,,43 km,43 km/hr,74920
+11905,Agra Cantt - Hoshiarpur Express,Exp,NCR,,,AGC,19:10,HSX,9:15,14h 5m,12,S M T W T F S,SL 3A 2A 3E,651 km,46 km/hr,11906
+53212,Sasaram - Patna Passenger (UnReserved),Pass,ECR,,,SSM,6:45,PNBE,11:35,4h 50m,19,S M T W T F S,,146 km,30 km/hr,53211
+59122,Chhota Udepur - Pratapnagar Passenger (UnReserved),Pass,WR,,,CTD,10:15,PRTN,13:00,2h 45m,16,S M T W T F S,,99 km,36 km/hr,59117
+12508,Amritsar - New Jalpaiguri Karmabhoomi Express (UnReserved),SF,NFR,,,ASR,9:30,NJP,18:35,33h 5m,18,F,,1826 km,55 km/hr,12507
+22612,New Jalpaiguri - MGR Chennai Central SF Express (PT),SF,SR,,,NJP,22:05,MAS,14:05,40h 0m,24,F,SL 3A 2A 3E,2281 km,57 km/hr,22611
+51884,Gwalior - Bina Passenger (UnReserved),Pass,NCR,,,GWL,7:50,BINA,16:20,8h 30m,30,S M T W T F S,,345 km,41 km/hr,51883
+19272,Haridwar - Bhavnagar Terminus Express,Exp,WR,,,HW,5:05,BVC,11:55,30h 50m,36,W S,SL 3A 2A,1574 km,51 km/hr,19271
+19572,Porbandar - Rajkot Express (UnReserved),Exp,WR,,,PBR,16:20,RJT,21:20,5h 0m,16,S M T W T F S,,202 km,40 km/hr,19571
+73445,Hansdiha - Bhagalpur DEMU,DEMU,ER,,,HSDA,22:50,BGP,1:10,2h 20m,17,S M T W T F S,,74 km,32 km/hr,73446
+73444,Bhagalpur - Hansdiha DEMU,DEMU,ER,,,BGP,13:30,HSDA,16:20,2h 50m,17,S M T W T F S,,74 km,26 km/hr,73443
+53416,Jamalpur - Sahibganj Passenger (UnReserved),Pass,ER,,,JMP,7:05,SBG,11:05,4h 0m,29,S M T W T F S,,127 km,32 km/hr,53415
+73446,Bhagalpur - Hansdiha DEMU,DEMU,ER,,,BGP,20:30,HSDA,22:40,2h 10m,17,S M T W T F S,,74 km,34 km/hr,73445
+20706,Mumbai CSMT - Hazur Sahib Nanded Vande Bharat Express,VB,SCR,,,CSMT,13:15,NED,22:25,9h 10m,8,S M T W F S,CC Ex,608 km,66 km/hr,20705
+63431,Sahibganj - Jamalpur MEMU,MEMU,ER,,,SBG,7:20,JMP,11:50,4h 30m,29,S M T W T F S,,127 km,28 km/hr,63432
+73429,Bhagalpur - Jamalpur DEMU,DEMU,ER,,,BGP,13:05,JMP,15:45,2h 40m,12,S M T W T F S,,53 km,20 km/hr,73430
+55095,Narkatiaganj - Gorakhpur Cantt. Passenger (UnReserved),Pass,NER,,,NKE,20:00,GKC,0:25,4h 25m,18,S M T W T F S,,146 km,33 km/hr,55048
+16622,Mangaluru Central - Rameswaram Weekly Express (PT),Exp,SR,,,MAQ,19:30,RMM,10:50,15h 20m,15,S,SL 3A 2A,753 km,49 km/hr,16621
+55332,Achhnera - Kasganj Passenger (UnReserved),Pass,NER,,,AH,10:10,KSJ,13:50,3h 40m,17,S M T W T F S,,140 km,38 km/hr,55331
+53492,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,17:10,TPH,17:35,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53491
+55338,Bharatpur - Kasganj Passenger (UnReserved),Pass,NER,,,BTE,5:30,KSJ,10:25,4h 55m,21,S M T W T F S,,168 km,34 km/hr,55337
+14824,Rewari - Jodhpur Express (UnReserved),Exp,NWR,,,RE,13:15,JU,2:30,13h 15m,62,S M T W T F S,,541 km,41 km/hr,14823
+14823,Jodhpur - Rewari Express (UnReserved),Exp,NWR,,,JU,1:30,RE,14:40,13h 10m,62,S M T W T F S,,541 km,41 km/hr,14824
+13428,Sahibganj - Howrah Intercity Express,Exp,ER,,,SBG,5:20,HWH,12:10,6h 50m,8,S M T W T F S,2S CC,353 km,52 km/hr,13427
+20940,Sultanpur - Sabarmati SF Express,SF,WR,,,SLN,18:05,SBIB,21:20,27h 15m,17,W,SL 3A 2A,1556 km,57 km/hr,20939
+16780,Rameswaram - Tirupati Express (PT),Exp,SR,,,RMM,16:55,TPTY,10:10,17h 15m,22,S T T F,SL 3A,826 km,48 km/hr,16779
+16779,Tirupati - Rameswaram Express (PT),Exp,SR,,,TPTY,11:55,RMM,4:35,16h 40m,22,M W F S,SL 3A,826 km,50 km/hr,16780
+34133,Komagata Maru Budge Budge - Sealdah Local,Klkt,ER,,,KBGB,12:35,SDAH,13:32,0h 57m,10,S M T W T F S,,26 km,27 km/hr,34132
+37364,Arambagh - Howrah Local,Klkt,ER,,,AMBG,14:50,HWH,16:59,2h 9m,23,S M T W T F S,,82 km,38 km/hr,37363
+34733,Lakshmikantapur - Sealdah Local,Klkt,ER,,,LKPR,11:35,SDAH,13:15,1h 40m,20,S M T W T F S,,62 km,37 km/hr,34720
+37328,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,9:32,HWH,11:02,1h 30m,19,S M T W T F S,,57 km,38 km/hr,
+37323,Howrah - Tarakeswar Local,Klkt,ER,,,HWH,9:05,TAK,10:32,1h 27m,19,S M T W T F S,,57 km,39 km/hr,37334
+37335,Howrah - Tarakeswar Local,Klkt,ER,,,HWH,16:10,TAK,17:40,1h 30m,19,S M T W T F S,,57 km,38 km/hr,37348
+31526,Shantipur - Sealdah Local,Klkt,ER,,,STB,13:15,SDAH,15:32,2h 17m,27,S M T W T F S,,93 km,41 km/hr,31519
+37922,Katwa - Howrah Local (Cash Gari),Klkt,ER,,,KWAE,10:50,HWH,14:22,3h 32m,42,S M T W T F S,,144 km,41 km/hr,37911
+31922,Gede - Sealdah Local,Klkt,ER,,,GEDE,14:10,SDAH,17:00,2h 50m,35,S M T W T F S,,116 km,41 km/hr,31915
+31322,Kalyani Simanta - Sealdah Local,Klkt,ER,,,KLYM,13:20,SDAH,15:00,1h 40m,19,S M T W T F S,,53 km,32 km/hr,31323
+31614,Ranaghat - Sealdah Local,Klkt,ER,,,RHA,5:55,SDAH,7:37,1h 42m,22,S M T W T F S,,73 km,43 km/hr,31629
+34533,Canning - Sealdah Local,Klkt,ER,,,CG,13:15,SDAH,14:40,1h 25m,17,S M T W T F S,,45 km,32 km/hr,34524
+31821,Sealdah - Krishnanagar City Galloping Local,Klkt,ER,,,SDAH,9:34,KNJ,11:50,2h 16m,19,S M T W T F S,,100 km,44 km/hr,31824
+31411,Sealdah - Naihati Galloping Local,Klkt,ER,,,SDAH,4:35,NH,5:30,0h 55m,7,S M T W T F S,,38 km,41 km/hr,31442
+38438,Panskura - Howrah Local,Klkt,SER,,,PKU,15:45,HWH,17:35,1h 50m,23,S M T W T F S,,70 km,38 km/hr,38419
+68002,Jaleswar - Howrah MEMU,MEMU,SER,,,JER,6:10,HWH,10:00,3h 50m,19,S M T W T F S,,182 km,47 km/hr,68007
+34812,Sealdah - Diamond Harbour Galloping Local,Klkt,ER,,,SDAH,3:54,DH,5:15,1h 21m,14,S M T W T F S,,60 km,45 km/hr,34819
+38411,Santragchi - Panskura Local,Klkt,SER,,,SRC,8:25,PKU,10:05,1h 40m,19,S M T W T F S,,63 km,38 km/hr,38428
+63288,Patliputra - Barauni MEMU,MEMU,ECR,,,PPTA,17:50,BJU,21:45,3h 55m,22,S M T W T F S,,108 km,28 km/hr,63287
+14891,Jodhpur - Hisar Express (UnReserved),Exp,NWR,,,JU,10:30,HSR,21:25,10h 55m,47,S M T W T F S,,470 km,43 km/hr,14892
+14892,Hisar - Jodhpur Express (UnReserved),Exp,NWR,,,HSR,6:30,JU,17:10,10h 40m,47,S M T W T F S,,470 km,44 km/hr,14891
+79304,Chittaurgarh - Ratlam DEMU,DEMU,WR,,,COR,14:20,RTM,18:25,4h 5m,16,S M T W T F S,,188 km,46 km/hr,79303
+79303,Ratlam - Chittaurgarh DEMU,DEMU,WR,,,RTM,9:45,COR,13:45,4h 0m,16,S M T W T F S,,188 km,47 km/hr,79304
+66583,KSR Bengaluru - Dharmapuri MEMU,MEMU,SWR,,,SBC,18:25,DPJ,21:47,3h 22m,13,S M T W T F S,,152 km,45 km/hr,66584
+59306,Ujjain - Indore Passenger (via Dewas) (UnReserved),Pass,WR,,,UJN,8:10,INDB,10:30,2h 20m,8,S M T W T F S,,79 km,34 km/hr,59307
+54638,Jalandhar City - Hoshiarpur Passenger (UnReserved),Pass,NR,,,JUC,9:35,HSX,10:40,1h 5m,5,S M T W T F S,,43 km,39 km/hr,54637
+54637,Hoshiarpur - Jalandhar City Passenger (UnReserved),Pass,NR,,,HSX,12:35,JUC,13:45,1h 10m,5,S M T W T F S,,43 km,37 km/hr,54638
+66032,Sullurupeta - Chennai Central Suburban MEMU,MEMU,SR,,,SPE,21:05,MASS,23:15,2h 10m,20,S M T W T F S,,83 km,38 km/hr,66031
+56614,Nilambur Road - Shoranur Passenger (UnReserved),Pass,SR,,,NIL,20:15,SRR,21:45,1h 30m,10,S M T W T F S,,66 km,44 km/hr,56611
+19207,Porbandar - Rajkot Express (UnReserved),Exp,WR,,,PBR,5:45,RJT,10:20,4h 35m,16,S M T W T F S,,202 km,44 km/hr,19208
+75759,Katihar - Jogbani DEMU,DEMU,NFR,,,KIR,10:45,JBN,13:45,3h 0m,17,S M T W T F S,,108 km,36 km/hr,75760
+22984,Indore - Kota InterCity SF Express,SF,WCR,,,INDB,15:35,KOTA,23:20,7h 45m,13,S M T W T F S,2S CC,433 km,56 km/hr,22983
+22983,Kota - Indore Intercity SF Express,SF,WCR,,,KOTA,6:35,INDB,14:15,7h 40m,13,S M T W T F S,2S CC,433 km,56 km/hr,22984
+12993,Gandhidham - Puri Weekly SF Express (via Bhubaneswar) (PT),SF,WR,,,GIMB,23:10,PURI,14:40,39h 30m,24,F,SL 3A 2A,2286 km,58 km/hr,12994
+19568,Okha - Tuticorin Vivek Express (PT),Exp,WR,,,OKHA,0:55,TN,1:15,48h 20m,40,F,SL 3A 2A 3E,2715 km,56 km/hr,19567
+55340,Achhnera - Kasganj Passenger (UnReserved),Pass,NER,,,AH,4:20,KSJ,8:25,4h 5m,15,S M T W T F S,,140 km,34 km/hr,55339
+79436,Patan - Sabarmati DEMU,DEMU,WR,,,PTN,12:15,SBIB,14:45,2h 30m,11,M T W T F S,,103 km,41 km/hr,79435
+38403,Howrah - Panskura Local,Klkt,SER,,,HWH,6:20,PKU,8:15,1h 55m,23,M T W T F S,,70 km,37 km/hr,38420
+53494,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,20:00,TPH,20:25,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53493
+63156,Baidyanathdham - Jasidih MEMU,MEMU,ER,,,BDME,10:23,JSME,10:41,0h 18m,1,S M T W T F S,,6 km,21 km/hr,63155
+53491,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,19:10,RJL,19:35,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53492
+53485,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,9:45,RJL,10:10,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53486
+33531,Sealdah - Hasnabad Galloping Local,Klkt,ER,,,SDAH,19:24,HNB,21:30,2h 6m,24,S M T W T F S,,75 km,36 km/hr,33320
+33533,Sealdah - Hasanabad Local,Klkt,ER,,,SDAH,22:20,HNB,0:24,2h 4m,28,S M T W T F S,,75 km,36 km/hr,33514
+32249,Sealdah - Dankuni Local,Klkt,ER,,,SDAH,22:25,DKAE,23:07,0h 42m,7,S M T W T F S,,22 km,31 km/hr,32252
+31320,Kalyani Simanta - Sealdah Local,Klkt,ER,,,KLYM,10:10,SDAH,11:35,1h 25m,10,S M T W T F S,,53 km,37 km/hr,31319
+17309,Yesvantpur - Vasco da Gama Express (PT),Exp,SWR,,,YPR,15:30,VSG,5:10,13h 40m,19,S M T W T F S,SL 3A 2A,664 km,49 km/hr,17310
+19567,Tuticorin - Okha Vivek Express (PT),Exp,WR,,,TN,23:40,OKHA,3:35,51h 55m,40,S,SL 2A 3E,2715 km,52 km/hr,19568
+13015,Howrah - Jamalpur Kavi Guru Express,Exp,ER,,,HWH,10:55,JMP,21:15,10h 20m,18,S M T W T F S,2S SL CC 3A,453 km,44 km/hr,13016
+63557,Barkakana - Varanasi MEMU,MEMU,ER,,,BRKA,3:30,BSB,16:10,12h 40m,63,S M T W T F S,,453 km,36 km/hr,63558
+38704,Kharagpur - Howrah Local,Klkt,SER,,,KGP,3:50,HWH,6:40,2h 50m,32,S M T W T F S,,114 km,40 km/hr,38827
+38410,Panskura - Santragachi Local,Klkt,SER,,,PKU,5:00,SRC,6:30,1h 30m,18,S M T W T F S,,62 km,42 km/hr,38445
+38443,Howrah - Panskura Local,Klkt,SER,,,HWH,19:10,PKU,21:10,2h 0m,23,M T W T F S,,70 km,35 km/hr,38456
+38436,Panskura - Howrah Local,Klkt,SER,,,PKU,13:45,HWH,15:50,2h 5m,23,M T W T F S,,70 km,33 km/hr,38421
+53514,Giridih - Madhupur Passenger (UnReserved),Pass,ER,,,GRD,9:10,MDP,10:10,1h 0m,5,S M T W T F S,,38 km,38 km/hr,53513
+53493,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,21:20,RJL,21:45,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53494
+75105,Thawe - Nakaha Jungle DEMU,DEMU,NER,,,THE,8:55,JEA,14:00,5h 5m,23,S M T W T F S,,143 km,28 km/hr,75106
+63405,Rampurhat - Sahibganj MEMU,MEMU,ER,,,RPH,6:10,SBG,9:25,3h 15m,20,S M T W T F S,,133 km,41 km/hr,63406
+53487,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,13:45,RJL,14:10,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53488
+53490,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,14:50,TPH,15:15,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53489
+19323,Dr. Ambedkar Nagar - Bhopal Intercity Express,Exp,WR,,,DADN,6:25,BPL,10:55,4h 30m,8,S M T W T F S,2S CC,238 km,53 km/hr,19324
+37658,Memari - Howrah Local,Klkt,ER,,,MYM,15:58,HWH,17:47,1h 49m,26,S M T W T F S,,82 km,45 km/hr,37657
+53484,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,4:15,TPH,4:40,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53483
+53482,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,2:00,TPH,2:25,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53481
+31511,Sealdah - Shantipur Local,Klkt,ER,,,SDAH,4:40,STB,6:55,2h 15m,27,S M T W T F S,,93 km,42 km/hr,31518
+53481,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,3:25,RJL,3:50,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53482
+53488,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,12:20,TPH,12:45,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53487
+40527,Chennai Beach - Chengalpattu EMU (12 Car),Chn,SR,,,MSB,10:13,CGL,12:05,1h 52m,26,M T W T F S,FC,60 km,32 km/hr,40528
+53027,Azimganj - Malda Town Passenger (UnReserved),Pass,ER,,,AZ,16:20,MLDT,19:45,3h 25m,20,S M T W T F S,,115 km,34 km/hr,53028
+42040,Gummidipundi - Chennai Central Suburban EMU,Chn,SR,,,GPD,21:40,MASS,23:00,1h 20m,15,S M T W T F S,FC,47 km,36 km/hr,42039
+68750,Ambikapur - Shahdol MEMU,MEMU,SECR,,,ABKP,12:30,SDL,18:00,5h 30m,23,S M T W T F S,,214 km,39 km/hr,68749
+53489,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,16:20,RJL,16:45,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53490
+99819,Lonavala - Shivajinagar Local,Pune,CR,,,LNL,18:10,SVJR,19:40,1h 30m,14,S M T W T F S,FC,61 km,41 km/hr,99820
+19811,Kota - Etawah Express,Exp,WCR,,,KOTA,0:20,ETW,12:45,12h 25m,28,S M T W T F S,SL 3A 2A,530 km,43 km/hr,19812
+19406,Gandhidham - Palanpur Express,Exp,WR,,,GIMB,5:35,PNU,12:15,6h 40m,31,S M T W T F S,SL,301 km,45 km/hr,19405
+53486,Rajmahal - Tinpahar Passenger (UnReserved),Pass,ER,,,RJL,5:55,TPH,6:20,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53485
+17260,Vijayawada - Gudur MEMU Express (UnReserved),Exp,SCoR,,,BZA,5:10,GDR,13:25,8h 15m,38,S M T W T F S,,294 km,36 km/hr,17259
+17259,Nellore - Vijayawada MEMU Express (UnReserved),Exp,SCoR,,,NLR,14:00,BZA,20:35,6h 35m,29,S M T W T F S,,255 km,39 km/hr,17260
+16613,Rajkot - Coimbatore Express (PT),Exp,SR,,,RJT,5:30,CBE,20:05,38h 35m,31,S,SL 3A 2A,2221 km,58 km/hr,16614
+12846,SMVT Bengaluru - Bhubaneswar SF Express (PT),SF,ECoR,,,SMVB,16:40,BBS,18:25,25h 45m,19,M,SL 3A 2A,1506 km,58 km/hr,12845
+22689,Ahmedabad - Yesvantpur Weekly SF Express (PT),SF,SWR,,,ADI,19:00,YPR,2:30,31h 30m,22,T,SL 3A 2A 1A,1781 km,57 km/hr,22690
+77615,Parli Vaijnath - Adilabad DEMU,DEMU,SCR,,,PRLI,4:40,ADB,12:40,8h 0m,39,S M T W T F S,,307 km,38 km/hr,77616
+59422,Veraval - Rajkot Passenger (UnReserved),Pass,WR,,,VRL,4:45,RJT,9:35,4h 50m,19,S M T W T F S,,185 km,38 km/hr,59421
+12635,Vaigai SF Express,SF,SR,,,MS,13:15,MDU,20:35,7h 20m,10,S M T W T F S,2S CC,493 km,67 km/hr,12636
+56711,Madurai - Rameswaram Passenger (UnReserved),Pass,SR,,,MDU,7:00,RMM,10:25,3h 25m,15,S M T W T F S,,161 km,47 km/hr,56712
+56715,Madurai - Rameswaram Passenger (UnReserved),Pass,SR,,,MDU,18:30,RMM,22:15,3h 45m,15,S M T W T F S,,161 km,43 km/hr,56716
+13148,Uttarbanga Express (PT),Exp,ER,,,BXT,14:05,SDAH,4:50,14h 45m,25,S M T W T F S,SL 3A 2A 1A,749 km,51 km/hr,13147
+12680,Coimbatore - M.G.R Chennai Central InterCity SF Express,SF,SR,,,CBE,6:20,MAS,13:45,7h 25m,11,S M T W T F S,2S CC,495 km,67 km/hr,12679
+65111,Banaras - Prayagraj Rambag MEMU,MEMU,NER,,,BNRS,6:40,PRRB,10:05,3h 25m,19,S M T W T F S,,118 km,35 km/hr,65112
+15037,Kanpur Anwarganj - Kasganj Express (UnReserved),Exp,NER,,,CPA,11:40,KSJ,16:45,5h 5m,17,S M T W T F S,,245 km,48 km/hr,15038
+12943,Udyogkarmi SF Express (PT),SF,WR,,,BL,22:20,CNB,18:25,20h 5m,11,W,SL 3A 2A,1304 km,65 km/hr,12944
+61601,Katni - Chirimiri MEMU,MEMU,WCR,,,KTE,15:20,CHRM,22:50,7h 30m,26,S M T W T F S,,252 km,34 km/hr,61602
+10106,Sindhudurg Express,Exp,KR,,,SWV,8:40,DIVA,20:10,11h 30m,34,S M T W T F S,2S 3E,464 km,40 km/hr,10105
+12992,Jaipur - Udaipur City Intercity Express,SF,NWR,,,JP,14:10,UDZ,21:48,7h 38m,14,S M T W T F S,2S CC 3A 3E,435 km,57 km/hr,12991
+14211,Gwalior - New Delhi Intercity Express,Exp,NR,,,AGC,5:45,NDLS,10:00,4h 15m,16,S M T W T F S,2S CC 2A 1A,195 km,46 km/hr,14212
+22697,SSS Hubballi - MGR Chennai Central Weekly SF Express (via SMVT Bengaluru) (PT),SF,SWR,,,UBL,20:30,MAS,11:10,14h 40m,16,S,SL 3A 2A 1A 3E,826 km,56 km/hr,22698
+64176,Bareilly - Roza MEMU,MEMU,NR,,,BE,20:00,ROZA,22:05,2h 5m,11,S M T W T F S,,78 km,38 km/hr,64175
+54813,Jodhpur - Barmer Passenger (UnReserved),Pass,NWR,,,JU,9:45,BME,15:00,5h 15m,22,S M T W T F S,,209 km,40 km/hr,54814
+12662,Pothigai SF Express (PT),SF,SR,,,SCT,18:50,MS,5:55,11h 5m,16,S M T W T F S,SL 3A 2A 1A,667 km,60 km/hr,12661
+74843,Jaisalmer - Bhagat Ki Kothi DEMU,DEMU,NWR,,,JSM,6:55,BGKT,14:00,7h 5m,21,S M T W T F S,,303 km,43 km/hr,74844
+38308,Mecheda - Howrah Local,Klkt,SER,,,MCA,6:10,HWH,7:50,1h 40m,19,M T W T F S,,58 km,35 km/hr,38315
+12914,Trishatabdi Express,SF,WR,,,NGP,19:00,INDB,6:30,11h 30m,11,M,SL 3A 2A 1A 3E,653 km,57 km/hr,12913
+11022,Tirunelveli - Dadar Central Chalukya Express (Via SMVT Bengaluru) (PT),Exp,CR,,,TEN,15:45,DR,5:45,38h 0m,35,M T F,SL 3A 2A,1804 km,47 km/hr,11021
+59271,Botad - Bhavnagar Para Passenger (UnReserved),Pass,WR,,,BTD,15:50,BVP,17:30,1h 40m,8,S M T W T F S,,90 km,54 km/hr,29579
+55310,Kashipur - Lalkuan Passenger (UnReserved),Pass,NER,,,KPV,17:55,LKU,19:25,1h 30m,4,S M T W T F S,,58 km,39 km/hr,55309
+16053,MGR Chennai Central - Tirupati Express,Exp,SR,,,MAS,14:40,TPTY,17:50,3h 10m,6,S M T W T F S,2S CC,147 km,46 km/hr,16054
+33832,Bangaon - Sealdah Local,Klkt,ER,,,BNJ,11:32,SDAH,13:40,2h 8m,21,S M T W T F S,,76 km,36 km/hr,33823
+33516,Hasanabad - Sealdah Galloping Local,Klkt,ER,,,HNB,6:48,SDAH,8:55,2h 7m,24,S M T W T F S,,75 km,35 km/hr,33313
+69117,Vadodara - Dahod MEMU,MEMU,WR,,,BRC,14:10,DHD,17:20,3h 10m,17,S M T W T F S,,147 km,46 km/hr,69118
+33316,Hasanabad - Barasat Local,Klkt,ER,,,HNB,19:30,BT,20:45,1h 15m,18,S M T W T F S,,53 km,42 km/hr,33319
+34917,Namkhana - Lakshmikantapur Local,Klkt,ER,,,NMKA,8:17,LKPR,9:06,0h 49m,9,S M T W T F S,,47 km,57 km/hr,34918
+69145,Anand - Godhra MEMU,MEMU,WR,,,ANND,5:10,GDA,7:30,2h 20m,11,S M T W T F S,,79 km,34 km/hr,69146
+16833,Mayiladuturai - Tiruchchirappalli MEMU Express (UnReserved),Exp,SR,,,MV,7:50,TPJ,10:15,2h 25m,6,S M T W T F S,,120 km,50 km/hr,16834
+11021,Dadar Central - Tirunelveli Chalukya Express (Via SMVT Bengaluru) (PT),Exp,CR,,,DR,21:30,TEN,10:40,37h 10m,36,T W S,SL 3A 2A,1804 km,49 km/hr,11022
+33854,Bangaon - Sealdah Local,Klkt,ER,,,BNJ,20:52,SDAH,22:49,1h 57m,21,S M T W T F S,,76 km,39 km/hr,33843
+34817,Diamond Harbour - Sealdah Local,Klkt,ER,,,DH,5:41,SDAH,7:17,1h 36m,23,S M T W T F S,,60 km,38 km/hr,34860
+34839,Diamond Harbour - Sealdah Local (Cash Gari),Klkt,ER,,,DH,14:05,SDAH,16:00,1h 55m,24,S M T W T F S,,60 km,31 km/hr,34832
+32234,Dankuni - Sealdah Local,Klkt,ER,,,DKAE,13:07,SDAH,14:00,0h 53m,7,S M T W T F S,,22 km,25 km/hr,32233
+20680,SSS Hubballi - MGR Chennai Central Weekly SF Express (via SMVT Bengaluru) (PT),SF,SWR,,,UBL,20:30,MAS,11:10,14h 40m,16,T,SL 3A 2A 1A 3E,826 km,56 km/hr,20679
+38314,Mecheda - Howrah Local,Klkt,SER,,,MCA,13:45,HWH,15:40,1h 55m,19,S M T W T F S,,58 km,30 km/hr,38305
+38404,Panskura - Howrah Local,Klkt,SER,,,PKU,3:05,HWH,5:00,1h 55m,23,S M T W T F S,,70 km,36 km/hr,38405
+38440,Panskura - Howrah Local,Klkt,SER,,,PKU,16:30,HWH,18:30,2h 0m,23,S M T W T F S,,70 km,35 km/hr,38425
+38916,Amta - Howrah Local,Klkt,SER,,,AMTA,15:50,HWH,17:45,1h 55m,19,M T W T F S,,49 km,26 km/hr,38911
+38720,Kharagpur - Howrah Local,Klkt,SER,,,KGP,14:10,HWH,17:15,3h 5m,31,S M T W T F S,,114 km,37 km/hr,38721
+38054,Haldia - Panskura Local,Klkt,SER,,,HLZ,9:50,PKU,11:30,1h 40m,12,S M T W T F S,,69 km,41 km/hr,38051
+37378,Goghat - Howrah Local,Klkt,ER,,,GOGT,19:12,HWH,21:27,2h 15m,24,S M T W T F S,,91 km,40 km/hr,37379
+37324,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,7:55,HWH,9:22,1h 27m,16,S M T W T F S,,57 km,39 km/hr,37309
+37326,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,8:50,HWH,10:21,1h 31m,19,S M T W T F S,,57 km,38 km/hr,37315
+37330,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,10:25,HWH,11:58,1h 33m,19,S M T W T F S,,57 km,37 km/hr,37319
+37332,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,11:15,HWH,12:47,1h 32m,19,S M T W T F S,,57 km,37 km/hr,37313
+37334,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,12:00,HWH,13:34,1h 34m,19,S M T W T F S,,57 km,36 km/hr,37323
+37348,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,17:52,HWH,19:20,1h 28m,19,S M T W T F S,,57 km,39 km/hr,37335
+37352,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,19:00,HWH,20:27,1h 27m,19,S M T W T F S,,57 km,39 km/hr,37339
+37422,Arambagh - Tarakeswar Local,Klkt,ER,,,AMBG,6:14,TAK,6:52,0h 38m,3,S M T W T F S,,25 km,39 km/hr,37387
+37652,Memari - Howrah Galloping Local,Klkt,ER,,,MYM,11:10,HWH,13:10,2h 0m,16,S M T W T F S,,82 km,41 km/hr,37651
+55096,Gorakhpur Cantt. - Narkatiaganj Passenger (UnReserved),Pass,NER,,,GKC,7:10,NKE,11:50,4h 40m,18,S M T W T F S,,146 km,31 km/hr,55039
+63033,Azimganj - Nalhati MEMU,MEMU,ER,,,AZ,23:04,NHT,0:10,1h 6m,7,S M T W T F S,,45 km,41 km/hr,63034
+22825,Shalimar - MGR Chennai Central Weekly SF Express (PT),SF,SER,,,SHM,12:10,MAS,14:05,25h 55m,22,T,SL 3A 2A,1659 km,64 km/hr,22826
+16217,Mysuru - Sainagar Shirdi Weekly Express,Exp,SWR,,,MYS,5:40,SNSI,10:50,29h 10m,25,M,SL CC 3A 2A 1A,1424 km,49 km/hr,16218
+22844,Buxar - Bilaspur SF Express,SF,SECR,,,BXR,21:40,BSP,17:20,19h 40m,27,S,SL 3A 2A 1A 3E,1082 km,55 km/hr,22843
+20951,Okha - Jaipur Weekly SF Express (PT),SF,WR,,,OKHA,21:30,JP,15:20,17h 50m,19,M,SL 3A 2A 1A 3E,1058 km,59 km/hr,20952
+22474,Bandra Terminus - Bikaner SF Express (via Jodhpur) (PT),SF,NWR,,,BDTS,14:40,BKN,10:25,19h 45m,21,T,SL 3A 2A 3E,1214 km,61 km/hr,22473
+77649,Kacheguda - Karimnagar DEMU,DEMU,SCR,,,KCG,5:30,KRMR,14:00,8h 30m,29,S M T W T F S,,309 km,36 km/hr,77650
+35013,Barddhaman - Katwa Local,Klkt,ER,,,BWN,7:25,KWAE,8:40,1h 15m,14,S M T W T F S,,53 km,42 km/hr,35012
+35015,Barddhaman - Katwa Local,Klkt,ER,,,BWN,9:35,KWAE,10:45,1h 10m,14,S M T W T F S,,53 km,45 km/hr,35016
+14897,Bikaner - Hisar DEMU Express (UnReserved),Exp,NWR,,,BKN,18:00,HSR,0:35,6h 35m,26,S M T W T F S,,308 km,47 km/hr,14898
+14898,Hisar - Bikaner DEMU Express (UnReserved),Exp,NWR,,,HSR,2:45,BKN,9:20,6h 35m,27,S M T W T F S,,308 km,47 km/hr,14897
+74831,Bikaner - Churu DEMU,DEMU,NWR,,,BKN,10:00,CUR,14:15,4h 15m,17,S M T W T F S,,180 km,42 km/hr,74832
+74832,Churu - Bikaner DEMU,DEMU,NWR,,,CUR,13:25,BKN,17:20,3h 55m,17,S M T W T F S,,180 km,46 km/hr,74831
+15768,Alipurduar Jn. - Siliguri Intercity Express (UnReserved),Exp,NFR,,,APDJ,5:45,SGUJ,10:40,4h 55m,19,S M T W T F S,,161 km,33 km/hr,15767
+55070,Nautanwa - Gorakhpur Passenger (UnReserved),Pass,NER,,,NTV,9:50,GKP,12:50,3h 0m,17,S M T W T F S,,82 km,27 km/hr,55069
+20623,Malgudi SF Express,SF,SR,,,AP,8:20,SBC,11:05,2h 45m,8,S M T W T F S,CC,143 km,52 km/hr,20624
+19609,Udaipur City - Yog Nagari Rishikesh Express (PT),Exp,NWR,,,UDZ,13:45,YNRK,10:15,20h 30m,36,M T S,SL 3A 2A 3E,998 km,49 km/hr,19610
+54760,Suratgarh - Hanumangarh Passenger (via Shri Ganganagar) (UnReserved),Pass,NWR,,,SOG,12:45,HMH,17:25,4h 40m,23,S M T W T F S,,204 km,44 km/hr,54759
+54759,Hanumangarh - Suratgarh Passenger (via Shri Ganganagar) (UnReserved),Pass,NWR,,,HMH,7:15,SOG,12:05,4h 50m,24,S M T W T F S,,204 km,42 km/hr,54760
+54762,Suratgarh - Hanumangarh Passenger (via Shri Ganganagar) (UnReserved),Pass,NWR,,,SOG,8:20,HMH,13:20,5h 0m,23,S M T W T F S,,204 km,41 km/hr,54761
+11312,Hassan - Solapur Superfast Express (PT),SF,CR,,,HAS,16:15,SUR,8:10,15h 55m,17,S M T W T F S,SL 3A 2A 1A 3E,830 km,52 km/hr,11311
+95319,A35 / Mumbai CSMT - Ambernath Fast Local,Mumb,CR,,,CSMT,16:08,ABH,17:24,1h 16m,11,S M T W T F S,FC,58 km,46 km/hr,95318
+56741,Tirunelveli - Sengottai Passenger (UnReserved) (UnReserved),Pass,SR,,,TEN,7:15,SCT,9:20,2h 5m,15,S M T W T F S,,80 km,38 km/hr,56742
+22947,Surat - Bhagalpur SF Express (PT),SF,WR,,,UDN,10:20,BGP,18:30,32h 10m,34,T S,SL 3A 2A,1818 km,57 km/hr,22948
+22686,Chandigarh - Yesvantpur Karnataka Sampark Kranti Express,SKr,SWR,,,CDG,3:35,YPR,5:25,49h 50m,17,T S,SL 3A 2A 1A,2861 km,57 km/hr,22685
+37374,Goghat - Howrah Local,Klkt,ER,,,GOGT,8:30,HWH,10:45,2h 15m,24,S M T W T F S,,91 km,40 km/hr,37375
+77619,Jalna - Nagarsol DEMU,DEMU,SCR,,,J,5:50,NSL,9:20,3h 30m,12,M T T,,151 km,43 km/hr,77620
+64620,Bandikui - Idgah Agra MEMU,MEMU,NCR,,,BKI,5:00,IDH,8:20,3h 20m,20,S M T W T F S,,148 km,44 km/hr,64619
+32413,Sealdah - Baruipara Local,Klkt,ER,,,SDAH,20:50,BRPA,21:50,1h 0m,11,S M T W T F S,,33 km,33 km/hr,32414
+12776,Cocanada SF Express (PT),SF,SCoR,,,LPI,19:00,CCT,6:03,11h 3m,12,S M T W T F S,SL 3A 2A 1A 3E,608 km,55 km/hr,12775
+55075,Gorakhpur - Barhni Passenger (UnReserved),Pass,NER,,,GKP,11:00,BNY,14:15,3h 15m,11,S M T W T F S,,113 km,35 km/hr,55076
+38922,Amta - Howrah Local,Klkt,SER,,,AMTA,20:15,HWH,21:55,1h 40m,19,M T W T F S,,49 km,29 km/hr,38917
+11703,Rewa - Dr. Ambedkar Nagar Express,Exp,WCR,,,REWA,23:05,DADN,15:00,15h 55m,19,S T T,SL 3A 2A 1A 3E,830 km,52 km/hr,11704
+12771,Secunderabad - Raipur SF Express (PT),SF,SCR,,,SC,22:40,R,13:20,14h 40m,15,M W F,SL 3A 2A 3E,877 km,60 km/hr,12772
+66019,Villupuram - Mayiladuthurai MEMU,MEMU,SR,,,VM,14:35,MV,17:40,3h 5m,20,S M T W T F S,,122 km,40 km/hr,66020
+16870,Villupuram - Tirupati MEMU Express (UnReserved),Exp,SR,,,VM,17:40,TPTY,23:10,5h 30m,15,S M T W T F S,,265 km,48 km/hr,
+22715,Kacheguda - Madurai Weekly Superfast Express (PT),SF,SCR,,,KCG,6:05,MDU,5:00,22h 55m,21,S,SL 3A 2A 1A,1289 km,56 km/hr,22716
+76824,Karur - Salem Passenger (UnReserved),Pass,SR,,,KRR,20:05,SA,21:40,1h 35m,5,S M T W T F,,85 km,54 km/hr,76823
+74037,Delhi Sarai Rohilla - Farrukh Nagar DEMU,DEMU,NR,,,DEE,18:45,FN,20:30,1h 45m,9,M T W T F S,,48 km,27 km/hr,74036
+59837,Aklera - Kota Passenger (UnReserved),Pass,WCR,,,AKLA,10:25,KOTA,13:40,3h 15m,12,S M T W T F S,,146 km,45 km/hr,59838
+47193,Lingampalli - Secunderabad MMTS,Hyd,SCR,,,LPI,23:30,SC,0:20,0h 50m,10,S M T W T F S,FC,23 km,28 km/hr,
+18573,Visakhapatnam - Bhagat Ki Kothi Weekly Express (PT),Exp,SCoR,,,VSKP,5:20,BGKT,19:20,38h 0m,35,T,SL 3A 2A 3E,2065 km,54 km/hr,18574
+22807,Santragachi - MGR Chennai Central AC SF Express (PT),ACSF,SER,,,SRC,17:55,MAS,20:20,26h 25m,16,T F,3A 2A 1A,1655 km,63 km/hr,22808
+22685,Yesvantpur - Chandigarh Karnataka Sampark Kranti Express,SKr,SWR,,,YPR,15:00,CDG,15:45,48h 45m,17,W S,SL CC 3A 2A 1A,2861 km,59 km/hr,22686
+22915,Bandra Terminus - Hisar SF Express (PT),SF,WR,,,BDTS,12:15,HSR,12:20,24h 5m,29,M,SL 3A 2A,1409 km,59 km/hr,22916
+22684,Lucknow - Yesvantpur SF Express (via Kacheguda),SF,SWR,,,LKO,18:40,YPR,13:15,42h 35m,29,T,SL 3A 2A,2335 km,55 km/hr,22683
+22631,Anuvrat AC SF Express (PT),ACSF,SR,,,MDU,12:10,BKN,14:50,50h 40m,40,T,3A 2A 1A,3060 km,60 km/hr,22632
+22632,Anuvrat AC SF Express (PT),ACSF,SR,,,BKN,15:30,MDU,18:30,51h 0m,40,S,3A 2A 1A,3060 km,60 km/hr,22631
+12551,SMVT Bengaluru - Kamakhya AC SF Express (PT),ACSF,NFR,,,SMVB,9:30,KYQ,13:45,52h 15m,29,S,3A 2A 1A,3011 km,58 km/hr,12552
+17318,Dadar Central - SSS Hubballi Express (PT),Exp,SWR,,,DR,20:05,UBL,10:45,14h 40m,19,S M T W T F S,SL 3A 2A,736 km,50 km/hr,17317
+20914,Delhi Sarai Rohilla - Rajkot Weekly SF Express,SF,WR,,,DEE,13:20,RJT,7:50,18h 30m,22,F,SL 3A 2A 1A 3E,1109 km,60 km/hr,20913
+16618,Coimbatore - Rameswaram Express,Exp,SR,,,CBE,19:45,RMM,5:20,9h 35m,12,T,SL 3A 2A,506 km,53 km/hr,16617
+16617,Rameswaram - Coimbatore Express,Exp,SR,,,RMM,20:15,CBE,6:30,10h 15m,13,W,SL 3A 2A,506 km,49 km/hr,16618
+20804,Gandhidham - Visakhapatnam SF Express (PT),SF,SCoR,,,GIMB,23:10,VSKP,10:15,35h 5m,27,S,SL 3A 2A 1A 3E,2111 km,60 km/hr,20803
+15026,Anand Vihar Terminal - Mau Express (Via Ayodhya Cantt),Exp,NER,,,ANVT,13:25,MAU,5:30,16h 5m,9,M F,SL 3A 2A 1A 3E,832 km,52 km/hr,15025
+14606,Jammu Tawi - Yog Nagari Rishikesh Express,Exp,NR,,,JAT,22:05,YNRK,10:15,12h 10m,14,S,SL 3A 1A 3E,558 km,46 km/hr,14605
+32227,Sealdah - Dankuni Local,Klkt,ER,,,SDAH,9:54,DKAE,10:34,0h 40m,7,S M T W T F S,,22 km,33 km/hr,32228
+56743,Tirunelveli - Sengottai Passenger (UnReserved),Pass,SR,,,TEN,14:40,SCT,16:45,2h 5m,15,S M T W T F S,,80 km,38 km/hr,56744
+20824,Ajmer - Puri SF Express (PT),SF,ECoR,,,AII,19:20,PURI,14:40,43h 20m,43,T T,SL 3A 2A,2478 km,57 km/hr,20823
+38907,Howrah - Amta Local,Klkt,SER,,,HWH,8:40,AMTA,10:35,1h 55m,19,S M T W T F S,,49 km,26 km/hr,38912
+15621,Kamakhya - Anand Vihar Terminal Weekly Express (PT),Exp,NFR,,,KYQ,5:05,ANVT,18:50,37h 45m,25,T,SL 3A 2A 1A,1879 km,50 km/hr,15622
+57657,Purna - Parli Vaijnath Passenger (UnReserved),Pass,SCR,,,PAU,15:15,PRLI,17:45,2h 30m,9,S M T W T F S,,92 km,37 km/hr,57658
+14805,Yesvantpur - Barmer AC Express,ACExp,NWR,,,YPR,12:00,BME,4:30,40h 30m,32,M,3A 2A 1A,2226 km,55 km/hr,14806
+59203,Surendranagar - Bhavnagar Terminus Passenger (UnReserved),Pass,WR,,,SUNR,16:00,BVC,19:55,3h 55m,20,S M T W T F S,,170 km,43 km/hr,59204
+68183,Baripada - Bangriposi MEMU,MEMU,SER,,,BPO,16:35,BGY,17:20,0h 45m,4,S M T W T F,,37 km,50 km/hr,68182
+68184,Baripada - Rupsa MEMU,MEMU,SER,,,BPO,18:25,ROP,19:35,1h 10m,6,S M T W T F,,52 km,44 km/hr,68177
+19308,Una Himachal - Indore Express,Exp,WR,,,UHL,13:50,INDB,15:00,25h 10m,26,F S,SL 3A 2A 1A 3E,1319 km,52 km/hr,19307
+16751,Chennai Egmore - Rameswaram Express (PT),Exp,SR,,,TBM,21:00,RMM,9:00,12h 0m,20,S M T W T F S,SL 3A 2A 1A,641 km,53 km/hr,16752
+35019,Barddhaman - Katwa Local,Klkt,ER,,,BWN,18:30,KWAE,19:45,1h 15m,14,S M T W T F S,,53 km,42 km/hr,35022
+20606,Chendur SF Express (PT),SF,SR,,,TCN,20:45,MS,10:25,13h 40m,29,S M T W T F S,SL 3A 2A 1A,776 km,57 km/hr,20605
+15114,Chhapra - Gomti Nagar Express (via Gorakhpur),Exp,NER,,,CPR,18:45,GTNR,6:35,11h 50m,19,S M T W T F S,SL 3A 2A 1A 3E,503 km,43 km/hr,15113
+14893,Bhagat Ki Kothi - Palanpur DEMU Express (UnReserved),Exp,NWR,,,BGKT,19:00,PNU,4:15,9h 15m,34,S M T W T F S,,345 km,37 km/hr,14894
+38448,Panskura - Howrah Local,Klkt,SER,,,PKU,18:10,HWH,20:10,2h 0m,23,S M T W T F S,,70 km,35 km/hr,38433
+38309,Santragachi - Mecheda Local,Klkt,SER,,,SRC,17:48,MCA,19:15,1h 27m,15,S M T W T F S,,51 km,35 km/hr,38204
+16566,Mangaluru Central - Yesvantpur Weekly Express,Exp,SWR,,,MAQ,20:00,YPR,12:50,16h 50m,18,M,SL 3A 2A,834 km,50 km/hr,16565
+17050,Hyderabad - SSS Hubballi Express (PT),Exp,SCR,,,HYB,15:50,UBL,5:55,14h 5m,21,S M T W T F S,SL 3A 2A 1A,664 km,47 km/hr,17049
+32223,Sealdah - Dankuni Local,Klkt,ER,,,SDAH,8:25,DKAE,9:07,0h 42m,7,S M T W T F S,,22 km,31 km/hr,32224
+75117,Gorakhpur - Barhni DEMU,DEMU,NER,,,GKP,9:20,BNY,13:00,3h 40m,20,S M T W T F S,,113 km,31 km/hr,75118
+47185,Medchal - Falaknuma MMTS,Hyd,SCR,,,MED,14:15,FM,15:40,1h 25m,21,S M T W T F S,FC,40 km,28 km/hr,
+61105,Badnera - Narkher MEMU,MEMU,CR,,,BD,6:40,NRKR,9:30,2h 50m,9,S M T W T F S,,139 km,49 km/hr,61106
+61104,Narkher - Badnera MEMU,MEMU,CR,,,NRKR,17:10,BD,20:35,3h 25m,9,S M T W T F S,,139 km,41 km/hr,61103
+16732,Tiruchendur - Palakkad Jn. Express (UnReserved),Exp,SR,,,TCN,12:30,PGT,21:45,9h 15m,33,S M T W T F S,,459 km,50 km/hr,16731
+67760,Chittapur - Secunderabad MEMU,MEMU,SCR,,,CT,5:15,SC,9:30,4h 15m,18,S M T W T F S,,169 km,40 km/hr,67759
+37406,Goghat - Tarakeswar Local,Klkt,ER,,,GOGT,10:25,TAK,11:10,0h 45m,4,S M T W T F S,FC,34 km,46 km/hr,37373
+16354,Nagercoil - Kacheguda Weekly Express (PT),Exp,SR,,,NCJ,9:25,KCG,12:40,27h 15m,26,S,SL 3A 2A,1496 km,55 km/hr,16353
+63075,Rampurhat - Barharwa MEMU,MEMU,ER,,,RPH,23:40,BHW,1:25,1h 45m,11,S M T W T F S,,79 km,45 km/hr,63076
+68810,Tirodi - Gondia MEMU,MEMU,SECR,,,TRDI,15:20,G,18:05,2h 45m,16,S M T W T F S,,103 km,37 km/hr,68809
+20954,Ahmedabad - MGR Chennai Central SF Express (PT),SF,WR,,,ADI,9:40,MAS,15:25,29h 45m,26,S,SL 3A 2A 3E,1718 km,58 km/hr,20953
+15063,Ramnagar - Chandigarh Express,Exp,NER,,,RMR,5:50,CDG,13:15,7h 25m,9,M,2S SL CC 3A 2A,396 km,53 km/hr,15064
+19402,Lucknow - Sabarmati Express,Exp,WR,,,LKO,22:50,SBIB,23:05,24h 15m,24,T,SL 3A 2A,1294 km,53 km/hr,19401
+22424,Amritsar - Gorakhpur Jansadharan SF Express (UnReserved),SF,NR,,,ASR,12:45,GKP,7:50,19h 5m,14,S,,1086 km,57 km/hr,22423
+20689,Yesvantpur - Shivamogga Town Intercity SF Express,SF,SWR,,,YPR,9:15,SMET,14:05,4h 50m,8,S M T W T F S,2S CC EV,268 km,56 km/hr,20690
+22687,Mysuru - Varanasi SF Express (PT),SF,SWR,,,MYS,8:00,BSB,8:25,48h 25m,32,T T,SL CC 3A 2A,2707 km,56 km/hr,22688
+22688,Varanasi - Mysuru SF Express,SF,SWR,,,BSB,21:10,MYS,21:30,48h 20m,32,T S,SL 3A 2A,2707 km,56 km/hr,22687
+53495,Tinpahar - Rajmahal Passenger (UnReserved),Pass,ER,,,TPH,23:25,RJL,23:50,0h 25m,1,S M T W T F S,,12 km,29 km/hr,53496
+22841,Santragachi - Tambaram Antyodaya Express,Ant,SER,,,SRC,17:55,TBM,21:30,27h 35m,27,M,,1684 km,61 km/hr,22842
+68749,Shahdol - Ambikapur MEMU,MEMU,SECR,,,SDL,12:30,ABKP,17:20,4h 50m,23,S M T W T F S,,214 km,44 km/hr,68750
+12642,Thirukkural SF Express (PT),SF,SR,,,NZM,5:20,CAPE,4:05,46h 45m,21,M S,SL 3A 2A,2919 km,62 km/hr,12641
+32213,Sealdah - Dankuni Local,Klkt,ER,,,SDAH,5:00,DKAE,5:44,0h 44m,7,S M T W T F S,,22 km,30 km/hr,32214
+16587,Yesvantpur - Bikaner Express,Exp,SWR,,,YPR,12:00,BKN,8:45,44h 45m,35,S F,SL CC 3A 2A,2447 km,55 km/hr,16588
+22199,Sushasan Express,SF,NCR,,,GWL,14:45,BLP,6:50,16h 5m,10,W,SL 3A 2A 3E,953 km,59 km/hr,22200
+58303,Sambalpur - Junagarh Road Passenger (UnReserved),Pass,ECoR,,,SBP,7:00,JNRD,14:50,7h 50m,25,S M T W T F S,,283 km,36 km/hr,58304
+19415,Sabarmati - Shri Mata Vaishno Devi Katra Express (PT),Exp,WR,,,SBIB,21:35,SVDK,6:35,33h 0m,32,S,SL 3A 2A,1716 km,52 km/hr,19416
+19416,Shri Mata Vaishno Devi Katra - Sabarmati Express,Exp,WR,,,SVDK,10:50,SBIB,21:20,34h 30m,32,T,SL 3A 2A,1716 km,50 km/hr,19415
+14714,Delhi Sarai Rohilla - Sikar Express,Exp,NWR,,,DEE,6:35,SIKR,12:50,6h 15m,11,W F,SL 3A 2A,291 km,47 km/hr,14713
+22673,Jodhpur - Mannargudi SF Express (PT),SF,SR,,,JU,16:50,MQ,16:35,47h 45m,40,T,SL 3A 2A,2855 km,60 km/hr,22674
+74632,Baramula - Badgam DEMU,DEMU,NR,,,BRML,15:45,BDGM,16:40,0h 55m,4,S M T W T F S,,45 km,50 km/hr,74627
+55308,Ramnagar - Kasganj Passenger (UnReserved),Pass,NER,,,RMR,5:10,KSJ,13:15,8h 5m,35,S M T W T F S,,273 km,34 km/hr,55307
+55327,Kasganj - Bareilly City Passenger (UnReserved),Pass,NER,,,KSJ,10:35,BC,13:50,3h 15m,17,S M T W T F S,,106 km,33 km/hr,55330
+34748,Sealdah - Lakshmikantapur Local,Klkt,ER,,,SDAH,21:10,LKPR,22:46,1h 36m,22,S M T W T F S,,62 km,39 km/hr,34717
+37757,Bandel - Katwa Local,Klkt,ER,,,BDC,23:25,KWAE,1:31,2h 6m,28,S M T W T F S,,105 km,50 km/hr,37916
+17251,Guntur - Kacheguda Express (PT),Exp,SCoR,,,GNT,18:40,KCG,7:35,12h 55m,31,S M T W T F S,SL 3A,623 km,48 km/hr,17252
+96301,A1 / Mumbai CSMT - Ambernath Slow Local,Mumb,CR,,,CSMT,0:05,ABH,1:46,1h 41m,27,S M T W T F S,FC,60 km,36 km/hr,96300
+75107,Nakaha Jungle - Gonda DEMU,DEMU,NER,,,JEA,15:40,GD,21:50,6h 10m,33,S M T W T F S,,216 km,35 km/hr,75108
+68116,Digha - Panskura EMU,Klkt,SER,,,DGHA,6:50,PKU,9:20,2h 30m,17,S M T W T F S,,118 km,47 km/hr,68117
+22606,Tirunelveli - Purulia SF Express (PT),SF,SR,,,TEN,3:15,PRR,23:15,44h 0m,35,W S,SL 3A 2A,2536 km,58 km/hr,22605
+56708,Tirunelveli - Kanniyakumari Passenger (UnReserved),Pass,SR,,,TEN,7:05,CAPE,9:20,2h 15m,8,S M T W T F S,,89 km,40 km/hr,56707
+65107,Bhatni - Varanasi City MEMU,MEMU,NER,,,BTT,6:00,BCY,10:10,4h 10m,22,S M T W T F S,,158 km,38 km/hr,65108
+33538,Hasanabad - Sealdah Galloping Local,Klkt,ER,,,HNB,21:32,SDAH,23:35,2h 3m,23,S M T W T F S,,75 km,36 km/hr,33321
+33323,Barasat - Hasnabad Local,Klkt,ER,,,BT,21:30,HNB,22:54,1h 24m,18,S M T W T F S,,53 km,38 km/hr,33512
+73462,Jamalpur - Maheshkhunt DEMU,DEMU,ER,,,JMP,9:32,MSK,10:45,1h 13m,5,S M T W T F S,,46 km,38 km/hr,73461
+38304,Mecheda - Howrah Local,Klkt,SER,,,MCA,3:55,HWH,5:30,1h 35m,19,S M T W T F S,,58 km,36 km/hr,38317
+75258,Saharsa - Purnea DEMU,DEMU,ECR,,,SHC,6:55,PRNA,10:00,3h 5m,16,S M T W T F S,,99 km,32 km/hr,75257
+55893,Rangiya - Rangapara North Passenger (UnReserved),Pass,NFR,,,RNY,19:15,RPAN,22:30,3h 15m,12,S M T W T F S,,123 km,38 km/hr,55894
+65117,Ghazipur City - Prayagraj Sangam MEMU,MEMU,NER,,,GCT,4:20,PYGS,10:20,6h 0m,29,S M T W T F S,,206 km,34 km/hr,65118
+17216,Dharmavaram - Machilipatnam Express (PT),Exp,SCoR,,,DMM,17:50,MTM,8:35,14h 45m,20,S M T W T F S,SL 3A 2A,694 km,47 km/hr,17215
+15010,Izzatnagar - Gorakhpur Express,Exp,NER,,,IZN,15:40,GKP,7:00,15h 20m,28,S M T W T F S,SL 3A 2A 1A,646 km,42 km/hr,15009
+12661,Pothigai SF Express (PT),SF,SR,,,MS,19:35,SCT,6:40,11h 5m,16,S M T W T F S,SL 3A 2A 1A,667 km,60 km/hr,12662
+19314,Patna - Indore Express (via Sultanpur) (PT),Exp,WR,,,PNBE,11:25,INDB,14:25,27h 0m,16,W F,SL 3A 2A 1A 3E,1357 km,50 km/hr,19313
+77212,Renigunta - Nandyal DEMU,DEMU,SCR,,,RU,13:45,NDL,20:45,7h 0m,17,S M T W T F S,,288 km,41 km/hr,77211
+55817,New Bongaigaon - Guwahati Passenger (UnReserved),Pass,NFR,,,NBQ,14:50,GHY,20:00,5h 10m,20,S M T W T F S,,157 km,30 km/hr,55818
+22834,SMVT Bengaluru - Bhubaneswar Humsafar Express,Hms,ECoR,,,SMVB,16:40,BBS,18:25,25h 45m,18,T,3A,1516 km,59 km/hr,22833
+55307,Kasganj - Ramnagar Passenger (UnReserved),Pass,NER,,,KSJ,14:00,RMR,22:10,8h 10m,34,S M T W T F S,,273 km,33 km/hr,55308
+15069,Gorakhpur - Aishbagh Intercity Express,Exp,NER,,,GKP,3:45,ASH,10:35,6h 50m,13,S M T W T F S,2S CC,344 km,50 km/hr,15070
+15070,Aishbagh - Gorakhpur Intercity Express,Exp,NER,,,ASH,16:30,GKP,23:35,7h 5m,13,S M T W T F S,2S CC,344 km,49 km/hr,15069
+55685,Maishashan - Silchar Passenger (UnReserved),Pass,NFR,,,MSSN,20:10,SCL,22:55,2h 45m,11,M T W T F S,,60 km,22 km/hr,55686
+14232,Manwar Sangam Express,Exp,NR,,,BST,13:45,PYGS,20:05,6h 20m,10,M T W F S,2S SL 3A 2A,260 km,41 km/hr,14231
+75303,Bareilly City - Pilibhit DEMU,DEMU,NER,,,BC,17:30,PBE,19:25,1h 55m,8,S M T W T F S,,56 km,29 km/hr,75304
+55317,Bareilly City - Pilibhit Passenger (UnReserved),Pass,NER,,,BC,14:40,PBE,16:25,1h 45m,8,S M T W T F S,,56 km,32 km/hr,55320
+55315,Bareilly City - Pilibhit Passenger (UnReserved),Pass,NER,,,BC,9:55,PBE,11:50,1h 55m,8,S M T W T F S,,56 km,29 km/hr,55316
+15068,Bandra Terminus - Gorakhpur Weekly Express (PT),Exp,NER,,,BDTS,0:05,GKP,14:50,38h 45m,28,F,SL 3A 2A 1A,1898 km,49 km/hr,15067
+17420,Vasco-Da-Gama - Tirupati Weekly Express,Exp,SCoR,,,VSG,8:40,TPTY,3:15,18h 35m,21,F,SL 3A 2A,777 km,42 km/hr,17419
+16581,Yesvantpur - Shivamogga Town Express,Exp,SWR,,,YPR,0:15,SMET,6:00,5h 45m,9,S T T,SL 3A 2A 1A,268 km,47 km/hr,16582
+16582,Shivamogga Town - Yesvantpur Express,Exp,SWR,,,SMET,23:55,YPR,4:45,4h 50m,9,S T T,SL 3A 2A 1A,268 km,56 km/hr,16581
+95129,S33 / Mumbai CSMT - Karjat (15 Car) Fast Local,Mumb,CR,,,CSMT,18:21,KJT,20:13,1h 52m,15,S M T W T F S,FC,98 km,53 km/hr,
+63270,Muzaffarpur - Samastipur MEMU,MEMU,ECR,,,MFP,22:10,SPJ,23:35,1h 25m,7,S M T W T F S,,52 km,37 km/hr,63269
+55688,Silchar - Dullabcherra Passenger (UnReserved),Pass,NFR,,,SCL,15:05,DLCR,19:55,4h 50m,10,M T W F S,,100 km,21 km/hr,55687
+55325,Pilibhit - Tanakpur Passenger (UnReserved),Pass,NER,,,PBE,17:40,TPU,19:30,1h 50m,5,S M T W T F S,,62 km,34 km/hr,55322
+55324,Tanakpur - Pilibhit Passenger (UnReserved),Pass,NER,,,TPU,11:45,PBE,13:15,1h 30m,5,S M T W T F S,,62 km,41 km/hr,55321
+56927,SSS Hubballi - Sindhanur Passenger (UnReserved),Pass,SWR,,,UBL,7:15,SNNR,12:00,4h 45m,18,S M T W T F S,,210 km,44 km/hr,56928
+56928,Sindhanur - SSS Hubballi Passenger (UnReserved),Pass,SWR,,,SNNR,15:00,UBL,19:35,4h 35m,18,S M T W T F S,,210 km,46 km/hr,56927
+74029,Sonipat - Jind DEMU,DEMU,NR,,,SNP,9:50,JIND,12:00,2h 10m,12,M T W T F S,,89 km,41 km/hr,74030
+16792,Palaruvi Express,Exp,SR,,,PGT,16:05,TN,6:30,14h 25m,41,S M T W T F S,SL 3A,535 km,37 km/hr,16791
+20676,Vishwamanava SF Express,SF,SWR,,,MYS,7:00,BGM,20:35,13h 35m,31,S M T W T F S,2S CC,749 km,55 km/hr,20675
+20675,Vishwamanava SF Express,SF,SWR,,,BGM,7:00,MYS,20:35,13h 35m,31,S M T W T F S,2S CC,749 km,55 km/hr,20676
+19306,Kamakhya - Dr. Ambedkar Nagar Weekly Express (PT),Exp,WR,,,KYQ,5:05,DADN,5:50,48h 45m,36,S,SL 3A 2A 3E,2319 km,48 km/hr,19305
+63573,Jasidih - Kiul MEMU,MEMU,ER,,,JSME,10:45,KIUL,14:10,3h 25m,16,S M T W T F S,,97 km,29 km/hr,63574
+33851,Sealdah - Bangaon Local,Klkt,ER,,,SDAH,19:30,BNJ,21:24,1h 54m,22,S M T W T F S,,76 km,40 km/hr,33366
+22614,Shraddha Sethu SF Express,SF,SR,,,AYC,23:10,RMM,2:35,51h 25m,24,W,SL 3A 2A,2921 km,57 km/hr,22613
+22165,Bhopal - Singrauli Urjadhani Express,SF,WCR,,,BPL,20:55,SGRL,8:55,12h 0m,11,T W S,SL 3A 2A 1A 3E,660 km,55 km/hr,22166
+22166,Singrauli - Bhopal Urjadhani Express,SF,WCR,,,SGRL,19:00,BPL,7:00,12h 0m,11,T T F,SL 3A 2A 1A 3E,660 km,55 km/hr,22165
+14611,Ghazipur City - Shri Mata Vaishno Devi Katra Weekly Express (PT),Exp,NR,,,GCT,8:50,SVDK,12:40,27h 50m,15,F,SL 3A 2A 3E,1387 km,50 km/hr,14612
+56707,Kanniyakumari - Tirunelveli Passenger (UnReserved),Pass,SR,,,CAPE,18:25,TEN,20:40,2h 15m,8,S M T W T F S,,89 km,40 km/hr,56708
+20601,MGR Chennai Central - Bodinayakkanur SF Express (PT),SF,SR,,,MAS,22:30,BDNK,8:50,10h 20m,9,S M T W T F,SL 3A 2A 1A,646 km,63 km/hr,20602
+20602,Bodinayakkanur - MGR Chennai Central SF Express (PT),SF,SR,,,BDNK,20:55,MAS,7:55,11h 0m,10,S M T W T F,SL 3A 2A 1A,646 km,59 km/hr,20601
+20692,Nagercoil - Tambaram Antyodaya SF Express,Ant,SR,,,NCJ,15:50,TBM,5:05,13h 15m,19,S M T W T F S,,764 km,58 km/hr,20691
+20482,Tiruchchirappalli - Jodhpur Humsafar Express,Hms,NWR,,,TPJ,8:10,JU,6:00,45h 50m,21,S,SL 3A,2811 km,61 km/hr,20481
+20943,Bandra Terminus - Bhagat Ki Kothi Humsafar Express (PT),Hms,WR,,,BDTS,21:45,BGKT,12:55,15h 10m,9,T,2S SL 3A,935 km,62 km/hr,20944
+20944,Bhagat Ki Kothi - Bandra Terminus Humsafar Express,Hms,WR,,,BGKT,17:10,BDTS,7:35,14h 25m,9,F,2S SL 3A,935 km,65 km/hr,20943
+37423,Tarakeswar - Arambagh Local,Klkt,ER,,,TAK,22:20,AMBG,22:57,0h 37m,3,S M T W T F S,,25 km,40 km/hr,37424
+37410,Goghat - Tarakeswar Local,Klkt,ER,,,GOGT,17:05,TAK,17:47,0h 42m,4,S M T W T F S,,34 km,49 km/hr,37405
+37424,Arambagh - Tarakeswar Local,Klkt,ER,,,AMBG,23:15,TAK,23:52,0h 37m,3,S M T W T F S,,25 km,40 km/hr,37423
+33843,Sealdah - Bangaon Local,Klkt,ER,,,SDAH,17:12,BNJ,19:07,1h 55m,22,S M T W T F S,,76 km,40 km/hr,33854
+51708,Gondia - Jabalpur Passenger (UnReserved),Pass,WCR,,,G,15:45,JBP,0:25,8h 40m,35,S M T W T F S,,236 km,27 km/hr,51707
+19667,Palace Queen Humsafar Express,Hms,NWR,,,UDZ,20:50,MYS,15:00,42h 10m,17,M,SL 3A,2259 km,54 km/hr,19668
+97643,C43 / Mumbai CSMT - Kurla Slow Local,Mumb,CR,,,CSMT,23:08,CLA,23:36,0h 28m,8,M T W T F S,FC,16 km,33 km/hr,
+31601,Sealdah - Ranaghat Matribhumi Ladies Special,Klkt,ER,,,SDAH,17:55,RHA,19:40,1h 45m,22,M T W T F S,,73 km,42 km/hr,31602
+04779,Shri Ganganagar - Suratgarh Passenger Special (UnReserved),Pass,NWR,,,SGNR,4:20,SOG,7:00,2h 40m,11,S M T W T F S,,137 km,51 km/hr,4774
+20655,Yesvantpur - SSS Hubballi Weekly SF Express,SF,SWR,,,YPR,0:15,UBL,7:15,7h 0m,6,S,SL 3A 2A,464 km,66 km/hr,20656
+20656,SSS Hubballi - Yesvantpur Weekly SF Express,SF,SWR,,,UBL,11:45,YPR,19:20,7h 35m,6,S,SL CC 3A 2A,464 km,61 km/hr,20655
+74861,Jaipur - Churu DEMU,DEMU,NWR,,,JP,16:40,CUR,21:35,4h 55m,21,S M T W T F S,,201 km,41 km/hr,74862
+37417,Seoraphuli - Tarakeswar Local,Klkt,ER,,,SHE,11:04,TAK,11:50,0h 46m,10,S M T W T F S,,35 km,46 km/hr,37418
+37418,Tarakeswar - Seoraphuli Local,Klkt,ER,,,TAK,10:05,SHE,10:53,0h 48m,10,S M T W T F S,,35 km,44 km/hr,37417
+56776,Sengottai -Tirunelveli Passenger (UnReserved),Pass,SR,,,SCT,14:20,TEN,16:25,2h 5m,15,S M T W T F S,,80 km,38 km/hr,56775
+31415,Sealdah - Naihati Local,Klkt,ER,,,SDAH,7:57,NH,8:58,1h 1m,13,S M T W T F S,,38 km,37 km/hr,31420
+19046,Tapti Ganga Express (PT),Exp,WR,,,THE,5:40,UDN,15:23,33h 43m,37,S T W F S,SL 3A 2A,1828 km,54 km/hr,19045
+68413,Talcher - Puri MEMU,MEMU,ECoR,,,TLHR,6:00,PURI,11:20,5h 20m,41,S M T W T F S,,200 km,38 km/hr,68414
+31519,Sealdah - Shantipur Local,Klkt,ER,,,SDAH,10:40,STB,12:56,2h 16m,26,S M T W T F S,,93 km,41 km/hr,31526
+61017,Diva - Panvel MEMU,MEMU,CR,,,DIVA,9:10,PNVL,9:50,0h 40m,5,M T W T F,FC,26 km,38 km/hr,61018
+55088,Daliganj - Mailani Passenger (UnReserved),Pass,NER,,,DAL,18:30,MLN,23:45,5h 15m,25,S M T W T F S,,188 km,36 km/hr,55087
+19337,Indore - Delhi Sarai Rohilla Weekly Express,Exp,WR,,,INDB,19:50,DEE,12:30,16h 40m,13,S,SL 3A 2A 3E,936 km,56 km/hr,19338
+69177,Udhna - Nandurbar MEMU,MEMU,WR,,,UDN,7:50,NDB,11:55,4h 5m,18,S M T W T F S,,157 km,38 km/hr,69178
+16586,Murdeshwar - SMVT Bengaluru Express,Exp,SWR,,,MRDW,14:25,SMVB,7:15,16h 50m,23,S M T W T F S,SL 3A 2A 1A,622 km,37 km/hr,16585
+16102,Kollam - Chennai Egmore Express (PT),Exp,SR,,,QLN,16:00,TBM,6:05,14h 5m,22,S M T W T F S,SL 3A 2A,736 km,52 km/hr,16101
+22657,Tambaram - Kanniyakumari SF Express (PT),SF,SR,,,TBM,19:30,CAPE,7:15,11h 45m,12,S M W,SL 3A 2A 1A,715 km,61 km/hr,22658
+31219,Sealdah - Barrackpore Local,Klkt,ER,,,SDAH,8:02,BP,8:39,0h 37m,7,M T W T F S,,22 km,36 km/hr,31220
+66549,Jolarpettai - KSR Bengaluru MEMU,MEMU,SWR,,,JTJ,15:00,SBC,18:40,3h 40m,18,S M T W T F S,,145 km,40 km/hr,66550
+34861,Diamond Harbour - Sealdah Local,Klkt,ER,,,DH,18:35,SDAH,20:12,1h 37m,24,S M T W T F S,,60 km,37 km/hr,34844
+20653,KSR Bengaluru - Belagavi SF Express (PT),SF,SWR,,,SBC,21:00,BGM,6:40,9h 40m,6,S M T W T F S,SL 3A 2A 1A 3E,612 km,63 km/hr,20654
+20654,Belagavi - KSR Bengaluru SF Express,SF,SWR,,,BGM,22:00,SBC,7:30,9h 30m,6,S M T W T F S,SL 3A 2A 1A 3E,612 km,64 km/hr,20653
+56714,Rameswaram - Madurai Passenger (UnReserved),Pass,SR,,,RMM,11:30,MDU,15:05,3h 35m,15,S M T W T F S,,161 km,45 km/hr,56713
+71417,Lonand - Phaltan DEMU,DEMU,CR,,,LNN,18:00,PLLD,19:15,1h 15m,2,M T W T F S,,26 km,21 km/hr,71418
+71418,Phaltan - Lonand DEMU,DEMU,CR,,,PLLD,9:40,LNN,10:55,1h 15m,2,M T W T F S,,26 km,21 km/hr,71417
+73491,Dumka - Godda DEMU,DEMU,ER,,,DUMK,14:25,GODA,16:25,2h 0m,8,S M T W T F S,,74 km,37 km/hr,73492
+37924,Katwa - Howrah Galloping Local,Klkt,ER,,,KWAE,14:45,HWH,18:00,3h 15m,29,S M T W T F S,,145 km,44 km/hr,37915
+77643,Kacheguda - Nizamabad DEMU,DEMU,SCR,,,KCG,18:55,NZB,23:50,4h 55m,9,S M T W T F S,,166 km,34 km/hr,77644
+67227,Vijayawada - Macherla MEMU,MEMU,SCoR,,,BZA,16:15,MCLA,21:30,5h 15m,17,S M T W T F S,,162 km,31 km/hr,67228
+76835,Tiruchchirappalli - Dindigul DEMU,DEMU,SR,,,TPJ,18:35,DG,21:05,2h 30m,10,S M T W T F S,,94 km,38 km/hr,76836
+61103,Badnera - Narkher MEMU,MEMU,CR,,,BD,13:05,NRKR,16:00,2h 55m,9,S M T W T F S,,139 km,47 km/hr,61104
+61106,Narkher - Badnera MEMU,MEMU,CR,,,NRKR,10:10,BD,13:40,3h 30m,9,S M T W T F S,,139 km,40 km/hr,61105
+20413,Kashi Mahakal SF Express (Via Lucknow),SF,NR,,,BSB,14:00,INDB,9:00,19h 0m,8,T T,SL 3A 2A 1A 3E,1135 km,60 km/hr,20414
+20415,Kashi Mahakal SF Express (via Prayagraj),SF,NR,,,BSB,15:15,INDB,9:00,17h 45m,8,S,SL 3A 2A 1A 3E,1082 km,61 km/hr,20416
+12651,Tamil Nadu Sampark Kranti Express (PT),SKr,SR,,,MDU,1:05,NZM,18:35,41h 30m,13,S T,SL 3A 2A,2672 km,64 km/hr,12652
+75679,Agartala - Karimganj DEMU,DEMU,NFR,,,AGTL,7:20,KXJ,13:50,6h 30m,24,S M T W T F S,,204 km,31 km/hr,75680
+22943,Daund - Indore SF Express (PT),SF,WR,,,DD,14:10,INDB,8:25,18h 15m,17,S M T W T F S,SL 3A 2A 1A,1041 km,57 km/hr,22944
+16204,Tirupati - M.G.R Chennai Central Express,Exp,SWR,,,TPTY,6:30,MAS,10:10,3h 40m,9,S M T W T F S,SL 3A 2A 1A,147 km,40 km/hr,16203
+71416,Phaltan - Pune DEMU,DEMU,CR,,,PLLD,19:30,PUNE,22:45,3h 15m,6,M T W T F S,,118 km,36 km/hr,71415
+71415,Pune - Phaltan DEMU,DEMU,CR,,,PUNE,6:10,PLLD,9:25,3h 15m,6,M T W T F S,,118 km,36 km/hr,71416
+22992,Bhagat Ki Kothi - Valsad SF Express,SF,WR,,,BGKT,19:30,BL,8:30,13h 0m,16,W,SL 3A 2A,752 km,58 km/hr,22991
+20964,Varanasi - Sabarmati Weekly SF Express,SF,WR,,,BSB,15:35,SBIB,21:20,29h 45m,19,S,SL 3A 2A,1699 km,57 km/hr,20963
+16847,Mayiladuturai - Sengottai Express (UnReserved),Exp,SR,,,MV,12:35,SCT,20:55,8h 20m,28,S M T W T F S,,451 km,54 km/hr,16848
+69207,Gandhinagar Capital - Varetha MEMU,MEMU,WR,,,GNC,17:50,VTDI,20:30,2h 40m,12,S M T W T F,,117 km,44 km/hr,69208
+12039,Kathgodam - New Delhi Shatabdi Express,Shtb,NR,,,KGM,15:15,NDLS,20:55,5h 40m,7,S M T W T F S,CC Ex,282 km,50 km/hr,12040
+56828,Karaikkudi - Thiruvarur Passenger (UnReserved),Pass,SR,,,KKDI,18:15,TVR,21:20,3h 5m,18,S M T W T F S,,149 km,48 km/hr,56827
+13177,Sealdah - Jangipur Road Express (UnReserved),Exp,ER,,,SDAH,5:35,JRLE,11:55,6h 20m,50,M T W T F S,,259 km,41 km/hr,13178
+11753,NSC Bose Itwari - Rewa Express (via Gondia),Exp,WCR,,,NITR,19:10,REWA,8:20,13h 10m,13,S T T,SL 3A 2A 1A 3E,601 km,46 km/hr,11754
+16848,Sengottai - Mayiladuturai Express (UnReserved),Exp,SR,,,SCT,7:00,MV,15:40,8h 40m,28,S M T W T F S,,451 km,52 km/hr,16847
+12957,Swarna Jayanti Rajdhani Express,Raj,WR,,,SBIB,19:20,NDLS,7:30,12h 10m,8,S M T W T F S,3A 2A 1A,931 km,77 km/hr,12958
+67253,Gudivada - Machilipatnam MEMU,MEMU,SCoR,,,GDV,13:10,MTM,14:10,1h 0m,5,S M T W T F S,,37 km,37 km/hr,67252
+12767,Hazur Sahib Nanded - Santragachi SF Express (PT),SF,SCR,,,NED,15:40,SRC,19:45,28h 5m,17,M,SL 3A 2A,1567 km,56 km/hr,12768
+22818,Mysuru - Howrah Weekly SF Express (PT),SF,SER,,,MYS,23:55,HWH,11:10,35h 15m,20,S,SL 3A 2A 1A 3E,2100 km,60 km/hr,22817
+16846,Sengottai - Erode Express (UnReserved),Exp,SR,,,SCT,5:20,ED,15:00,9h 40m,26,S M T W T F S,,438 km,45 km/hr,16845
+12768,Santragachi - Hazur Sahib Nanded SF Express (PT),SF,SCR,,,SRC,14:05,NED,18:25,28h 20m,17,W,SL 3A 2A,1567 km,55 km/hr,12767
+13180,Siuri - Sealdah MEMU Express (UnReserved),Exp,ER,,,SURI,5:05,SDAH,9:57,4h 52m,10,S M T W T F S,,248 km,51 km/hr,13179
+14808,Dadar Western - Jodhpur Express (PT),Exp,NWR,,,DDR,0:15,JU,17:40,17h 25m,18,M W S,SL 3A 2A 3E,950 km,55 km/hr,14807
+20962,Banaras - Udhna Weekly SF Express (via Gwalior),SF,WR,,,BNRS,17:50,UDN,20:50,27h 0m,20,W,SL 3A 2A 1A,1543 km,57 km/hr,20961
+20658,Hazrat Nizamuddin - SSS Hubballi Superfast Express,SF,SWR,,,NZM,15:55,UBL,3:30,35h 35m,17,S,SL 3A 2A 1A 3E,2062 km,58 km/hr,20657
+37333,Howrah - Tarakeswar Local,Klkt,ER,,,HWH,14:10,TAK,15:37,1h 27m,19,S M T W T F S,,57 km,39 km/hr,37310
+16811,Mayiladuturai - Salem MEMU Express (UnReserved),Exp,SR,,,MV,6:15,SA,13:45,7h 30m,43,S M T W T F S,,282 km,38 km/hr,16812
+12116,Siddheshwar SF Express,SF,CR,,,SUR,22:30,CSMT,6:30,8h 0m,10,S M T W T F S,SL 3A 2A 1A 3E,454 km,57 km/hr,12115
+20959,Valsad - Vadnagar Intercity SF Express,SF,WR,,,BL,5:40,VDG,13:10,7h 30m,13,S M T W T F S,2S CC,423 km,56 km/hr,20960
+59560,Bhavnagar Terminus - Para Passenger (UnReserved),Pass,WR,,,BVP,15:20,PBR,22:15,6h 55m,25,S M T W T F S,,302 km,44 km/hr,59557
+59559,Veraval - Bhavnagar Terminus Passenger (UnReserved),Pass,WR,,,VRL,15:00,BVC,21:50,6h 50m,23,S M T W T F S,,288 km,42 km/hr,59558
+12395,Ziyarat Express (PT),SF,ECR,,,RJPB,18:00,AII,15:35,21h 35m,16,W,SL 3A 2A 1A 3E,1305 km,60 km/hr,12396
+14705,Bhiwani - Dahar Ka Balaji Express (UnReserved),Exp,NWR,,,BNW,4:00,DKBJ,11:00,7h 0m,21,S M T W T F S,,288 km,41 km/hr,14706
+13229,Godda - Rajendra Nagar Terminal Weekly Express,Exp,ECR,,,GODA,7:15,RJPB,15:55,8h 40m,13,S,2S SL 3A 2A 1A 3E,325 km,37 km/hr,13230
+33368,Bangaon - Dum Dum Cantt. Local,Klkt,ER,,,BNJ,7:15,DDC,8:50,1h 35m,19,S M T W T F S,,67 km,42 km/hr,33891
+38909,Howrah - Amta Local,Klkt,SER,,,HWH,11:10,AMTA,12:55,1h 45m,19,M T W T F S,,49 km,28 km/hr,38914
+20832,Mahima Gosain Express (PT),SF,ECoR,,,SBP,19:10,SHM,7:20,12h 10m,10,S T T,SL 3A 2A,667 km,55 km/hr,20831
+19822,Kota - Asarva (Ahmedabad) Express,Exp,WCR,,,KOTA,18:55,ASV,5:45,10h 50m,19,T F,SL 3A 2A 1A 3E,575 km,53 km/hr,19821
+11755,NSC Bose Itwari - Rewa Express (via Chhindwara),Exp,WCR,,,NITR,18:10,REWA,8:20,14h 10m,12,M W F S,SL 3A 2A 1A,645 km,46 km/hr,11756
+38903,Howrah - Amta Local,Klkt,SER,,,HWH,4:55,AMTA,6:35,1h 40m,19,S M T W T F S,,49 km,29 km/hr,38908
+20661,KSR Bengaluru - Dharwad Vande Bharat Express,VB,SWR,,,SBC,5:45,DWR,12:00,6h 15m,5,S M W T F S,CC Ex,490 km,78 km/hr,20662
+20662,Dharwad - KSR Bengaluru Vande Bharat Express,VB,SWR,,,DWR,13:30,SBC,19:45,6h 15m,5,S M W T F S,CC Ex,490 km,78 km/hr,20661
+56111,Villupuram- Tiruchchirappalli MEMU Passenger,MEMU,SR,,,VM,4:55,TPJ,8:45,3h 50m,26,S M T W T F S,,178 km,46 km/hr,56112
+12462,Sabarmati - Jodhpur Vande Bharat Express,VB,NWR,,,SBIB,16:55,JU,22:50,5h 55m,5,S M W T F S,CC Ex,451 km,76 km/hr,12461
+05132,Bahraich - Gorakhpur Special (UnReserved),Exp,NER,,,BRK,14:30,GKP,22:10,7h 40m,27,S M T W T F S,,282 km,37 km/hr,5131
+38721,Howrah - Kharagpur Local,Klkt,SER,,,HWH,16:00,KGP,19:00,3h 0m,32,S M T W T F S,,115 km,38 km/hr,38730
+38719,Howrah - Kharagpur Local,Klkt,SER,,,HWH,14:15,KGP,17:30,3h 15m,32,S M T W T F S,,115 km,35 km/hr,38728
+12946,Banaras - Veraval SF Express (PT),SF,WR,,,BNRS,7:30,VRL,18:35,35h 5m,28,W,SL 3A 2A 1A,1972 km,56 km/hr,12945
+51906,Tundla - Farrukhabad Passenger (UnReserved),Pass,NCR,,,TDL,5:45,FBD,10:15,4h 30m,19,S M T W T F S,,142 km,32 km/hr,51905
+05401,Bareilly City - Kashipur DEMU Special,DEMU,NER,,,BC,8:00,KPV,12:20,4h 20m,15,S M T W T F S,,140 km,32 km/hr,5402
+17665,Hazur Sahib Nanded - Mumbai LTT Express,Exp,SCR,13-Jul,,NED,21:15,LTT,13:40,16h 25m,12,M,SL 3A 2A 1A,801 km,49 km/hr,17666
+69234,Dahod - Vadodara MEMU,MEMU,WR,,,DHD,16:30,BRC,19:55,3h 25m,17,S M T W T F S,,147 km,43 km/hr,69233
+14087,Runicha Express,Exp,NR,,,DLI,8:55,JSM,1:30,16h 35m,24,S M T W T F S,SL 3A 2A 1A,846 km,51 km/hr,14088
+19204,Veraval - Bandra Terminus Express (PT),Exp,WR,,,VRL,19:00,BDTS,15:50,20h 50m,23,F,SL 3A 2A 1A,937 km,45 km/hr,19203
+17209,Seshadri Express (PT),Exp,SCoR,,,SMVB,11:30,CCT,6:30,19h 0m,33,S M T W T F S,SL 3A 2A,951 km,50 km/hr,17210
+38821,Howrah - Midnapore Galloping Local,Klkt,SER,,,HWH,15:50,MDN,18:50,3h 0m,17,S M T W T F S,,128 km,43 km/hr,38828
+13433,SMVT Bengaluru - Malda Town Amrit Bharat Express (PT),AB,ER,,,SMVB,13:50,MLDT,9:15,43h 25m,33,T,SL,2272 km,52 km/hr,13434
+20705,Hazur Sahib Nanded - Mumbai CSMT Vande Bharat Express,VB,SCR,,,NED,5:20,CSMT,14:15,8h 55m,8,S M T T F S,CC Ex,608 km,68 km/hr,20706
+38815,Howrah - Midnapore Local,Klkt,SER,,,HWH,10:30,MDN,14:00,3h 30m,33,S M T W T F S,,128 km,36 km/hr,38822
+20642,Coimbatore - Bengaluru Cantt. Vande Bharat Express,VB,SR,,,CBE,7:25,BNC,13:45,6h 20m,5,S M T W F S,CC Ex,374 km,59 km/hr,20641
+22425,Ayodhya Cantt. - Anand Vihar Terminal Vande Bharat Express,VB,NR,,,AYC,15:25,ANVT,23:40,8h 15m,4,S M T T F S,CC Ex,628 km,76 km/hr,22426
+15926,Dibrugarh - Deoghar Express,Exp,NFR,,,DBRG,1:30,DGHR,5:40,28h 10m,30,W,SL 3A 2A,1294 km,46 km/hr,15925
+40202,Guduvancheri - Chennai Beach EMU,Chn,SR,,,GI,21:05,MSB,22:30,1h 25m,20,M T W T F S,,40 km,28 km/hr,
+15015,Amritsar - Lalkuan Express (via Rudrapur City),Exp,NER,,,ASR,5:55,LKU,17:40,11h 45m,8,W,SL 2A 1A 3E,617 km,53 km/hr,15016
+22231,Kalaburagi - SMVT Bengaluru Vande Bharat Express,VB,CR,,,KLBG,6:10,SMVB,14:10,8h 0m,7,S M T W T S,CC Ex,560 km,70 km/hr,22232
+22232,SMVT Bengaluru - Kalaburagi Vande Bharat Express,VB,CR,,,SMVB,14:40,KLBG,22:40,8h 0m,7,S M T W F S,CC Ex,560 km,70 km/hr,22231
+54788,Rewari - Bhiwani Passenger (UnReserved),Pass,NWR,,,RE,21:30,BNW,23:30,2h 0m,8,S M T W T F S,,83 km,41 km/hr,54787
+16621,Rameswaram - Mangaluru Central Weekly Express,Exp,SR,,,RMM,15:30,MAQ,6:55,15h 25m,15,S,SL 3A 2A,753 km,49 km/hr,16622
+16766,Tuticorin - Mettupalayam Express (PT),Exp,SR,,,TN,23:40,MTP,7:40,8h 0m,13,T S,SL 3A 2A,424 km,53 km/hr,16765
+38809,Howrah - Midnapore Local,Klkt,SER,,,HWH,8:00,MDN,11:25,3h 25m,35,S M T W T F S,,128 km,37 km/hr,38816
+38705,Howrah - Kharagpur Local,Klkt,SER,,,HWH,4:45,KGP,7:25,2h 40m,32,S M T W T F S,,115 km,43 km/hr,38714
+55357,Pilibhit - Mailani Passenger (UnReserved),Pass,NER,,,PBE,6:45,MLN,9:05,2h 20m,11,S M T W T F S,,67 km,29 km/hr,55360
+55361,Pilibhit - Mailani Passenger (UnReserved),Pass,NER,,,PBE,14:30,MLN,16:55,2h 25m,11,S M T W T F S,,67 km,28 km/hr,55362
+55360,Mailani - Pilibhit Passenger (UnReserved),Pass,NER,,,MLN,10:40,PBE,13:10,2h 30m,11,S M T W T F S,,67 km,27 km/hr,55357
+55358,Mailani - Pilibhit Passenger (UnReserved),Pass,NER,,,MLN,5:10,PBE,7:40,2h 30m,11,S M T W T F S,,67 km,27 km/hr,55359
+17656,Puducherry - Kakinada Port Circar Express (PT),Exp,SCR,,,PDY,13:30,COA,9:25,19h 55m,35,M T S,SL 3A 2A,896 km,45 km/hr,17655
+20984,Delhi Sarai Rohilla - Bhuj SF Express,SF,WR,,,DEE,15:00,BHUJ,11:00,20h 0m,18,W S,SL 3A 2A 1A,1155 km,58 km/hr,20983
+54423,New Delhi - Hisar Passenger (UnReserved),Pass,NR,,,NDLS,18:20,HSR,22:50,4h 30m,14,S M T W T F S,,175 km,39 km/hr,54424
+12008,Mysuru - MGR Chennai Central Shatabdi Express,Shtb,SR,,,MYS,14:15,MAS,21:25,7h 10m,2,S M T W F S,CC Ex EA,497 km,69 km/hr,12007
+53444,Deoghar - Godda Passenger (UnReserved),Pass,ER,,,DGHR,10:40,GODA,12:30,1h 50m,8,M T W T F S,,80 km,43 km/hr,53443
+93039,Virar - Dahanu Road Slow Local,Mumb,WR,,,VR,21:05,DRD,22:16,1h 11m,7,S M T W T F S,,64 km,54 km/hr,
+57301,Kacheguda - Medak Passenger (UnReserved),Pass,SCoR,,,KCG,7:50,MDAK,11:10,3h 20m,27,S M T W T F S,,104 km,31 km/hr,57302
+57302,Medak - Kacheguda Passenger (UnReserved),Pass,SCoR,,,MDAK,17:00,KCG,20:25,3h 25m,27,S M T W T F S,,104 km,30 km/hr,57301
+55501,Jhanjharpur - Laukaha Bazar Passenger (UnReserved),Pass,ECR,,,JJP,14:35,LKQ,16:05,1h 30m,7,S M T W T F S,,43 km,29 km/hr,55502
+55503,Jhanjharpur - Laukaha Bazar Passenger (UnReserved),Pass,ECR,,,JJP,4:05,LKQ,5:35,1h 30m,7,S M T W T F S,,43 km,29 km/hr,55504
+55504,Laukaha Bazar - Jhanjharpur Passenger (UnReserved),Pass,ECR,,,LKQ,6:30,JJP,8:00,1h 30m,7,S M T W T F S,,43 km,29 km/hr,55503
+55502,Laukaha Bazar - Jhanjharpur Passenger (UnReserved),Pass,ECR,,,LKQ,17:00,JJP,18:30,1h 30m,7,S M T W T F S,,43 km,29 km/hr,55501
+77638,Kalaburagi - Bidar DEMU,DEMU,SCR,,,KLBG,7:30,BIDR,10:05,2h 35m,8,M T W T F S,,125 km,48 km/hr,77635
+77635,Bidar - Kalaburagi DEMU,DEMU,SCR,,,BIDR,10:20,KLBG,13:20,3h 0m,8,M T W T F S,,125 km,42 km/hr,77638
+55035,Siwan - Gorakhpur Cantt. Passenger (via Kaptanganj) (UnReserved),Pass,NER,,,SV,17:35,GKC,21:45,4h 10m,25,S M T W T F S,,162 km,39 km/hr,55036
+75222,Sonpur - Deoria DEMU,DEMU,ECR,,,SEE,12:15,DEIA,14:45,2h 30m,8,S M T W T F S,,69 km,28 km/hr,75221
+65101,Ghazipur City - Jaunpur MEMU,MEMU,NER,,,GCT,6:20,JNU,8:50,2h 30m,14,S M T W T F S,,98 km,39 km/hr,65102
+55084,Daliganj - Mailani Passenger (UnReserved),Pass,NER,,,DAL,8:10,MLN,13:05,4h 55m,25,S M T W T F S,,188 km,38 km/hr,55085
+55082,Sitapur - Mailani Passenger (UnReserved),Pass,NER,,,STP,18:10,MLN,21:10,3h 0m,14,S M T W T F S,,106 km,35 km/hr,55081
+52261,Nanpara - Mailani MG Passenger (UnReserved),Pass,NER,,,NNP,7:20,MLN,13:55,6h 35m,14,S M T W T F S,,171 km,26 km/hr,52262
+52262,Mailani - Nanpara MG Passenger(UnReserved) (UnReserved),Pass,NER,,,MLN,10:50,NNP,17:50,7h 0m,14,S M T W T F S,,171 km,24 km/hr,52261
+52263,Nanpara - Mailani MG Passenger (UnReserved),Pass,NER,,,NNP,11:10,MLN,17:55,6h 45m,14,S M T W T F S,,171 km,25 km/hr,52264
+55350,Shahjahanpur - Pilibhit Passenger (UnReserved),Pass,NER,,,SPN,6:30,PBE,8:50,2h 20m,14,S M T W T F S,,84 km,36 km/hr,55353
+55353,Pilibhit - Shahjahanpur Passenger (UnReserved),Pass,NER,,,PBE,18:10,SPN,20:35,2h 25m,14,S M T W T F S,,84 km,35 km/hr,55350
+56701,Madurai - Bodinayakkanur Passenger (UnReserved),Pass,SR,,,MDU,8:20,BDNK,10:00,1h 40m,4,S M T W T F S,,90 km,54 km/hr,56702
+56816,Karaikkudi - Tiruchchirappalli Passenger (UnReserved),Pass,SR,,,KKDI,15:20,TPJ,17:15,1h 55m,7,S M T W T F S,,90 km,47 km/hr,56815
+68818,Garha (Jabalpur) - Gondia MEMU,MEMU,SECR,,,GGGS,13:45,G,21:00,7h 15m,33,S M T W T F S,,224 km,31 km/hr,68817
+59123,Pratapnagar - Jobat Passenger (UnReserved),Pass,WR,,,PRTN,9:05,JOBT,13:10,4h 5m,18,S M T W T F S,,172 km,42 km/hr,59124
+59124,Jobat - Pratapnagar Passenger (UnReserved),Pass,WR,,,JOBT,14:05,PRTN,18:05,4h 0m,18,S M T W T F S,,172 km,43 km/hr,59123
+59125,Pratapnagar - Chhota Udepur Passenger (UnReserved),Pass,WR,,,PRTN,14:10,CTD,16:40,2h 30m,16,S M T W T F S,,99 km,40 km/hr,59126
+59606,Bari Sadri - Udaipur City Passenger (UnReserved),Pass,NWR,,,BI,5:55,UDZ,9:05,3h 10m,10,S M T W T F S,,124 km,39 km/hr,59605
+58310,Sonepur - Balangir Passenger (UnReserved),Pass,ECoR,,,SNPU,5:00,BLGR,6:00,1h 0m,3,S M T W T F S,,47 km,47 km/hr,58309
+71442,Beed - Ahilyanagar DEMU,DEMU,CR,,,BEED,13:00,ANG,17:45,4h 45m,13,M T W T F S,,167 km,35 km/hr,71441
+71441,Ahilyanagar - Beed DEMU,DEMU,CR,,,ANG,7:45,BEED,12:30,4h 45m,13,M T W T F S,,167 km,35 km/hr,71442
+55076,Barhni - Nakaha Jungle Passenger (UnReserved),Pass,NER,,,BNY,11:15,JEA,14:20,3h 5m,10,S M T W T F S,,107 km,35 km/hr,55075
+55074,Barhni - Gorakhpur Passenger (UnReserved),Pass,NER,,,BNY,4:45,GKP,8:15,3h 30m,11,S M T W T F S,,113 km,32 km/hr,55073
+66561,Tumakuru - Yesvantpur MEMU,MEMU,SWR,,,TK,8:55,YPR,10:25,1h 30m,10,M T W T F S,,64 km,43 km/hr,66562
+66566,Tumakuru - Banaswadi MEMU,MEMU,SWR,,,TK,20:20,BAND,22:05,1h 45m,8,S,,75 km,43 km/hr,66565
+67226,Gudur - Vijayawada MEMU,MEMU,SCoR,,,GDR,6:45,BZA,15:25,8h 40m,39,S M T W T F S,,294 km,34 km/hr,67225
+47249,Secunderabad - Umdanagar MMTS,Hyd,SCR,,,SC,16:10,UR,17:10,1h 0m,12,S M T W T F S,,28 km,28 km/hr,
+17255,Narasapur - Lingampalli Express (PT),Exp,SCoR,,,NS,19:00,LPI,5:15,10h 15m,16,S M T W T F S,SL 3A 2A 1A,475 km,46 km/hr,17256
+16054,Tirupati - MGR Chennai Central Express,Exp,SR,,,TPTY,10:10,MAS,13:30,3h 20m,7,S M T W T F S,2S CC,147 km,44 km/hr,16053
+12336,Mumbai LTT - Bhagalpur SF Express (PT),SF,ER,,,LTT,8:05,BGP,17:55,33h 50m,36,S T,SL 3A 2A,1911 km,56 km/hr,12335
+12785,Kacheguda - Ashokapuram SF Express (PT),SF,SCR,,,KCG,19:05,AP,9:55,14h 50m,20,S M T W T F S,SL CC 3A 2A 1A,769 km,52 km/hr,12786
+40592,Guduvancheri - Tambaram EMU Local,Chn,SR,,,GI,22:50,TBM,23:15,0h 25m,3,M T W T F S,,11 km,27 km/hr,
+68760,Raipur - Rajim MEMU,MEMU,SECR,,,R,9:00,RIM,10:25,1h 25m,5,S M T W T F S,,55 km,38 km/hr,68761
+68762,Raipur - Rajim MEMU,MEMU,SECR,,,R,16:20,RIM,17:50,1h 30m,5,S M T W T F S,,55 km,36 km/hr,68763
+68761,Rajim - Raipur MEMU,MEMU,SECR,,,RIM,11:20,R,12:45,1h 25m,5,S M T W T F S,,55 km,38 km/hr,68760
+68763,Rajim - Raipur MEMU,MEMU,SECR,,,RIM,18:45,R,20:15,1h 30m,5,S M T W T F S,,55 km,36 km/hr,68762
+20625,MGR Chennai Central - Bhagat ki Kothi SF Express (PT),SF,SR,,,MAS,19:35,BGKT,11:40,40h 5m,31,S M T T F,SL 3A 2A 3E,2351 km,59 km/hr,20626
+20626,Bhagat Ki Kothi - MGR Chennai Central SF Express,SF,SR,,,BGKT,5:40,MAS,23:15,41h 35m,31,S M W T F,SL 3A 2A 3E,2351 km,57 km/hr,20625
+63043,Katwa - Ahmadpur MEMU,MEMU,ER,,,KWAE,7:05,AMP,8:25,1h 20m,12,S M T W T F S,,52 km,39 km/hr,63044
+55522,Saharsa - Triveniganj Passenger (UnReserved),Pass,ECR,,,SHC,14:40,TIGJ,17:30,2h 50m,9,S M T W T F S,,58 km,20 km/hr,55521
+55523,Saharsa - Samastipur Passenger (via Alauli) (UnReserved),Pass,ECR,,,SHC,9:00,SPJ,21:25,12h 25m,33,S M T W T F S,,194 km,16 km/hr,55524
+52446,Shimla - Kalka Passenger,Toy,NR,,,SML,20:20,KLK,1:10,4h 50m,3,S M T W T F S,FC,94 km,20 km/hr,
+21903,Bandra Terminus - Bikaner AC SF Express (PT),ACSF,WR,,,BDTS,23:25,BKN,20:15,20h 50m,19,M,CC 3E,1214 km,58 km/hr,21904
+21904,Bikaner - Bandra Terminus AC SF Express,ACSF,WR,,,BKN,9:00,BDTS,6:45,21h 45m,19,W,CC 3E,1214 km,56 km/hr,21903
+26901,Sabarmati BG - Veraval Vande Bharat Express,VB,WR,,,SBIB,6:00,VRL,12:55,6h 55m,8,S M T W F S,CC Ex,450 km,65 km/hr,26902
+26902,Veraval - Sabarmati BG Vande Bharat Express,VB,WR,,,VRL,15:50,SBIB,22:25,6h 35m,7,S M T W F S,CC Ex,450 km,68 km/hr,26901
+14622,Firozpur Cantt. - Hazur Sahib Nanded Express,Exp,NR,,,FZR,13:25,NED,3:15,37h 50m,28,F,SL 3A 2A 3E,2023 km,53 km/hr,14621
+14621,Hazur Sahib Nanded - Firozpur Cantt. Express (PT),Exp,NR,,,NED,12:10,FZR,4:40,40h 30m,28,S,SL 3A 2A 3E,2023 km,50 km/hr,14622
+13115,Sealdah - Jalpaiguri Road Humsafar Express,Hms,ER,,,SDAH,23:40,JPE,11:45,12h 5m,13,F,SL 3A,587 km,49 km/hr,13116
+55363,Pilibhit - Shahjahanpur Passenger (UnReserved),Pass,NER,,,PBE,12:00,SPN,14:15,2h 15m,14,S M T W T F S,,84 km,37 km/hr,55364
+55364,Shahjahanpur - Pilibhit Passenger (UnReserved),Pass,NER,,,SPN,14:55,PBE,17:10,2h 15m,14,S M T W T F S,,84 km,37 km/hr,55363
+19202,Ayodhya Cantt - Bhavnagar Terminus Express,Exp,WR,,,AYC,22:40,BVC,4:35,29h 55m,24,T,SL 3A 2A 3E,1551 km,52 km/hr,19201
+19603,Daurai (Ajmer) - Godda Weekly Express,Exp,NWR,,,DOZ,15:30,GODA,22:00,30h 30m,34,S,SL 3A 2A 3E,1684 km,55 km/hr,19604
+17377,Vijayapura - Mangaluru Central Express,Exp,SWR,,,BJP,15:15,MAQ,10:00,18h 45m,26,S M T W T F S,SL 3A 2A,789 km,42 km/hr,17378
+17378,Mangaluru Central - Vijayapura Express,Exp,SWR,,,MAQ,16:45,BJP,10:30,17h 45m,26,S M T W T F S,SL 3A 2A,789 km,44 km/hr,17377
+22361,Rajendra Nagar Terminal - New Delhi Amrit Bharat Express (PT),AB,ECR,,,RJPB,19:50,NDLS,13:10,17h 20m,8,S M T W T F S,SL,999 km,58 km/hr,22362
+17605,Kacheguda - Bhagat Ki Kothi Express (PT),Exp,SCR,,,KCG,23:35,BGKT,19:40,44h 5m,31,S M T W T F S,SL 3A 2A,1949 km,44 km/hr,17606
+26751,Belagavi - KSR Bengaluru Vande Bharat Express,VB,SWR,,,BGM,5:35,SBC,13:50,8h 15m,6,S M T T F S,CC Ex,612 km,74 km/hr,26752
+26752,KSR Bengaluru - Belagavi Vande Bharat Express,VB,SWR,,,SBC,14:20,BGM,22:30,8h 10m,6,S M T T F S,CC Ex,612 km,75 km/hr,26751
+14047,Sitamarhi - Delhi Amrit Bharat Express (PT),AB,NR,,,SMI,22:20,DLI,22:40,24h 20m,15,S,SL,1050 km,43 km/hr,14048
+26406,SMVD Katra - Amritsar Vande Bharat Express,VB,NR,,,SVDK,6:40,ASR,11:40,5h 0m,4,S M T W T F,CC Ex,284 km,57 km/hr,26405
+26405,Amritsar - SMVD Katra Vande Bharat Express,VB,NR,,,ASR,16:40,SVDK,21:45,5h 5m,4,S M T W T F,CC Ex,284 km,56 km/hr,26406
+12316,Ananya Express,SF,ER,,,UDZ,0:50,KOAA,14:50,38h 0m,20,M,SL 3A 2A 1A 3E,2132 km,56 km/hr,12315
+16343,Amritha Express (PT),Exp,SR,,,TVC,20:30,RMM,12:15,15h 45m,27,S M T W T F S,SL 3A 2A 1A,769 km,49 km/hr,16344
+13697,Gaya - Delhi Amrit Bharat Express (PT),AB,ECR,,,GAYA,16:45,DLI,12:00,19h 15m,9,S T,SL,985 km,51 km/hr,13698
+69249,Sabarmati - Katosan Road MEMU,MEMU,WR,,,SBIB,17:20,KTRD,18:35,1h 15m,3,S M T W T F,,58 km,46 km/hr,69250
+16602,Jogbani - Erode Amrit Bharat Express (PT),AB,SR,,,JBN,15:15,ED,7:00,63h 45m,49,S,SL,3129 km,49 km/hr,16601
+16601,Erode - Jogbani Amrit Bharat Express (PT),AB,SR,,,ED,8:15,JBN,19:00,58h 45m,49,T,SL,3129 km,53 km/hr,16602
+37358,Tarakeswar - Howrah Local,Klkt,ER,,,TAK,21:38,HWH,23:07,1h 29m,19,S M T W T F S,,57 km,38 km/hr,37325
+37325,Howrah - Tarakeswar Local,Klkt,ER,,,HWH,10:20,TAK,11:45,1h 25m,19,S M T W T F S,,57 km,40 km/hr,37358
+68766,Raipur - Rajim MEMU,MEMU,SECR,,,R,4:45,RIM,6:10,1h 25m,5,S M T W T F S,,55 km,38 km/hr,68767
+68767,Rajim - Raipur MEMU,MEMU,SECR,,,RIM,6:55,R,8:20,1h 25m,5,S M T W T F S,,55 km,38 km/hr,68766
+63275,Kiul - Patna Fast MEMU,MEMU,ECR,,,KIUL,16:50,PNBE,20:45,3h 55m,21,S M T W T F S,,123 km,31 km/hr,63276
+26481,Jodhpur - Delhi Cantt. Vande Bharat Express,VB,NWR,,,JU,5:30,DEC,13:30,8h 0m,9,S M W T F S,CC Ex,604 km,75 km/hr,26482
+26472,Delhi Cantt - Bikaner Vande Bharat Express,VB,NWR,,,DEC,16:45,BKN,22:50,6h 5m,7,S M T T F S,CC Ex,447 km,74 km/hr,26471
+35041,Katwa - Ahmadpur EMU Passenger,Klkt,ER,,,KWAE,15:50,AMP,17:10,1h 20m,12,S M T W T F S,,52 km,39 km/hr,35042
+15293,Muzaffarpur - Charlapalli Amrit Bharat Express (PT),AB,ECR,,,MFP,11:25,CHZ,23:50,36h 25m,21,T,SL,1890 km,52 km/hr,15294
+15294,Charlapalli - Muzaffarpur Amrit Bharat Express,AB,ECR,,,CHZ,4:05,MFP,16:00,35h 55m,21,T,SL,1890 km,53 km/hr,15293
+53241,Gaunaha - Narkatiaganj Pasenger (UnReserved),Pass,NER,,,GAH,14:15,NKE,15:10,0h 55m,2,S M T W T F S,,23 km,25 km/hr,53242
+75225,Purnia Court - Saharsa DEMU,DEMU,ECR,,,PRNC,3:00,SHC,6:00,3h 0m,15,S M T W T F S,,94 km,31 km/hr,75226
+63331,Kiul - Mokama MEMU,MEMU,ECR,,,KIUL,14:40,MKA,16:10,1h 30m,10,S M T W T F S,,34 km,23 km/hr,63332
+20687,SSS Hubballi - KSR Bengaluru Superfast Express,SF,SWR,,,UBL,23:30,SBC,6:50,7h 20m,7,S M T W T F S,SL 3A 2A 1A,470 km,64 km/hr,20688
+20688,KSR Bengaluru - SSS Hubballi Superfast Express,SF,SWR,,,SBC,22:20,UBL,5:30,7h 10m,7,S M T W T F S,SL 3A 2A 1A,470 km,66 km/hr,20687
+16548,Vijayapura - Yesvantpur Express,Exp,SWR,,,BJP,13:50,YPR,5:00,15h 10m,21,S M T W T F S,SL 3A,742 km,49 km/hr,16547
+42611,Chennai Beach - Gummidipundi EMU,Chn,SR,,,MSB,20:05,GPD,21:45,1h 40m,16,S M T W T F S,,48 km,29 km/hr,
+11631,Bhopal - Dhanbad Express,Exp,WCR,,,BPL,20:55,DHN,20:20,23h 25m,30,M T F,SL 3A 2A 1A 3E,1195 km,51 km/hr,11632
+11634,Chopan - Bhopal Weekly Express,Exp,WCR,,,CPU,17:10,BPL,7:00,13h 50m,15,M,SL 3A 2A 1A 3E,723 km,52 km/hr,11633
+12990,Ajmer - Dadar Western SF Express (PT),SF,NWR,,,AII,20:45,DDR,12:50,16h 5m,20,S W F,SL 3A 2A 3E,980 km,61 km/hr,12989

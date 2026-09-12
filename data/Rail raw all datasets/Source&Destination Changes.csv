@@ -1,0 +1,373 @@
+﻿Train No,Name,Type,Zone,Date From,Date To,From,Dep,To,Arr,Duration,Halts,Dep Days,Classes,Distance,Speed,Return
+06126,Mangaluru Central - Chennai Egmore Special Fare Special (PT),Exp,SR,13-Jul,28-Sep,MAQ,16:00,MS,10:55,18h 55m,18,M,SL 3A 2A,895 km,47 km/hr,6125
+06125,Chennai Egmore - Mangaluru Central Special Fare Special (PT),Exp,SR,14-Jul,29-Sep,MS,14:00,MAQ,8:40,18h 40m,17,T,SL 3A 2A,895 km,48 km/hr,6126
+08311,Sambalpur - Ernakulam Jn. Special Fare Special,Exp,ECoR,1-Jul,2-Sep,SBP,11:35,ERS,5:40,42h 5m,35,W,SL 3A 2A 1A,1983 km,47 km/hr,8312
+02276,Shakur Basti - Subedarganj Special Fare Special,Exp,NCR,26-Aug,31-Aug,SSB,12:00,SFG,22:30,10h 30m,6,M W S,SL 3A,637 km,61 km/hr,2275
+02418,Dadri - Prayagraj Special Fare Summer Special,Exp,NCR,3-May,1-Dec,DER,22:15,PRYJ,9:00,10h 45m,12,S M T W T F S,SL 3A 2A 1A,593 km,55 km/hr,2417
+02417,Prayagraj - Dadri Special Fare Summer SF Special,SF,NCR,2-May,30-Nov,PRYJ,21:00,DER,7:15,10h 15m,12,S M T W T F S,SL 3A 2A 1A,593 km,58 km/hr,2418
+04688,Badgam - SMVD Katra Special,DEMU,NR,5-Apr,17-Oct,BDGM,7:20,SVDK,13:00,5h 40m,12,M T W T F S,EV,200 km,35 km/hr,4687
+04687,SMVD Katra - Badgam Special,DEMU,NR,5-Apr,17-Oct,SVDK,13:45,BDGM,20:00,6h 15m,12,M T W T F S,EV,200 km,32 km/hr,4688
+08312,Ernakulam Jn. - Sambalpur Special Fare Special (PT),Exp,ECoR,3-Jul,4-Sep,ERS,8:40,SBP,23:15,38h 35m,34,F,SL 3A 2A 1A,1983 km,51 km/hr,8311
+05012,Gonda - Ayodhya Cantt Mela Special,DEMU,NER,15-Aug,27-Aug,GD,21:40,AYC,0:10,2h 30m,9,S M T W T S,,73 km,29 km/hr,5011
+05011,Ayodhya Cantt - Gonda Mela Special,DEMU,NER,16-Aug,28-Aug,AYC,0:30,GD,3:30,3h 0m,9,S M T W T F,,73 km,24 km/hr,5012
+09466,Darbhanga - Ahmedabad Special Fare Special,Exp,WR,18-May,14-Sep,DBG,3:00,ADI,16:35,37h 35m,16,M,SL 3A,1918 km,51 km/hr,9465
+09196,Mau - Pratapnagar Special Fare SF Summer Special,SF,WR,22-Feb,27-Sep,MAU,23:25,PRTN,3:15,27h 50m,18,S,SL 3A 2A 1A,1550 km,56 km/hr,9195
+09195,Pratapnagar - Mau Special Fare SF Summer Special (PT),SF,WR,21-Feb,26-Sep,PRTN,16:00,MAU,18:00,26h 0m,18,S,SL 3A 2A 1A,1550 km,60 km/hr,9196
+06094,Mangaluru Jn. - Thiruvananthapuram North Special Fare SF Special,SF,SR,13-Aug,3-Sep,MAJN,15:15,TVC,5:30,14h 15m,20,T,SL 3A,634 km,44 km/hr,6093
+12933,Karnavati Express (PT),SF,WR,,,BDTS,13:55,VTA,20:50,6h 55m,9,S M T W T F S,2S CC,474 km,68 km/hr,12934
+12872,Junagarh Road - Howrah Ispat Express,SF,SER,,,JNRD,2:15,HWH,18:30,16h 15m,33,S T T,2S CC 3A,844 km,52 km/hr,12871
+11056,Godan Express (PT),Exp,CR,,,GKP,6:35,LTT,15:30,32h 55m,21,S T W F,SL 3A 2A,1726 km,52 km/hr,11055
+12871,Howrah - Junagarh Road Ispat Express,SF,SER,,,HWH,6:30,JNRD,22:35,16h 5m,33,M W S,2S CC 3A,844 km,53 km/hr,12872
+16378,Ernakulam Jn. - KSR Bengaluru Intercity Express,Exp,SR,,,ERS,9:05,SBC,21:00,11h 55m,12,S M T W T F S,2S CC,584 km,49 km/hr,16377
+11055,Godan Express (PT),Exp,CR,,,LTT,10:55,GKP,20:35,33h 40m,21,S M W F,SL 3A 2A,1726 km,51 km/hr,11056
+15138,Budh Purnima Express,Exp,NER,,,BNRS,20:15,RGD,6:10,9h 55m,20,S M T W T F S,SL 3A 2A,418 km,42 km/hr,15137
+16340,Nagercoil - Mumbai LTT Express (Via Katpadi) (PT),Exp,SR,,,NCJ,6:45,LTT,18:50,36h 5m,37,M T W F,SL 3A 2A,1863 km,52 km/hr,16339
+22158,Chennai Egmore - Mumbai CSMT SF Mail (PT),SF,CR,,,MS,6:35,CSMT,5:50,23h 15m,32,S M T W T F S,SL 3A 2A,1286 km,55 km/hr,22157
+14341,Mussoorie Express,Exp,NR,,,SSB,21:20,DDN,9:05,11h 45m,18,S M T W T F S,SL 3A 2A 1A,345 km,29 km/hr,14342
+14342,Mussoorie Express,Exp,NR,,,DDN,21:20,SSB,8:25,11h 5m,18,S M T W T F S,SL 3A 2A 1A,345 km,31 km/hr,14341
+16339,Mumbai LTT - Nagercoil Express (via Katpadi) (PT),Exp,SR,,,LTT,20:55,NCJ,9:45,36h 50m,38,T W T S,SL 3A 2A,1863 km,51 km/hr,16340
+16351,Mumbai LTT - Nagercoil Express (Via Renigunta) (PT),Exp,SR,,,LTT,20:55,NCJ,7:00,34h 5m,42,M F,SL 3A 2A,1930 km,57 km/hr,16352
+12667,Tambaram - Kanniyakumari Weekly SF Express (PT),SF,SR,,,TBM,19:30,CAPE,7:15,11h 45m,10,T,SL 3A 2A,715 km,61 km/hr,12668
+12689,MGR Chennai Central - Kanniyakumari SF Express (PT),SF,SR,,,MAS,19:00,CAPE,10:45,15h 45m,17,F,SL 3A 2A,899 km,57 km/hr,12690
+16332,Thiruvananthapuram Central - Mumbai LTT Express (PT),Exp,SR,,,TVC,4:25,LTT,18:50,38h 25m,38,S,SL 3A 2A 3E,1911 km,50 km/hr,16331
+22178,Mahanagari SF Express,SF,CR,,,BNRS,9:35,CSMT,11:40,26h 5m,27,S M T W T F S,SL 3A 2A 1A,1511 km,58 km/hr,22177
+16377,KSR Bengaluru - Ernakulam Jn. Intercity Express,Exp,SR,,,SBC,6:10,ERS,17:10,11h 0m,12,S M T W T F S,2S CC,584 km,53 km/hr,16378
+22177,Mahanagari SF Express (PT),SF,CR,,,CSMT,0:15,BNRS,3:45,27h 30m,29,S M T W T F S,SL 3A 2A 1A,1513 km,55 km/hr,22178
+22928,Lokshakti Express (PT),SF,WR,,,VDG,18:20,BDTS,5:25,11h 5m,18,S M T W T F S,SL 3A 2A 1A 3E,584 km,53 km/hr,22927
+14054,Himachal Express,Exp,NR,,,KRTP,20:55,DLI,5:00,8h 5m,22,S M T W T F S,SL 3A 2A 1A,425 km,53 km/hr,14053
+12690,Kanniyakumari - MGR Chennai Central SF Express (PT),SF,SR,,,CAPE,20:30,MAS,11:25,14h 55m,18,S,SL 3A 2A,899 km,60 km/hr,12689
+13301,Swarna Rekha Express,Exp,ECR,,,DHN,5:30,ADTP,12:05,6h 35m,8,S M T W T F S,2S CC,182 km,28 km/hr,13302
+13302,Swarna Rekha Express,Exp,ECR,,,ADTP,15:35,DHN,22:25,6h 50m,8,S M T W T F S,2S CC,182 km,27 km/hr,13301
+18522,Tirumala Express (PT),Exp,SCoR,,,GTL,13:30,VSKP,11:30,22h 0m,41,S M T W T F S,SL 3A 2A 1A 3E,1056 km,48 km/hr,18521
+18521,Tirumala Express (PT),Exp,SCoR,,,VSKP,14:00,GTL,11:30,21h 30m,38,S M T W T F S,SL 3A 2A 1A 3E,1056 km,49 km/hr,18522
+16331,Mumbai LTT - Thiruvananthapuram Central Express (PT),Exp,SR,,,LTT,20:55,TVC,7:00,34h 5m,39,S,SL 3A 2A 3E,1911 km,56 km/hr,16332
+12930,Vadodara - Valsad Intercity SF Express,SF,WR,,,BJW,16:45,BL,20:45,4h 0m,12,S M T W T F S,2S CC,206 km,51 km/hr,12929
+22189,Madan Mahal - Rewa InterCity Express,SF,WCR,,,MML,17:00,REWA,21:22,4h 22m,11,S M T W T F S,2S CC 3A,242 km,55 km/hr,22190
+22190,Rewa - Madan Mahal InterCity Express,SF,WCR,,,REWA,5:45,MML,10:07,4h 22m,11,S M T W T F S,2S CC 3A,242 km,55 km/hr,22189
+16533,Jodhpur - KSR Bengaluru Express (Via Guntakal) (PT),Exp,SWR,,,JU,6:15,SBC,2:30,44h 15m,32,W,SL 3A 2A 1A,2185 km,49 km/hr,16534
+16534,KSR Bengaluru - Jodhpur Express (Via Guntakal) (PT),Exp,SWR,,,SBC,17:00,JU,13:50,44h 50m,32,S,SL 3A 2A 1A,2185 km,49 km/hr,16533
+19005,Surat - Bhusaval Express,Exp,WR,,,ST,23:10,BSL,8:00,8h 50m,29,S M T W T F S,SL 3A,335 km,38 km/hr,19006
+19006,Bhusaval - Surat Express,Exp,WR,,,BSL,19:30,ST,5:00,9h 30m,29,S M T W T F S,SL 3A,335 km,35 km/hr,19005
+17663,Raichur - Jalna Express,Exp,SCR,,,RC,15:50,J,9:30,17h 40m,29,S M T W T F S,SL 3A 2A,735 km,42 km/hr,17664
+17664,Jalna - Raichur Express,Exp,SCR,,,J,17:30,RC,10:30,17h 0m,31,S M T W T F S,SL 3A 2A,735 km,43 km/hr,17663
+25036,Uttarakhand Sampark Kranti Express Slip,SKr,NER,,,RMR,9:50,MB,11:45,1h 55m,2,S M T W T F S,2S CC,77 km,40 km/hr,15035-Slip
+79440,Kathana - Pratapnagar DEMU,DEMU,WR,,,KTNA,5:15,PRTN,9:50,4h 35m,7,S M T W T F,,70 km,15 km/hr,79439
+69141,Virar - Surat MEMU,MEMU,WR,,,VR,5:15,ST,10:30,5h 15m,31,S M T W T F S,,208 km,40 km/hr,69142
+19008,Bhusaval - Surat Express,Exp,WR,,,BSL,20:15,ST,6:20,10h 5m,26,S M T W T F S,SL,335 km,33 km/hr,19007
+19001,Virar - Surat Intercity Express (UnReserved),Exp,WR,,,VR,17:00,ST,23:20,6h 20m,27,S M T W T F S,,208 km,33 km/hr,19002
+19002,Surat - Virar Intercity Express (UnReserved),Exp,WR,,,ST,4:15,VR,10:10,5h 55m,28,S M T W T F S,,208 km,35 km/hr,19001
+69142,Surat - Virar MEMU,MEMU,WR,,,ST,17:30,VR,23:30,6h 0m,31,S M T W T F S,,208 km,35 km/hr,69141
+76826,Tiruchchirappalli - Karaikal DEMU,DEMU,SR,,,TPJ,16:45,KIK,21:20,4h 35m,27,S M T W T F S,,145 km,32 km/hr,76825
+52474,Baijnath Paprola - Pathankot Passenger,Toy,NR,,,BJPL,15:40,PTK,22:50,7h 10m,28,S M T W T F S,,141 km,20 km/hr,52471
+52470,Baijnath Paprola - Pathankot Passenger,Toy,NR,,,BJPL,14:15,PTK,21:45,7h 30m,28,S M T W T F S,,141 km,19 km/hr,52465
+11266,Ambikapur - Madan Mahal Intercity Express,Exp,WCR,,,ABKP,6:15,MML,15:20,9h 5m,13,S M T W T F S,2S CC 3A,432 km,48 km/hr,11265
+12534,Pushpak Express (PT),SF,NER,,,CSMT,8:25,GTNR,8:00,23h 35m,16,S M T W T F S,SL 3A 2A 1A 3E,1438 km,61 km/hr,12533
+22927,Lokshakti Express (PT),SF,WR,,,BDTS,19:40,VDG,6:40,11h 0m,22,S M T W T F S,SL 3A 2A 1A 3E,584 km,53 km/hr,22928
+12533,Pushpak Express (PT),SF,NER,,,GTNR,20:45,CSMT,22:45,26h 0m,17,S M T W T F S,SL 3A 2A 1A 3E,1438 km,55 km/hr,12534
+17630,Hazur Sahib Nanded - Hadapsar Express (PT),Exp,SCR,,,NED,15:30,HDP,4:35,13h 5m,11,S M T W T F S,SL 3A 2A,652 km,50 km/hr,17629
+16593,KSR Bengaluru - Hazur Sahib Nanded Express,Exp,SWR,,,SBC,23:20,NED,23:10,23h 50m,35,S M T W T F S,SL 3A 2A,1039 km,44 km/hr,16594
+14053,Himachal Express,Exp,NR,,,DLI,22:50,KRTP,7:50,9h 0m,24,S M T W T F S,SL 3A 2A 1A,425 km,47 km/hr,14054
+64074,New Delhi - Dholpur EMU,Del,NR,,,NDLS,4:15,DHO,10:50,6h 35m,24,S M T W T F S,,248 km,38 km/hr,64073
+63314,Sikta - Muzaffarpur MEMU,MEMU,ECR,,,STF,4:00,MFP,9:35,5h 35m,24,S M T W T F S,,147 km,26 km/hr,63313
+54033,Shakur Basti - Narwana Passenger (UnReserved),Pass,NR,,,SSB,17:55,NRW,21:40,3h 45m,23,S M T W T F S,,151 km,40 km/hr,54032
+47157,Falaknuma - Lingampalli MMTS,Hyd,SCR,,,FM,9:25,LPI,11:00,1h 35m,20,M T W T F,FC,38 km,24 km/hr,
+16610,Mangaluru Central - Palakkad Jn. Express (UnReserved),Exp,SR,,,MAQ,5:15,PGT,13:05,7h 50m,37,S M T W T F S,,351 km,45 km/hr,16611
+22585,Banaras - Gandhinagar Capital SF Express,SF,NER,,,BNRS,15:10,GNC,15:20,24h 10m,12,W,SL 3A 2A 1A 3E,1496 km,62 km/hr,22586
+79439,Pratapnagar - Kathana DEMU,DEMU,WR,,,PRTN,16:35,KTNA,21:00,4h 25m,7,S M T W T F,,70 km,16 km/hr,79440
+69169,Surat - Nandurbar MEMU,MEMU,WR,,,ST,18:10,NDB,22:45,4h 35m,19,S M T W T F S,,161 km,35 km/hr,69170
+52465,Pathankot - Baijnath Paprola Passenger,Toy,NR,,,PTK,5:00,BJPL,12:00,7h 0m,28,S M T W T F S,,141 km,20 km/hr,52470
+52467,Pathankot - Baijnath Paprola Passenger,Toy,NR,,,PTK,7:00,BJPL,13:40,6h 40m,28,S M T W T F S,,141 km,21 km/hr,52464
+11265,Madan Mahal - Ambikapur Intercity Express,Exp,WCR,,,MML,12:25,ABKP,23:00,10h 35m,13,S M T W T F S,2S SL CC 3A,432 km,41 km/hr,11266
+76825,Karaikal - Tiruchchirappalli DEMU,DEMU,SR,,,KIK,6:35,TPJ,11:20,4h 45m,27,S M T W T F S,,145 km,31 km/hr,76826
+14821,Jodhpur - Gandhigram Express (UnReserved),Exp,NWR,,,JU,10:00,GG,21:00,11h 0m,49,S M T W T F S,,458 km,42 km/hr,14822
+55055,Chhapra - Nakaha Jungle Passenger (UnReserved),Pass,NER,,,CPR,16:45,JEA,22:10,5h 25m,26,S M T W T F S,,185 km,34 km/hr,55056
+64082,New Delhi - Kosi Kalan EMU,Del,NR,,,NDLS,18:00,KSV,21:00,3h 0m,14,S M T W T F S,,100 km,33 km/hr,64051
+68723,Raipur - Gondia MEMU,MEMU,SECR,,,R,19:00,G,23:15,4h 15m,23,S M T W T F S,,172 km,40 km/hr,68724
+64016,Shakurbasti - Mathura EMU,Del,NR,,,SSB,14:30,MTJ,19:15,4h 45m,24,S M T W T F S,,153 km,32 km/hr,64019
+64073,Dholpur - New Delhi EMU,Del,NR,,,DHO,16:00,NDLS,22:20,6h 20m,24,S M T W T F S,,248 km,39 km/hr,64074
+64019,Mathura - Shakurbasti EMU,Del,NR,,,MTJ,19:45,SSB,0:45,5h 0m,23,S M T W T F S,,153 km,31 km/hr,64016
+20104,Gorakhpur - Mumbai LTT SF Express (via Kanpur) (PT),SF,CR,,,GKP,22:30,LTT,4:35,30h 5m,15,S M T W T F S,SL 3A 2A,1680 km,56 km/hr,20103
+20103,Mumbai LTT - Gorakhpur SF Express (via Kanpur) (PT),SF,CR,,,LTT,5:23,GKP,11:45,30h 22m,16,S M T W T F S,SL 3A 2A,1680 km,55 km/hr,20104
+16175,Chennai Egmore - Velankanni Express (PT),Exp,SR,,,MS,21:00,VLNK,4:30,7h 30m,14,S M T W T F S,SL 3A 2A,348 km,46 km/hr,16176
+12325,Gurumukhi SF Express (PT),SF,ER,,,KOAA,7:40,AADR,17:10,33h 30m,18,T,SL 3A 2A 3E,1848 km,55 km/hr,12326
+12326,Gurumukhi SF Express,SF,ER,,,AADR,6:10,KOAA,14:50,32h 40m,18,S,SL 3A 2A 3E,1848 km,57 km/hr,12325
+63373,Darbhanga - Narkatiaganj MEMU,MEMU,ECR,,,DBG,18:45,NKE,1:55,7h 10m,34,S M T W T F S,,191 km,27 km/hr,63374
+63374,Narkatiaganj - Darbhanga MEMU,MEMU,ECR,,,NKE,2:35,DBG,8:45,6h 10m,34,S M T W T F S,,191 km,31 km/hr,63373
+53327,Sindri Town - Dhanbad Passenger (UnReserved),Pass,ECR,,,SNDT,13:40,DHN,14:52,1h 12m,5,S M T W T F S,,28 km,23 km/hr,53328
+53328,Dhanbad - Sindri Town Passenger (UnReserved),Pass,ECR,,,DHN,17:25,SNDT,18:55,1h 30m,5,S M T W T F S,,28 km,19 km/hr,53327
+59629,Rewari - Phulera Passenger (Via Jaipur) (UnReserved),Pass,NWR,,,RE,15:00,FL,21:20,6h 20m,23,S M T W T F S,,280 km,44 km/hr,59630
+59630,Phulera - Rewari Passenger (via Jaipur) (UnReserved),Pass,NWR,,,FL,7:25,RE,14:00,6h 35m,25,S M T W T F S,,280 km,43 km/hr,59629
+66530,KSR Bengaluru - Bangarpet MEMU,MEMU,SWR,,,SBC,9:40,BWT,11:35,1h 55m,10,S M T W T F S,,70 km,37 km/hr,66531
+66531,Bangarapet - White Field MEMU,MEMU,SWR,,,BWT,13:00,WFD,14:15,1h 15m,4,S M T W T F S,,47 km,38 km/hr,66530
+66532,White Field - Marikuppam MEMU,MEMU,SWR,,,WFD,14:55,MKM,16:50,1h 55m,10,S M T W T F S,,63 km,33 km/hr,66533
+51863,Ait - Konch Shuttle (UnReserved),Pass,NCR,,,AIT,8:10,KNH,8:45,0h 35m,0,S M T W T F S,,13 km,23 km/hr,51864
+51867,Ait - Konch Shuttle (UnReserved),Pass,NCR,,,AIT,16:00,KNH,16:35,0h 35m,0,S M T W T F S,,13 km,23 km/hr,51868
+51864,Konch - Ait Shuttle (UnReserved),Pass,NCR,,,KNH,6:35,AIT,7:05,0h 30m,0,S M T W T F S,,13 km,27 km/hr,51863
+51868,Konch - Ait Shuttle (UnReserved),Pass,NCR,,,KNH,14:00,AIT,14:35,0h 35m,0,S M T W T F S,,13 km,23 km/hr,51867
+12547,Agra Cantt. - Gandhigram SF Express (PT),SF,NCR,,,AGC,22:00,GG,12:00,14h 0m,14,M T T F,SL 3A 2A 3E,867 km,62 km/hr,12548
+12548,Gandhigram - Agra Cantt. SF Express (PT),SF,NCR,,,GG,16:40,AGC,7:05,14h 25m,14,S M W T,SL 3A 2A 3E,867 km,60 km/hr,12547
+99817,Lonavala - Shivajinagar Local,Pune,CR,,,LNL,17:30,SVJR,18:50,1h 20m,14,S M T W T F S,FC,61 km,46 km/hr,99818
+13511,Adityapur - Asansol Express,Exp,ER,,,ADTP,13:25,ASN,17:55,4h 30m,7,S T F,2S CC,160 km,36 km/hr,13512
+55335,Kasganj - Mathura Passenger (UnReserved),Pass,NER,,,KSJ,11:40,MTJ,14:20,2h 40m,12,S M T W T F S,,105 km,39 km/hr,55336
+63064,Sahibganj - Barddhaman MEMU,MEMU,ER,,,SBG,13:35,BWN,20:25,6h 50m,38,S M T W T F S,,246 km,36 km/hr,63063
+63063,Barddhaman - Sahibganj MEMU,MEMU,ER,,,BWN,6:05,SBG,12:35,6h 30m,38,S M T W T F S,,246 km,38 km/hr,63064
+33319,Dum Dum Cantt. - Hasanabad Local,Klkt,ER,,,DDC,17:24,HNB,19:20,1h 56m,25,S M T W T F S,,65 km,34 km/hr,33474
+37380,Goghat - Howrah Local,Klkt,ER,,,GOGT,20:07,HWH,22:32,2h 25m,24,S M T W T F S,,91 km,38 km/hr,37369
+31933,Sealdah - Gede Special Local,Klkt,ER,,,SDAH,16:50,GEDE,19:38,2h 48m,35,S M T W T F S,,116 km,42 km/hr,31764
+34646,Sealdah - Lakshmikantpur Local,Klkt,ER,,,SDAH,19:56,LKPR,21:27,1h 31m,22,M T W T F S,,62 km,41 km/hr,34311
+19712,Bhopal - Khatipura (Jaipur) Express (PT),Exp,NWR,,,BPL,16:30,KWP,10:35,18h 5m,36,S M T W T F S,SL 3A 2A 1A 3E,806 km,45 km/hr,19711
+19711,Khatipura (Jaipur) - Bhopal Express,Exp,NWR,,,KWP,17:35,BPL,11:20,17h 45m,36,S M T W T F S,SL 3A 2A 1A 3E,806 km,45 km/hr,19712
+66044,Tiruchanur - Arakkonam MEMU,MEMU,SR,,,TCNR,15:50,AJJ,18:15,2h 25m,10,S M T W T F S,,71 km,29 km/hr,66043
+34311,Lakshmikantpur - Sonarpur Local,Klkt,ER,,,LKPR,21:35,SPR,22:38,1h 3m,13,M T W T F S,,46 km,43 km/hr,34646
+56001,Thiruvarur - Mannargudi Passenger (UnReserved),Pass,SR,,,TVR,18:15,MQ,19:20,1h 5m,4,S M T W T F S,,37 km,35 km/hr,56002
+17238,Chennai Central Suburban - Bitragunta MEMU Express,Exp,SCoR,,,MASS,16:30,BTTR,20:55,4h 25m,11,M T W T F,2S,210 km,48 km/hr,17237
+41001,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,5:00,STM,6:05,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41002
+95003,KP1/Dadar - Khopoli (15 Car) Fast Local,Mumb,CR,,,DR,7:43,KHPI,9:51,2h 8m,19,S M T W T F S,FC,103 km,48 km/hr,95004
+41017,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,8:02,STM,9:07,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41504
+41027,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,9:42,STM,10:47,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41026
+11038,Gorakhpur - Pune Express (via Prayagraj) (PT),Exp,CR,,,GKP,15:50,PUNE,2:15,34h 25m,17,S,SL 3A 2A,1765 km,51 km/hr,11037
+11808,Agra Cantt - VGL Jhansi MEMU Express (UnReserved),Exp,NCR,,,AGC,14:40,VGLJ,20:05,5h 25m,12,S M T W T F S,,216 km,40 km/hr,11807
+54036,Jakhal - Shakur Basti Passenger (UnReserved),Pass,NR,,,JHL,4:35,SSB,9:30,4h 55m,30,S M T W T F S,,189 km,38 km/hr,54035
+15303,Kasganj - New Delhi Intercity Express,Exp,NER,,,KSJ,2:50,NDLS,10:20,7h 30m,18,S M T W T F S,2S CC,359 km,48 km/hr,15304
+16594,Hazur Sahib Nanded - KSR Bengaluru Express (PT),Exp,SWR,,,NED,6:30,SBC,4:10,21h 40m,34,S M T W T F S,SL 3A 2A,1039 km,48 km/hr,16593
+41069,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,18:32,STM,19:37,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41068
+41063,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,17:32,STM,18:37,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41064
+64051,Kosi Kalan - Ghaziabad EMU,Del,NR,,,KSV,21:45,GZB,1:40,3h 55m,20,S M T W T F S,,123 km,32 km/hr,64082
+41079,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,20:15,STM,21:20,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41078
+41083,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,21:45,STM,22:50,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41084
+41009,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,6:40,STM,7:45,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41008
+43892,Pattabiram Military Siding East Depot - Avadi EMU,Chn,SR,,,PRES,21:50,AVD,22:10,0h 20m,3,S M T W T F S,FC,8 km,24 km/hr,43871
+41013,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,7:22,STM,8:27,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41012
+41015,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,7:42,STM,8:47,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41014
+41019,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,8:22,STM,9:27,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41020
+41021,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,8:42,STM,9:47,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41020
+41023,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,9:02,STM,10:07,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41022
+41031,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,10:32,STM,11:37,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41030
+41033,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,11:02,STM,12:07,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41032
+41037,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,12:02,STM,13:07,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41036
+41047,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,14:32,STM,15:37,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41046
+41051,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,15:32,STM,16:37,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41050
+41055,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,16:12,STM,17:17,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41054
+41061,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,17:12,STM,18:17,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41060
+41065,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,17:52,STM,18:57,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41066
+41073,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,19:12,STM,20:17,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41072
+41077,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,19:52,STM,20:57,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41076
+41081,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,20:45,STM,21:50,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41080
+41085,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,22:20,STM,23:25,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41084
+41064,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,17:25,MSB,18:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41063
+41066,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,17:45,MSB,18:50,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41065
+41006,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,5:55,MSB,7:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41005
+41008,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,6:15,MSB,7:20,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41007
+41012,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,6:55,MSB,8:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41011
+41014,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,7:15,MSB,8:20,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41013
+41016,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,7:35,MSB,8:40,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41015
+41020,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,8:15,MSB,9:20,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41019
+41022,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,8:35,MSB,9:40,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41021
+41024,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,8:55,MSB,10:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41025
+41028,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,9:35,MSB,10:40,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41027
+41036,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,11:25,MSB,12:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41035
+41038,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,11:55,MSB,13:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41037
+41040,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,12:25,MSB,13:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41039
+41042,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,12:55,MSB,14:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,43936
+41046,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,13:55,MSB,15:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41047
+41048,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,14:25,MSB,15:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,43792
+41052,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,15:25,MSB,16:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,42652
+41054,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,15:45,MSB,16:50,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41053
+41056,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,16:05,MSB,17:10,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41057
+41060,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,16:45,MSB,17:50,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41059
+41062,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,17:05,MSB,18:10,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41063
+41068,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,18:05,MSB,19:10,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41069
+41076,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,19:25,MSB,20:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41075
+41070,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,18:25,MSB,19:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41069
+41078,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,20:05,MSB,21:10,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41079
+41084,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,21:40,MSB,22:45,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41083
+41080,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,20:35,MSB,21:40,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41079
+41082,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,20:35,MSB,21:40,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41083
+41086,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,22:20,MSB,23:25,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41085
+43751,Chennai Beach - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MSB,9:10,PRES,10:20,1h 10m,16,S M T W T F S,,30 km,26 km/hr,43752
+43753,Chennai Beach - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MSB,10:05,PRES,11:15,1h 10m,16,S M T W T F S,FC,30 km,26 km/hr,43752
+43755,Chennai Beach - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MSB,13:50,PRES,15:00,1h 10m,16,S M T W T F S,,30 km,26 km/hr,43754
+43757,Chennai Beach - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MSB,17:20,PRES,18:35,1h 15m,16,S M T W T F S,,30 km,24 km/hr,
+43752,Pattabiram Military Siding East Depot - Chennai Beach EMU,Chn,SR,,,PRES,8:45,MSB,10:05,1h 20m,16,S M T W T F S,,30 km,23 km/hr,43751
+43754,Pattabiram Military Siding East Depot - Chennai Beach EMU,Chn,SR,,,PRES,20:25,MSB,22:00,1h 35m,16,S M T W T F S,,30 km,19 km/hr,43753
+43101,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,4:15,PRES,5:20,1h 5m,15,S M T W T F S,FC,29 km,27 km/hr,43102
+43103,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,5:15,PRES,6:25,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43102
+43107,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,7:15,PRES,8:35,1h 20m,15,S M T W T F S,,29 km,22 km/hr,43106
+43109,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,11:10,PRES,12:20,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43108
+43111,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,12:20,PRES,13:30,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43110
+43105,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,6:20,PRES,7:30,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43104
+43113,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,15:00,PRES,16:15,1h 15m,15,S M T W T F S,FC,29 km,23 km/hr,43112
+43115,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,16:10,PRES,17:20,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43114
+43117,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,18:15,PRES,19:25,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43116
+43119,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,19:15,PRES,20:20,1h 5m,15,S M T W T F S,,29 km,27 km/hr,43118
+43121,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,20:30,PRES,21:40,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43120
+43123,Chennai Central Suburban - Pattabiram Military Siding East Depot EMU,Chn,SR,,,MASS,22:40,PRES,23:45,1h 5m,15,S M T W T F S,,29 km,27 km/hr,43122
+43102,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,3:20,MASS,4:35,1h 15m,15,S M T W T F S,FC,29 km,23 km/hr,43101
+43104,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,5:30,MASS,6:40,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43103
+43106,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,6:35,MASS,7:45,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43107
+43108,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,7:40,MASS,8:45,1h 5m,15,S M T W T F S,FC,29 km,27 km/hr,43107
+43110,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,10:30,MASS,11:40,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43109
+43112,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,11:25,MASS,12:35,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43111
+43114,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,12:30,MASS,13:40,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43113
+43116,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,13:40,MASS,14:50,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43115
+43118,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,15:10,MASS,16:20,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43117
+43120,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,16:25,MASS,17:30,1h 5m,15,S M T W T F S,FC,29 km,27 km/hr,43119
+43122,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,17:30,MASS,18:40,1h 10m,15,S M T W T F S,,29 km,25 km/hr,43121
+43124,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,18:50,MASS,20:00,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43123
+43126,Pattabiram Military Siding East Depot - Chennai Central Suburban EMU,Chn,SR,,,PRES,19:35,MASS,20:45,1h 10m,15,S M T W T F S,FC,29 km,25 km/hr,43125
+41057,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,16:32,STM,17:37,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41056
+13512,Asansol - Adityapur Express,Exp,ER,,,ASN,9:00,ADTP,12:50,3h 50m,7,S T F,2S CC,160 km,42 km/hr,13511
+41043,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,13:32,STM,14:37,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41042
+30144,Gede - Majerhat Special Local (via Ballygunge),Klkt,ER,,,GEDE,16:15,MJT,19:28,3h 13m,41,S M T W T F S,,128 km,40 km/hr,31917
+31931,Sealdah - Gede Special Local,Klkt,ER,,,SDAH,9:28,GEDE,12:07,2h 39m,25,S M T W T F S,,116 km,44 km/hr,31762
+15468,Bamanhat - Haldibari InterCity Express (UnReserved),Exp,NFR,,,BXT,9:30,HDB,21:15,11h 45m,21,S M T W T F S,,297 km,25 km/hr,15467
+15467,Haldibari - Bamanhat InterCity Express (UnReserved),Exp,NFR,,,HDB,4:30,BXT,13:45,9h 15m,21,S M T W T F S,,297 km,32 km/hr,15468
+95214,BL32 / Badlapur - Dadar AC Fast Local,Mumb,CR,,,BUD,12:27,DR,13:38,1h 11m,8,M T W T F S,FC,57 km,48 km/hr,95215
+34420,Sealdah - Canning Local,Klkt,ER,,,SDAH,9:50,CG,11:05,1h 15m,17,M T W T F S,,45 km,36 km/hr,34359
+33431,Sealdah - Hasnabad Local,Klkt,ER,,,SDAH,8:58,HNB,11:06,2h 8m,28,S M T W T F S,,75 km,35 km/hr,
+22586,Gandhinagar Capital - Banaras SF Express (PT),SF,NER,,,GNC,23:15,BNRS,23:30,24h 15m,12,T,SL 3A 2A 1A 3E,1496 km,62 km/hr,22585
+31930,Gede - Sealdah (Galloping) Special Local,Klkt,ER,,,GEDE,8:26,SDAH,10:57,2h 31m,25,S M T W T F S,,116 km,46 km/hr,31761
+37381,Howrah - Goghat Local,Klkt,ER,,,HWH,15:05,GOGT,17:30,2h 25m,24,S M T W T F S,,91 km,38 km/hr,37346
+37387,Howrah - Goghat Local,Klkt,ER,,,HWH,18:40,GOGT,21:00,2h 20m,24,S M T W T F S,,91 km,39 km/hr,37422
+68036,Hatia - Adityapur MEMU,MEMU,SER,,,HTE,17:55,ADTP,23:35,5h 40m,23,S M T W T F S,,165 km,29 km/hr,68035
+68035,Adityapur - Hatia MEMU,MEMU,SER,,,ADTP,4:35,HTE,11:00,6h 25m,23,S M T W T F S,,168 km,26 km/hr,68036
+22827,Puri - Surat Weekly SF Express (PT),SF,ECoR,,,PURI,19:45,ST,2:35,30h 50m,16,S,SL 3A 2A 3E,1755 km,57 km/hr,22828
+55336,Mathura - Kasganj Fast Passenger (UnReserved),Pass,NER,,,MTJ,20:50,KSJ,23:00,2h 10m,5,S M T W T F S,,105 km,48 km/hr,55335
+13425,Malda Town - Surat Express (PT),Exp,ER,,,MLDT,12:55,ST,4:00,39h 5m,28,S,SL 3A 2A,2119 km,54 km/hr,13426
+11652,Singrauli - Madan Mahal Intercity Express,Exp,WCR,,,SGRL,4:40,MML,12:05,7h 25m,14,S M T W T F S,2S CC 3A,352 km,48 km/hr,11651
+11651,Madan Mahal - Singrauli Intercity Express,Exp,WCR,,,MML,16:05,SGRL,23:45,7h 40m,14,S M T W T F S,2S CC 3A,352 km,46 km/hr,11652
+13426,Surat - Malda Town Express (PT),Exp,ER,,,ST,14:20,MLDT,6:30,40h 10m,28,M,SL 3A 2A,2119 km,53 km/hr,13425
+19409,Sabarmati - Gorakhpur Express (PT),Exp,WR,,,SBIB,10:35,GKP,16:45,30h 10m,28,T S,SL 3A 2A,1563 km,52 km/hr,19410
+19410,Gorakhpur - Sabarmati Express,Exp,WR,,,GKP,4:55,SBIB,9:55,29h 0m,28,M S,SL 3A 2A,1563 km,54 km/hr,19409
+16352,Nagercoil - Mumbai LTT Express (via Renigunta) (PT),Exp,SR,,,NCJ,6:15,LTT,18:50,36h 35m,40,S T,SL 3A 2A,1930 km,53 km/hr,16351
+56002,Mannargudi - Thiruvarur Passenger (UnReserved),Pass,SR,,,MQ,8:35,TVR,9:40,1h 5m,4,S M T W T F S,,37 km,35 km/hr,56001
+41029,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,10:02,STM,11:07,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41028
+16176,Velankanni - Chennai Egmore Express (PT),Exp,SR,,,VLNK,21:50,MS,5:15,7h 25m,12,S M T W T F S,SL 3A 2A,348 km,47 km/hr,16175
+96401,Kalyan - Kasara Local,Mumb,CR,,,KYN,1:37,KSRA,2:54,1h 17m,10,S M T W T F S,FC,67 km,52 km/hr,
+63313,Muzaffarpur - Sikta MEMU,MEMU,ECR,,,MFP,18:40,STF,23:55,5h 15m,23,S M T W T F S,,147 km,28 km/hr,63314
+95726,K68 / Kalyan - Dadar AC Fast Local,Mumb,CR,,,KYN,11:22,DR,12:15,0h 53m,5,S M T W T F S,FC,45 km,50 km/hr,95727
+15463,Balurghat - Haldibari Intercity Express (UnReserved),Exp,NFR,,,BLGT,12:15,HDB,22:15,10h 0m,23,S M T W T F S,,386 km,39 km/hr,15464
+15464,Haldibari - Balurghat Intercity Express (UnReserved),Exp,NFR,,,HDB,5:45,BLGT,15:15,9h 30m,23,S M T W T F S,,386 km,41 km/hr,15463
+22629,Mumbai LTT - Tirunelveli SF Express (via Konkan) (PT),SF,SR,,,LTT,20:45,TEN,9:00,36h 15m,26,T,SL 3A 2A 3E,1744 km,48 km/hr,22630
+22630,Tirunelveli - Mumbai LTT SF Express (via Konkan) (PT),SF,SR,,,TEN,7:30,LTT,17:20,33h 50m,26,W,SL 3A 2A 3E,1744 km,52 km/hr,22629
+68096,Bankura - Jayrambati MEMU,MEMU,SER,,,BQA,18:25,JRBI,20:00,1h 35m,8,S M T W T F S,,68 km,43 km/hr,68095
+68095,Jayrambati - Bankura MEMU,MEMU,SER,,,JRBI,20:10,BQA,22:00,1h 50m,8,S M T W T F S,,68 km,37 km/hr,68096
+12789,Kacheguda - Kumta SF Express (PT),SF,SCR,,,KCG,6:05,KT,14:40,32h 35m,35,T F,SL 3A 2A 1A,1728 km,53 km/hr,12790
+37402,Goghat - Tarakeswar Local,Klkt,ER,,,GOGT,4:42,TAK,5:28,0h 46m,4,S M T W T F S,,34 km,45 km/hr,37401
+37401,Tarakeswar - Goghat Local,Klkt,ER,,,TAK,3:40,GOGT,4:32,0h 52m,4,S M T W T F S,,34 km,39 km/hr,37402
+41011,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,7:02,STM,8:07,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41010
+19007,Surat - Bhusaval Express,Exp,WR,,,ST,17:00,BSL,1:25,8h 25m,26,S M T W T F S,SL,335 km,40 km/hr,19008
+20816,Visakhapatnam - Adityapur SF Express,SF,SCoR,,,VSKP,15:35,ADTP,6:35,15h 0m,18,S,SL 3A 2A 3E,860 km,57 km/hr,20815
+20815,Adityapur - Visakhapatnam SF Express,SF,SCoR,,,ADTP,7:30,VSKP,22:45,15h 15m,20,M,SL 3A 2A 3E,860 km,56 km/hr,20816
+15624,Kamakhya - Bhagat ki Kothi Express (PT),Exp,NFR,,,KYQ,17:30,BGKT,20:30,51h 0m,43,F,SL 3A 2A 1A,2540 km,50 km/hr,15623
+37408,Goghat - Tarakeswar Local,Klkt,ER,,,GOGT,15:40,TAK,16:28,0h 48m,4,S M T W T F S,,34 km,43 km/hr,
+41035,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,11:32,STM,12:37,1h 5m,18,S M T W T F S,FC,25 km,23 km/hr,41034
+15623,Bhagat ki Kothi - Kamakhya Express (PT),Exp,NFR,,,BGKT,16:30,KYQ,22:00,53h 30m,43,T,SL 3A 2A 1A,2540 km,47 km/hr,15624
+15053,Chhapra - Gomti Nagar Express (Via Varanasi),Exp,NER,,,CPR,19:35,GTNR,7:50,12h 15m,12,S M T W T F S,SL 3A 2A 1A 3E,521 km,43 km/hr,15054
+15054,Gomti Nagar - Chhapra Express (Via Varanasi),Exp,NER,,,GTNR,21:45,CPR,11:00,13h 15m,12,S M T W T F S,SL 3A 2A 1A 3E,521 km,39 km/hr,15053
+22115,Mumbai LTT - Karmali AC SF Express,ACSF,CR,,,LTT,0:50,KRMI,12:40,11h 50m,6,T,3A 2A 1A,535 km,45 km/hr,22116
+22116,Karmali - Mumbai LTT AC SF Express,ACSF,CR,,,KRMI,13:40,LTT,0:10,10h 30m,6,T,3A 2A 1A,535 km,51 km/hr,22115
+20667,Yesvantpur - Khatipura (Jaipur) SF Express,SF,SWR,,,YPR,12:00,KWP,6:05,42h 5m,26,T,SL 3A 2A,2467 km,59 km/hr,20668
+31342,Kalyani - Sealdah Local,Klkt,ER,,,KYI,12:45,SDAH,14:10,1h 25m,16,M T W T F S,,48 km,34 km/hr,30113
+41050,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,14:55,MSB,16:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41051
+20668,Khatipura (Jaipur) - Yesvantpur Superfast Express (PT),SF,SWR,,,KWP,21:20,YPR,16:50,43h 30m,26,S,SL 3A 2A,2467 km,57 km/hr,20667
+64167,Ghaziabad - Agra City EMU,Del,NR,,,GZB,6:10,AGA,12:45,6h 35m,24,S M T W T F S,,207 km,31 km/hr,64168
+64168,Agra City - Ghaziabad EMU,Del,NR,,,AGA,14:20,GZB,19:50,5h 30m,24,S M T W T F S,,207 km,38 km/hr,64167
+51704,Mandla Fort - Jabalpur Passenger (UnReserved),Pass,WCR,,,MFR,5:10,JBP,10:05,4h 55m,24,S M T W T F S,,162 km,33 km/hr,51703
+51703,Jabalpur - Mandla Fort Passenger (UnReserved),Pass,WCR,,,JBP,18:55,MFR,0:30,5h 35m,24,S M T W T F S,,162 km,29 km/hr,51704
+51706,Mandla Fort - Jabalpur Passenger (UnReserved),Pass,WCR,,,MFR,15:30,JBP,21:25,5h 55m,24,S M T W T F S,,162 km,27 km/hr,51705
+51705,Jabalpur - Mandla Fort Passenger (UnReserved),Pass,WCR,,,JBP,9:55,MFR,15:00,5h 5m,24,S M T W T F S,,162 km,32 km/hr,51706
+55330,Bareilly Jn. - Kasganj Passenger (UnReserved),Pass,NER,,,BRY,17:25,KSJ,20:30,3h 5m,16,S M T W T F S,,103 km,34 km/hr,55327
+41041,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,13:02,STM,14:07,1h 5m,18,S M T W T F S,,25 km,23 km/hr,
+41005,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,5:50,STM,6:55,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41006
+75304,Pilibhit - Izzatnagar DEMU,DEMU,NER,,,PBE,21:10,IZN,22:50,1h 40m,4,S M T W T F S,,51 km,31 km/hr,75303
+55320,Pilibhit - Bareilly Jn. Passenger (UnReserved),Pass,NER,,,PBE,13:25,BRY,15:55,2h 30m,9,S M T W T F S,,58 km,23 km/hr,55317
+75301,Izzatnagar - Tanakpur DEMU,DEMU,NER,,,IZN,7:25,TPU,10:55,3h 30m,13,S M T W T F S,,113 km,32 km/hr,75302
+95743,K119 / Dadar - Kalyan 15 Car Fast Local,Mumb,CR,,,DR,22:18,KYN,23:10,0h 52m,5,M T W T F S,FC,45 km,51 km/hr,
+55323,Shahjahanpur - Tanakpur Passenger (UnReserved),Pass,NER,,,SPN,12:45,TPU,16:50,4h 5m,10,S M T W T F S,,145 km,36 km/hr,55326
+55322,Tanakpur - Shahjahanpur Passenger (UnReserved),Pass,NER,,,TPU,7:00,SPN,11:15,4h 15m,10,S M T W T F S,,145 km,34 km/hr,55325
+66043,Arakkonam - Tiruchanur MEMU,MEMU,SR,,,AJJ,9:15,TCNR,11:45,2h 30m,10,S M T W T F S,,71 km,28 km/hr,66044
+16511,K.S.R Bengaluru - Kozhikode Express,Exp,SWR,,,SBC,21:35,CLT,12:40,15h 5m,20,S M T W T F S,SL 3A 2A 1A,590 km,39 km/hr,16512
+16512,Kozhikode - K.S.R Bengaluru Express (PT),Exp,SWR,,,CLT,15:30,SBC,6:35,15h 5m,20,S M T W T F S,SL 3A 2A 1A,590 km,39 km/hr,16511
+20915,Charlapalli - Indore Humsafar Express,Hms,WR,,,CHZ,20:45,INDB,0:15,27h 30m,12,S,2S SL 3A,1577 km,57 km/hr,20916
+20916,Indore - Charlapalli Humsafar Express,Hms,WR,,,INDB,11:15,CHZ,14:15,27h 0m,12,S,2S SL 3A,1577 km,58 km/hr,20915
+22548,Gandhigram - Gwalior SF Express (PT),SF,NCR,,,GG,16:40,GWL,9:25,16h 45m,17,T F S,SL 3A 2A 3E,985 km,59 km/hr,22547
+22547,Gwalior - Gandhigram SF Express (PT),SF,NCR,,,GWL,20:10,GG,12:00,15h 50m,17,S W S,SL 3A 2A 3E,985 km,62 km/hr,22548
+37382,Goghat - Howrah Local,Klkt,ER,,,GOGT,21:28,HWH,23:55,2h 27m,24,S M T W T F S,,91 km,37 km/hr,37403
+37412,Goghat - Tarakeswar Local,Klkt,ER,,,GOGT,18:02,TAK,18:46,0h 44m,4,S M T W T F S,,34 km,47 km/hr,37369
+30113,B.B.D Bag - Kalyani Local,Klkt,ER,,,BBDB,10:38,KYI,12:21,1h 43m,21,M T W T F S,,51 km,30 km/hr,31342
+20485,Jaisalmer - Sabarmati Intercity SF Express (via Jalor),SF,NWR,23-May,,JSM,6:30,SBIB,20:00,13h 30m,17,S M T W T F S,SL 3A 2A,750 km,56 km/hr,20486
+20486,Sabarmati - Jaisalmer Intercity SF Express (via Jalor),SF,NWR,,,SBIB,7:00,JSM,20:30,13h 30m,17,S M T W T F S,SL 3A 2A,750 km,56 km/hr,20485
+66551,KSR Bengaluru - Mysuru MEMU,MEMU,SWR,,,SBC,9:15,MYS,13:20,4h 5m,20,S M T W T F S,,138 km,34 km/hr,66552
+66552,Mysuru - KSR Bengaluru MEMU,MEMU,SWR,,,MYS,13:40,SBC,17:00,3h 20m,20,S M T W T F S,,138 km,41 km/hr,66551
+12790,Kumta - Kacheguda SF Express (PT),SF,SCR,,,KT,15:25,KCG,23:40,32h 15m,35,W S,SL 3A 2A 1A,1728 km,54 km/hr,12789
+41003,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,5:25,STM,6:30,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41004
+14822,Gandhigram - Jodhpur Express (UnReserved),Exp,NWR,,,GG,7:00,JU,18:10,11h 10m,49,S M T W T F S,,458 km,41 km/hr,14821
+61616,Kota - Chaumahla MEMU,MEMU,WCR,,,KOTA,7:05,CMU,10:25,3h 20m,16,S M T W T F S,,163 km,49 km/hr,61615
+61615,Chaumahla - Kota MEMU,MEMU,WCR,,,CMU,10:45,KOTA,14:00,3h 15m,16,S M T W T F S,,163 km,50 km/hr,61616
+31543,Sealdah - Shantipur Local,Klkt,ER,,,SDAH,16:35,STB,19:00,2h 25m,27,S M T W T F S,,93 km,39 km/hr,31544
+31776,Krishnapur - Berhampore Court EMU Passenger,Klkt,ER,,,KRP,6:55,BPC,7:47,0h 52m,6,S M T W T F S,,40 km,46 km/hr,31777
+41004,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,5:25,MSB,6:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41003
+41010,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,6:35,MSB,7:40,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41011
+20957,Indore - Hisar SF Express (PT),SF,WR,,,INDB,16:45,HSR,9:20,16h 35m,15,S W F,SL 3A 2A 1A 3E,1022 km,62 km/hr,20958
+20958,Hisar - Indore SF Express,SF,WR,,,HSR,13:20,INDB,6:45,17h 25m,15,M T S,SL 3A 2A 1A 3E,1022 km,59 km/hr,20957
+12981,Khatipura (Jaipur) - Asarva (Ahmedabad) SF Express,SF,NWR,,,KWP,20:05,ASV,8:40,12h 35m,19,S M T W T F S,SL 3A 2A 1A 3E,741 km,59 km/hr,12982
+12982,Asarva (Ahmedabad) - Khatipura (Jaipur) SF Express,SF,NWR,,,ASV,19:55,KWP,8:25,12h 30m,19,S M T W T F S,SL 3A 2A 1A 3E,741 km,59 km/hr,12981
+20966,Bhavnagar Terminus - Sabarmati SF Intercity Express,SF,WR,,,BVC,6:00,SBIB,10:30,4h 30m,9,S M T W T F S,2S SL CC,261 km,58 km/hr,20965
+20965,Sabarmati - Bhavnagar Terminus SF Intercity Express,SF,WR,,,SBIB,16:15,BVC,20:55,4h 40m,9,S M T W T F S,2S SL CC,261 km,56 km/hr,20966
+22926,Okha - Sabarmati Jn. Vande Bharat Express,VB,WR,,,OKHA,16:45,SBT,23:10,6h 25m,8,S M W T F S,CC Ex,493 km,77 km/hr,22925
+22925,Sabarmati Jn. - Okha Vande Bharat Express,VB,WR,,,SBT,6:15,OKHA,13:20,7h 5m,8,S M W T F S,CC Ex,493 km,70 km/hr,22926
+17629,Hadapsar - Hazur Sahib Nanded Express,Exp,SCR,,,HDP,21:50,NED,10:20,12h 30m,11,S M T W T F S,SL 3A 2A,652 km,52 km/hr,17630
+12934,Karnavati Express (PT),SF,WR,,,ADI,5:00,BDTS,12:30,7h 30m,9,S M T W T F S,2S CC,482 km,64 km/hr,12933
+11037,Pune - Gorakhpur Express (Via Prayagraj) (PT),Exp,CR,,,PUNE,16:15,GKP,0:40,32h 25m,17,T,SL 3A 2A,1765 km,54 km/hr,11038
+12668,Kanniyakumari - Tambaram Weekly SF Express (PT),SF,SR,,,CAPE,16:35,TBM,4:10,11h 35m,10,F,SL 3A 2A,715 km,62 km/hr,12667
+15137,Budh Purnima Express,Exp,NER,,,RGD,21:30,BNRS,7:15,9h 45m,20,S M T W T F S,SL 3A 2A,418 km,43 km/hr,15138
+77655,Secunderabad - Siddipet DEMU,DEMU,SCR,,,SC,17:50,SIPT,21:10,3h 20m,13,S M T T F S,,115 km,34 km/hr,77656
+77653,Secunderabad - Siddipet DEMU,DEMU,SCR,,,SC,10:35,SIPT,14:00,3h 25m,13,S M T T F S,,115 km,34 km/hr,77654
+77654,Siddipet - Secunderabad DEMU,DEMU,SCR,,,SIPT,14:20,SC,17:35,3h 15m,13,S M T T F S,,116 km,36 km/hr,77653
+77656,Siddipet - Secunderabad DEMU,DEMU,SCR,,,SIPT,6:45,SC,10:15,3h 30m,13,S M T W F S,,116 km,33 km/hr,77655
+64638,Birpur - Gwalior MEMU,MEMU,NCR,,,BIB,16:45,GWL,21:10,4h 25m,14,S M T W T F S,,122 km,28 km/hr,64637
+64635,Gwalior - Birpur MEMU,MEMU,NCR,,,GWL,5:45,BIB,10:00,4h 15m,14,S M T W T F S,,122 km,29 km/hr,64636
+64637,Gwalior - Birpur MEMU,MEMU,NCR,,,GWL,12:00,BIB,16:15,4h 15m,14,S M T W T F S,,122 km,29 km/hr,64638
+64636,Birpur - Gwalior MEMU,MEMU,NCR,,,BIB,10:30,GWL,15:20,4h 50m,14,S M T W T F S,,122 km,25 km/hr,64635
+58824,Mandla Fort - Chhindwara Passenger (UnReserved),Pass,SECR,,,MFR,15:00,CWA,21:00,6h 0m,27,S M T W T F S,,182 km,30 km/hr,58823
+58823,Chhindwara - Mandla Fort Passenger (UnReserved),Pass,SECR,,,CWA,7:15,MFR,12:30,5h 15m,27,S M T W T F S,,182 km,35 km/hr,58824
+64639,Gwalior - Birpur MEMU,MEMU,NCR,,,GWL,15:00,BIB,19:15,4h 15m,14,S M T W T F S,,122 km,29 km/hr,64640
+64640,Birpur - Gwalior MEMU,MEMU,NCR,,,BIB,19:45,GWL,0:05,4h 20m,14,S M T W T F S,,122 km,28 km/hr,64639
+66069,Chennai Central Suburban - Tiruchanur MEMU,MEMU,SR,,,MASS,9:50,TCNR,13:45,3h 55m,13,S M T W T F S,,140 km,36 km/hr,66070
+66070,Tiruchanur - Chennai Central Suburban MEMU,MEMU,SR,,,TCNR,13:30,MASS,17:15,3h 45m,13,S M T W T F S,,140 km,37 km/hr,66069
+63041,Berhampore Court - Azimganj MEMU,MEMU,ER,,,BPC,7:35,AZ,8:02,0h 27m,2,S M T W T F S,,17 km,39 km/hr,63042
+63042,Azimganj - Berhampore Court MEMU,MEMU,ER,,,AZ,6:55,BPC,7:20,0h 25m,2,S M T W T F S,,17 km,42 km/hr,63041
+63045,Berhampore Court - Azimganj MEMU,MEMU,ER,,,BPC,20:53,AZ,21:20,0h 27m,2,S M T W T F S,,17 km,39 km/hr,63046
+63046,Azimganj - Berhampore Court MEMU,MEMU,ER,,,AZ,19:50,BPC,20:15,0h 25m,2,S M T W T F S,,17 km,42 km/hr,63045
+63057,Berhampore Court- Azimganj MEMU,MEMU,ER,,,BPC,22:12,AZ,22:29,24h 17m,2,S M T W T F S,,17 km,1 km/hr,63058
+63058,Azimganj - Berhampore Court MEMU,MEMU,ER,,,AZ,21:30,BPC,21:57,0h 27m,2,S M T W T F S,,17 km,39 km/hr,63057
+61623,Ujjain - Kota MEMU,MEMU,WCR,,,UJN,12:30,KOTA,19:05,6h 35m,29,S M T W T F S,,281 km,43 km/hr,61624
+61624,Kota - Ujjain MEMU,MEMU,WCR,,,KOTA,5:40,UJN,12:00,6h 20m,29,S M T W T F S,,281 km,44 km/hr,61623
+49005,Chennai Beach - Tambaram AC EMU (12 Car),Chn,SR,,,MSB,15:45,TBM,16:45,1h 0m,16,S M T W T F,1A,29 km,29 km/hr,49006
+49006,Tambaram - Chennai Beach AC EMU (12 Car),Chn,SR,,,TBM,17:00,MSB,18:00,1h 0m,16,S M T W T F,1A,29 km,29 km/hr,49005
+26401,Jammu Tawi - Srinagar Vande Bharat Express,VB,NR,,,JAT,6:20,SINA,11:10,4h 50m,4,S M W T F S,CC Ex,267 km,55 km/hr,26402
+26402,Srinagar - Jammu Tawi Vande Bharat Express,VB,NR,,,SINA,14:00,JAT,18:50,4h 50m,4,S M W T F S,CC Ex,267 km,55 km/hr,26401
+26404,Srinagar - Jammu Tawi Vande Bharat Express,VB,NR,,,SINA,8:00,JAT,12:40,4h 40m,3,S M T T F S,CC Ex,267 km,57 km/hr,26403
+26403,Jammu Tawi - Srinagar Vande Bharat Express,VB,NR,,,JAT,13:20,SINA,18:05,4h 45m,3,S M T T F S,CC Ex,267 km,56 km/hr,26404
+41002,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,5:00,MSB,6:05,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41001
+41007,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,6:15,STM,7:20,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41008
+41018,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,7:55,MSB,9:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,
+41025,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,9:22,STM,10:27,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41024
+41026,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,9:15,MSB,10:20,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41027
+41030,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,9:55,MSB,11:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41031
+41032,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,10:25,MSB,11:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41033
+41034,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,10:55,MSB,12:00,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41035
+41039,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,12:32,STM,13:37,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41040
+41044,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,13:25,MSB,14:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,
+41045,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,14:02,STM,15:07,1h 5m,18,S M T W T F S,,25 km,23 km/hr,
+41049,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,15:02,STM,16:07,1h 5m,18,S M T W T F S,,25 km,23 km/hr,
+41053,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,15:52,STM,16:57,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41054
+41058,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,16:25,MSB,17:30,1h 5m,18,S M T W T F S,,26 km,24 km/hr,
+41059,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,16:52,STM,17:57,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41060
+41067,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,18:12,STM,19:17,1h 5m,18,S M T W T F S,,25 km,23 km/hr,
+41071,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,18:52,STM,19:57,1h 5m,18,S M T W T F S,,25 km,23 km/hr,
+41072,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,18:45,MSB,19:50,1h 5m,18,S M T W T F S,,26 km,24 km/hr,41073
+41074,St Thomas Mount - Chennai Beach EMU,Chn,SR,,,STM,19:05,MSB,20:10,1h 5m,18,S M T W T F S,,26 km,24 km/hr,
+41075,Chennai Beach - St Thomas Mount EMU,Chn,SR,,,MSB,19:32,STM,20:37,1h 5m,18,S M T W T F S,,25 km,23 km/hr,41076
+15304,New Delhi - Kasganj Intercity Express,Exp,NER,,,NDLS,16:35,KSJ,0:10,7h 35m,18,S M T W T F S,2S CC,359 km,47 km/hr,15303

@@ -1,0 +1,5 @@
+﻿Train No,Name,Type,Zone,Date From,Date To,From,Dep,To,Arr,Duration,Halts,Dep Days,Classes,Distance,Speed,Return
+94801,Ahmedabad - Bhuj Namo Bharat Rapid Rail,NB,WR,,,ADI,17:25,BHUJ,23:10,5h 45m,11,S M T W T F,,359 km,62 km/hr,94802
+94803,Jaynagar - Patna Namo Bharat Rapid Rail,NB,ECR,,,JYG,5:00,PNBE,10:40,5h 40m,7,M T W T F S,,266 km,47 km/hr,94804
+94804,Patna - Jaynagar Namo Bharat Rapid Rail,NB,ECR,,,PNBE,17:55,JYG,23:45,5h 50m,7,S M T W T F,,266 km,46 km/hr,94803
+94802,Bhuj - Ahmedabad Namo Bharat Rapid Rail,NB,WR,,,BHUJ,5:15,ADI,10:50,5h 35m,11,M T W T F S,,359 km,64 km/hr,94801
