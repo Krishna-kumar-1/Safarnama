@@ -163,8 +163,41 @@ class SafarnamaAssistant:
             "GAYA": "GAYA",
             "DEHRADUN": "DDN",
             "AGRA": "AGC",
-            "AGRA CANTT": "AGC",
             "MATHURA": "MTJ",
+            "धनबाद": "DHN",
+            "गोविंदपुरी": "GOY",
+            "कानपुर": "CNB",
+            "हावड़ा": "HWH",
+            "दिल्ली": "NDLS",
+            "नई दिल्ली": "NDLS",
+            "कोलकाता": "KOAA",
+            "सियालदह": "SDAH",
+            "प्रयागराज": "PRYJ",
+            "इलाहाबाद": "PRYJ",
+            "वाराणसी": "BSB",
+            "बनारस": "BSBS",
+            "पटना": "PNBE",
+            "मुंबई": "MMCT",
+            "पुणे": "PUNE",
+            "जयपुर": "JP",
+            "अहमदाबाद": "ADI",
+            "लखनऊ": "LKO",
+            "गोरखपुर": "GKP",
+            "चेन्नई": "MAS",
+            "बैंगलोर": "SBC",
+            "बेंगलुरु": "SBC",
+            "हैदराबाद": "HYB",
+            "चंडीगढ़": "CDG",
+            "अमृतसर": "ASR",
+            "ग्वालियर": "GWL",
+            "भोपाल": "BPL",
+            "जबलपुर": "JBP",
+            "राँची": "RNC",
+            "रांची": "RNC",
+            "गया": "GAYA",
+            "देहरादून": "DDN",
+            "आगरा": "AGC",
+            "मथुरा": "MTJ",
         }
         
         for k, code in aliases.items():
@@ -184,48 +217,72 @@ class SafarnamaAssistant:
         return None, None
 
     def parse_date(self, text: str):
-        """Converts natural Hinglish/English dates into YYYY-MM-DD."""
+        """Converts natural Hinglish/English/Hindi dates and ISO dates into YYYY-MM-DD."""
         if not text:
             return None
-            
+
         today = datetime.now()
-        low = text.lower()
-        
-        if "aaj" in low or "today" in low:
+        low = text.lower().strip()
+
+        # Relative keywords (English, Hinglish & Hindi)
+        if "aaj" in low or "today" in low or "आज" in text:
             return today.strftime("%Y-%m-%d")
-        if "kal" in low or "tomorrow" in low or "next day" in low:
+        if "kal" in low or "tomorrow" in low or "next day" in low or "कल" in text:
             return (today + timedelta(days=1)).strftime("%Y-%m-%d")
-        if "parso" in low or "day after" in low or "+2" in low:
+        if "parso" in low or "day after" in low or "+2" in low or "परसों" in text:
             return (today + timedelta(days=2)).strftime("%Y-%m-%d")
-            
-        # DD-MM-YYYY or DD/MM/YYYY or DD-MM-YY
-        m = re.search(r"(\d{1,2})[-/.](\d{1,2})[-/.](\d{2,4})", text)
-        if m:
-            d, mth, y = m.group(1), m.group(2), m.group(3)
-            if len(y) == 2:
-                y = "20" + y
+
+        # 1. ISO format: YYYY-MM-DD or YYYY/MM/DD (e.g. 2026-09-16) - MUST BE CHECKED FIRST!
+        iso_match = re.search(r"\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b", text)
+        if iso_match:
+            y, mth, d = int(iso_match.group(1)), int(iso_match.group(2)), int(iso_match.group(3))
             try:
-                dt = datetime(int(y), int(mth), int(d))
+                dt = datetime(y, mth, d)
                 return dt.strftime("%Y-%m-%d")
             except Exception:
                 pass
-                
-        # e.g. "31 august", "1 sept", "5 oct"
+
+        # 2. DD-MM-YYYY or DD/MM/YYYY (e.g. 16-09-2026 or 16/09/2026)
+        dmy_match = re.search(r"\b(\d{1,2})[-/.](\d{1,2})[-/.](20\d{2})\b", text)
+        if dmy_match:
+            d, mth, y = int(dmy_match.group(1)), int(dmy_match.group(2)), int(dmy_match.group(3))
+            try:
+                dt = datetime(y, mth, d)
+                return dt.strftime("%Y-%m-%d")
+            except Exception:
+                pass
+
+        # 3. DD-MM-YY or DD/MM/YY (e.g. 16-09-26 or 16/09/26)
+        dmy_short = re.search(r"\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2})\b", text)
+        if dmy_short:
+            d, mth, y_short = int(dmy_short.group(1)), int(dmy_short.group(2)), int(dmy_short.group(3))
+            y = 2000 + y_short
+            try:
+                dt = datetime(y, mth, d)
+                return dt.strftime("%Y-%m-%d")
+            except Exception:
+                pass
+
+        # 4. Named month: e.g. "16 sept", "16 september 2026", "sept 16"
         months = {
             "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
             "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12
         }
         for m_name, m_num in months.items():
             if m_name in low:
-                dm = re.search(r"(\d{1,2})", text)
-                if dm:
+                yr_match = re.search(r"\b(20\d{2})\b", text)
+                year_num = int(yr_match.group(1)) if yr_match else today.year
+                days = [int(x) for x in re.findall(r"\b(\d{1,2})\b", text) if 1 <= int(x) <= 31]
+                if days:
+                    day_num = days[0]
                     try:
-                        day_num = int(dm.group(1))
-                        year_num = today.year
-                        return datetime(year_num, m_num, day_num).strftime("%Y-%m-%d")
+                        dt = datetime(year_num, m_num, day_num)
+                        if not yr_match and (today - dt).days > 30:
+                            dt = datetime(year_num + 1, m_num, day_num)
+                        return dt.strftime("%Y-%m-%d")
                     except Exception:
                         pass
-                        
+
         return None
 
     def process_message(self, user_message: str, history=None):
@@ -370,9 +427,9 @@ Analyze the user's intent, extract slots, and provide a helpful Hinglish reply w
         """Deterministic NLP fallback when Gemini API is unreachable."""
         m_low = msg.lower()
         
-        # Try to find "X se Y"
-        se_match = re.search(r"([a-zA-Z]+)\s+se\s+([a-zA-Z]+)", m_low)
-        to_match = re.search(r"([a-zA-Z]+)\s+to\s+([a-zA-Z]+)", m_low)
+        # Try to find "X se Y" (supports English & Devanagari Hindi)
+        se_match = re.search(r"([a-zA-Z\u0900-\u097F]+)\s+(?:se|से)\s+([a-zA-Z\u0900-\u097F]+)", msg, re.IGNORECASE)
+        to_match = re.search(r"([a-zA-Z\u0900-\u097F]+)\s+(?:to|tak|तक)\s+([a-zA-Z\u0900-\u097F]+)", msg, re.IGNORECASE)
         
         src_cand, dst_cand = None, None
         if se_match:
