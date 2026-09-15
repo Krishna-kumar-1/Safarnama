@@ -20,13 +20,22 @@
 
 ---
 
-### 🖥️ Website Previews
+### 📸 Live Prototype Screenshots
 
-#### 1. Route Finder & Journey Planner Dashboard (`/`)
-![Safarnama Route Finder Showcase](assets/safarnama_showcase.jpg)
+#### 1. Plan Your Rail Journey — Atmospheric Hero Search (`/`)
+*Interactive locomotive headlights following cursor movement, bio-luminescent firefly glowing trail, procedural night forest soundscape, and quick station autocomplete across 1,894+ stations.*
 
-#### 2. NTES Live Telemetry & PNR Operations Portal (`/live`)
-![Safarnama NTES Live Showcase](assets/ntes_live_showcase.jpg)
+![Plan Your Rail Journey Hero](assets/prototype_hero.png)
+
+#### 2. Interactive Railway Map, Route Options & Safarnama AI (`/`)
+*Real-time Leaflet track mapping, multi-criteria route recommendations (Option 1 Recommended, Option 2 Economical, Option 3 Direct), journey metrics (duration, distance, fares), and Gemini 2.5 Flash voice & Hinglish AI Assistant.*
+
+![Interactive Route Map & Safarnama AI](assets/prototype_results.png)
+
+#### 3. Indian Railways Transit Network Overview (`/journey`)
+*Panoramic landing portal highlighting 12,466+ train schedules, 1,888+ stations, and direct one-click navigation.*
+
+![Every Connection on the Rails Overview](assets/prototype_overview.png)
 
 </div>
 
