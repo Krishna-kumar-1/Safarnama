@@ -2086,6 +2086,9 @@
       appendAIMessage('user', msg);
       showAITyping();
 
+      aiChatHistory.push({ role: 'user', content: msg });
+      if (aiChatHistory.length > 12) aiChatHistory.shift();
+
       try {
         const res = await fetch('/api/assistant/chat', {
           method: 'POST',
@@ -2097,6 +2100,8 @@
 
         if (data.reply) {
           appendAIMessage('bot', data.reply);
+          aiChatHistory.push({ role: 'assistant', content: data.reply, extracted: data.extracted });
+          if (aiChatHistory.length > 12) aiChatHistory.shift();
         }
 
         if (data.action && data.action.type === 'fill_and_search') {
