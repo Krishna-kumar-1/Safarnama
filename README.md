@@ -6,7 +6,7 @@
 [![Flask Framework](https://img.shields.io/badge/Backend-Flask%203.x-black.svg?logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![NetworkX](https://img.shields.io/badge/Graph%20Engine-NetworkX-orange.svg)](https://networkx.org/)
 [![Google Gemini AI](https://img.shields.io/badge/AI%20Assistant-Gemini%202.5%20Flash-8E75B2.svg?logo=google&logoColor=white)](https://aistudio.google.com/)
-[![Platforms](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-success.svg)](https://github.com/)
+[![Platforms](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-success.svg)](https://github.com/Krishna-kumar-1/Safarnama)
 [![Test Suite](https://img.shields.io/badge/Tests-43%2F43%20Passing%20(100%25)-brightgreen.svg)](tests/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
@@ -132,8 +132,8 @@ python run.py
 #### Option C: Manual Command Line (PowerShell / CMD)
 ```powershell
 # 1. Clone your repository
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
-cd "YOUR_REPOSITORY_NAME"
+git clone https://github.com/Krishna-kumar-1/Safarnama.git
+cd Safarnama
 
 # 2. (Optional) Create and activate a virtual environment
 python -m venv venv
@@ -180,8 +180,8 @@ sudo apt update && sudo apt install -y python3 python3-pip python3-venv
 # sudo pacman -S python python-pip
 
 # 2. Clone the repository
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
-cd "YOUR_REPOSITORY_NAME"
+git clone https://github.com/Krishna-kumar-1/Safarnama.git
+cd Safarnama
 
 # 3. Create and activate a virtual environment
 python3 -m venv venv
@@ -221,8 +221,8 @@ python3 run.py
 brew install python
 
 # 2. Clone the repository
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
-cd "YOUR_REPOSITORY_NAME"
+git clone https://github.com/Krishna-kumar-1/Safarnama.git
+cd Safarnama
 
 # 3. Create and activate a virtual environment
 python3 -m venv venv
@@ -330,7 +330,7 @@ git commit -m "feat: Indian Railways Route Finder & NTES Live Cloud Portal (Safa
 git branch -M main
 
 # 7. Link to your GitHub repository
-git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPOSITORY_NAME.git
+git remote add origin https://github.com/Krishna-kumar-1/Safarnama.git
 
 # 8. Push to GitHub!
 git push -u origin main
