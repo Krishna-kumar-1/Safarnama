@@ -1109,28 +1109,34 @@
            1. SPOT YOUR TRAIN (LADDER TRACK VIEW)
            ========================================================================= -->
       <section class="ntes-section active" id="sec-spot">
-        <div class="ntes-search-card">
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadSpotTrain();">
           <div class="input-box">
-            <input type="text" id="spotTrainInput" placeholder="Enter Train Number (e.g. 12987, 03639, 14117, 12301)..." value="12987" onkeyup="if(event.key==='Enter') loadSpotTrain()" />
+            <input type="text" id="spotTrainInput" name="spot_train_no_autofill" placeholder="Enter Train Number (e.g. 12987, 03639, 14117, 12301)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadSpotTrain()" />
           </div>
-          <button class="btn-submit" onclick="loadSpotTrain()">
+          <button type="submit" class="btn-submit">
             <span>Spot Your Train</span>
           </button>
-        </div>
+        </form>
 
         <!-- Quick Train Chips -->
         <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; align-items:center;">
           <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Popular Trains:</span>
-          <button style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='12987'; loadSpotTrain();">12987 (SDAH AII SF EXP)</button>
-          <button style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='03639'; loadSpotTrain();">03639 (DHN SSB SPL)</button>
-          <button style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='14117'; loadSpotTrain();">14117 (KALINDI EXP)</button>
-          <button style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='12301'; loadSpotTrain();">12301 (RAJDHANI)</button>
-          <button style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='22436'; loadSpotTrain();">22436 (VANDE BHARAT)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='12987'; loadSpotTrain();">12987 (SDAH AII SF EXP)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='03639'; loadSpotTrain();">03639 (DHN SSB SPL)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='14117'; loadSpotTrain();">14117 (KALINDI EXP)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='12301'; loadSpotTrain();">12301 (RAJDHANI)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='22436'; loadSpotTrain();">22436 (VANDE BHARAT)</button>
         </div>
 
         <div id="spotErrorBox" style="display:none; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.5); color:#fca5a5; padding:12px 16px; border-radius:10px; margin-bottom:14px; font-size:0.9rem; font-weight:700;"></div>
 
-        <div id="spotContentArea">
+        <div id="spotEmptyState" style="text-align:center; padding:45px 20px; background:rgba(15,23,42,0.5); border:1px dashed rgba(255,255,255,0.15); border-radius:14px; margin-top:10px;">
+          <div style="font-size:2.8rem; margin-bottom:12px;">🚆</div>
+          <h3 style="color:#ffffff; font-size:1.2rem; margin-bottom:6px; font-weight:700;">Live GPS Train Tracking</h3>
+          <p style="color:#94a3b8; font-size:0.9rem; max-width:520px; margin:0 auto; line-height:1.6;">Enter any 5-digit Indian Railways train number above or click one of the popular trains to view real-time station halts, live delay status, and platform numbers.</p>
+        </div>
+
+        <div id="spotContentArea" style="display:none;">
           <div class="ntes-header-box">
             <div class="ntes-train-title-row">
               <div class="train-name-big" id="spotTrainHeader">03639 DHN SSB SPL</div>
@@ -1173,9 +1179,9 @@
            ========================================================================= -->
       <section class="ntes-section" id="sec-station">
         <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">🔔 Live Station Digital Platform Board</h2>
-        <div class="ntes-search-card">
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadLiveStation();">
           <div class="input-box">
-            <input type="text" id="stationCodeInput" placeholder="Enter Station Code (e.g. NDLS, HWH, BSB, DHN)..." value="DHN" />
+            <input type="text" id="stationCodeInput" name="stn_search_no_autofill" placeholder="Enter Station Code (e.g. NDLS, HWH, BSB, DHN)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadLiveStation()" />
           </div>
           <div class="input-box" style="flex:1;">
             <select id="stationHoursInput">
@@ -1184,10 +1190,10 @@
               <option value="8">Next 8 Hours</option>
             </select>
           </div>
-          <button class="btn-submit" onclick="loadLiveStation()">
+          <button type="submit" class="btn-submit">
             <span>Get Live Board</span>
           </button>
-        </div>
+        </form>
 
         <div id="stationBoardResult" class="status-card" style="display:none;"></div>
       </section>
@@ -1197,14 +1203,14 @@
            ========================================================================= -->
       <section class="ntes-section" id="sec-schedule">
         <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">📅 Train Timetable &amp; Schedule Directory</h2>
-        <div class="ntes-search-card">
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadTrainSchedule();">
           <div class="input-box">
-            <input type="text" id="scheduleTrainInput" placeholder="Enter Train Number (e.g. 12301, 22436, 12002)..." value="12301" />
+            <input type="text" id="scheduleTrainInput" name="sched_train_no_autofill" placeholder="Enter Train Number (e.g. 12301, 22436, 12002)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadTrainSchedule()" />
           </div>
-          <button class="btn-submit" onclick="loadTrainSchedule()">
+          <button type="submit" class="btn-submit">
             <span>View Schedule</span>
           </button>
-        </div>
+        </form>
 
         <div id="scheduleResult" class="status-card" style="display:none;"></div>
       </section>
@@ -1214,17 +1220,17 @@
            ========================================================================= -->
       <section class="ntes-section" id="sec-between">
         <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">🚆 Direct Trains Between Stations</h2>
-        <div class="ntes-search-card">
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadTrainsBetween();">
           <div class="input-box">
-            <input type="text" id="btwSourceInput" placeholder="Source Station (e.g. HWH, NDLS, DHN)" value="DHN" />
+            <input type="text" id="btwSourceInput" name="btw_src_no_autofill" placeholder="Source Station (e.g. HWH, NDLS, DHN)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" />
           </div>
           <div class="input-box">
-            <input type="text" id="btwDestInput" placeholder="Destination Station (e.g. NDLS, GAYA, BSB)" value="NDLS" />
+            <input type="text" id="btwDestInput" name="btw_dst_no_autofill" placeholder="Destination Station (e.g. NDLS, GAYA, BSB)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadTrainsBetween()" />
           </div>
-          <button class="btn-submit" onclick="loadTrainsBetween()">
+          <button type="submit" class="btn-submit">
             <span>Find Trains</span>
           </button>
-        </div>
+        </form>
 
         <div id="betweenResult" class="status-card" style="display:none;"></div>
       </section>
@@ -1244,13 +1250,19 @@
            ========================================================================= -->
       <section class="ntes-section" id="sec-pnr">
         <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">🎫 Live 10-Digit PNR Passenger Lookup</h2>
-        <div class="ntes-search-card">
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadPnrStatus();">
           <div class="input-box">
-            <input type="text" id="pnrInput" placeholder="Enter 10-digit PNR Number..." maxlength="10" value="2345678901" />
+            <input type="text" id="pnrInput" name="pnr_clean_no_autofill" placeholder="Enter 10-digit PNR Number..." maxlength="10" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadPnrStatus()" />
           </div>
-          <button class="btn-submit" onclick="loadPnrStatus()">
+          <button type="submit" class="btn-submit">
             <span>Check PNR</span>
           </button>
+        </form>
+
+        <div id="pnrEmptyState" style="text-align:center; padding:45px 20px; background:rgba(15,23,42,0.5); border:1px dashed rgba(255,255,255,0.15); border-radius:14px; margin-top:14px;">
+          <div style="font-size:2.8rem; margin-bottom:12px;">🎫</div>
+          <h3 style="color:#ffffff; font-size:1.2rem; margin-bottom:6px; font-weight:700;">10-Digit PNR Status Verification</h3>
+          <p style="color:#94a3b8; font-size:0.9rem; max-width:520px; margin:0 auto; line-height:1.6;">Enter your 10-digit PNR number above to verify real-time passenger coach, berth allocation, chart status, and confirm probabilities directly from IRCTC.</p>
         </div>
 
         <div id="pnrResult" class="status-card" style="display:none;"></div>
@@ -1285,17 +1297,17 @@
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:14px;">
             <div>
               <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">🚆 Train Number / Name</label>
-              <input type="text" id="seatTrain" placeholder="e.g. 12301" value="12301" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
+              <input type="text" id="seatTrain" name="seat_tr_clean" placeholder="e.g. 12301" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
             </div>
 
             <div>
               <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">📍 From Station</label>
-              <input type="text" id="seatFrom" placeholder="e.g. NDLS" value="NDLS" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700; text-transform:uppercase;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
+              <input type="text" id="seatFrom" name="seat_from_clean" placeholder="e.g. NDLS" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700; text-transform:uppercase;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
             </div>
 
             <div>
               <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">🏁 To Station</label>
-              <input type="text" id="seatTo" placeholder="e.g. HWH" value="HWH" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700; text-transform:uppercase;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
+              <input type="text" id="seatTo" name="seat_to_clean" placeholder="e.g. HWH" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700; text-transform:uppercase;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
             </div>
 
             <div>
@@ -1354,15 +1366,23 @@
   <script>
     // Tab Navigation
     function switchNtesTab(tabId) {
-      document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.menu-item').forEach(item => {
+        const onclickAttr = item.getAttribute('onclick') || '';
+        if (onclickAttr.includes(`'${tabId}'`)) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
       document.querySelectorAll('.ntes-section').forEach(sec => sec.classList.remove('active'));
 
-      event.currentTarget.classList.add('active');
       const targetSec = document.getElementById(`sec-${tabId}`);
       if (targetSec) targetSec.classList.add('active');
 
       if (tabId === 'exceptions') loadExceptions();
     }
+    window.switchTab = switchNtesTab;
+    window.switchNtesTab = switchNtesTab;
 
     // 1. SPOT YOUR TRAIN
     async function loadSpotTrain(optDate) {
@@ -1370,8 +1390,11 @@
       const train = inputEl.value.trim();
       const errBox = document.getElementById('spotErrorBox');
       const contentArea = document.getElementById('spotContentArea');
+      const emptyState = document.getElementById('spotEmptyState');
 
       if (!train) {
+        if (contentArea) contentArea.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'block';
         if (errBox) {
           errBox.style.display = 'block';
           errBox.textContent = 'Please enter a train number (e.g. 12987, 03639, 14117).';
@@ -1387,6 +1410,8 @@
         const data = await res.json();
 
         if (data.error) {
+          if (contentArea) contentArea.style.display = 'none';
+          if (emptyState) emptyState.style.display = 'block';
           if (errBox) {
             errBox.style.display = 'block';
             errBox.textContent = data.message || 'Train schedule not found.';
@@ -1394,6 +1419,7 @@
           return;
         }
 
+        if (emptyState) emptyState.style.display = 'none';
         if (contentArea) contentArea.style.display = 'block';
         document.getElementById('spotTrainHeader').textContent = data.train_name;
         document.getElementById('spotRouteTitle').textContent = data.route_title;
@@ -1683,8 +1709,19 @@
     async function loadPnrStatus() {
       const pnr = document.getElementById('pnrInput').value.trim();
       const resEl = document.getElementById('pnrResult');
-      resEl.style.display = 'block';
-      resEl.innerHTML = '<p style="color:#94a3b8;">Verifying PNR with IRCTC Passenger Database...</p>';
+      const emptyEl = document.getElementById('pnrEmptyState');
+
+      if (!pnr) {
+        if (resEl) resEl.style.display = 'none';
+        if (emptyEl) emptyEl.style.display = 'block';
+        return;
+      }
+
+      if (emptyEl) emptyEl.style.display = 'none';
+      if (resEl) {
+        resEl.style.display = 'block';
+        resEl.innerHTML = '<p style="color:#94a3b8;">Verifying PNR with IRCTC Passenger Database...</p>';
+      }
 
       try {
         const res = await fetch(`/api/railkit/pnr/${encodeURIComponent(pnr)}`);
@@ -2005,7 +2042,7 @@
       }
     }
 
-    // Initialize Default Dates & Load Initial Spot Train
+    // Initialize Default Dates & Check Query Parameters
     window.addEventListener("DOMContentLoaded", () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -2013,7 +2050,33 @@
       if (seatDateEl) {
         seatDateEl.value = tomorrow.toISOString().split('T')[0];
       }
-      loadSpotTrain();
+
+      // Check query params if user was directed here with specific search
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      const trainParam = params.get('train');
+      const pnrParam = params.get('pnr');
+      const stationParam = params.get('station');
+
+      if (tabParam) {
+        switchNtesTab(tabParam);
+      }
+
+      if (trainParam) {
+        const spotInput = document.getElementById('spotTrainInput');
+        if (spotInput) spotInput.value = trainParam;
+        loadSpotTrain();
+      } else if (pnrParam) {
+        switchNtesTab('pnr');
+        const pnrInput = document.getElementById('pnrInput');
+        if (pnrInput) pnrInput.value = pnrParam;
+        loadPnrStatus();
+      } else if (stationParam) {
+        switchNtesTab('station');
+        const stnInput = document.getElementById('stationCodeInput');
+        if (stnInput) stnInput.value = stationParam;
+        loadLiveStation();
+      }
     });
 
     // =========================================================================
