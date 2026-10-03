@@ -18,11 +18,13 @@ from src.railkit_client import (
 )
 from src.assistant_engine import SafarnamaAssistant
 from src.track_geometry import get_exact_track_geometry
+from src.train_geometry import get_train_leg_geometry, load_train_geometries
 
 app = Flask(__name__, static_folder="static")
 CORS(app)
 engine = RouteEngine()
 assistant = SafarnamaAssistant(engine)
+load_train_geometries()
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 META_FILE = DATA_DIR / "train_metadata.json"
@@ -65,6 +67,9 @@ def get_path_details(source_code, dest_code, train_number=""):
 def leg_to_dict(leg):
     dist = get_station_distance_km(leg.source, leg.destination)
     path_stations, path_coords = get_path_details(leg.source, leg.destination, leg.train_number)
+    track_geom, is_real = get_train_leg_geometry(leg.train_number, leg.source, leg.destination, engine.stations)
+    if not is_real and len(path_coords) >= 2:
+        track_geom = path_coords
     t_meta = TRAIN_METADATA.get(leg.train_number, {}) if leg.train_number else {}
     dist_val = dist or t_meta.get("distance_km")
     return {
@@ -94,6 +99,8 @@ def leg_to_dict(leg):
         "return_train": t_meta.get("return_train", ""),
         "path_stations": path_stations,
         "path_coordinates": path_coords,
+        "track_geometry": track_geom,
+        "is_real_geometry": is_real,
     }
 
 
@@ -121,6 +128,9 @@ def schedule_leg_to_dict(leg):
     dist = get_station_distance_km(leg["source"], leg["destination"])
     path_stations, path_coords = get_path_details(leg["source"], leg["destination"], leg.get("train_number", ""))
     tno = leg.get("train_number", "")
+    track_geom, is_real = get_train_leg_geometry(tno, leg["source"], leg["destination"], engine.stations)
+    if not is_real and len(path_coords) >= 2:
+        track_geom = path_coords
     t_meta = TRAIN_METADATA.get(tno, {}) if tno else {}
     dist_val = dist or t_meta.get("distance_km")
     return {
@@ -138,6 +148,8 @@ def schedule_leg_to_dict(leg):
         "return_train": t_meta.get("return_train", ""),
         "path_stations": path_stations,
         "path_coordinates": path_coords,
+        "track_geometry": track_geom,
+        "is_real_geometry": is_real,
     }
 
 
