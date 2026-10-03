@@ -988,6 +988,70 @@
     color: #ffffff;
     box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
   }
+  .map-pill-btn.map-fullscreen-action {
+    background: rgba(59, 130, 246, 0.18);
+    border-color: rgba(59, 130, 246, 0.45);
+    color: #93c5fd;
+    font-weight: 700;
+  }
+  .map-pill-btn.map-fullscreen-action:hover {
+    background: rgba(59, 130, 246, 0.35);
+    color: #ffffff;
+  }
+
+  /* Fullscreen Full Map View */
+  #mapCard.fullscreen-map {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 999999 !important;
+    margin: 0 !important;
+    padding: 12px 16px !important;
+    background: #090d16 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    border-radius: 0 !important;
+  }
+  #mapCard.fullscreen-map .map-box {
+    flex: 1 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7) !important;
+  }
+  #mapCard.fullscreen-map #routeMap {
+    height: 100% !important;
+    width: 100% !important;
+  }
+  .map-expand-floating-btn {
+    position: absolute;
+    top: 12px;
+    right: 58px;
+    z-index: 500;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-card);
+    color: #93c5fd;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+  .map-expand-floating-btn:hover {
+    background: rgba(37, 99, 235, 0.85);
+    color: #ffffff;
+    border-color: #60a5fa;
+    transform: scale(1.08);
+  }
 
   /* Route Cards */
   .result-card {
@@ -2095,11 +2159,17 @@
           <button type="button" class="map-pill-btn" id="btnMap-googleSatellite" onclick="switchBaseLayer('googleSatellite')">🛰️ Google Satellite</button>
           <button type="button" class="map-pill-btn" id="btnMap-googleRoadmap" onclick="switchBaseLayer('googleRoadmap')">🚗 Google Roads</button>
           <button type="button" class="map-pill-btn" id="btnMap-googleTerrain" onclick="switchBaseLayer('googleTerrain')">🏔️ Google Terrain</button>
+          <button type="button" class="map-pill-btn map-fullscreen-action" id="mapFullscreenBtn" onclick="toggleMapFullscreen()" title="Toggle Fullscreen Full Map View">
+            <span>⤢ Full Map</span>
+          </button>
         </div>
       </div>
 
       <div class="map-box" style="margin-bottom:0;">
         <div class="map-badge">Interactive Route Map</div>
+        <button type="button" class="map-expand-floating-btn" onclick="toggleMapFullscreen()" title="Toggle Fullscreen Full Map" aria-label="Toggle Fullscreen Full Map">
+          <span id="floatingExpandIcon">⤢</span>
+        </button>
         <div id="routeMap"></div>
       </div>
     </div>
@@ -2753,6 +2823,42 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       return smoothed;
     }
 
+    window.toggleMapFullscreen = function() {
+      const mapCard = document.getElementById('mapCard');
+      if (!mapCard) return;
+      const isFull = mapCard.classList.toggle('fullscreen-map');
+      const btn = document.getElementById('mapFullscreenBtn');
+      const floatBtn = document.getElementById('floatingExpandIcon');
+      if (btn) {
+        btn.innerHTML = isFull ? '<span>⤡ Exit Fullscreen</span>' : '<span>⤢ Full Map</span>';
+        btn.classList.toggle('active', isFull);
+      }
+      if (floatBtn) {
+        floatBtn.textContent = isFull ? '⤡' : '⤢';
+      }
+      document.body.style.overflow = isFull ? 'hidden' : '';
+      setTimeout(() => {
+        if (leafletMap) {
+          leafletMap.invalidateSize();
+          if (mapPolyline && typeof mapPolyline.getBounds === 'function') {
+            try {
+              leafletMap.fitBounds(mapPolyline.getBounds(), { padding: [60, 60] });
+            } catch (e) {}
+          }
+        }
+      }, 180);
+    };
+
+    // Exit fullscreen with ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const mapCard = document.getElementById('mapCard');
+        if (mapCard && mapCard.classList.contains('fullscreen-map')) {
+          window.toggleMapFullscreen();
+        }
+      }
+    });
+
     function plotRouteOnMap(itinerary) {
       if (!itinerary || !itinerary.legs || !itinerary.legs.length) return;
       initMap();
@@ -2810,8 +2916,8 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
 
       if (latLngs.length < 2) return;
 
-      // Generate natural curving railway line passing through all halts
-      const smoothedTrack = catmullRomRailwaySpline(latLngs, 8);
+      // Use direct station platform coordinates to follow the physical railway track corridor
+      const smoothedTrack = latLngs;
 
       // Layer 1: Railway Track Base Bed (Dark casing)
       const trackBed = L.polyline(smoothedTrack, {
