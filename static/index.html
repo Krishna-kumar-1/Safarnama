@@ -954,6 +954,41 @@
     cursor: pointer;
   }
 
+  /* Quick Map Engine Switcher Pills */
+  .map-switch-pills {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .map-pill-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+  .map-pill-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.5);
+    color: #93c5fd;
+    transform: translateY(-1px);
+  }
+  .map-pill-btn.active {
+    background: #2563eb;
+    border-color: #60a5fa;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
+  }
+
   /* Route Cards */
   .result-card {
     background: var(--bg-card);
@@ -2042,9 +2077,31 @@
     </section>
 
     <!-- Route Map Container -->
-    <div class="map-box" id="mapCard" style="display: none;">
-      <div class="map-badge">Interactive Route Map</div>
-      <div id="routeMap"></div>
+    <div id="mapCard" style="display: none; margin-bottom: 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px; padding:0 2px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <div style="font-family:var(--font-heading); font-size:1.02rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:6px;">
+            <span>🗺️ Route Map</span>
+          </div>
+          <span id="activeMapNameBadge" style="font-size:0.75rem; color:#93c5fd; background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.35); padding:2px 8px; border-radius:6px; font-weight:700;">🌙 Stadia Dark</span>
+        </div>
+
+        <!-- Quick Switch Bar -->
+        <div class="map-switch-pills" id="mapLayerSwitcher">
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:700; margin-right:2px;">Switch Map:</span>
+          <button type="button" class="map-pill-btn active" id="btnMap-stadiaDark" onclick="switchBaseLayer('stadiaDark')">🌙 Dark Rail</button>
+          <button type="button" class="map-pill-btn" id="btnMap-maptilerStreets" onclick="switchBaseLayer('maptilerStreets')">🗺️ MapTiler</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleHybrid" onclick="switchBaseLayer('googleHybrid')">🌐 Google Hybrid</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleSatellite" onclick="switchBaseLayer('googleSatellite')">🛰️ Google Satellite</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleRoadmap" onclick="switchBaseLayer('googleRoadmap')">🚗 Google Roads</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleTerrain" onclick="switchBaseLayer('googleTerrain')">🏔️ Google Terrain</button>
+        </div>
+      </div>
+
+      <div class="map-box" style="margin-bottom:0;">
+        <div class="map-badge">Interactive Route Map</div>
+        <div id="routeMap"></div>
+      </div>
     </div>
 
     <!-- Flexible Dates Recommendation Banner -->
@@ -2134,7 +2191,10 @@ RAILKIT_API_KEYS="railkit_key1, railkit_key2"
 
 # 3. RapidAPI IRCTC Backup (Free at https://rapidapi.com/IRCTCAPI/api/irctc1)
 RAPIDAPI_KEYS="your_rapidapi_key"
-RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
+RAPIDAPI_HOST="irctc1.p.rapidapi.com"
+
+# 4. Google Maps Platform API (Optional Satellite & Roadmap Imagery)
+GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
         <div style="color:#94a3b8; font-size:0.75rem; margin-top:8px;">
           💡 <i>Note: The offline database of 12,466+ trains &amp; 1,894 stations runs 100% locally even without any external API keys!</i>
         </div>
@@ -2484,6 +2544,59 @@ RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
     // Map Tile Provider API Keys
     const MAPTILER_API_KEY = "xFhO3woMXHW5y5qJX1Sk";
     const STADIA_API_KEY = "26026d85-ab4c-4f06-974f-6ffb543fe6ac";
+    let GOOGLE_MAPS_API_KEY = localStorage.getItem("SAFARNAMA_GOOGLE_MAPS_KEY") || "";
+
+    let activeBaseLayerKey = 'stadiaDark';
+    const mapBaseLayers = {};
+    const mapBaseLayerNames = {
+      'stadiaDark': '🌙 Stadia Dark',
+      'maptilerStreets': '🗺️ MapTiler Streets',
+      'googleHybrid': '🌐 Google Hybrid',
+      'googleSatellite': '🛰️ Google Satellite',
+      'googleRoadmap': '🚗 Google Roads',
+      'googleTerrain': '🏔️ Google Terrain',
+      'stadiaOutdoors': '🌲 Stadia Outdoors',
+      'stadiaSmooth': '☀️ Stadia Light'
+    };
+
+    function getGoogleTileUrl(lyrs) {
+      const keyParam = GOOGLE_MAPS_API_KEY ? `&key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}` : '';
+      return `https://mt{s}.google.com/vt/lyrs=${lyrs}&x={x}&y={y}&z={z}${keyParam}`;
+    }
+
+    window.switchBaseLayer = function(layerKey) {
+      if (!leafletMap || !mapBaseLayers[layerKey]) return;
+
+      // Remove current active base layers
+      Object.keys(mapBaseLayers).forEach(k => {
+        if (leafletMap.hasLayer(mapBaseLayers[k])) {
+          leafletMap.removeLayer(mapBaseLayers[k]);
+        }
+      });
+
+      // Add selected layer to map
+      mapBaseLayers[layerKey].addTo(leafletMap);
+      if (typeof mapBaseLayers[layerKey].bringToBack === 'function') {
+        mapBaseLayers[layerKey].bringToBack();
+      }
+      activeBaseLayerKey = layerKey;
+
+      // Update badge
+      const badge = document.getElementById('activeMapNameBadge');
+      if (badge && mapBaseLayerNames[layerKey]) {
+        badge.textContent = mapBaseLayerNames[layerKey];
+      }
+
+      // Update quick-switch pills
+      document.querySelectorAll('.map-pill-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btnMap-${layerKey}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Keep railway tracks overlay on top if currently added
+      if (window.railwayTracksLayer && leafletMap.hasLayer(window.railwayTracksLayer)) {
+        window.railwayTracksLayer.bringToFront();
+      }
+    };
 
     function initMap() {
       if (leafletMap) return;
@@ -2506,32 +2619,75 @@ RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
         attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
       });
 
-      // 3. Stadia Outdoors - Terrain, mountains & outdoor transit
+      // 3. Google Hybrid (Satellite Imagery + Roads, Labels & Rail Network)
+      const googleHybrid = L.tileLayer(getGoogleTileUrl('y'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 4. Google Satellite (Real-world Photographic Aerial Imagery)
+      const googleSatellite = L.tileLayer(getGoogleTileUrl('s'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 5. Google Roadmap (Standard Street Navigation)
+      const googleRoadmap = L.tileLayer(getGoogleTileUrl('m'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 6. Google Terrain (Elevation & Physical Topography)
+      const googleTerrain = L.tileLayer(getGoogleTileUrl('p'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 7. Stadia Outdoors - Terrain, mountains & outdoor transit
       const stadiaOutdoors = L.tileLayer(`https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
         maxZoom: 20,
         attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
       });
 
-      // 4. Stadia Smooth Light - Clean daytime view
+      // 8. Stadia Smooth Light - Clean daytime view
       const stadiaSmooth = L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
         maxZoom: 20,
         attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
       });
 
-      // 5. OpenRailwayMap Tracks Overlay - Visualizes real physical railway tracks across India
+      // 9. OpenRailwayMap Tracks Overlay - Visualizes real physical railway tracks across India
       const railwayTracks = L.tileLayer('https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png', {
         maxZoom: 19,
         subdomains: 'abc',
         attribution: 'Tracks: &copy; <a href="https://www.OpenRailwayMap.org" target="_blank">OpenRailwayMap</a>'
       });
+      window.railwayTracksLayer = railwayTracks;
+
+      // Register layers in base dictionary
+      mapBaseLayers['stadiaDark'] = stadiaDark;
+      mapBaseLayers['maptilerStreets'] = maptilerStreets;
+      mapBaseLayers['googleHybrid'] = googleHybrid;
+      mapBaseLayers['googleSatellite'] = googleSatellite;
+      mapBaseLayers['googleRoadmap'] = googleRoadmap;
+      mapBaseLayers['googleTerrain'] = googleTerrain;
+      mapBaseLayers['stadiaOutdoors'] = stadiaOutdoors;
+      mapBaseLayers['stadiaSmooth'] = stadiaSmooth;
 
       // Default active base layer is Stadia Dark + Railway Tracks overlay
       stadiaDark.addTo(leafletMap);
       railwayTracks.addTo(leafletMap);
 
       const baseLayers = {
-        "🌙 Stadia Dark": stadiaDark,
+        "🌙 Stadia Dark (Neon Rail)": stadiaDark,
         "🗺️ MapTiler Streets": maptilerStreets,
+        "🌐 Google Hybrid": googleHybrid,
+        "🛰️ Google Satellite": googleSatellite,
+        "🚗 Google Roads": googleRoadmap,
+        "🏔️ Google Terrain": googleTerrain,
         "🌲 Stadia Outdoors": stadiaOutdoors,
         "☀️ Stadia Light": stadiaSmooth
       };
@@ -2541,6 +2697,23 @@ RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
       };
 
       L.control.layers(baseLayers, overlayLayers, { position: 'topright' }).addTo(leafletMap);
+
+      // Two-way synchronization with Leaflet radio button controls
+      leafletMap.on('baselayerchange', (e) => {
+        for (const [k, layer] of Object.entries(mapBaseLayers)) {
+          if (layer === e.layer) {
+            activeBaseLayerKey = k;
+            const badge = document.getElementById('activeMapNameBadge');
+            if (badge && mapBaseLayerNames[k]) {
+              badge.textContent = mapBaseLayerNames[k];
+            }
+            document.querySelectorAll('.map-pill-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btnMap-${k}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            break;
+          }
+        }
+      });
     }
 
     function catmullRomRailwaySpline(points, numSegments = 10) {
@@ -2901,6 +3074,17 @@ RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
               </div>
               <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">IRCTC failover backup provider.</div>
               <a href="https://rapidapi.com/IRCTCAPI/api/irctc1" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">RapidAPI Hub &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.google_maps?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(59,130,246,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">🗺️ Google Maps</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.google_maps?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(59,130,246,0.2)'}; color:${data.google_maps?.configured ? '#4ade80' : '#93c5fd'}; font-weight:700;">
+                  ${data.google_maps?.configured ? 'ACTIVE (' + data.google_maps.masked + ')' : 'READY (DUAL ENGINE)'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Google Satellite, Hybrid, Roadmap & Terrain layers.</div>
+              <a href="https://console.cloud.google.com/google/maps-apis/" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">Google Cloud Console &rarr;</a>
             </div>
 
             <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(34,197,94,0.3); border-radius:10px;">
@@ -3611,6 +3795,17 @@ RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
           dateEl.addEventListener("change", (e) => updateDateDisplay(e.target.value));
           dateEl.addEventListener("input", (e) => updateDateDisplay(e.target.value));
         }
+
+        // Fetch API configuration status to pick up Google Maps key if configured
+        fetch('/api/config/status')
+          .then(res => res.json())
+          .then(data => {
+            if (data.google_maps?.key) {
+              GOOGLE_MAPS_API_KEY = data.google_maps.key;
+              localStorage.setItem("SAFARNAMA_GOOGLE_MAPS_KEY", data.google_maps.key);
+            }
+          })
+          .catch(() => {});
 
         renderRecentSearches();
         searchRoutes();

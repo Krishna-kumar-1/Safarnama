@@ -51,7 +51,7 @@
 * 📲 **1-Click WhatsApp Itinerary Sharing**: Clean, pre-formatted journey summary with train numbers, departure/arrival timings, total duration, and class fares ready to share.
 * 🕒 **Recent Search History**: Persistent horizontal chip strip remembering your recent journeys for one-click re-querying.
 * 📅 **Flexible Date Search (±1 to ±5 Days)**: Scans adjacent calendar dates to suggest direct 1-leg alternatives and faster travel days.
-* 🗺️ **Interactive Railway Track Map**: Multi-layer Leaflet.js map rendering track beds, railway sleepers/ties, and halt coordinates across all transit stations.
+* 🗺️ **Dual Map Engine with Instant Switching**: Toggle seamlessly between **Google Satellite**, **Google Hybrid**, **Google Roads**, **Google Terrain**, **Stadia Dark (Neon Rail)**, **MapTiler Streets**, and the **OpenRailwayMap** real physical railway track network across India with one-click quick switch buttons and synchronized layer controls.
 * 🌌 **Atmospheric Aesthetics**:
   * Bio-luminescent firefly cursor with realistic inverse-square light bloom and golden dust trails.
   * Interactive train locomotive headlights following cursor movement.
@@ -293,6 +293,12 @@ RAILKIT_API_KEYS="railkit_key1, railkit_key2"
 # ==============================================================================
 RAPIDAPI_KEYS="your_rapidapi_key"
 RAPIDAPI_HOST="irctc1.p.rapidapi.com"
+
+# ==============================================================================
+# 4. Google Maps Platform (Optional Satellite & Hybrid Map Imagery)
+# Get your API key: https://console.cloud.google.com/google/maps-apis/
+# ==============================================================================
+GOOGLE_MAPS_API_KEY="your_google_maps_key"
 
 # Server Port
 PORT=5000

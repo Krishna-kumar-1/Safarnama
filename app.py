@@ -348,6 +348,9 @@ def api_config_status():
     railkit_status = get_pool_status()
     rail_cnt = railkit_status.get("count", 0) if isinstance(railkit_status, dict) else 0
 
+    import os
+    gmaps_key = os.getenv("GOOGLE_MAPS_API_KEY", "").strip()
+
     return jsonify({
         "gemini": {
             "configured": bool(gemini_key),
@@ -361,6 +364,11 @@ def api_config_status():
         "rapidapi": {
             "configured": len(rapid_keys) > 0,
             "count": len(rapid_keys),
+        },
+        "google_maps": {
+            "configured": bool(gmaps_key),
+            "masked": f"...{gmaps_key[-4:]}" if len(gmaps_key) >= 4 else None,
+            "key": gmaps_key if gmaps_key else None,
         },
         "offline_database": {
             "status": "online",
