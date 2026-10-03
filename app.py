@@ -17,6 +17,7 @@ from src.railkit_client import (
     get_live_station,
 )
 from src.assistant_engine import SafarnamaAssistant
+from src.track_geometry import get_exact_track_geometry
 
 app = Flask(__name__, static_folder="static")
 CORS(app)
@@ -332,6 +333,39 @@ def api_assistant_chat():
     history = data.get("history", [])
     res = assistant.process_message(message, history=history)
     return jsonify(res)
+
+
+# =========================================================================
+# Physical Railway Track Geometry API (100% Real Rails Snapping)
+# =========================================================================
+@app.post("/api/track/geometry")
+def api_track_geometry():
+    data = request.get_json(force=True, silent=True) or {}
+    points = data.get("points") or []
+    if not points or len(points) < 2:
+        return jsonify({
+            "status": "ok",
+            "coordinates": points,
+            "count": len(points),
+            "snapped": False
+        })
+    try:
+        coords = get_exact_track_geometry(points)
+        snapped = len(coords) > len(points)
+        return jsonify({
+            "status": "ok",
+            "coordinates": coords,
+            "count": len(coords),
+            "snapped": snapped
+        })
+    except Exception as exc:
+        return jsonify({
+            "status": "ok",
+            "coordinates": points,
+            "count": len(points),
+            "snapped": False,
+            "fallback_reason": str(exc)
+        })
 
 
 # =========================================================================

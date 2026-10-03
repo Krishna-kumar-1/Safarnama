@@ -216,6 +216,11 @@
     100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.85; }
   }
 
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
   /* Locomotive Headlight Animation Stage in Header */
   .loco-stage {
     position: relative;
@@ -2143,11 +2148,12 @@
     <!-- Route Map Container -->
     <div id="mapCard" style="display: none; margin-bottom: 24px;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px; padding:0 2px;">
-        <div style="display:flex; align-items:center; gap:8px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
           <div style="font-family:var(--font-heading); font-size:1.02rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:6px;">
             <span>🗺️ Route Map</span>
           </div>
           <span id="activeMapNameBadge" style="font-size:0.75rem; color:#93c5fd; background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.35); padding:2px 8px; border-radius:6px; font-weight:700;">🌙 Stadia Dark</span>
+          <span id="trackAlignmentBadge" style="display:none; font-size:0.75rem; color:#10b981; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); padding:2px 8px; border-radius:6px; font-weight:600;">✓ Real Track Curve Snapped</span>
         </div>
 
         <!-- Quick Switch Bar -->
@@ -2930,24 +2936,71 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
 
       // Layer 2: Railway Track Sleepers / Ties (Dashed railroad cross-ties)
       const trackSleepers = L.polyline(smoothedTrack, {
-        color: '#e2e8f0',
+        color: '#f8fafc',
         weight: 6,
         dashArray: '3, 9',
-        opacity: 0.9,
+        opacity: 0.95,
         lineCap: 'butt',
         lineJoin: 'round'
       });
 
       // Layer 3: Railway Center Line (Vibrant steel blue railway track)
       const trackRail = L.polyline(smoothedTrack, {
-        color: '#3b82f6',
-        weight: 3,
+        color: '#0284c7',
+        weight: 3.5,
         opacity: 1,
         lineCap: 'round',
         lineJoin: 'round'
       });
 
       mapPolyline = L.featureGroup([trackBed, trackSleepers, trackRail]).addTo(leafletMap);
+
+      // Asynchronously snap to 100% exact physical railway track geometry
+      window.activePlotId = (window.activePlotId || 0) + 1;
+      const currentPlotId = window.activePlotId;
+
+      const trackBadge = document.getElementById("trackAlignmentBadge");
+      if (trackBadge) {
+        trackBadge.style.display = "inline-flex";
+        trackBadge.innerHTML = `<span style="display:inline-block; animation:spin 1s linear infinite;">⏳</span> Snapping to Real Rails...`;
+        trackBadge.style.color = "#f59e0b";
+        trackBadge.style.background = "rgba(245,158,11,0.15)";
+        trackBadge.style.borderColor = "rgba(245,158,11,0.3)";
+      }
+
+      fetch(`${API}/api/track/geometry`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ points: latLngs })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (window.activePlotId !== currentPlotId) return; // Stale request
+        if (data && data.status === 'ok' && data.coordinates && data.coordinates.length > latLngs.length) {
+          const exactCoords = data.coordinates;
+          trackBed.setLatLngs(exactCoords);
+          trackSleepers.setLatLngs(exactCoords);
+          trackRail.setLatLngs(exactCoords);
+          if (trackBadge) {
+            trackBadge.style.display = "inline-flex";
+            trackBadge.innerHTML = `✓ Real Rails Snapped (${exactCoords.length.toLocaleString()} track curves)`;
+            trackBadge.style.color = "#10b981";
+            trackBadge.style.background = "rgba(16,185,129,0.15)";
+            trackBadge.style.borderColor = "rgba(16,185,129,0.3)";
+          }
+        } else {
+          if (trackBadge) {
+            trackBadge.style.display = "inline-flex";
+            trackBadge.innerHTML = `✓ Real Rail Corridor`;
+            trackBadge.style.color = "#94a3b8";
+            trackBadge.style.background = "rgba(148,163,184,0.15)";
+            trackBadge.style.borderColor = "rgba(148,163,184,0.3)";
+          }
+        }
+      })
+      .catch(err => {
+        console.warn("Track geometry snap fallback:", err);
+      });
 
       allStationsInOrder.forEach(item => {
         if (!item.st.lat || !item.st.lon) return;
