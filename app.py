@@ -350,6 +350,19 @@ def api_config_status():
 
     import os
     gmaps_key = os.getenv("GOOGLE_MAPS_API_KEY", "").strip()
+    if not gmaps_key:
+        env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+        if os.path.exists(env_path):
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith("GOOGLE_MAPS_API_KEY="):
+                            gmaps_key = line.split("=", 1)[1].strip().strip('"').strip("'")
+                            if gmaps_key:
+                                break
+            except Exception:
+                pass
 
     return jsonify({
         "gemini": {
