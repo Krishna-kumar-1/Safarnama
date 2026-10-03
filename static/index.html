@@ -2875,51 +2875,6 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       mapMarkers.forEach(m => leafletMap.removeLayer(m));
       mapMarkers = [];
 
-      const latLngs = [];
-      const seenCoords = new Set();
-      const allStationsInOrder = [];
-      const interchangeCodes = new Set();
-
-      itinerary.legs.forEach((leg, index) => {
-        if (index > 0) interchangeCodes.add(leg.source);
-
-        // Use full railway line halt coordinates if available
-        if (leg.path_coordinates && leg.path_coordinates.length > 0) {
-          leg.path_coordinates.forEach((pt, i) => {
-            const key = `${pt[0].toFixed(5)},${pt[1].toFixed(5)}`;
-            latLngs.push(pt);
-            if (leg.path_stations && leg.path_stations[i]) {
-              const st = leg.path_stations[i];
-              if (!seenCoords.has(key)) {
-                seenCoords.add(key);
-                allStationsInOrder.push({
-                  st,
-                  isStart: index === 0 && i === 0,
-                  isEnd: index === itinerary.legs.length - 1 && i === leg.path_coordinates.length - 1,
-                  isInterchange: interchangeCodes.has(st.code),
-                  leg
-                });
-              }
-            }
-          });
-        } else {
-          // Fallback to source and destination
-          const srcSt = stationMap.get(leg.source);
-          const dstSt = stationMap.get(leg.destination);
-
-          if (srcSt && srcSt.lat && srcSt.lon) {
-            latLngs.push([srcSt.lat, srcSt.lon]);
-            allStationsInOrder.push({ st: srcSt, isStart: index === 0, leg });
-          }
-          if (dstSt && dstSt.lat && dstSt.lon) {
-            latLngs.push([dstSt.lat, dstSt.lon]);
-            if (index === itinerary.legs.length - 1) {
-              allStationsInOrder.push({ st: dstSt, isEnd: true, leg });
-            }
-          }
-        }
-      });
-
       const layerElements = [];
       const seenCoords = new Set();
       const allStationsInOrder = [];
@@ -3747,28 +3702,48 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       const dstInput = document.getElementById("destInput").value.trim();
 
       // Auto-resolve if user typed station code/name directly without clicking dropdown
-      if (!source && srcInput) {
-        const q = srcInput.toLowerCase();
-        const m = stations.find(s => s.code.toLowerCase() === q) || stations.find(s => s.name.toLowerCase() === q);
-        if (m) {
-          source = m.code;
-          document.getElementById("source").value = m.code;
-          document.getElementById("sourceInput").value = `${m.name} (${m.code})`;
-          document.getElementById("sourceStateBadge").textContent = m.state || "";
+      if (srcInput) {
+        const q = srcInput.trim().toLowerCase();
+        const parenMatch = srcInput.match(/\(([A-Za-z0-9]+)\)$/);
+        if (parenMatch) {
+          source = parenMatch[1].toUpperCase();
+        } else {
+          const m = stations.find(s => s.code.toLowerCase() === q) || stations.find(s => s.name.toLowerCase() === q);
+          if (m) {
+            source = m.code;
+            document.getElementById("sourceInput").value = `${m.name} (${m.code})`;
+            document.getElementById("sourceStateBadge").textContent = m.state || "";
+          }
         }
+        document.getElementById("source").value = source;
       }
-      if (!destination && dstInput) {
-        const q = dstInput.toLowerCase();
-        const m = stations.find(s => s.code.toLowerCase() === q) || stations.find(s => s.name.toLowerCase() === q);
-        if (m) {
-          destination = m.code;
-          document.getElementById("destination").value = m.code;
-          document.getElementById("destInput").value = `${m.name} (${m.code})`;
-          document.getElementById("destStateBadge").textContent = m.state || "";
+      if (dstInput) {
+        const q = dstInput.trim().toLowerCase();
+        const parenMatch = dstInput.match(/\(([A-Za-z0-9]+)\)$/);
+        if (parenMatch) {
+          destination = parenMatch[1].toUpperCase();
+        } else {
+          const m = stations.find(s => s.code.toLowerCase() === q) || stations.find(s => s.name.toLowerCase() === q);
+          if (m) {
+            destination = m.code;
+            document.getElementById("destInput").value = `${m.name} (${m.code})`;
+            document.getElementById("destStateBadge").textContent = m.state || "";
+          }
         }
+        document.getElementById("destination").value = destination;
       }
 
-      const date = document.getElementById("date").value;
+      let date = document.getElementById("date").value;
+      if (!date) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, "0");
+        const dd = String(tomorrow.getDate()).padStart(2, "0");
+        date = `${yyyy}-${mm}-${dd}`;
+        document.getElementById("date").value = date;
+        updateDateDisplay(date);
+      }
       const time = document.getElementById("time").value || "08:00";
       const flexible = document.getElementById("flexibleCheck").checked;
       const daysRange = document.getElementById("flexibleDays").value || "3";
