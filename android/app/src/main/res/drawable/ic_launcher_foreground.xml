@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <group
+        android:scaleX="0.65"
+        android:scaleY="0.65"
+        android:translateX="18.9"
+        android:translateY="18.9">
+        <!-- Train Body -->
+        <path
+            android:fillColor="#3B82F6"
+            android:pathData="M32,18 C25,18 20,24 20,32 L20,74 C20,82 25,86 32,86 L76,86 C83,86 88,82 88,74 L88,32 C88,24 83,18 76,18 Z"/>
+        <!-- Windshield -->
+        <path
+            android:fillColor="#FFFFFF"
+            android:pathData="M26,30 L82,30 L80,50 L28,50 Z"/>
+        <!-- Headlights -->
+        <path
+            android:fillColor="#F59E0B"
+            android:pathData="M30,68 A5,5 0 1,0 30,78 A5,5 0 1,0 30,68 Z"/>
+        <path
+            android:fillColor="#F59E0B"
+            android:pathData="M78,68 A5,5 0 1,0 78,78 A5,5 0 1,0 78,68 Z"/>
+        <!-- Railroad Tracks Base -->
+        <path
+            android:fillColor="#94A3B8"
+            android:pathData="M24,94 L84,94 L88,98 L20,98 Z"/>
+        <!-- Center Emblem / Logo -->
+        <path
+            android:fillColor="#10B981"
+            android:pathData="M50,66 L58,66 L58,74 L50,74 Z"/>
+    </group>
+</vector>

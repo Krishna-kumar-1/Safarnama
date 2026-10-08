@@ -1,0 +1,6 @@
+<resources>
+    <color name="bg_page">#02040A</color>
+    <color name="primary_blue">#2563EB</color>
+    <color name="rail_orange">#F59E0B</color>
+    <color name="text_white">#FFFFFF</color>
+</resources>

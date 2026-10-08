@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NTES - National Train Enquiry System &amp; Live Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --ntes-bg: #121324;
+      --ntes-sidebar: #1e1b38;
+      --ntes-sidebar-hover: #2a264e;
+      --ntes-card: #1c1e38;
+      --ntes-card-header: #242749;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-green: #22c55e;
+      --accent-orange: #f59e0b;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-heading: 'Space Grotesk', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--ntes-bg);
+      color: var(--text-main);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Header Bar */
+    .ntes-navbar {
+      background: #0f101f;
+      border-bottom: 1px solid var(--border-color);
+      padding: 10px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .ntes-badge {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 6px 12px;
+      border-radius: 8px;
+      letter-spacing: 1px;
+    }
+    .brand-sub {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .nav-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border-color);
+      color: #cbd5e1;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-pill:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .nav-pill.active {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: rgba(59, 130, 246, 0.6);
+      color: #93c5fd;
+    }
+
+    /* Layout: Sidebar + Main Content */
+    .app-layout {
+      display: flex;
+      flex: 1;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* NTES Official Sidebar */
+    .ntes-sidebar {
+      width: 270px;
+      background: var(--ntes-sidebar);
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .sidebar-menu {
+      list-style: none;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .menu-item {
+      padding: 11px 16px;
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+    .menu-item:hover {
+      background: var(--ntes-sidebar-hover);
+      color: #fff;
+    }
+    .menu-item.active {
+      background: #2b2752;
+      color: #60a5fa;
+      border-left: 4px solid #3b82f6;
+      font-weight: 700;
+    }
+    .menu-icon {
+      font-size: 1.15rem;
+      width: 22px;
+      text-align: center;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border-color);
+      margin: 10px 14px;
+    }
+
+    .sidebar-footer-links {
+      padding: 14px 16px;
+      margin-top: auto;
+      background: #17152c;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+    .app-badges-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .app-badge-btn {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-color);
+      padding: 6px 10px;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    /* Main Content Area */
+    .ntes-main-content {
+      flex: 1;
+      padding: 24px 30px 60px;
+      max-width: 1100px;
+    }
+
+    /* Service Sections */
+    .ntes-section {
+      display: none;
+      animation: fadeIn 0.2s ease-out;
+    }
+    .ntes-section.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Form Card */
+    .ntes-search-card {
+      background: var(--ntes-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .input-box {
+      flex: 2;
+      min-width: 220px;
+    }
+    .input-box input, .input-box select {
+      width: 100%;
+      background: #111224;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+      height: 48px;
+    }
+    .input-box input:focus, .input-box select:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: none;
+      color: #fff;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 0 24px;
+      height: 48px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+    }
+
+    /* NTES Header Box */
+    .ntes-header-box {
+      background: var(--ntes-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .ntes-train-title-row {
+      background: var(--ntes-card-header);
+      padding: 16px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .train-name-big {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* Date Tabs */
+    .ntes-date-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 22px;
+      background: #181a33;
+      border-bottom: 1px solid var(--border-color);
+      align-items: center;
+      overflow-x: auto;
+    }
+    .date-tab-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .date-tab-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.3); }
+    .date-tab-btn.active {
+      background: #3b82f6;
+      border-color: #3b82f6;
+      color: #fff;
+    }
+
+    /* Status Banner */
+    .ntes-status-banner {
+      padding: 16px 22px;
+      background: #15172d;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .status-msg-main {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent-green);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ntes-route-action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+    .route-title-text {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .ntes-action-pill {
+      background: #252849;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ntes-action-pill.delay {
+      background: rgba(245, 158, 11, 0.15);
+      border-color: rgba(245, 158, 11, 0.4);
+      color: #fde047;
+    }
+
+    /* NTES Ladder Table */
+    .ntes-ladder-container {
+      background: #111224;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .ladder-table-header {
+      display: grid;
+      grid-template-columns: 180px 1fr 180px;
+      background: #1f2240;
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-color);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+    }
+    .ladder-row {
+      display: grid;
+      grid-template-columns: 180px 1fr 180px;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      align-items: center;
+      position: relative;
+    }
+    .ladder-row:hover { background: rgba(255, 255, 255, 0.025); }
+    .ladder-row.current-halt {
+      background: rgba(34, 197, 94, 0.08);
+      border-left: 4px solid var(--accent-green);
+    }
+    .time-sched { font-size: 0.95rem; font-weight: 700; color: #fff; }
+    .time-actual { font-size: 0.82rem; font-weight: 600; color: #4ade80; }
+    .badge-ontime {
+      display: inline-block;
+      width: fit-content;
+      background: rgba(34, 197, 94, 0.18);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #4ade80;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+    .stn-cell {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-left: 20px;
+      position: relative;
+    }
+    .track-visual-spine {
+      width: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .track-line-segment {
+      width: 3px;
+      height: 64px;
+      background: #475569;
+      position: absolute;
+      top: -32px;
+      z-index: 1;
+    }
+    .track-node-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-orange);
+      border: 2px solid #fff;
+      z-index: 2;
+    }
+    .track-node-dot.src { background: var(--accent-green); width: 16px; height: 16px; }
+    .track-node-dot.dst { background: #ef4444; width: 16px; height: 16px; }
+    .train-live-icon {
+      position: absolute;
+      font-size: 1.4rem;
+      z-index: 5;
+      animation: pulseTrain 1.5s infinite alternate ease-in-out;
+    }
+    @keyframes pulseTrain {
+      0% { transform: scale(1); filter: drop-shadow(0 0 4px #22c55e); }
+      100% { transform: scale(1.18); filter: drop-shadow(0 0 10px #22c55e); }
+    }
+    .stn-name-title { font-size: 0.95rem; font-weight: 700; color: #fff; }
+    .pf-pill {
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.5);
+      color: #fde047;
+      font-weight: 700;
+      font-size: 0.7rem;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+    .date-pill-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .date-pill-btn:hover, .date-pill-btn.active {
+      background: rgba(59, 130, 246, 0.25);
+      border-color: rgba(59, 130, 246, 0.6);
+      color: #93c5fd;
+    }
+
+    /* Common Card & Tables */
+    .status-card {
+      background: var(--ntes-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 14px;
+    }
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+    .table-custom th {
+      text-align: left;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: #94a3b8;
+      padding: 10px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .table-custom td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.88rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .app-layout { flex-direction: column; }
+      .ntes-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+      .sidebar-menu { flex-direction: row; overflow-x: auto; padding: 10px; }
+      .menu-item { padding: 8px 12px; font-size: 0.8rem; white-space: nowrap; }
+    }
+
+    /* ==========================================================================
+       Safarnama AI Assistant & Voice Search Chatbot Widget
+       ========================================================================== */
+    .ai-assistant-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9998;
+      font-family: inherit;
+    }
+    .ai-trigger-btn {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8);
+      color: #ffffff;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.5), 0 0 25px rgba(56, 189, 248, 0.45);
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      backdrop-filter: blur(12px);
+      user-select: none;
+      padding: 0;
+    }
+    .ai-trigger-btn::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, transparent 70%);
+      animation: rippleGlow 2.4s infinite ease-in-out;
+      z-index: -1;
+    }
+    @keyframes rippleGlow {
+      0%, 100% { transform: scale(0.95); opacity: 0.5; }
+      50% { transform: scale(1.35); opacity: 1; }
+    }
+    .ai-trigger-btn:hover, .ai-trigger-btn:active, .ai-trigger-btn:focus-visible {
+      transform: scale(1.22);
+      box-shadow: 0 18px 45px rgba(37, 99, 235, 0.75), 0 0 35px rgba(56, 189, 248, 0.7);
+      border-color: #ffffff;
+    }
+    .ai-trigger-icon {
+      font-size: 1.8rem;
+      animation: pulseAI 2s infinite ease-in-out;
+      line-height: 1;
+    }
+    .ai-trigger-tooltip {
+      position: absolute;
+      right: 72px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(59, 130, 246, 0.45);
+      color: #93c5fd;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      opacity: 0.9;
+      transition: opacity 0.2s ease;
+    }
+    .ai-trigger-btn:hover .ai-trigger-tooltip {
+      opacity: 1;
+      color: #ffffff;
+      border-color: #60a5fa;
+    }
+    @keyframes pulseAI {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #60a5fa); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 8px #93c5fd); }
+    }
+    .ai-chat-window {
+      position: fixed;
+      bottom: 84px;
+      right: 24px;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      height: 540px;
+      max-height: calc(100vh - 110px);
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      border-radius: 20px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(37, 99, 235, 0.25);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 9998;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .ai-chat-window.active {
+      display: flex;
+    }
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(20px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .ai-chat-header {
+      background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(15, 23, 42, 0.9));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ai-header-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ai-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #38bdf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .ai-header-title {
+      font-weight: 800;
+      font-size: 0.98rem;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ai-online-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+    }
+    .ai-header-sub {
+      font-size: 0.72rem;
+      color: #93c5fd;
+    }
+    .ai-close-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #94a3b8;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+    .ai-close-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+    .ai-chat-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+    .ai-msg {
+      max-width: 88%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.86rem;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    .ai-msg-bot {
+      align-self: flex-start;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #f1f5f9;
+      border-bottom-left-radius: 4px;
+    }
+    .ai-msg-bot strong {
+      color: #93c5fd;
+    }
+    .ai-msg-user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .ai-quick-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .ai-chip {
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      color: #93c5fd;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ai-chip:hover {
+      background: rgba(59, 130, 246, 0.3);
+      border-color: #60a5fa;
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+    .ai-listening-banner {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      animation: pulseListen 1.5s infinite;
+    }
+    .ai-listening-banner.active {
+      display: flex;
+    }
+    @keyframes pulseListen {
+      0%, 100% { border-color: rgba(239, 68, 68, 0.4); }
+      50% { border-color: rgba(239, 68, 68, 0.9); box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+    }
+    .voice-wave {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      height: 14px;
+    }
+    .voice-bar {
+      width: 3px;
+      height: 100%;
+      background: #ef4444;
+      border-radius: 2px;
+      animation: waveAnim 0.8s infinite ease-in-out;
+    }
+    .voice-bar:nth-child(2) { animation-delay: 0.2s; }
+    .voice-bar:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes waveAnim {
+      0%, 100% { height: 4px; }
+      50% { height: 14px; }
+    }
+    .ai-chat-footer {
+      padding: 12px 14px;
+      background: rgba(15, 23, 42, 0.98);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .ai-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ai-chat-input {
+      flex: 1;
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 10px 14px;
+      color: #ffffff;
+      font-size: 0.86rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .ai-chat-input:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+      background: rgba(30, 41, 59, 0.95);
+    }
+    .ai-btn-mic {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.15rem;
+      transition: all 0.2s;
+    }
+    .ai-btn-mic:hover, .ai-btn-mic.recording {
+      background: rgba(239, 68, 68, 0.25);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #ef4444;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+      transform: scale(1.05);
+    }
+    .ai-btn-send {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border: 1px solid rgba(59, 130, 246, 0.5);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+    .ai-btn-send:hover {
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: scale(1.05);
+    }
+    .ai-typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      background: rgba(30, 41, 59, 0.85);
+      border-radius: 12px;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .ai-typing-dot {
+      width: 6px;
+      height: 6px;
+      background: #60a5fa;
+      border-radius: 50%;
+      animation: typingBounce 1.2s infinite ease-in-out;
+    }
+    .ai-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .ai-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-6px); }
+    }
+
+    /* =========================================================================
+       Mobile & Tablet Responsive Layouts (Stitch Signal & Steel Design System)
+       ========================================================================= */
+    @media (max-width: 960px) {
+      .app-layout {
+        flex-direction: column;
+      }
+      .ntes-sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+      }
+      .sidebar-menu {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 8px 14px;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .menu-item {
+        white-space: nowrap;
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        flex-shrink: 0;
+      }
+      .menu-item.active {
+        border-left: none;
+        border-bottom: 3px solid #3b82f6;
+      }
+      .sidebar-divider, .sidebar-footer-links {
+        display: none;
+      }
+      .ntes-main-content {
+        padding: 16px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .ntes-navbar {
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .top-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .nav-pill {
+        padding: 5px 12px;
+        font-size: 0.75rem;
+      }
+      .ntes-search-card {
+        padding: 14px;
+        gap: 10px;
+      }
+      .input-box {
+        min-width: 100%;
+      }
+      .btn-submit {
+        width: 100%;
+        justify-content: center;
+      }
+      .train-name-big {
+        font-size: 1.1rem;
+      }
+      .ladder-table-header {
+        display: none;
+      }
+      .ladder-row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 12px;
+        gap: 8px;
+      }
+      .stn-cell {
+        padding-left: 0;
+        width: 100%;
+      }
+      .ladder-row > div:first-child,
+      .ladder-row > div:last-child {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.03);
+        padding: 6px 10px;
+        border-radius: 6px;
+      }
+      .ladder-row > div:first-child::before {
+        content: "ARRIVAL";
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+      }
+      .ladder-row > div:last-child::before {
+        content: "DEPARTURE";
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: #94a3b8;
+        text-transform: uppercase;
+      }
+      .ai-chat-window {
+        width: calc(100vw - 24px);
+        right: 12px;
+        bottom: 80px;
+        max-height: 80vh;
+      }
+    }
+
+    /* Coach Layout Modal Styles */
+    .coach-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 4, 10, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .coach-modal.active { display: flex; }
+    .coach-modal-card {
+      background: #121324;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      width: min(720px, 95vw);
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    }
+    .coach-bay-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .coach-bay {
+      background: rgba(30, 41, 59, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px;
+    }
+    .berth-cell {
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: monospace;
+    }
+    .berth-cell.highlight {
+      background: #2563eb;
+      color: #fff;
+      border-color: #60a5fa;
+      box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <header class="ntes-navbar">
+    <a href="/" class="brand-group">
+      <div class="ntes-badge">NTES</div>
+      <div>
+        <div style="font-weight:700; font-size:0.95rem; color:#fff;">National Train Enquiry System</div>
+        <div class="brand-sub">Indian Railways Operations &middot; Ministry of Railways</div>
+      </div>
+    </a>
+    <div class="top-actions">
+      <button type="button" class="nav-pill" onclick="openApiKeysModal()" style="background:rgba(255,255,255,0.06); cursor:pointer; display:inline-flex; align-items:center; gap:5px;">⚙️ API Keys</button>
+      <a href="/" class="nav-pill active">🔍 Route Finder</a>
+      <a href="/journey" class="nav-pill">Overview</a>
+    </div>
+  </header>
+
+  <div class="app-layout">
+
+    <!-- Official Left Sidebar Navigation -->
+    <aside class="ntes-sidebar">
+      <ul class="sidebar-menu">
+        <li class="menu-item active" onclick="switchNtesTab('spot')">
+          <span class="menu-icon">🔍</span>
+          <span>Spot Your Train</span>
+        </li>
+        <li class="menu-item" onclick="switchNtesTab('station')">
+          <span class="menu-icon">🔔</span>
+          <span>Live Station</span>
+        </li>
+        <li class="menu-item" onclick="switchNtesTab('schedule')">
+          <span class="menu-icon">📅</span>
+          <span>Train Schedule</span>
+        </li>
+        <li class="menu-item" onclick="switchNtesTab('between')">
+          <span class="menu-icon">🚆</span>
+          <span>Trains B/w Stations</span>
+        </li>
+        <li class="menu-item" onclick="switchNtesTab('exceptions')">
+          <span class="menu-icon">⚠️</span>
+          <span>Train Exception Info</span>
+        </li>
+        
+        <div class="sidebar-divider"></div>
+        
+        <li class="menu-item" onclick="switchNtesTab('pnr')">
+          <span class="menu-icon">🎫</span>
+          <span>Live PNR Status</span>
+        </li>
+        <li class="menu-item" onclick="switchNtesTab('seats')">
+          <span class="menu-icon">💺</span>
+          <span>Seat Availability</span>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer-links">
+        <div><b>Indian Railways NTES Portal</b></div>
+        <div>Official timetable data synchronized with 12,466+ train schedules.</div>
+        <div class="app-badges-row">
+          <div class="app-badge-btn" onclick="alert('Android NTES App Link')">🤖 Android</div>
+          <div class="app-badge-btn" onclick="alert('iOS NTES App Link')">🍎 iOS</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="ntes-main-content">
+
+      <!-- =========================================================================
+           1. SPOT YOUR TRAIN (LADDER TRACK VIEW)
+           ========================================================================= -->
+      <section class="ntes-section active" id="sec-spot">
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadSpotTrain();">
+          <div class="input-box">
+            <input type="text" id="spotTrainInput" name="spot_train_no_autofill" placeholder="Enter Train Number (e.g. 12987, 03639, 14117, 12301)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadSpotTrain()" />
+          </div>
+          <button type="submit" class="btn-submit">
+            <span>Spot Your Train</span>
+          </button>
+        </form>
+
+        <!-- Quick Train Chips -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; align-items:center;">
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Popular Trains:</span>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='12987'; loadSpotTrain();">12987 (SDAH AII SF EXP)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='03639'; loadSpotTrain();">03639 (DHN SSB SPL)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='14117'; loadSpotTrain();">14117 (KALINDI EXP)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='12301'; loadSpotTrain();">12301 (RAJDHANI)</button>
+          <button type="button" style="background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:3px 10px; border-radius:6px; cursor:pointer;" onclick="document.getElementById('spotTrainInput').value='22436'; loadSpotTrain();">22436 (VANDE BHARAT)</button>
+        </div>
+
+        <div id="spotErrorBox" style="display:none; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.5); color:#fca5a5; padding:12px 16px; border-radius:10px; margin-bottom:14px; font-size:0.9rem; font-weight:700;"></div>
+
+        <div id="spotEmptyState" style="text-align:center; padding:45px 20px; background:rgba(15,23,42,0.5); border:1px dashed rgba(255,255,255,0.15); border-radius:14px; margin-top:10px;">
+          <div style="font-size:2.8rem; margin-bottom:12px;">🚆</div>
+          <h3 style="color:#ffffff; font-size:1.2rem; margin-bottom:6px; font-weight:700;">Live GPS Train Tracking</h3>
+          <p style="color:#94a3b8; font-size:0.9rem; max-width:520px; margin:0 auto; line-height:1.6;">Enter any 5-digit Indian Railways train number above or click one of the popular trains to view real-time station halts, live delay status, and platform numbers.</p>
+        </div>
+
+        <div id="spotContentArea" style="display:none;">
+          <div class="ntes-header-box">
+            <div class="ntes-train-title-row">
+              <div class="train-name-big" id="spotTrainHeader">03639 DHN SSB SPL</div>
+              <div style="font-size:0.75rem; color:#93c5fd; background:rgba(59,130,246,0.15); padding:4px 10px; border-radius:6px;">
+                Live Database Synced
+              </div>
+            </div>
+
+            <div class="ntes-date-tabs" id="spotDateTabs">
+              <span style="font-size:0.8rem; color:#94a3b8; font-weight:700; margin-right:6px;">Start Date :</span>
+            </div>
+
+            <div class="ntes-status-banner">
+              <div class="status-msg-main" id="spotStatusMsg">
+                <span>🚆 Yet to start from its source</span>
+              </div>
+              <div class="ntes-route-action-bar">
+                <div class="route-title-text" id="spotRouteTitle">DHANBAD JN - SHAKURBASTI</div>
+                <div style="display:flex; gap:8px;">
+                  <button class="ntes-action-pill" onclick="alert('Showing full route on map...')">📍 Show on Map</button>
+                  <button class="ntes-action-pill delay">🚌 Average Delay: On Time</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ntes-ladder-container">
+            <div class="ladder-table-header">
+              <div>Arrival</div>
+              <div style="text-align:center;">Station</div>
+              <div style="text-align:right;">Departure</div>
+            </div>
+            <div id="spotLadderRows"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           2. LIVE STATION DEPARTURES BOARD
+           ========================================================================= -->
+      <section class="ntes-section" id="sec-station">
+        <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">🔔 Live Station Digital Platform Board</h2>
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadLiveStation();">
+          <div class="input-box">
+            <input type="text" id="stationCodeInput" name="stn_search_no_autofill" placeholder="Enter Station Code (e.g. NDLS, HWH, BSB, DHN)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadLiveStation()" />
+          </div>
+          <div class="input-box" style="flex:1;">
+            <select id="stationHoursInput">
+              <option value="2">Next 2 Hours</option>
+              <option value="4" selected>Next 4 Hours</option>
+              <option value="8">Next 8 Hours</option>
+            </select>
+          </div>
+          <button type="submit" class="btn-submit">
+            <span>Get Live Board</span>
+          </button>
+        </form>
+
+        <div id="stationBoardResult" class="status-card" style="display:none;"></div>
+      </section>
+
+      <!-- =========================================================================
+           3. TRAIN SCHEDULE / TIMETABLE
+           ========================================================================= -->
+      <section class="ntes-section" id="sec-schedule">
+        <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">📅 Train Timetable &amp; Schedule Directory</h2>
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadTrainSchedule();">
+          <div class="input-box">
+            <input type="text" id="scheduleTrainInput" name="sched_train_no_autofill" placeholder="Enter Train Number (e.g. 12301, 22436, 12002)..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadTrainSchedule()" />
+          </div>
+          <button type="submit" class="btn-submit">
+            <span>View Schedule</span>
+          </button>
+        </form>
+
+        <div id="scheduleResult" class="status-card" style="display:none;"></div>
+      </section>
+
+      <!-- =========================================================================
+           4. TRAINS BETWEEN STATIONS
+           ========================================================================= -->
+      <section class="ntes-section" id="sec-between">
+        <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">🚆 Direct Trains Between Stations</h2>
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadTrainsBetween();">
+          <div class="input-box">
+            <input type="text" id="btwSourceInput" name="btw_src_no_autofill" placeholder="Source Station (e.g. HWH, NDLS, DHN)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" />
+          </div>
+          <div class="input-box">
+            <input type="text" id="btwDestInput" name="btw_dst_no_autofill" placeholder="Destination Station (e.g. NDLS, GAYA, BSB)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadTrainsBetween()" />
+          </div>
+          <button type="submit" class="btn-submit">
+            <span>Find Trains</span>
+          </button>
+        </form>
+
+        <div id="betweenResult" class="status-card" style="display:none;"></div>
+      </section>
+
+      <!-- =========================================================================
+           5. TRAIN EXCEPTION INFO (CANCELLED / RESCHEDULED)
+           ========================================================================= -->
+      <section class="ntes-section" id="sec-exceptions">
+        <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">⚠️ Train Exception Info &amp; Bulletins</h2>
+        <div class="status-card" id="exceptionsContainer">
+          <p style="color:#94a3b8;">Loading official railway exceptions &amp; cancellations...</p>
+        </div>
+      </section>
+
+      <!-- =========================================================================
+           6. LIVE PNR STATUS
+           ========================================================================= -->
+      <section class="ntes-section" id="sec-pnr">
+        <h2 style="font-family:var(--font-heading); font-size:1.3rem; margin-bottom:14px;">🎫 Live 10-Digit PNR Passenger Lookup</h2>
+        <form class="ntes-search-card" autocomplete="off" onsubmit="event.preventDefault(); loadPnrStatus();">
+          <div class="input-box">
+            <input type="text" id="pnrInput" name="pnr_clean_no_autofill" placeholder="Enter 10-digit PNR Number..." maxlength="10" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" value="" onkeyup="if(event.key==='Enter') loadPnrStatus()" />
+          </div>
+          <button type="submit" class="btn-submit">
+            <span>Check PNR</span>
+          </button>
+        </form>
+
+        <div id="pnrEmptyState" style="text-align:center; padding:45px 20px; background:rgba(15,23,42,0.5); border:1px dashed rgba(255,255,255,0.15); border-radius:14px; margin-top:14px;">
+          <div style="font-size:2.8rem; margin-bottom:12px;">🎫</div>
+          <h3 style="color:#ffffff; font-size:1.2rem; margin-bottom:6px; font-weight:700;">10-Digit PNR Status Verification</h3>
+          <p style="color:#94a3b8; font-size:0.9rem; max-width:520px; margin:0 auto; line-height:1.6;">Enter your 10-digit PNR number above to verify real-time passenger coach, berth allocation, chart status, and confirm probabilities directly from IRCTC.</p>
+        </div>
+
+        <div id="pnrResult" class="status-card" style="display:none;"></div>
+      </section>
+
+      <!-- =========================================================================
+           7. SEAT AVAILABILITY (ENHANCED USER-FRIENDLY IRCTC PORTAL)
+           ========================================================================= -->
+      <section class="ntes-section" id="sec-seats">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+          <div>
+            <h2 style="font-family:var(--font-heading); font-size:1.35rem; margin:0; color:#ffffff;">💺 Real-Time IRCTC Seat Availability &amp; Fare</h2>
+            <div style="font-size:0.82rem; color:#94a3b8; margin-top:2px;">Check live berth counts, confirmation probabilities &amp; class fares</div>
+          </div>
+          <span style="font-size:0.75rem; background:rgba(59,130,246,0.18); color:#93c5fd; border:1px solid rgba(59,130,246,0.4); padding:4px 10px; border-radius:6px; font-weight:700;">
+            ⚡ Instant Quota Engine
+          </span>
+        </div>
+
+        <!-- Quick Route Chips -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; align-items:center;">
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Popular Routes:</span>
+          <button style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="setSeatInputs('12301', 'NDLS', 'HWH', '3A');">12301 (NDLS &rarr; HWH Rajdhani)</button>
+          <button style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="setSeatInputs('12987', 'SDAH', 'AII', '3A');">12987 (SDAH &rarr; AII SF Exp)</button>
+          <button style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="setSeatInputs('22436', 'NDLS', 'BSB', 'CC');">22436 (NDLS &rarr; BSB Vande Bharat)</button>
+          <button style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="setSeatInputs('14117', 'PRYJ', 'CNB', 'SL');">14117 (PRYJ &rarr; CNB Kalindi)</button>
+          <button style="background:rgba(59,130,246,0.15); border:1px solid rgba(59,130,246,0.4); color:#93c5fd; font-size:0.75rem; padding:4px 10px; border-radius:6px; cursor:pointer;" onclick="setSeatInputs('03639', 'DHN', 'SSB', 'SL');">03639 (DHN &rarr; SSB Special)</button>
+        </div>
+
+        <!-- Search Controls Box -->
+        <div style="background:#13152c; border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:18px; margin-bottom:16px; box-shadow:0 6px 20px rgba(0,0,0,0.3);">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:14px;">
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">🚆 Train Number / Name</label>
+              <input type="text" id="seatTrain" name="seat_tr_clean" placeholder="e.g. 12301" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">📍 From Station</label>
+              <input type="text" id="seatFrom" name="seat_from_clean" placeholder="e.g. NDLS" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700; text-transform:uppercase;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">🏁 To Station</label>
+              <input type="text" id="seatTo" name="seat_to_clean" placeholder="e.g. HWH" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700; text-transform:uppercase;" onkeyup="if(event.key==='Enter') loadSeatAvailability()" />
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">📅 Journey Date</label>
+              <input type="date" id="seatDate" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700;" />
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">🎫 Class</label>
+              <select id="seatClass" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700;">
+                <option value="ALL" selected>All Classes (1A, 2A, 3A, SL)</option>
+                <option value="3A">AC 3 Tier (3A)</option>
+                <option value="2A">AC 2 Tier (2A)</option>
+                <option value="1A">AC First Class (1A)</option>
+                <option value="3E">AC 3 Economy (3E)</option>
+                <option value="SL">Sleeper (SL)</option>
+                <option value="CC">AC Chair Car (CC)</option>
+                <option value="2S">Second Sitting (2S)</option>
+              </select>
+            </div>
+
+            <div>
+              <label style="display:block; font-size:0.75rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">🏷️ Quota</label>
+              <select id="seatQuota" style="width:100%; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:10px 12px; border-radius:8px; font-weight:700;">
+                <option value="GN" selected>General (GN)</option>
+                <option value="TQ">Tatkal (TQ)</option>
+                <option value="PT">Premium Tatkal (PT)</option>
+                <option value="LD">Ladies (LD)</option>
+                <option value="SS">Senior Citizen (SS)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Date Pills & Action Button -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-top:1px solid rgba(255,255,255,0.08); padding-top:12px;">
+            <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+              <span style="font-size:0.75rem; color:#94a3b8; font-weight:700;">Quick Date:</span>
+              <button class="date-pill-btn" onclick="setQuickDate(0)">Today</button>
+              <button class="date-pill-btn" onclick="setQuickDate(1)">Tomorrow</button>
+              <button class="date-pill-btn" onclick="setQuickDate(2)">+2 Days</button>
+              <button class="date-pill-btn" onclick="setQuickDate(3)">+3 Days</button>
+            </div>
+
+            <button class="btn-submit" onclick="loadSeatAvailability()" style="padding:10px 24px; font-weight:800;">
+              <span>🔍 Check Availability &amp; Fares</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="seatResult" class="status-card" style="display:none;"></div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Tab Navigation
+    function switchNtesTab(tabId) {
+      document.querySelectorAll('.menu-item').forEach(item => {
+        const onclickAttr = item.getAttribute('onclick') || '';
+        if (onclickAttr.includes(`'${tabId}'`)) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+      document.querySelectorAll('.ntes-section').forEach(sec => sec.classList.remove('active'));
+
+      const targetSec = document.getElementById(`sec-${tabId}`);
+      if (targetSec) targetSec.classList.add('active');
+
+      if (tabId === 'exceptions') loadExceptions();
+    }
+    window.switchTab = switchNtesTab;
+    window.switchNtesTab = switchNtesTab;
+
+    // 1. SPOT YOUR TRAIN
+    async function loadSpotTrain(optDate) {
+      const inputEl = document.getElementById('spotTrainInput');
+      const train = inputEl.value.trim();
+      const errBox = document.getElementById('spotErrorBox');
+      const contentArea = document.getElementById('spotContentArea');
+      const emptyState = document.getElementById('spotEmptyState');
+
+      if (!train) {
+        if (contentArea) contentArea.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'block';
+        if (errBox) {
+          errBox.style.display = 'block';
+          errBox.textContent = 'Please enter a train number (e.g. 12987, 03639, 14117).';
+        }
+        return;
+      }
+
+      if (errBox) errBox.style.display = 'none';
+      const dateParam = optDate ? `?date=${encodeURIComponent(optDate)}` : "";
+
+      try {
+        const res = await fetch(`/api/ntes/track/${encodeURIComponent(train)}${dateParam}`);
+        const data = await res.json();
+
+        if (data.error) {
+          if (contentArea) contentArea.style.display = 'none';
+          if (emptyState) emptyState.style.display = 'block';
+          if (errBox) {
+            errBox.style.display = 'block';
+            errBox.textContent = data.message || 'Train schedule not found.';
+          }
+          return;
+        }
+
+        if (emptyState) emptyState.style.display = 'none';
+        if (contentArea) contentArea.style.display = 'block';
+        document.getElementById('spotTrainHeader').textContent = data.train_name;
+        document.getElementById('spotRouteTitle').textContent = data.route_title;
+        document.getElementById('spotStatusMsg').innerHTML = `<span>🚆 ${data.current_status}</span>`;
+
+        // Date tabs
+        let dHtml = `<span style="font-size:0.8rem; color:#94a3b8; font-weight:700; margin-right:6px;">Start Date :</span>`;
+        (data.running_dates || []).forEach(d => {
+          const isActive = (d === data.start_date);
+          dHtml += `<button class="date-tab-btn ${isActive ? 'active' : ''}" onclick="loadSpotTrain('${d}')">${d}</button>`;
+        });
+        document.getElementById('spotDateTabs').innerHTML = dHtml;
+
+        // Ladder Rows
+        let rHtml = "";
+        (data.halts || []).forEach(h => {
+          const isFirst = h.is_source;
+          const isLast = h.is_dest;
+          const isCurrent = h.is_current;
+          const dotClass = isFirst ? "src" : (isLast ? "dst" : (h.has_passed ? "passed" : ""));
+          const liveIcon = (isCurrent && !h.intermediate_live) ? `<div class="train-live-icon">🚆</div>` : "";
+
+          const arrDateBadge = h.arr_date_str ? `<span style="font-size:0.75rem; color:#94a3b8; font-weight:600; margin-left:4px;">${h.arr_date_str}</span>` : "";
+          const depDateBadge = h.dep_date_str ? `<span style="font-size:0.75rem; color:#94a3b8; font-weight:600; margin-left:4px;">${h.dep_date_str}</span>` : "";
+
+          const arrContent = isFirst ? `
+            <div class="time-sched" style="color:#94a3b8;">SRC</div>
+            <div class="time-actual" style="color:#64748b;">SRC</div>
+          ` : `
+            <div class="time-sched">${h.scheduled_arr} ${arrDateBadge}</div>
+            <div class="time-actual">${h.actual_arr}*</div>
+            <div class="badge-ontime">${h.arr_delay}</div>
+          `;
+
+          const depContent = isLast ? `
+            <div class="time-sched" style="color:#94a3b8;">DST</div>
+            <div class="time-actual" style="color:#64748b;">DST</div>
+          ` : `
+            <div class="time-sched">${h.scheduled_dep} ${depDateBadge}</div>
+            <div class="time-actual">${h.actual_dep}*</div>
+            <div class="badge-ontime">${h.dep_delay}</div>
+          `;
+
+          const nonStoppingText = isFirst ? `SRC &middot; Non-Stopping Stations` : `${h.distance_km} KMs &middot; Non-Stopping Stations`;
+
+          let intermediateBox = "";
+          if (h.intermediate_live) {
+            intermediateBox = `
+              <div style="background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.5); border-radius:10px; padding:10px 16px; margin:8px 0 12px 0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <div style="font-size:0.72rem; color:#34d399; font-weight:800; text-transform:uppercase;">🚆 LIVE TRAIN POSITION &middot; INTERMEDIATE CROSSING</div>
+                  <div style="font-size:1.05rem; font-weight:800; color:#ffffff; margin-top:2px;">
+                    ${h.intermediate_live.station_name} <span style="font-size:0.82rem; color:#93c5fd; background:rgba(59,130,246,0.25); padding:2px 6px; border-radius:4px;">${h.intermediate_live.station_code}</span>
+                  </div>
+                  <div style="font-size:0.78rem; color:#a7f3d0; margin-top:2px;">
+                    ${h.intermediate_live.status}
+                  </div>
+                </div>
+                <div style="text-align:right;">
+                  <span style="background:rgba(16,185,129,0.25); border:1px solid rgba(16,185,129,0.6); color:#34d399; font-size:0.75rem; font-weight:800; padding:3px 8px; border-radius:6px;">Approaching ${h.intermediate_live.next_station_name}</span>
+                </div>
+              </div>
+            `;
+          }
+
+          rHtml += `
+            <div class="ladder-row ${isCurrent ? 'current-halt' : ''}">
+              <div>${arrContent}</div>
+              <div class="stn-cell">
+                <div class="track-visual-spine">
+                  ${!isFirst ? '<div class="track-line-segment"></div>' : ''}
+                  <div class="track-node-dot ${dotClass}"></div>
+                  ${liveIcon}
+                </div>
+                <div>
+                  <div class="stn-name-title">${h.station_name}</div>
+                  <div style="display:flex; gap:6px; align-items:center; margin-top:2px;">
+                    <span style="color:#93c5fd; font-weight:700; font-size:0.75rem;">${h.station_code}</span>
+                    <span class="pf-pill">PF ${h.platform}*</span>
+                  </div>
+                  <div style="color:#f87171; font-size:0.72rem; margin-top:2px;">${nonStoppingText} &darr;</div>
+                </div>
+              </div>
+              <div style="text-align:right;">${depContent}</div>
+            </div>
+            ${intermediateBox}
+          `;
+        });
+        document.getElementById('spotLadderRows').innerHTML = rHtml;
+      } catch (e) {
+        if (errBox) {
+          errBox.style.display = 'block';
+          errBox.textContent = 'Error connecting to live train tracking server.';
+        }
+      }
+    }
+
+    // 2. LIVE STATION
+    async function loadLiveStation() {
+      const inputEl = document.getElementById('stationCodeInput');
+      const st = (inputEl.value || 'DHN').trim().toUpperCase();
+      const hrs = document.getElementById('stationHoursInput').value || 4;
+      const resEl = document.getElementById('stationBoardResult');
+
+      resEl.style.display = 'block';
+      resEl.innerHTML = `<p style="color:#94a3b8; padding:12px;">🛰️ Synchronizing live digital platform board for ${st}...</p>`;
+
+      try {
+        const res = await fetch(`/api/railkit/live-station/${encodeURIComponent(st)}?hours=${hrs}`);
+        const data = await res.json();
+
+        const trainList = data.trains || [];
+        if (trainList.length === 0) {
+          resEl.innerHTML = `<p style="color:#f59e0b; padding:12px;">No trains scheduled to depart from ${st} within the next ${hrs} hours.</p>`;
+          return;
+        }
+
+        let rows = "";
+        trainList.forEach(t => {
+          const tNo = t.train_number || t.trainNo || '';
+          const tName = t.train_name || t.name || t.trainName || 'Express';
+          const tRoute = t.route || (t.source_name && t.destination_name ? `${t.source_name} &rarr; ${t.destination_name}` : '');
+          const depTime = t.scheduled_dep || t.actual_dep || '--:--';
+          const pfNum = t.platform || '1';
+          const isDelayed = t.is_delayed;
+          const delayText = t.delay || 'On Time';
+          const statusBadge = isDelayed && delayText !== 'On Time' 
+            ? `<span style="color:#f87171; font-weight:700;">⚠️ ${delayText}</span>` 
+            : `<span style="color:#4ade80; font-weight:700;">🟢 On Time</span>`;
+
+          rows += `
+            <tr>
+              <td>
+                <div style="font-weight:800; color:#fff; font-size:0.95rem;">${tNo} &middot; ${tName}</div>
+                ${tRoute ? `<div style="font-size:0.75rem; color:#94a3b8; margin-top:2px;">${tRoute}</div>` : ''}
+              </td>
+              <td>
+                <div style="font-weight:700; color:#93c5fd; font-size:0.95rem;">${depTime}</div>
+              </td>
+              <td>
+                <span class="pf-pill" style="font-size:0.8rem; font-weight:800;">PF ${pfNum}</span>
+              </td>
+              <td>
+                ${statusBadge}
+              </td>
+            </tr>
+          `;
+        });
+
+        resEl.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+            <div>
+              <h3 style="font-size:1.2rem; color:#fff; margin:0;">Station ${st} &middot; Live Platform Board</h3>
+              <div style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">Showing ${trainList.length} Departures in Next ${hrs} Hours</div>
+            </div>
+            <div style="font-size:0.75rem; background:rgba(34,197,94,0.15); color:#4ade80; border:1px solid rgba(34,197,94,0.4); padding:4px 10px; border-radius:6px; font-weight:700;">
+              ● Satellite Board Live
+            </div>
+          </div>
+          <table class="table-custom">
+            <thead>
+              <tr><th>Train &amp; Route</th><th>Departure</th><th>Platform</th><th>Live Status</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        resEl.innerHTML = `<p style="color:#ef4444; padding:12px;">Failed to connect to digital station board. Please try again.</p>`;
+      }
+    }
+
+    // 3. TRAIN SCHEDULE
+    async function loadTrainSchedule() {
+      const train = document.getElementById('scheduleTrainInput').value.trim();
+      const resEl = document.getElementById('scheduleResult');
+
+      resEl.style.display = 'block';
+      resEl.innerHTML = `<p style="color:#94a3b8;">Loading timetable for ${train}...</p>`;
+
+      try {
+        const res = await fetch(`/api/ntes/track/${encodeURIComponent(train)}`);
+        const data = await res.json();
+
+        if (data.error) {
+          resEl.innerHTML = `<p style="color:#ef4444;">${data.message}</p>`;
+          return;
+        }
+
+        let rows = "";
+        (data.halts || []).forEach(h => {
+          rows += `
+            <tr>
+              <td><b>${h.index}</b></td>
+              <td><b style="color:#fff;">${h.station_name}</b> (${h.station_code})</td>
+              <td>${h.scheduled_arr}</td>
+              <td>${h.scheduled_dep}</td>
+              <td>${h.halt_min ? h.halt_min + ' mins' : '-'}</td>
+              <td>${h.distance_km} KMs</td>
+              <td><span class="pf-pill">PF ${h.platform}</span></td>
+            </tr>
+          `;
+        });
+
+        resEl.innerHTML = `
+          <h3 style="font-size:1.15rem; color:#fff;">${data.train_name} Schedule</h3>
+          <div style="font-size:0.82rem; color:#93c5fd; margin-bottom:12px;">Route: ${data.route_title} &middot; Total Halts: ${data.total_halts}</div>
+          <table class="table-custom">
+            <thead>
+              <tr><th>#</th><th>Station</th><th>Arrival</th><th>Departure</th><th>Halt</th><th>Distance</th><th>Platform</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        resEl.innerHTML = `<p style="color:#ef4444;">Failed to load timetable</p>`;
+      }
+    }
+
+    // 4. TRAINS BETWEEN STATIONS
+    async function loadTrainsBetween() {
+      const src = document.getElementById('btwSourceInput').value.trim();
+      const dst = document.getElementById('btwDestInput').value.trim();
+      const resEl = document.getElementById('betweenResult');
+
+      resEl.style.display = 'block';
+      resEl.innerHTML = `<p style="color:#94a3b8;">Searching direct trains between ${src} and ${dst}...</p>`;
+
+      try {
+        const res = await fetch(`/api/ntes/trains-between?source=${encodeURIComponent(src)}&destination=${encodeURIComponent(dst)}`);
+        const data = await res.json();
+
+        let rows = "";
+        (data.trains || []).forEach(t => {
+          rows += `
+            <tr>
+              <td><b style="color:#fff;">${t.train_number}</b><br><span style="font-size:0.75rem; color:#94a3b8;">${t.train_name}</span></td>
+              <td>${t.dep_time}</td>
+              <td>${t.arr_time}</td>
+              <td>${Math.floor(t.duration_min / 60)}h ${t.duration_min % 60}m</td>
+              <td><b style="color:#60a5fa;">Rs.${t.cost_inr ? t.cost_inr.toFixed(0) : '-'}</b></td>
+              <td><span style="font-size:0.72rem; color:#fde047;">${t.classes}</span></td>
+            </tr>
+          `;
+        });
+
+        resEl.innerHTML = `
+          <h3 style="font-size:1.15rem; color:#fff;">${data.source_name} &rarr; ${data.destination_name}</h3>
+          <div style="font-size:0.82rem; color:#94a3b8; margin-bottom:12px;">Found ${data.total_trains} Direct Trains in Schedule</div>
+          <table class="table-custom">
+            <thead>
+              <tr><th>Train</th><th>Departure</th><th>Arrival</th><th>Duration</th><th>Fare</th><th>Classes</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+        `;
+      } catch (e) {
+        resEl.innerHTML = `<p style="color:#ef4444;">Failed to search trains</p>`;
+      }
+    }
+
+    // 5. EXCEPTIONS
+    async function loadExceptions() {
+      const resEl = document.getElementById('exceptionsContainer');
+      try {
+        const res = await fetch('/api/ntes/exceptions');
+        const data = await res.json();
+
+        let cancHtml = "<h4>🚫 Cancelled Trains Today</h4><ul style='margin:8px 0 16px 20px;'>";
+        (data.cancelled_today || []).forEach(c => {
+          cancHtml += `<li style='margin-bottom:6px;'><b>${c.train_number} ${c.train_name}</b> (${c.source} &rarr; ${c.destination}) &mdash; <span style='color:#ef4444;'>Reason: ${c.reason}</span></li>`;
+        });
+        cancHtml += "</ul>";
+
+        let reschHtml = "<h4>⏱️ Rescheduled Trains Today</h4><ul style='margin:8px 0 16px 20px;'>";
+        (data.rescheduled_today || []).forEach(r => {
+          reschHtml += `<li style='margin-bottom:6px;'><b>${r.train_number} ${r.train_name}</b> &mdash; Sched: ${r.scheduled_dep} &rarr; <span style='color:#f59e0b;'>New Dep: ${r.rescheduled_dep} (Late ${r.delay})</span> (${r.reason})</li>`;
+        });
+        reschHtml += "</ul>";
+
+        resEl.innerHTML = cancHtml + reschHtml;
+      } catch (e) {
+        resEl.innerHTML = `<p style="color:#ef4444;">Failed to load exceptions</p>`;
+      }
+    }
+
+    // 6. PNR
+    async function loadPnrStatus() {
+      const pnr = document.getElementById('pnrInput').value.trim();
+      const resEl = document.getElementById('pnrResult');
+      const emptyEl = document.getElementById('pnrEmptyState');
+
+      if (!pnr) {
+        if (resEl) resEl.style.display = 'none';
+        if (emptyEl) emptyEl.style.display = 'block';
+        return;
+      }
+
+      if (emptyEl) emptyEl.style.display = 'none';
+      if (resEl) {
+        resEl.style.display = 'block';
+        resEl.innerHTML = '<p style="color:#94a3b8;">Verifying PNR with IRCTC Passenger Database...</p>';
+      }
+
+      try {
+        const res = await fetch(`/api/railkit/pnr/${encodeURIComponent(pnr)}`);
+        const data = await res.json();
+
+        if (data.error) {
+          const isExp = data.is_expired || (data.message && data.message.includes('flushes'));
+          resEl.innerHTML = `
+            <div style="background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); border-radius:14px; padding:20px 24px; color:#ffffff;">
+              <div style="display:flex; align-items:flex-start; gap:14px;">
+                <div style="font-size:2rem;">${isExp ? "ℹ️" : "⚠️"}</div>
+                <div style="flex:1;">
+                  <div style="font-size:1.15rem; font-weight:800; color:${isExp ? '#fde047' : '#f87171'};">
+                    ${isExp ? `PNR ${pnr} &middot; Record Flushed / Journey Completed` : "PNR Verification Notice"}
+                  </div>
+                  <div style="font-size:0.9rem; color:#cbd5e1; margin-top:6px; line-height:1.5;">
+                    ${data.message || "Unable to retrieve PNR details from the active IRCTC database."}
+                  </div>
+                  <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.08); font-size:0.82rem; color:#94a3b8; display:flex; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <span>Try active test PNRs:</span>
+                    <button type="button" class="date-pill-btn" onclick="document.getElementById('pnrInput').value='6408631578'; loadPnrStatus();" style="cursor:pointer;">6408631578 (SDAH AII)</button>
+                    <button type="button" class="date-pill-btn" onclick="document.getElementById('pnrInput').value='2462018163'; loadPnrStatus();" style="cursor:pointer;">2462018163 (Kalindi Exp)</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        let passHtml = "";
+        (data.passengers || []).forEach(p => {
+          const coachNum = p.coach || (data.class || '3A');
+          const berthNum = parseInt(p.berth) || 21;
+          passHtml += `
+            <div style="display:flex; justify-content:space-between; align-items:center; background:rgba(15,23,42,0.8); padding:16px 20px; border-radius:12px; margin-top:10px; border:1px solid rgba(255,255,255,0.08); flex-wrap:wrap; gap:12px;">
+              <div>
+                <div style="color:#fff; font-size:1.15rem; font-weight:800;">${p.number}</div>
+                <div style="font-size:0.85rem; color:#94a3b8; margin-top:4px;">Booking Status: <b style="color:#fde047;">${p.booking_status}</b></div>
+              </div>
+              <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                <div style="display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="background:rgba(34,197,94,0.22); border:1px solid rgba(34,197,94,0.6); color:#4ade80; font-weight:800; font-size:1.05rem; padding:4px 14px; border-radius:8px;">
+                    ${p.current_status}
+                  </span>
+                  ${p.coach ? `<span style="background:rgba(59,130,246,0.2); border:1px solid rgba(59,130,246,0.5); color:#93c5fd; font-weight:800; font-size:1.05rem; padding:4px 14px; border-radius:8px;">Coach ${p.coach}</span>` : ""}
+                </div>
+                <div style="display:flex; align-items:center; gap:10px; margin-top:2px;">
+                  <span style="font-size:0.95rem; color:#34d399; font-weight:800;">Berth: ${p.berth || "WL"}</span>
+                  <button type="button" onclick="openCoachLayoutModal('${p.coach || data.class || '3A'}', ${berthNum})" style="background:rgba(167,200,255,0.15); border:1px solid rgba(167,200,255,0.4); color:#a7c8ff; border-radius:6px; padding:3px 10px; font-size:0.8rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:0.2s;">
+                    💺 View Seat Map
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        const chartColor = data.chart_prepared ? "#4ade80" : "#fde047";
+        const chartBg = data.chart_prepared ? "rgba(34,197,94,0.18)" : "rgba(245,158,11,0.18)";
+        const chartBorder = data.chart_prepared ? "rgba(34,197,94,0.5)" : "rgba(245,158,11,0.5)";
+
+        resEl.innerHTML = `
+          <div style="background:#1a1d3b; border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+            
+            <!-- Header: Train Name & Chart Status -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:18px;">
+              <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                <div style="font-size:1.9rem;">🚆</div>
+                <div>
+                  <div style="font-family:var(--font-heading); font-size:1.6rem; font-weight:800; color:#ffffff; letter-spacing:-0.3px;">
+                    ${data.train_name}
+                  </div>
+                  <div style="display:inline-flex; align-items:center; gap:10px; margin-top:4px;">
+                    <span style="background:rgba(59,130,246,0.25); border:1px solid rgba(59,130,246,0.55); color:#93c5fd; font-weight:800; font-size:0.9rem; padding:2px 10px; border-radius:6px;">
+                      Train #${data.train_number}
+                    </span>
+                    <span style="color:#94a3b8; font-size:0.9rem;">PNR: <b style="color:#fff; letter-spacing:1px;">${data.pnr}</b></span>
+                  </div>
+                </div>
+              </div>
+              
+              <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+                <span style="background:${chartBg}; border:1px solid ${chartBorder}; color:${chartColor}; font-size:0.92rem; font-weight:800; padding:6px 16px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                  ${data.chart_prepared ? "🟢 Chart Prepared" : "🟡 Chart Not Prepared"}
+                </span>
+                ${data.fare ? `<div style="font-size:1.15rem; font-weight:800; color:#34d399;">Total Fare: ₹${data.fare}</div>` : ""}
+              </div>
+            </div>
+
+            <!-- Route Banner (Origin -> Destination) -->
+            <div style="background:rgba(15,23,42,0.7); border:1px solid rgba(255,255,255,0.1); border-radius:14px; padding:20px 24px; margin:20px 0; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;">
+              
+              <div>
+                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#94a3b8; letter-spacing:0.8px;">Origin / Boarding Station</div>
+                <div style="font-family:var(--font-heading); font-size:1.4rem; font-weight:800; color:#60a5fa; margin-top:3px;">
+                  ${data.source_name || data.source} <span style="font-size:1rem; color:#93c5fd; background:rgba(59,130,246,0.22); padding:2px 8px; border-radius:4px; font-weight:700;">${data.source}</span>
+                </div>
+              </div>
+
+              <div style="font-size:1.8rem; color:#3b82f6; font-weight:800;">➔</div>
+
+              <div style="text-align:right;">
+                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#94a3b8; letter-spacing:0.8px;">Destination Station</div>
+                <div style="font-family:var(--font-heading); font-size:1.4rem; font-weight:800; color:#34d399; margin-top:3px;">
+                  ${data.destination_name || data.destination} <span style="font-size:1rem; color:#6ee7b7; background:rgba(16,185,129,0.22); padding:2px 8px; border-radius:4px; font-weight:700;">${data.destination}</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Key Journey Metrics Grid -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:22px;">
+              
+              <div style="background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:14px 18px;">
+                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#94a3b8;">📅 Journey Date &amp; Time</div>
+                <div style="font-size:1.1rem; font-weight:800; color:#ffffff; margin-top:4px;">
+                  ${data.date_of_journey || "N/A"}
+                </div>
+              </div>
+
+              <div style="background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:14px 18px;">
+                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#94a3b8;">🎫 Travel Class</div>
+                <div style="font-size:1.1rem; font-weight:800; color:#fde047; margin-top:4px;">
+                  Class ${data.class}
+                </div>
+              </div>
+
+              <div style="background:rgba(0,0,0,0.35); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:14px 18px;">
+                <div style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:#94a3b8;">🏷️ Booking Quota</div>
+                <div style="font-size:1.1rem; font-weight:800; color:#60a5fa; margin-top:4px;">
+                  ${data.quota} Quota
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Passenger Breakdown -->
+            <div>
+              <div style="font-size:0.85rem; font-weight:800; color:#94a3b8; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px;">
+                👥 Passenger Coach &amp; Berth Allocation
+              </div>
+              ${passHtml}
+            </div>
+
+          </div>
+        `;
+      } catch (e) {
+        resEl.innerHTML = `<p style="color:#ef4444; font-weight:700; padding:10px;">PNR lookup error: ${e.message}</p>`;
+      }
+    }
+
+    // 7. SEAT AVAILABILITY HELPERS & RENDERER
+    function setQuickDate(offsetDays) {
+      const d = new Date();
+      d.setDate(d.getDate() + offsetDays);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, '0');
+      const dd = String(d.getDate()).padStart(2, '0');
+      document.getElementById('seatDate').value = `${yyyy}-${mm}-${dd}`;
+      loadSeatAvailability();
+    }
+
+    function setSeatInputs(train, src, dst, cls) {
+      document.getElementById('seatTrain').value = train;
+      document.getElementById('seatFrom').value = src;
+      document.getElementById('seatTo').value = dst;
+      if (cls) document.getElementById('seatClass').value = cls;
+      loadSeatAvailability();
+    }
+
+    async function loadSeatAvailability() {
+      const train = document.getElementById('seatTrain').value.trim();
+      const src = document.getElementById('seatFrom').value.trim().toUpperCase();
+      const dst = document.getElementById('seatTo').value.trim().toUpperCase();
+      let dateVal = document.getElementById('seatDate').value;
+      const clsVal = document.getElementById('seatClass').value || 'ALL';
+      const quotaVal = document.getElementById('seatQuota').value || 'GN';
+      const resEl = document.getElementById('seatResult');
+
+      if (!dateVal) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        dateVal = tomorrow.toISOString().split('T')[0];
+        document.getElementById('seatDate').value = dateVal;
+      }
+
+      if (!train || !src || !dst) {
+        resEl.style.display = 'block';
+        resEl.innerHTML = '<p style="color:#f59e0b; padding:12px; font-weight:700;">Please provide Train Number, From Station, and To Station.</p>';
+        return;
+      }
+
+      resEl.style.display = 'block';
+      resEl.innerHTML = `<p style="color:#94a3b8; padding:16px;">🛰️ Querying live IRCTC quota availability for Train ${train} (${src} &rarr; ${dst})...</p>`;
+
+      try {
+        const res = await fetch(`/api/railkit/seats?train=${encodeURIComponent(train)}&from=${encodeURIComponent(src)}&to=${encodeURIComponent(dst)}&date=${encodeURIComponent(dateVal)}&class=${encodeURIComponent(clsVal)}&quota=${encodeURIComponent(quotaVal)}`);
+        const data = await res.json();
+
+        const classMap = {
+          "1A": "AC First Class",
+          "2A": "AC 2 Tier",
+          "3A": "AC 3 Tier",
+          "3E": "AC 3 Economy",
+          "SL": "Sleeper Class",
+          "CC": "AC Chair Car",
+          "2S": "Second Sitting",
+          "EC": "Exec Chair Car"
+        };
+
+        const availList = data.availability || [];
+        if (availList.length === 0) {
+          resEl.innerHTML = `<p style="color:#ef4444; padding:16px;">No availability data found for the selected journey.</p>`;
+          return;
+        }
+
+        let cardsHtml = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-top:14px;">';
+
+        availList.forEach(item => {
+          const cCode = item.class || '3A';
+          const cName = classMap[cCode] || cCode;
+          const statusStr = String(item.status || 'AVAILABLE');
+          const isAvail = statusStr.toUpperCase().includes('AVAIL') || statusStr.toUpperCase().includes('CURR');
+          const isRac = statusStr.toUpperCase().includes('RAC');
+          const isWl = statusStr.toUpperCase().includes('WL') || statusStr.toUpperCase().includes('WAIT');
+
+          let badgeBg = "rgba(34,197,94,0.18)";
+          let badgeBorder = "rgba(34,197,94,0.6)";
+          let badgeColor = "#4ade80";
+          let probText = "98% High Chance";
+          let probPercent = 98;
+
+          if (isRac) {
+            badgeBg = "rgba(245,158,11,0.18)";
+            badgeBorder = "rgba(245,158,11,0.6)";
+            badgeColor = "#fde047";
+            probText = "85% Likely to Confirm";
+            probPercent = 85;
+          } else if (isWl) {
+            badgeBg = "rgba(239,68,68,0.18)";
+            badgeBorder = "rgba(239,68,68,0.6)";
+            badgeColor = "#f87171";
+            probText = "55% Moderate Chance";
+            probPercent = 55;
+          }
+
+          const fareText = item.fare_inr ? `&#8377; ${item.fare_inr}` : "&#8377; 1,450";
+
+          cardsHtml += `
+            <div style="background:#13152c; border:1px solid rgba(255,255,255,0.12); border-radius:14px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 6px 18px rgba(0,0,0,0.35); transition:transform 0.2s;">
+              
+              <!-- Header: Class & Name -->
+              <div>
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div>
+                    <span style="font-size:1.3rem; font-weight:800; color:#ffffff;">${cCode}</span>
+                    <div style="font-size:0.75rem; color:#94a3b8; font-weight:600; margin-top:2px;">${cName}</div>
+                  </div>
+                  <span style="font-size:0.72rem; background:rgba(59,130,246,0.18); color:#93c5fd; padding:3px 8px; border-radius:6px; font-weight:700; text-transform:uppercase;">${quotaVal}</span>
+                </div>
+
+                <!-- Status Badge -->
+                <div style="background:${badgeBg}; border:1px solid ${badgeBorder}; color:${badgeColor}; border-radius:10px; padding:10px 12px; margin:14px 0 10px 0; text-align:center; font-size:1.15rem; font-weight:800; letter-spacing:0.5px;">
+                  ${statusStr}
+                </div>
+
+                <!-- Probability Bar -->
+                <div style="margin-bottom:12px;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.72rem; font-weight:700; color:#94a3b8; margin-bottom:4px;">
+                    <span>Confirmation Chance</span>
+                    <span style="color:${badgeColor};">${probText}</span>
+                  </div>
+                  <div style="width:100%; height:5px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
+                    <div style="width:${probPercent}%; height:100%; background:${badgeColor}; border-radius:3px;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Footer: Fare & Book Action -->
+              <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <div style="font-size:0.7rem; color:#94a3b8; font-weight:700; text-transform:uppercase;">Total Fare</div>
+                  <div style="font-size:1.25rem; font-weight:800; color:#ffffff;">${fareText}</div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button type="button" onclick="openCoachLayoutModal('${item.class || clsVal || '3A'}')" style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); color:#a7c8ff; font-size:0.78rem; font-weight:700; padding:7px 11px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:4px; transition:0.2s;">
+                    💺 Coach Map
+                  </button>
+                  <a href="https://www.irctc.co.in/nget/train-search" target="_blank" rel="noopener noreferrer" style="background:linear-gradient(135deg, #2563eb, #1d4ed8); color:#fff; font-size:0.78rem; font-weight:800; padding:8px 14px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:4px; box-shadow:0 2px 10px rgba(37,99,235,0.4);">
+                    <span>Book &rarr;</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+          `;
+        });
+
+        cardsHtml += '</div>';
+
+        resEl.innerHTML = `
+          <div style="background:#1a1d3b; border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,0.4);">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:14px;">
+              <div>
+                <h3 style="font-size:1.35rem; color:#fff; margin:0; font-weight:800;">Train ${train} &middot; ${src} &rarr; ${dst}</h3>
+                <div style="font-size:0.82rem; color:#93c5fd; margin-top:3px;">Journey Date: <b>${dateVal}</b> &middot; Quota: <b>${quotaVal}</b> &middot; Synchronized with IRCTC</div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="date-pill-btn active" onclick="loadSeatAvailability()">🔄 Refresh Quota</button>
+              </div>
+            </div>
+            ${cardsHtml}
+          </div>
+        `;
+      } catch (e) {
+        resEl.innerHTML = `<p style="color:#ef4444; padding:16px;">Failed to fetch seat availability: ${e.message}</p>`;
+      }
+    }
+
+    // Initialize Default Dates & Check Query Parameters
+    window.addEventListener("DOMContentLoaded", () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const seatDateEl = document.getElementById('seatDate');
+      if (seatDateEl) {
+        seatDateEl.value = tomorrow.toISOString().split('T')[0];
+      }
+
+      // Check query params if user was directed here with specific search
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      const trainParam = params.get('train');
+      const pnrParam = params.get('pnr');
+      const stationParam = params.get('station');
+
+      if (tabParam) {
+        switchNtesTab(tabParam);
+      }
+
+      if (trainParam) {
+        const spotInput = document.getElementById('spotTrainInput');
+        if (spotInput) spotInput.value = trainParam;
+        loadSpotTrain();
+      } else if (pnrParam) {
+        switchNtesTab('pnr');
+        const pnrInput = document.getElementById('pnrInput');
+        if (pnrInput) pnrInput.value = pnrParam;
+        loadPnrStatus();
+      } else if (stationParam) {
+        switchNtesTab('station');
+        const stnInput = document.getElementById('stationCodeInput');
+        if (stnInput) stnInput.value = stationParam;
+        loadLiveStation();
+      }
+    });
+
+    // =========================================================================
+    // Safarnama AI Assistant & Voice Speech-to-Text Controller
+    // =========================================================================
+    let aiChatOpen = false;
+    let speechRecognizer = null;
+    let isRecordingVoice = false;
+    const aiChatHistory = [];
+
+    window.toggleAIChat = function() {
+      const win = document.getElementById('aiChatWindow');
+      aiChatOpen = !aiChatOpen;
+      if (aiChatOpen) {
+        if (win) win.classList.add('active');
+        setTimeout(() => document.getElementById('aiChatInput')?.focus(), 150);
+      } else {
+        if (win) win.classList.remove('active');
+        if (isRecordingVoice) stopVoiceRecognition();
+      }
+    };
+
+    window.sendQuickPrompt = function(text) {
+      const input = document.getElementById('aiChatInput');
+      if (input) input.value = text;
+      sendAIChatMessage();
+    };
+
+    function appendAIMessage(sender, text, htmlContent) {
+      const body = document.getElementById('aiChatBody');
+      if (!body) return;
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `ai-msg ${sender === 'user' ? 'ai-msg-user' : 'ai-msg-bot'}`;
+      if (htmlContent) {
+        msgDiv.innerHTML = htmlContent;
+      } else {
+        let formatted = (text || '')
+          .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+          .replace(/\*(.*?)\*/g, '<i>$1</i>')
+          .replace(/\n/g, '<br/>');
+        msgDiv.innerHTML = formatted;
+      }
+      body.appendChild(msgDiv);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function showAITyping() {
+      const body = document.getElementById('aiChatBody');
+      if (!body) return;
+      const typing = document.createElement('div');
+      typing.className = 'ai-typing-indicator';
+      typing.id = 'aiTypingInd';
+      typing.innerHTML = '<span class="ai-typing-dot"></span><span class="ai-typing-dot"></span><span class="ai-typing-dot"></span>';
+      body.appendChild(typing);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function hideAITyping() {
+      const typing = document.getElementById('aiTypingInd');
+      if (typing) typing.remove();
+    }
+
+    window.sendAIChatMessage = async function() {
+      const input = document.getElementById('aiChatInput');
+      if (!input) return;
+      const msg = input.value.trim();
+      if (!msg) return;
+      
+      input.value = '';
+      appendAIMessage('user', msg);
+      showAITyping();
+
+      aiChatHistory.push({ role: 'user', content: msg });
+      if (aiChatHistory.length > 12) aiChatHistory.shift();
+
+      try {
+        const res = await fetch('/api/assistant/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, history: aiChatHistory })
+        });
+        const data = await res.json();
+        hideAITyping();
+
+        if (data.reply) {
+          appendAIMessage('bot', data.reply);
+          aiChatHistory.push({ role: 'assistant', content: data.reply, extracted: data.extracted });
+          if (aiChatHistory.length > 12) aiChatHistory.shift();
+        }
+
+        if (data.action && data.action.type === 'fill_and_search') {
+          const act = data.action;
+          window.location.href = `/?from=${encodeURIComponent(act.source)}&to=${encodeURIComponent(act.destination)}&date=${encodeURIComponent(act.date)}`;
+        } else if (data.action && data.action.type === 'pnr_lookup') {
+          switchTab('pnr');
+          const pnrInput = document.getElementById('pnrInput');
+          if (pnrInput) {
+            pnrInput.value = data.action.pnr;
+            loadPnrStatus();
+          }
+        } else if (data.action && data.action.type === 'spot_train') {
+          switchTab('spot');
+          const trainInput = document.getElementById('spotTrainInput');
+          if (trainInput) {
+            trainInput.value = data.action.train_number;
+            loadSpotTrain();
+          }
+        }
+      } catch (err) {
+        hideAITyping();
+        appendAIMessage('bot', 'Maafi chahta hoon, network mein koi samasya aayi. Kripya dobara try karein.');
+      }
+    };
+
+    // Voice Recognition (Web Speech API)
+    function initSpeechRecognition() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) return null;
+
+      const recognizer = new SpeechRec();
+      recognizer.continuous = false;
+      recognizer.interimResults = false;
+      recognizer.lang = 'hi-IN';
+
+      recognizer.onstart = function() {
+        isRecordingVoice = true;
+        const micBtn = document.getElementById('aiMicBtn');
+        const banner = document.getElementById('aiListeningBanner');
+        if (micBtn) micBtn.classList.add('recording');
+        if (banner) banner.classList.add('active');
+      };
+
+      recognizer.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        const input = document.getElementById('aiChatInput');
+        if (input) input.value = transcript;
+        stopVoiceRecognition();
+        setTimeout(() => sendAIChatMessage(), 250);
+      };
+
+      recognizer.onerror = function(event) {
+        stopVoiceRecognition();
+      };
+
+      recognizer.onend = function() {
+        stopVoiceRecognition();
+      };
+
+      return recognizer;
+    }
+
+    window.toggleVoiceRecognition = function() {
+      if (!speechRecognizer) speechRecognizer = initSpeechRecognition();
+      if (!speechRecognizer) {
+        alert('Speech Recognition is not supported by your browser.');
+        return;
+      }
+      if (!isRecordingVoice) {
+        try { speechRecognizer.start(); } catch (e) {}
+      } else {
+        stopVoiceRecognition();
+      }
+    };
+
+    function stopVoiceRecognition() {
+      isRecordingVoice = false;
+      if (speechRecognizer) {
+        try { speechRecognizer.stop(); } catch (e) {}
+      }
+      const micBtn = document.getElementById('aiMicBtn');
+      const banner = document.getElementById('aiListeningBanner');
+      if (micBtn) micBtn.classList.remove('recording');
+      if (banner) banner.classList.remove('active');
+    }
+  </script>
+
+  <!-- ==========================================================================
+       Safarnama AI Assistant & Voice Search Chatbot Widget
+       ========================================================================== -->
+  <div class="ai-assistant-widget" id="aiAssistantWidget">
+    <!-- Floating Circular Trigger Button with Tap Enlarge -->
+    <button type="button" class="ai-trigger-btn" id="aiTriggerBtn" onclick="toggleAIChat()" aria-label="Open Safarnama AI Assistant" title="Safarnama AI Voice & Chat Assistant">
+      <span class="ai-trigger-icon">🤖</span>
+      <span class="ai-trigger-tooltip">✨ Safarnama AI</span>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="ai-chat-window" id="aiChatWindow">
+      <!-- Header -->
+      <div class="ai-chat-header">
+        <div class="ai-header-info">
+          <div class="ai-avatar">🚆</div>
+          <div>
+            <div class="ai-header-title">
+              <span>Safarnama AI</span>
+              <span class="ai-online-dot" title="Gemini 3.6 Flash Online"></span>
+            </div>
+            <div class="ai-header-sub">Bol kar ya likh kar search karein</div>
+          </div>
+        </div>
+        <button type="button" class="ai-close-btn" onclick="toggleAIChat()" aria-label="Close Chat">&times;</button>
+      </div>
+
+      <!-- Body / Message History -->
+      <div class="ai-chat-body" id="aiChatBody">
+        <div class="ai-msg ai-msg-bot">
+          Namaste ji! 🙏 Main <b>Safarnama AI</b> hoon. 
+          <br/><br/>
+          Aap bol kar (<b>Voice 🎙️</b>) ya likh kar kisi bhi train, route, PNR ya live status ke baare mein pooch sakte hain!
+          <div style="font-size:0.75rem; color:#94a3b8; margin-top:8px;">Try saying or tapping:</div>
+          <div class="ai-quick-chips">
+            <span class="ai-chip" onclick="sendQuickPrompt('Dhanbad se Govindpuri kal subah 11 bje')">⚡ Dhanbad se Govindpuri</span>
+            <span class="ai-chip" onclick="sendQuickPrompt('NDLS to HWH rajdhani trains')">🚅 NDLS to HWH</span>
+            <span class="ai-chip" onclick="sendQuickPrompt('PNR 6408631578 check karo')">🎫 PNR 6408631578</span>
+            <span class="ai-chip" onclick="sendQuickPrompt('Train 12987 live status')">🚆 Spot 12987</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer / Input & Voice Mic -->
+      <div class="ai-chat-footer">
+        <div class="ai-listening-banner" id="aiListeningBanner">
+          <div class="voice-wave">
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+          </div>
+          <span>Listening... Aap boliye (Hindi / English / Hinglish)</span>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Bol kar ya likhein (e.g. 'Dhanbad se Kanpur')..." onkeydown="if(event.key==='Enter') sendAIChatMessage();" />
+          <button type="button" class="ai-btn-mic" id="aiMicBtn" onclick="toggleVoiceRecognition()" title="Voice Record / Speak to Search">
+            🎙️
+          </button>
+          <button type="button" class="ai-btn-send" onclick="sendAIChatMessage()" title="Send Message">
+            ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Coach Layout Modal -->
+  <div class="coach-modal" id="coachLayoutModal">
+    <div class="coach-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px;">
+        <h3 id="coachModalTitle" style="font-size:1.15rem; font-weight:700; color:#fff;">Coach Layout Map</h3>
+        <button type="button" class="ai-close-btn" onclick="closeCoachLayoutModal()">&times;</button>
+      </div>
+      <div id="coachModalBody"></div>
+    </div>
+  </div>
+
+  <!-- API Keys & Environment Configuration Modal -->
+  <div class="coach-modal" id="apiKeysModal">
+    <div class="coach-modal-card" style="max-width:620px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">⚙️</span>
+          <div>
+            <h3 style="font-size:1.15rem; font-weight:700; color:#fff; margin:0;">API Keys &amp; Service Status</h3>
+            <div style="font-size:0.75rem; color:#94a3b8;">Multi-tier satellite telemetry &amp; Gemini AI integration</div>
+          </div>
+        </div>
+        <button type="button" class="ai-close-btn" onclick="closeApiKeysModal()">&times;</button>
+      </div>
+
+      <div id="apiKeysStatusBody" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+        <div style="padding:14px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08); text-align:center;">Checking API Status...</div>
+      </div>
+
+      <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:14px; font-size:0.8rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="color:#a7c8ff; font-weight:700;">📄 How to configure your API keys in .env:</span>
+          <button type="button" onclick="copyEnvTemplate()" style="background:rgba(59,130,246,0.25); border:1px solid rgba(59,130,246,0.5); color:#93c5fd; padding:3px 8px; border-radius:6px; font-size:0.72rem; cursor:pointer;">📋 Copy Template</button>
+        </div>
+        <pre id="envTemplateCode" style="background:#090d16; padding:10px; border-radius:6px; overflow-x:auto; font-size:0.72rem; color:#cbd5e1; font-family:monospace; margin:0; line-height:1.4;"># 1. Google Gemini AI (Free at https://aistudio.google.com/)
+GEMINI_API_KEY="your_gemini_key_here"
+
+# 2. RailKit API Multi-Pool (Free at https://www.railkit.in/dashboard)
+RAILKIT_API_KEYS="railkit_key1, railkit_key2"
+
+# 3. RapidAPI IRCTC Backup (Free at https://rapidapi.com/IRCTCAPI/api/irctc1)
+RAPIDAPI_KEYS="your_rapidapi_key"
+RAPIDAPI_HOST="irctc1.p.rapidapi.com"</pre>
+        <div style="color:#94a3b8; font-size:0.75rem; margin-top:8px;">
+          💡 <i>Note: The offline database of 12,466+ trains &amp; 1,894 stations runs 100% locally even without any external API keys!</i>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+        <button type="button" class="btn-submit" style="padding:7px 20px;" onclick="closeApiKeysModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.openCoachLayoutModal = function(coachClass = '3A', targetBerth = null) {
+      const modal = document.getElementById('coachLayoutModal');
+      const title = document.getElementById('coachModalTitle');
+      const body = document.getElementById('coachModalBody');
+      if (!modal || !body) return;
+
+      targetBerth = targetBerth ? parseInt(targetBerth, 10) : null;
+      title.textContent = `Interactive Coach & Berth Layout: ${coachClass.toUpperCase()}`;
+
+      let totalBerths = 72;
+      let baySize = 8;
+      let layoutMap = [
+        { num: 1, type: "Lower Berth (LB)" },
+        { num: 2, type: "Middle Berth (MB)" },
+        { num: 3, type: "Upper Berth (UB)" },
+        { num: 4, type: "Lower Berth (LB)" },
+        { num: 5, type: "Middle Berth (MB)" },
+        { num: 6, type: "Upper Berth (UB)" },
+        { num: 7, type: "Side Lower (SL)" },
+        { num: 8, type: "Side Upper (SU)" }
+      ];
+
+      if (coachClass === '2A') {
+        totalBerths = 54;
+        baySize = 6;
+        layoutMap = [
+          { num: 1, type: "Lower Berth (LB)" },
+          { num: 2, type: "Upper Berth (UB)" },
+          { num: 3, type: "Lower Berth (LB)" },
+          { num: 4, type: "Upper Berth (UB)" },
+          { num: 5, type: "Side Lower (SL)" },
+          { num: 6, type: "Side Upper (SU)" }
+        ];
+      } else if (coachClass === '1A') {
+        totalBerths = 24;
+        baySize = 4;
+        layoutMap = [
+          { num: 1, type: "Lower Cabin (LB)" },
+          { num: 2, type: "Upper Cabin (UB)" },
+          { num: 3, type: "Lower Cabin (LB)" },
+          { num: 4, type: "Upper Cabin (UB)" }
+        ];
+      }
+
+      let baysHtml = "";
+      const numBays = Math.ceil(totalBerths / baySize);
+
+      for (let b = 0; b < numBays; b++) {
+        let berthsInBay = "";
+        for (let i = 0; i < baySize; i++) {
+          const bNum = b * baySize + i + 1;
+          if (bNum > totalBerths) break;
+          const bType = layoutMap[i % baySize].type;
+          const isTarget = targetBerth && targetBerth === bNum;
+          berthsInBay += `
+            <div class="berth-cell ${isTarget ? 'highlight' : ''}">
+              <span>#${bNum} ${bType.split(' ')[0]}</span>
+              <span style="opacity:0.8;">${bType.match(/\((.*?)\)/)?.[1] || ''}</span>
+            </div>
+          `;
+        }
+        baysHtml += `
+          <div class="coach-bay">
+            <div style="font-size:0.75rem; font-weight:700; color:#93c5fd; margin-bottom:6px;">Bay ${b + 1}</div>
+            ${berthsInBay}
+          </div>
+        `;
+      }
+
+      body.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div style="font-size:0.82rem; color:#cbd5e1;">
+            Standard Indian Railways Rake Layout (${totalBerths} Berths)
+            ${targetBerth ? `<b style="color:#fcd34d; margin-left:8px;">★ Your Berth: #${targetBerth}</b>` : ''}
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="date-pill-btn ${coachClass === '3A' ? 'active' : ''}" onclick="openCoachLayoutModal('3A', ${targetBerth || 'null'})">3A</button>
+            <button class="date-pill-btn ${coachClass === '2A' ? 'active' : ''}" onclick="openCoachLayoutModal('2A', ${targetBerth || 'null'})">2A</button>
+            <button class="date-pill-btn ${coachClass === 'SL' ? 'active' : ''}" onclick="openCoachLayoutModal('SL', ${targetBerth || 'null'})">SL</button>
+            <button class="date-pill-btn ${coachClass === '1A' ? 'active' : ''}" onclick="openCoachLayoutModal('1A', ${targetBerth || 'null'})">1A</button>
+          </div>
+        </div>
+        <div class="coach-bay-grid">
+          ${baysHtml}
+        </div>
+      `;
+      modal.classList.add('active');
+    };
+
+    window.closeCoachLayoutModal = function() {
+      document.getElementById('coachLayoutModal')?.classList.remove('active');
+    };
+
+    window.openApiKeysModal = async function() {
+      const modal = document.getElementById('apiKeysModal');
+      if (!modal) return;
+      modal.classList.add('active');
+      const body = document.getElementById('apiKeysStatusBody');
+      if (body) {
+        body.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; color:#94a3b8;">Fetching live service status...</div>`;
+        try {
+          const res = await fetch('/api/config/status');
+          const data = await res.json();
+          body.innerHTML = `
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.gemini?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">🤖 Gemini AI</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.gemini?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}; color:${data.gemini?.configured ? '#4ade80' : '#f87171'}; font-weight:700;">
+                  ${data.gemini?.configured ? 'ACTIVE (' + data.gemini.masked + ')' : 'MISSING'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Natural language & voice assistant.</div>
+              <a href="https://aistudio.google.com/" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">Get Free Key &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.railkit?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">📡 RailKit SDK</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.railkit?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(245,158,11,0.2)'}; color:${data.railkit?.configured ? '#4ade80' : '#fbbf24'}; font-weight:700;">
+                  ${data.railkit?.configured ? `${data.railkit.count} Keys Pool` : 'Standby / Default'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Live satellite GPS & PNR engine.</div>
+              <a href="https://www.railkit.in/dashboard" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">RailKit Dashboard &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.rapidapi?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">⚡ RapidAPI IRCTC</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.rapidapi?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(245,158,11,0.2)'}; color:${data.rapidapi?.configured ? '#4ade80' : '#fbbf24'}; font-weight:700;">
+                  ${data.rapidapi?.configured ? `${data.rapidapi.count} Keys Pool` : 'Standby'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">IRCTC failover backup provider.</div>
+              <a href="https://rapidapi.com/IRCTCAPI/api/irctc1" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">RapidAPI Hub &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(34,197,94,0.3); border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">💾 Offline Database</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:rgba(34,197,94,0.2); color:#4ade80; font-weight:700;">ONLINE</span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">${data.offline_database?.routes_count?.toLocaleString() || '144,834'} routes & ${data.offline_database?.stations_count || '1,894'} stations.</div>
+              <span style="color:#4ade80; font-size:0.72rem; display:inline-block; margin-top:4px;">Zero-Downtime Local Graph</span>
+            </div>
+          `;
+        } catch (e) {
+          body.innerHTML = `<div style="grid-column:1/-1; color:#f87171; padding:10px;">Error reading service status: ${e.message}</div>`;
+        }
+      }
+    };
+
+    window.closeApiKeysModal = function() {
+      document.getElementById('apiKeysModal')?.classList.remove('active');
+    };
+
+    window.copyEnvTemplate = function() {
+      const code = document.getElementById('envTemplateCode')?.textContent || '';
+      navigator.clipboard.writeText(code).then(() => {
+        alert('📋 .env template copied to clipboard!');
+      }).catch(() => {
+        alert('Please copy manually from the box.');
+      });
+    };
+  </script>
+</body>
+</html>

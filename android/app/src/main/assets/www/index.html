@@ -1,0 +1,4909 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+<meta name="theme-color" content="#02040a" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="manifest" href="/static/manifest.json" />
+<link rel="icon" type="image/png" href="/static/images/logo.png" />
+<link rel="apple-touch-icon" href="/static/images/logo.png" />
+<title>Safarnama - Indian Railways Route & Connection Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Leaflet Map CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+<style>
+  :root {
+    --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-heading: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+
+    --bg-page: #02040a;
+    --bg-card: rgba(10, 16, 30, 0.72);
+    --bg-input: rgba(6, 11, 24, 0.85);
+    --bg-hover: rgba(22, 34, 60, 0.75);
+    
+    --border-card: rgba(255, 255, 255, 0.12);
+    --border-input: rgba(255, 255, 255, 0.18);
+    --border-focus: #ff9800;
+
+    --primary-blue: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success-green: #10b981;
+    --warning-amber: #f59e0b;
+    --alert-red: #ef4444;
+
+    --text-heading: #ffffff;
+    --text-body: #f1f5f9;
+    --text-muted: #94a3b8;
+    --text-subtle: #64748b;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-pill: 9999px;
+
+    --shadow-card: 0 14px 40px -5px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-main);
+    background-color: #02040a;
+    color: var(--text-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -4;
+    background: #02040a;
+  }
+
+  /* Background Forest Video */
+  .bg-forest-video {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -3;
+    filter: brightness(0.65) saturate(1.15) contrast(1.1);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  /* Soft Vignette Scrim over Forest Video */
+  .forest-video-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background: radial-gradient(
+      circle at 50% 35%,
+      rgba(2, 4, 10, 0.2) 0%,
+      rgba(2, 4, 10, 0.65) 55%,
+      rgba(2, 4, 10, 0.92) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Floating Firefly Cursor */
+  .firefly-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 38px;
+    height: 38px;
+    pointer-events: none;
+    z-index: 10000;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    will-change: transform;
+  }
+
+  .firefly-cursor.active {
+    opacity: 1;
+  }
+
+  .firefly-sprite {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(255, 220, 80, 0.9)) drop-shadow(0 0 18px rgba(255, 170, 0, 0.65));
+    position: relative;
+    z-index: 3;
+    transform-origin: center center;
+    transition: transform 0.12s ease-out;
+  }
+
+  /* Realistic Bulb Light Glow - Inverse-square smooth falloff */
+  .firefly-glow-outer {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 360px; height: 360px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 235, 120, 0.42) 0%,
+      rgba(255, 200, 50, 0.26) 22%,
+      rgba(255, 150, 20, 0.12) 48%,
+      rgba(255, 110, 0, 0.04) 72%,
+      transparent 100%
+    );
+    filter: blur(14px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 1;
+    animation: fireflyPulse 3s ease-in-out infinite alternate;
+  }
+
+  .firefly-glow-inner {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 130px; height: 130px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at center,
+      rgba(255, 255, 210, 0.85) 0%,
+      rgba(255, 220, 70, 0.55) 35%,
+      rgba(255, 170, 20, 0.22) 70%,
+      transparent 100%
+    );
+    filter: blur(7px);
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .firefly-core-hotspot {
+    position: absolute;
+    top: 60%; left: 45%;
+    width: 16px; height: 16px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffffff 30%, #fff176 70%, #fbc02d 100%);
+    box-shadow: 0 0 12px #ffffff, 0 0 24px #ffd54f, 0 0 45px #ffb300;
+    z-index: 2;
+  }
+
+  /* Micro Sparkling Golden Spores Dust Particles Canvas Overlay */
+  #dustCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  /* Sound Toggle Navbar Button */
+  .sound-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(15, 23, 42, 0.45);
+    border: 1px solid rgba(255, 200, 50, 0.28);
+    color: var(--text-muted);
+    padding: 7px 13px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .sound-btn:hover {
+    border-color: rgba(255, 215, 0, 0.7);
+    color: #fff;
+    background: rgba(255, 200, 50, 0.14);
+    box-shadow: 0 0 14px rgba(255, 200, 50, 0.3);
+  }
+
+  .sound-btn.active {
+    background: rgba(255, 200, 50, 0.2);
+    border-color: rgba(255, 215, 0, 0.85);
+    color: #fff9c4;
+    box-shadow: 0 0 18px rgba(255, 193, 7, 0.45);
+  }
+
+  @keyframes fireflyPulse {
+    0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.85; }
+    50% { transform: translate(-50%, -50%) scale(1.08); opacity: 1.0; }
+    100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.85; }
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Locomotive Headlight Animation Stage in Header */
+  .loco-stage {
+    position: relative;
+    margin: 0 auto -20px;
+    width: min(580px, 92vw);
+    height: 250px;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+    opacity: 0.96;
+  }
+
+  .loco-base, .loco-lit {
+    position: absolute;
+    inset: 0;
+    background: url('/static/train-front.png') center top / contain no-repeat;
+  }
+
+  .loco-base {
+    filter: brightness(0.48) contrast(1.15);
+    opacity: 0.9;
+  }
+
+  .loco-lit {
+    filter: brightness(1.35) drop-shadow(0 0 35px rgba(255, 140, 0, 0.55));
+    -webkit-mask-image: radial-gradient(circle 380px at var(--mx, 50%) var(--my, 50%), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+    mask-image: radial-gradient(circle 380px at var(--mx, 50%) var(--my, 50%), rgba(0,0,0,1) 0%, rgba(0,0,0,0) 80%);
+  }
+
+  /* Broad, Grand Overlapping Headlight Beam Cones projecting from the locomotive lamps */
+  .beam-cone {
+    position: absolute;
+    height: 120px;
+    transform-origin: 0% 50%;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(255, 220, 80, 0.85) 10%,
+      rgba(255, 160, 20, 0.5) 40%,
+      rgba(255, 110, 0, 0.18) 75%,
+      transparent 100%
+    );
+    clip-path: polygon(0% 45%, 100% 0%, 100% 100%, 0% 55%);
+    filter: blur(5px);
+    mix-blend-mode: screen;
+    z-index: 2;
+    opacity: 0.92;
+  }
+
+  .beam-cone::before {
+    content: "";
+    position: absolute;
+    left: -7px; top: 50%;
+    transform: translateY(-50%);
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 14px #ffffff, 0 0 28px #ff9800, 0 0 65px #ff6d00;
+  }
+
+  .app-layout {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 20px 80px;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Top Navigation */
+  .top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--text-heading);
+  }
+  .nav-logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--primary-blue);
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+  }
+  .nav-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+  }
+  .nav-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #93c5fd;
+    background: rgba(37, 99, 235, 0.2);
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-body);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-card);
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  /* Header Section */
+  .header-section {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .header-title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+    margin-bottom: 8px;
+  }
+  .header-subtitle {
+    color: var(--text-muted);
+    font-size: 0.98rem;
+    max-width: 680px;
+    margin: 0 auto 16px;
+  }
+
+  /* Popular Routes */
+  .popular-strip {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .popular-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-subtle);
+  }
+  .popular-btn {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid var(--border-card);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .popular-btn:hover {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #ffffff;
+  }
+
+  /* Search Panel */
+  .search-panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    margin-bottom: 24px;
+  }
+
+  .station-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .station-grid {
+      grid-template-columns: 1fr;
+    }
+    .swap-wrapper {
+      justify-self: center;
+    }
+  }
+
+  /* Station Input Fields */
+  .input-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    position: relative;
+    transition: border-color 0.15s ease;
+  }
+  .input-card:focus-within {
+    border-color: var(--border-focus);
+  }
+
+  .input-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .input-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #93c5fd;
+  }
+  .state-info {
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+  }
+
+  .station-search-box {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-heading);
+    font-family: var(--font-heading);
+    font-size: 1.05rem;
+    font-weight: 600;
+  }
+  .station-search-box::placeholder {
+    color: var(--text-subtle);
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  /* Autocomplete Menu */
+  .station-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0; right: 0;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #1e293b;
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-md);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    z-index: 100;
+    display: none;
+  }
+  .station-dropdown.open { display: block; }
+  .station-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.12s ease;
+  }
+  .station-option:last-child { border-bottom: none; }
+  .station-option:hover {
+    background: #334155;
+  }
+  .opt-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #f1f5f9;
+  }
+  .opt-state {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-left: 6px;
+  }
+  .opt-code {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #60a5fa;
+    background: rgba(37, 99, 235, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Swap Button */
+  .swap-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #1e293b;
+    border: 1px solid var(--border-input);
+    color: #93c5fd;
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .swap-button:hover {
+    background: var(--primary-blue);
+    border-color: var(--primary-blue);
+    color: #ffffff;
+    transform: rotate(180deg);
+  }
+
+  /* Controls Row - Laser-Aligned 3-Column Grid */
+  .details-row {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr 1.35fr;
+    gap: 14px;
+    align-items: flex-end;
+  }
+
+  @media (max-width: 860px) {
+    .details-row {
+      grid-template-columns: 1fr 1fr;
+    }
+    .action-col {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 580px) {
+    .details-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .form-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #93c5fd;
+    display: flex;
+    align-items: center;
+    min-height: 20px;
+  }
+
+  .form-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 20px;
+  }
+
+  .quick-dates-chips {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .form-input {
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    color: var(--text-body);
+    font-family: var(--font-main);
+    font-size: 0.92rem;
+    font-weight: 500;
+    height: 44px;
+    outline: none;
+    transition: all 0.15s ease;
+    box-sizing: border-box;
+  }
+  .form-input:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+
+  /* Custom DD/MM/YYYY Date Picker Box */
+  .custom-date-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .date-display-input {
+    width: 100%;
+    cursor: pointer;
+    padding-right: 36px;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    color: #f1f5f9;
+  }
+
+  .native-date-hidden {
+    position: absolute;
+    opacity: 0;
+    pointer-events: auto;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  .date-calendar-btn {
+    position: absolute;
+    right: 12px;
+    pointer-events: none;
+    font-size: 1.05rem;
+    color: #93c5fd;
+    z-index: 1;
+  }
+
+  .chip-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-card);
+    border-radius: 4px;
+    color: #cbd5e1;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .chip-btn:hover {
+    background: rgba(37, 99, 235, 0.35);
+    border-color: #60a5fa;
+    color: #fff;
+  }
+
+  /* Flexible Date Options Bar */
+  .flexible-options-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+  }
+  .flex-check-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+  }
+  .flex-check-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+  }
+  .flex-days-select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-sm);
+    color: #93c5fd;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    outline: none;
+  }
+  .flex-hint {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .search-submit-btn {
+    flex: 1.4;
+    min-width: 180px;
+    padding: 11px 22px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-blue);
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-size: 0.98rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .search-submit-btn:hover {
+    background: var(--primary-hover);
+  }
+  .search-submit-btn:active {
+    transform: translateY(1px);
+  }
+
+  /* Flexible Dates Recommendation Banner */
+  .flexible-recommendations-panel {
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.15) 0%, rgba(17, 24, 39, 0.9) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: var(--radius-lg);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+  .flex-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .flex-title {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .flex-badge-info {
+    font-size: 0.76rem;
+    font-weight: 600;
+    background: rgba(16, 185, 129, 0.2);
+    color: #6ee7b7;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+  .flex-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .flex-option-card {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    transition: all 0.15s ease;
+  }
+  .flex-option-card:hover {
+    border-color: #3b82f6;
+    background: rgba(30, 41, 59, 0.9);
+  }
+  .flex-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .flex-date-label {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .flex-offset-pill {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+  .flex-offset-pill.direct {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+  }
+  .flex-offset-pill.twolog {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+  }
+  .flex-card-details {
+    font-size: 0.82rem;
+    color: var(--text-body);
+  }
+  .flex-card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+  .flex-action-btn {
+    background: var(--primary-blue);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .flex-action-btn:hover {
+    background: var(--primary-hover);
+  }
+
+  /* Summary Metrics */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .metric-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    backdrop-filter: blur(10px);
+  }
+  .metric-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+  .metric-data {
+    font-family: var(--font-heading);
+    font-size: 1.22rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 4px 0 2px;
+  }
+  .metric-desc {
+    font-size: 0.75rem;
+    color: var(--text-subtle);
+  }
+
+  /* Map Container */
+  .map-box {
+    height: 360px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-card);
+    box-shadow: var(--shadow-card);
+    margin-bottom: 24px;
+    position: relative;
+    background: #0f172a;
+  }
+  #routeMap {
+    width: 100%;
+    height: 100%;
+  }
+  .map-badge {
+    position: absolute;
+    top: 12px; left: 52px;
+    z-index: 500;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-card);
+    padding: 5px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #93c5fd;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Leaflet Layer Switcher Dark Theme */
+  .leaflet-control-layers {
+    background: rgba(15, 23, 42, 0.92) !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: var(--radius-md) !important;
+    color: var(--text-body) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    font-family: var(--font-main) !important;
+    padding: 8px 12px !important;
+  }
+  .leaflet-control-layers-toggle {
+    filter: invert(1) brightness(1.6);
+  }
+  .leaflet-control-layers-base label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+    cursor: pointer;
+    font-size: 0.8rem !important;
+    font-weight: 500;
+    color: #e2e8f0 !important;
+  }
+  .leaflet-control-layers-base input[type="radio"] {
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+  }
+
+  /* Quick Map Engine Switcher Pills */
+  .map-switch-pills {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .map-pill-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    user-select: none;
+  }
+  .map-pill-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.5);
+    color: #93c5fd;
+    transform: translateY(-1px);
+  }
+  .map-pill-btn.active {
+    background: #2563eb;
+    border-color: #60a5fa;
+    color: #ffffff;
+    box-shadow: 0 0 12px rgba(37, 99, 235, 0.55);
+  }
+  .map-pill-btn.map-fullscreen-action {
+    background: rgba(59, 130, 246, 0.18);
+    border-color: rgba(59, 130, 246, 0.45);
+    color: #93c5fd;
+    font-weight: 700;
+  }
+  .map-pill-btn.map-fullscreen-action:hover {
+    background: rgba(59, 130, 246, 0.35);
+    color: #ffffff;
+  }
+
+  /* Fullscreen Full Map View */
+  #mapCard.fullscreen-map {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 999999 !important;
+    margin: 0 !important;
+    padding: 12px 16px !important;
+    background: #090d16 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    border-radius: 0 !important;
+  }
+  #mapCard.fullscreen-map .map-box {
+    flex: 1 !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin-bottom: 0 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7) !important;
+  }
+  #mapCard.fullscreen-map #routeMap {
+    height: 100% !important;
+    width: 100% !important;
+  }
+  .map-expand-floating-btn {
+    position: absolute;
+    top: 12px;
+    right: 58px;
+    z-index: 500;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid var(--border-card);
+    color: #93c5fd;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1rem;
+    backdrop-filter: blur(8px);
+    transition: all 0.2s ease;
+  }
+  .map-expand-floating-btn:hover {
+    background: rgba(37, 99, 235, 0.85);
+    color: #ffffff;
+    border-color: #60a5fa;
+    transform: scale(1.08);
+  }
+
+  /* Route Cards */
+  .result-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(12px);
+    position: relative;
+  }
+  .result-card.best-card {
+    border-color: rgba(59, 130, 246, 0.4);
+    background: linear-gradient(180deg, rgba(37, 99, 235, 0.08) 0%, rgba(17, 24, 39, 0.9) 100%);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .card-name {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-fare {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--success-green);
+  }
+
+  .tag-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+  .badge-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-card);
+    color: var(--text-body);
+  }
+  .badge-tag.primary {
+    background: rgba(37, 99, 235, 0.15);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #93c5fd;
+  }
+  .badge-tag.direct {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #6ee7b7;
+  }
+  .badge-tag.distance {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #fcd34d;
+  }
+
+  /* Journey Timeline */
+  .timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .timeline-row {
+    display: grid;
+    grid-template-columns: 80px 20px 1fr;
+    gap: 12px;
+  }
+  .timeline-times {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .clock-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .date-text {
+    font-size: 0.7rem;
+    color: var(--text-subtle);
+  }
+
+  .timeline-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 0;
+  }
+  .track-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-blue);
+    background: #0f172a;
+  }
+  .track-dot.end { background: var(--primary-blue); }
+  .track-line {
+    flex: 1;
+    width: 2px;
+    background: var(--primary-blue);
+    opacity: 0.5;
+    margin: 3px 0;
+  }
+
+  .timeline-content {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .station-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #ffffff;
+  }
+  .train-detail {
+    font-size: 0.82rem;
+    color: #93c5fd;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .mode-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(37, 99, 235, 0.2);
+    color: #bfdbfe;
+    text-transform: uppercase;
+  }
+  .timeline-meta {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .transfer-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    color: #fde047;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin: 8px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  /* Interactive Option Selector Tiles / Ribbon */
+  .options-selector-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .option-tile-btn {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 14px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 118px;
+    height: 100%;
+    box-sizing: border-box;
+    gap: 6px;
+    position: relative;
+    backdrop-filter: blur(12px);
+  }
+  .option-tile-btn:hover {
+    border-color: rgba(96, 165, 250, 0.6);
+    background: rgba(30, 41, 59, 0.85);
+    transform: translateY(-2px);
+  }
+  .option-tile-btn.active {
+    border-color: #3b82f6;
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.22) 0%, rgba(15, 23, 42, 0.95) 100%);
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.35);
+  }
+  .option-tile-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .option-tile-label {
+    font-size: 0.96rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 0.2px;
+  }
+  .option-tile-fare {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--success-green);
+  }
+  .option-tile-sub {
+    font-size: 0.76rem;
+    color: #94a3b8;
+    line-height: 1.3;
+  }
+  .option-tile-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    align-self: flex-start;
+  }
+
+  /* Wrapped / Collapsible Other Option Cards */
+  .wrapped-option-card {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .wrapped-option-card:hover {
+    border-color: rgba(96, 165, 250, 0.6);
+    background: rgba(30, 41, 59, 0.85);
+  }
+  .wrapped-option-card.active {
+    border-color: #3b82f6;
+    background: rgba(37, 99, 235, 0.15);
+  }
+
+  /* Action Buttons */
+  .action-bar {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-card);
+    color: var(--text-body);
+    cursor: pointer;
+    transition: all 0.12s ease;
+  }
+  .action-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  /* Warning Container */
+  .notice-banner {
+    background: rgba(245, 158, 11, 0.1);
+    border-left: 3px solid var(--warning-amber);
+    padding: 10px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin-bottom: 18px;
+    font-size: 0.85rem;
+    color: #fef3c7;
+  }
+
+  /* Footer */
+  .footer-panel {
+    margin-top: 48px;
+    padding: 24px;
+    text-align: center;
+    background: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: var(--radius-lg);
+  }
+  .footer-heading {
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .footer-caption {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .footer-links-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+  .footer-url {
+    color: #93c5fd;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .footer-url:hover {
+    text-decoration: underline;
+  }
+
+  /* Toast Notification */
+  .toast-notification {
+    position: fixed;
+    bottom: 20px; right: 20px;
+    background: #1e293b;
+    border: 1px solid var(--border-input);
+    color: #ffffff;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-size: 0.84rem;
+    font-weight: 500;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.25s ease;
+  }
+  .toast-notification.visible {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* ==========================================================================
+     Safarnama AI Assistant & Voice Search Chatbot Widget
+     ========================================================================== */
+  .ai-assistant-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9998;
+    font-family: var(--font-body);
+  }
+  .ai-trigger-btn {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb, #38bdf8);
+    color: #ffffff;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.5), 0 0 25px rgba(56, 189, 248, 0.45);
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    backdrop-filter: blur(12px);
+    user-select: none;
+    padding: 0;
+  }
+  .ai-trigger-btn::before {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.45) 0%, transparent 70%);
+    animation: rippleGlow 2.4s infinite ease-in-out;
+    z-index: -1;
+  }
+  @keyframes rippleGlow {
+    0%, 100% { transform: scale(0.95); opacity: 0.5; }
+    50% { transform: scale(1.35); opacity: 1; }
+  }
+  .ai-trigger-btn:hover, .ai-trigger-btn:active, .ai-trigger-btn:focus-visible {
+    transform: scale(1.22);
+    box-shadow: 0 18px 45px rgba(37, 99, 235, 0.75), 0 0 35px rgba(56, 189, 248, 0.7);
+    border-color: #ffffff;
+  }
+  .ai-trigger-icon {
+    font-size: 1.8rem;
+    animation: pulseAI 2s infinite ease-in-out;
+    line-height: 1;
+  }
+  .ai-trigger-tooltip {
+    position: absolute;
+    right: 72px;
+    background: rgba(15, 23, 42, 0.95);
+    border: 1px solid rgba(59, 130, 246, 0.45);
+    color: #93c5fd;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    white-space: nowrap;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+  .ai-trigger-btn:hover .ai-trigger-tooltip {
+    opacity: 1;
+    color: #ffffff;
+    border-color: #60a5fa;
+  }
+  @keyframes pulseAI {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 2px #60a5fa); }
+    50% { transform: scale(1.15); filter: drop-shadow(0 0 8px #93c5fd); }
+  }
+  .ai-chat-window {
+    position: fixed;
+    bottom: 84px;
+    right: 24px;
+    width: 380px;
+    max-width: calc(100vw - 32px);
+    height: 540px;
+    max-height: calc(100vh - 110px);
+    background: rgba(15, 23, 42, 0.96);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    border-radius: 20px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(37, 99, 235, 0.25);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 9998;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .ai-chat-window.active {
+    display: flex;
+  }
+  @keyframes slideUpFade {
+    from { opacity: 0; transform: translateY(20px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .ai-chat-header {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.9), rgba(15, 23, 42, 0.9));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ai-header-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .ai-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+  }
+  .ai-header-title {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.98rem;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .ai-online-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+  }
+  .ai-header-sub {
+    font-size: 0.72rem;
+    color: #93c5fd;
+  }
+  .ai-close-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #94a3b8;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.2s;
+  }
+  .ai-close-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+  }
+  .ai-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scroll-behavior: smooth;
+  }
+  .ai-msg {
+    max-width: 88%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    word-break: break-word;
+  }
+  .ai-msg-bot {
+    align-self: flex-start;
+    background: rgba(30, 41, 59, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+    border-bottom-left-radius: 4px;
+  }
+  .ai-msg-bot strong {
+    color: #93c5fd;
+  }
+  .ai-msg-user {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+    border-bottom-right-radius: 4px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  }
+  .ai-quick-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .ai-chip {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .ai-chip:hover {
+    background: rgba(59, 130, 246, 0.3);
+    border-color: #60a5fa;
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+  .ai-listening-banner {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    animation: pulseListen 1.5s infinite;
+  }
+  .ai-listening-banner.active {
+    display: flex;
+  }
+  @keyframes pulseListen {
+    0%, 100% { border-color: rgba(239, 68, 68, 0.4); }
+    50% { border-color: rgba(239, 68, 68, 0.9); box-shadow: 0 0 10px rgba(239, 68, 68, 0.3); }
+  }
+  .voice-wave {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    height: 14px;
+  }
+  .voice-bar {
+    width: 3px;
+    height: 100%;
+    background: #ef4444;
+    border-radius: 2px;
+    animation: waveAnim 0.8s infinite ease-in-out;
+  }
+  .voice-bar:nth-child(2) { animation-delay: 0.2s; }
+  .voice-bar:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes waveAnim {
+    0%, 100% { height: 4px; }
+    50% { height: 14px; }
+  }
+  .ai-chat-footer {
+    padding: 12px 14px;
+    background: rgba(15, 23, 42, 0.98);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ai-input-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ai-chat-input {
+    flex: 1;
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 10px 14px;
+    color: #ffffff;
+    font-size: 0.86rem;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .ai-chat-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+    background: rgba(30, 41, 59, 0.95);
+  }
+  .ai-btn-mic {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.15rem;
+    transition: all 0.2s;
+  }
+  .ai-btn-mic:hover, .ai-btn-mic.recording {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.6);
+    color: #ef4444;
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+    transform: scale(1.05);
+  }
+  .ai-btn-send {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.05rem;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+  }
+  .ai-btn-send:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: scale(1.05);
+  }
+  .ai-typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(30, 41, 59, 0.85);
+    border-radius: 12px;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+  .ai-typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #60a5fa;
+    border-radius: 50%;
+    animation: typingBounce 1.2s infinite ease-in-out;
+  }
+  .ai-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .ai-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce {
+    0%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-6px); }
+  }
+
+  /* Itinerary Modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    z-index: 1000;
+    display: none;
+    place-items: center;
+    padding: 16px;
+  }
+  .modal-overlay.active { display: grid; }
+  .modal-box {
+    width: 100%;
+    max-width: 520px;
+    background: #1e293b;
+    border: 1px solid var(--border-input);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    padding: 24px;
+  }
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-card);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+  .modal-close {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  /* Live Action Buttons on Train Legs */
+  .leg-live-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #6ee7b7;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .leg-live-btn:hover {
+    background: rgba(16, 185, 129, 0.25);
+    border-color: #10b981;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+  }
+  .leg-live-btn.track {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+  }
+  .leg-live-btn.track:hover {
+    background: rgba(59, 130, 246, 0.25);
+    border-color: #3b82f6;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+  }
+
+  /* Live Seats & PNR Cards */
+  .seat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .seat-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid var(--border-card);
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+    transition: transform 0.15s ease;
+  }
+  .seat-card:hover {
+    transform: translateY(-2px);
+  }
+  .seat-card.available {
+    border-color: rgba(16, 185, 129, 0.6);
+    background: rgba(16, 185, 129, 0.08);
+  }
+  .seat-card.rac {
+    border-color: rgba(245, 158, 11, 0.6);
+    background: rgba(245, 158, 11, 0.08);
+  }
+  .seat-card.wl {
+    border-color: rgba(239, 68, 68, 0.6);
+    background: rgba(239, 68, 68, 0.08);
+  }
+  .seat-class-badge {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .seat-status-val {
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin: 4px 0 2px;
+  }
+  .seat-status-val.available { color: #34d399; }
+  .seat-status-val.rac { color: #fbbf24; }
+  .seat-status-val.wl { color: #f87171; }
+  .seat-fare-tag {
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+
+  .pnr-passenger-card {
+    background: rgba(15, 23, 42, 0.65);
+    border: 1px solid var(--border-card);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .pnr-nav-btn {
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #93c5fd;
+  }
+  .pnr-nav-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    color: #fff;
+  }
+
+  /* Interactive Coach Layout Modal */
+  .coach-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 4, 10, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+  .coach-modal.active { display: flex; }
+  .coach-modal-card {
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    width: min(720px, 95vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  }
+  .coach-bay-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .coach-bay {
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .berth-cell {
+    padding: 5px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    font-family: monospace;
+  }
+  .berth-cell.highlight {
+    background: #2563eb;
+    color: #fff;
+    border-color: #60a5fa;
+    box-shadow: 0 0 10px rgba(37, 99, 235, 0.5);
+  }
+  .recent-chip {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .recent-chip:hover {
+    background: rgba(37, 99, 235, 0.3);
+    border-color: #60a5fa;
+    color: #fff;
+  }
+
+  /* =========================================================================
+     Mobile Responsive & Low-End Device Optimizations
+     ========================================================================= */
+  @media (max-width: 640px) {
+    /* Low-power CPU & GPU saving: disable continuous heavy 1080p video decode */
+    .bg-forest-video {
+      display: none !important;
+    }
+    .forest-video-scrim {
+      background: radial-gradient(circle at 50% 20%, #0d1527 0%, #02040a 100%) !important;
+    }
+    #fireflyCursor {
+      display: none !important;
+    }
+    #dustCanvas {
+      opacity: 0.25;
+    }
+
+    body {
+      padding-top: max(8px, env(safe-area-inset-top));
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      padding-left: max(8px, env(safe-area-inset-left));
+      padding-right: max(8px, env(safe-area-inset-right));
+    }
+    .app-layout {
+      width: 100% !important;
+      padding: 0 4px !important;
+    }
+
+    .header-title {
+      font-size: 1.6rem !important;
+      line-height: 1.25 !important;
+    }
+    .header-subtitle {
+      font-size: 0.85rem !important;
+      margin-bottom: 14px !important;
+    }
+
+    .popular-strip {
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .popular-strip::-webkit-scrollbar {
+      display: none;
+    }
+    .popular-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .search-panel {
+      padding: 16px 14px !important;
+      border-radius: var(--radius-md) !important;
+    }
+    .swap-button {
+      width: 44px;
+      height: 44px;
+      margin: 4px auto;
+    }
+
+    .map-box {
+      height: 340px !important;
+    }
+    .map-switch-pills {
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      width: 100%;
+      scrollbar-width: none;
+    }
+    .map-switch-pills::-webkit-scrollbar {
+      display: none;
+    }
+    .map-pill-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 5px 10px !important;
+      font-size: 0.72rem !important;
+    }
+
+    .ai-chat-window {
+      width: 100vw !important;
+      height: 92vh !important;
+      bottom: 0 !important;
+      right: 0 !important;
+      border-radius: 20px 20px 0 0 !important;
+    }
+    .ai-floating-btn {
+      bottom: 16px !important;
+      right: 16px !important;
+      width: 52px !important;
+      height: 52px !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .header-title {
+      font-size: 1.35rem !important;
+    }
+    .nav-title {
+      font-size: 0.95rem !important;
+    }
+    .nav-tag {
+      display: none;
+    }
+    .search-panel {
+      padding: 12px 10px !important;
+    }
+    .chip-btn {
+      font-size: 0.68rem !important;
+      padding: 2px 6px !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <!-- Darkened Atmospheric Forest Background Video -->
+  <video id="bgForestVideo" class="bg-forest-video" src="/static/bg%20forest%20video.mp4" autoplay muted playsinline loop preload="auto" aria-hidden="true"></video>
+  <div class="forest-video-scrim" aria-hidden="true"></div>
+
+  <!-- Micro Sparkling Golden Spores Dust Canvas -->
+  <canvas id="dustCanvas"></canvas>
+
+  <!-- Floating Firefly Cursor with Realistic Bulb Light Glow -->
+  <div id="fireflyCursor" class="firefly-cursor active" aria-hidden="true">
+    <div class="firefly-glow-outer"></div>
+    <div class="firefly-glow-inner"></div>
+    <div class="firefly-core-hotspot"></div>
+    <img src="/static/firefly.png" alt="Firefly" class="firefly-sprite" />
+  </div>
+
+  <div class="app-layout">
+    <!-- Navbar -->
+    <nav class="top-nav">
+      <a href="/" class="nav-brand">
+        <div class="nav-logo">🚆</div>
+        <div>
+          <div class="nav-title">Route Finder</div>
+        </div>
+        <span class="nav-tag">Indian Railways</span>
+      </a>
+      <div class="nav-links">
+        <a href="/live" class="nav-btn live-nav-btn" title="Live Train Tracking, IRCTC Seat Availability, PNR Status & Station Boards">
+          <span>📡 Live Services</span>
+        </a>
+        <button id="soundToggleBtn" class="sound-btn" onclick="toggleNightSound()" title="Toggle Night Forest Sounds" aria-label="Toggle Night Sounds">
+          <span id="soundIcon">🔇</span>
+          <span id="soundLabel">Night Sounds</span>
+        </button>
+        <button id="apiKeysNavBtn" class="nav-btn" onclick="openApiKeysModal()" title="API Configuration & Service Status" style="cursor:pointer; display:inline-flex; align-items:center; gap:5px;">
+          <span>⚙️ API Keys</span>
+        </button>
+        <a href="/journey" class="nav-btn">
+          <span>Overview</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="header-section">
+      <!-- Locomotive Headlight Animation Stage at Top -->
+      <div id="loco" class="loco-stage" aria-hidden="true">
+        <div class="loco-base"></div>
+        <div class="loco-lit"></div>
+        <div class="beam-cone beam-l"></div>
+        <div class="beam-cone beam-r"></div>
+      </div>
+
+      <h1 class="header-title">Plan Your Rail Journey</h1>
+      <p class="header-subtitle">Official Indian Railways timetable data with station-to-station rail distances, direct train prioritization, and flexible date search across 1,888+ stations.</p>
+
+      <!-- Popular Routes -->
+      <div class="popular-strip">
+        <span class="popular-label">Popular Routes:</span>
+        <button class="popular-btn" onclick="applyPreset('NDLS', 'BCT')">Delhi &rarr; Mumbai</button>
+        <button class="popular-btn" onclick="applyPreset('CSMT', 'MAO')">Mumbai &rarr; Goa</button>
+        <button class="popular-btn" onclick="applyPreset('HWH', 'NDLS')">Howrah &rarr; Delhi</button>
+        <button class="popular-btn" onclick="applyPreset('MAS', 'SBC')">Chennai &rarr; Bangalore</button>
+        <button class="popular-btn" onclick="applyPreset('NDLS', 'BSB')">Delhi &rarr; Varanasi</button>
+        <button class="popular-btn" onclick="applyPreset('JSME', 'DHN')">Jasidih &rarr; Dhanbad</button>
+      </div>
+    </header>
+
+    <!-- Search Box -->
+    <section class="search-panel">
+      <div class="station-grid">
+        <!-- Origin Station -->
+        <div class="input-card">
+          <div class="input-label-row">
+            <span class="input-label">Origin Station</span>
+            <span class="state-info" id="sourceStateBadge">State</span>
+          </div>
+          <input type="text" class="station-search-box" id="sourceInput" placeholder="Search station name or code (e.g. NDLS)..." autocomplete="off" />
+          <input type="hidden" id="source" value="JSME" />
+          <div class="station-dropdown" id="sourceDropdown"></div>
+        </div>
+
+        <!-- Swap Button -->
+        <div class="swap-wrapper">
+          <button class="swap-button" id="swapBtn" title="Swap Origin and Destination" aria-label="Swap Origin and Destination">&#8646;</button>
+        </div>
+
+        <!-- Destination Station -->
+        <div class="input-card">
+          <div class="input-label-row">
+            <span class="input-label">Destination Station</span>
+            <span class="state-info" id="destStateBadge">State</span>
+          </div>
+          <input type="text" class="station-search-box" id="destInput" placeholder="Search station name or code (e.g. Mumbai)..." autocomplete="off" />
+          <input type="hidden" id="destination" value="DHN" />
+          <div class="station-dropdown" id="destDropdown"></div>
+        </div>
+      </div>
+
+      <!-- Date, Time & Search Button (Laser-Aligned 3-Column Grid) -->
+      <div class="details-row">
+        <!-- Column 1: Departure Date (DD/MM/YYYY) with Quick Chips -->
+        <div class="form-group date-col">
+          <div class="form-label-row">
+            <label class="form-label" for="dateDisplay">Departure Date</label>
+            <div class="quick-dates-chips">
+              <button type="button" class="chip-btn" onclick="setQuickDate(0)">Today</button>
+              <button type="button" class="chip-btn" onclick="setQuickDate(1)">Tomorrow</button>
+              <button type="button" class="chip-btn" onclick="setQuickDate(3)">+3 Days</button>
+            </div>
+          </div>
+          <div class="custom-date-box" onclick="openDatePicker()">
+            <input type="text" class="form-input date-display-input" id="dateDisplay" placeholder="DD/MM/YYYY" readonly />
+            <input type="date" class="native-date-hidden" id="date" />
+            <span class="date-calendar-btn" title="Pick Date">📅</span>
+          </div>
+        </div>
+
+        <!-- Column 2: Preferred Time -->
+        <div class="form-group time-col">
+          <div class="form-label-row">
+            <label class="form-label" for="time">Preferred Time</label>
+          </div>
+          <input type="time" class="form-input" id="time" value="08:00" />
+        </div>
+
+        <!-- Column 3: Search Action Button -->
+        <div class="form-group action-col">
+          <div class="form-label-row">
+            <span class="form-label" style="visibility:hidden;">Action</span>
+          </div>
+          <button class="search-submit-btn" id="searchBtn">
+            <span>Search Available Routes</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Flexible Dates Checkbox Bar -->
+      <div class="flexible-options-box">
+        <label class="flex-check-label">
+          <input type="checkbox" id="flexibleCheck" />
+          <span>Flexible Dates Search</span>
+        </label>
+        <select class="flex-days-select" id="flexibleDays">
+          <option value="1">&plusmn; 1 Day</option>
+          <option value="2">&plusmn; 2 Days</option>
+          <option value="3" selected>&plusmn; 3 Days (Recommended)</option>
+          <option value="4">&plusmn; 4 Days</option>
+          <option value="5">&plusmn; 5 Days</option>
+        </select>
+        <span class="flex-hint">Recommends 1-leg direct trains and fewer-transfer routes on nearby dates</span>
+      </div>
+
+      <!-- Recent Searches Quick Chips Strip -->
+      <div id="recentSearchesStrip" style="display:none; margin-top:14px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.08); font-size:0.78rem;">
+        <span style="color:var(--text-muted); margin-right:8px; font-weight:600;">🕒 Recent Searches:</span>
+        <span id="recentChipsContainer" style="display:inline-flex; flex-wrap:wrap; gap:6px;"></span>
+      </div>
+    </section>
+
+    <!-- Route Map Container -->
+    <div id="mapCard" style="display: none; margin-bottom: 24px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:10px; padding:0 2px;">
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div style="font-family:var(--font-heading); font-size:1.02rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:6px;">
+            <span>🗺️ Route Map</span>
+          </div>
+          <span id="activeMapNameBadge" style="font-size:0.75rem; color:#93c5fd; background:rgba(59,130,246,0.18); border:1px solid rgba(59,130,246,0.35); padding:2px 8px; border-radius:6px; font-weight:700;">🌙 Stadia Dark</span>
+          <span id="trackAlignmentBadge" style="display:none; font-size:0.75rem; color:#10b981; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.3); padding:2px 8px; border-radius:6px; font-weight:600;">✓ Real Track Curve Snapped</span>
+        </div>
+
+        <!-- Quick Switch Bar -->
+        <div class="map-switch-pills" id="mapLayerSwitcher">
+          <span style="font-size:0.75rem; color:#94a3b8; font-weight:700; margin-right:2px;">Switch Map:</span>
+          <button type="button" class="map-pill-btn active" id="btnMap-stadiaDark" onclick="switchBaseLayer('stadiaDark')">🌙 Dark Rail</button>
+          <button type="button" class="map-pill-btn" id="btnMap-maptilerStreets" onclick="switchBaseLayer('maptilerStreets')">🗺️ MapTiler</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleHybrid" onclick="switchBaseLayer('googleHybrid')">🌐 Google Hybrid</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleSatellite" onclick="switchBaseLayer('googleSatellite')">🛰️ Google Satellite</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleRoadmap" onclick="switchBaseLayer('googleRoadmap')">🚗 Google Roads</button>
+          <button type="button" class="map-pill-btn" id="btnMap-googleTerrain" onclick="switchBaseLayer('googleTerrain')">🏔️ Google Terrain</button>
+          <button type="button" class="map-pill-btn map-fullscreen-action" id="mapFullscreenBtn" onclick="toggleMapFullscreen()" title="Toggle Fullscreen Full Map View">
+            <span>⤢ Full Map</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="map-box" style="margin-bottom:0;">
+        <div class="map-badge">Interactive Route Map</div>
+        <button type="button" class="map-expand-floating-btn" onclick="toggleMapFullscreen()" title="Toggle Fullscreen Full Map" aria-label="Toggle Fullscreen Full Map">
+          <span id="floatingExpandIcon">⤢</span>
+        </button>
+        <div id="routeMap"></div>
+      </div>
+    </div>
+
+    <!-- Flexible Dates Recommendation Banner -->
+    <div id="flexibleRecommendationsContainer"></div>
+
+    <!-- Results Display -->
+    <main id="resultsContainer"></main>
+
+    <!-- Footer -->
+    <footer class="footer-panel">
+      <div class="footer-heading">Indian Railways Route & Connection Finder</div>
+      <div class="footer-caption">Developed by <b>Krishna Kumar</b> &middot; Timetable engine and direct/multi-leg transit planner</div>
+      <div class="footer-links-row" style="display:flex; justify-content:center; align-items:center; gap:16px; margin-top:8px;">
+        <a href="https://github.com/Krishna-kumar-1" target="_blank" rel="noopener noreferrer" class="footer-url" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+          <img src="/static/images/github.png" width="18" height="18" style="border-radius:50%; vertical-align:middle;" alt="GitHub" />
+          <span>Krishna-kumar-1</span>
+        </a>
+        <span style="color:rgba(255,255,255,0.2);">&bull;</span>
+        <a href="https://github.com/Krishna-kumar-1/Train-Route-Finder-Final" target="_blank" rel="noopener noreferrer" class="footer-url" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+          <span style="font-size:1.1rem;">&#128279;</span>
+          <span>Repository</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast-notification" id="toast"></div>
+
+  <!-- Summary Modal -->
+  <div class="modal-overlay" id="ticketModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; color: #fff;">Journey Itinerary Summary</div>
+          <div style="font-size: 0.78rem; color: var(--text-muted);" id="modalTicketSubtitle">Route Details</div>
+        </div>
+        <button class="modal-close" onclick="closeTicketModal()">&times;</button>
+      </div>
+      <div id="modalTicketBody"></div>
+      <div style="margin-top: 18px; display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="action-btn" onclick="window.print()">Print Details</button>
+        <button class="action-btn" onclick="closeTicketModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Coach Layout Modal -->
+  <div class="coach-modal" id="coachLayoutModal">
+    <div class="coach-modal-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px;">
+        <h3 id="coachModalTitle" style="font-size:1.15rem; font-weight:700; color:#fff;">Coach Layout Map</h3>
+        <button type="button" class="modal-close" onclick="closeCoachLayoutModal()">&times;</button>
+      </div>
+      <div id="coachModalBody"></div>
+    </div>
+  </div>
+
+  <!-- API Keys & Environment Configuration Modal -->
+  <div class="coach-modal" id="apiKeysModal">
+    <div class="coach-modal-card" style="max-width:620px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.3rem;">⚙️</span>
+          <div>
+            <h3 style="font-size:1.15rem; font-weight:700; color:#fff; margin:0;">API Keys & Service Status</h3>
+            <div style="font-size:0.75rem; color:#94a3b8;">Multi-tier satellite telemetry &amp; Gemini AI integration</div>
+          </div>
+        </div>
+        <button type="button" class="modal-close" onclick="closeApiKeysModal()">&times;</button>
+      </div>
+
+      <div id="apiKeysStatusBody" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+        <div style="padding:14px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.08); text-align:center;">Checking API Status...</div>
+      </div>
+
+      <div style="background:rgba(15,23,42,0.8); border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:14px; font-size:0.8rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span style="color:#a7c8ff; font-weight:700;">📄 How to configure your API keys in .env:</span>
+          <button type="button" onclick="copyEnvTemplate()" style="background:rgba(59,130,246,0.25); border:1px solid rgba(59,130,246,0.5); color:#93c5fd; padding:3px 8px; border-radius:6px; font-size:0.72rem; cursor:pointer;">📋 Copy Template</button>
+        </div>
+        <pre id="envTemplateCode" style="background:#090d16; padding:10px; border-radius:6px; overflow-x:auto; font-size:0.72rem; color:#cbd5e1; font-family:monospace; margin:0; line-height:1.4;"># 1. Google Gemini AI (Free at https://aistudio.google.com/)
+GEMINI_API_KEY="your_gemini_key_here"
+
+# 2. RailKit API Multi-Pool (Free at https://www.railkit.in/dashboard)
+RAILKIT_API_KEYS="railkit_key1, railkit_key2"
+
+# 3. RapidAPI IRCTC Backup (Free at https://rapidapi.com/IRCTCAPI/api/irctc1)
+RAPIDAPI_KEYS="your_rapidapi_key"
+RAPIDAPI_HOST="irctc1.p.rapidapi.com"
+
+# 4. Google Maps Platform API (Optional Satellite & Roadmap Imagery)
+GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
+        <div style="color:#94a3b8; font-size:0.75rem; margin-top:8px;">
+          💡 <i>Note: The offline database of 12,466+ trains &amp; 1,894 stations runs 100% locally even without any external API keys!</i>
+        </div>
+      </div>
+
+      <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+        <button type="button" class="action-btn" onclick="closeApiKeysModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       Safarnama AI Assistant & Voice Search Chatbot Widget
+       ========================================================================== -->
+  <div class="ai-assistant-widget" id="aiAssistantWidget">
+    <!-- Floating Circular Trigger Button with Tap Enlarge -->
+    <button type="button" class="ai-trigger-btn" id="aiTriggerBtn" onclick="toggleAIChat()" aria-label="Open Safarnama AI Assistant" title="Safarnama AI Voice & Chat Assistant">
+      <span class="ai-trigger-icon">🤖</span>
+      <span class="ai-trigger-tooltip">✨ Safarnama AI</span>
+    </button>
+
+    <!-- Chat Window -->
+    <div class="ai-chat-window" id="aiChatWindow">
+      <!-- Header -->
+      <div class="ai-chat-header">
+        <div class="ai-header-info">
+          <div class="ai-avatar">🚆</div>
+          <div>
+            <div class="ai-header-title">
+              <span>Safarnama AI</span>
+              <span class="ai-online-dot" title="Gemini 3.6 Flash Online"></span>
+            </div>
+            <div class="ai-header-sub">Bol kar ya likh kar search karein</div>
+          </div>
+        </div>
+        <button type="button" class="ai-close-btn" onclick="toggleAIChat()" aria-label="Close Chat">&times;</button>
+      </div>
+
+      <!-- Body / Message History -->
+      <div class="ai-chat-body" id="aiChatBody">
+        <div class="ai-msg ai-msg-bot">
+          Namaste ji! 🙏 Main <b>Safarnama AI</b> hoon. 
+          <br/><br/>
+          Aap bol kar (<b>Voice 🎙️</b>) ya likh kar kisi bhi train, route, PNR ya live status ke baare mein pooch sakte hain!
+          <div style="font-size:0.75rem; color:#94a3b8; margin-top:8px;">Try saying or tapping:</div>
+          <div class="ai-quick-chips">
+            <span class="ai-chip" onclick="sendQuickPrompt('Dhanbad se Govindpuri kal subah 11 bje')">⚡ Dhanbad se Govindpuri</span>
+            <span class="ai-chip" onclick="sendQuickPrompt('NDLS to HWH rajdhani trains')">🚅 NDLS to HWH</span>
+            <span class="ai-chip" onclick="sendQuickPrompt('PNR 6408631578 check karo')">🎫 PNR 6408631578</span>
+            <span class="ai-chip" onclick="sendQuickPrompt('Train 12987 live status')">🚆 Spot 12987</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer / Input & Voice Mic -->
+      <div class="ai-chat-footer">
+        <div class="ai-listening-banner" id="aiListeningBanner">
+          <div class="voice-wave">
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+            <span class="voice-bar"></span>
+          </div>
+          <span>Listening... Aap boliye (Hindi / English / Hinglish)</span>
+        </div>
+        <div class="ai-input-row">
+          <input type="text" class="ai-chat-input" id="aiChatInput" placeholder="Bol kar ya likhein (e.g. 'Dhanbad se Kanpur')..." onkeydown="if(event.key==='Enter') sendAIChatMessage();" />
+          <button type="button" class="ai-btn-mic" id="aiMicBtn" onclick="toggleVoiceRecognition()" title="Voice Record / Speak to Search">
+            🎙️
+          </button>
+          <button type="button" class="ai-btn-send" onclick="sendAIChatMessage()" title="Send Message">
+            ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet Map JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <script>
+    const API = "";
+    let stations = [];
+    let stationMap = new Map();
+    let leafletMap = null;
+    let mapPolyline = null;
+    let mapMarkers = [];
+
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      toast.textContent = msg;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2800);
+    }
+
+    function formatToDDMMYYYY(isoStr) {
+      if (!isoStr) return "";
+      const parts = isoStr.split("-");
+      if (parts.length === 3) {
+        return `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+      }
+      return isoStr;
+    }
+
+    function updateDateDisplay(isoValue) {
+      const dateInput = document.getElementById("date");
+      const displayInput = document.getElementById("dateDisplay");
+      if (!dateInput || !displayInput) return;
+      const val = isoValue || dateInput.value;
+      if (!val) {
+        displayInput.value = "";
+        return;
+      }
+      displayInput.value = formatToDDMMYYYY(val);
+    }
+
+    function openDatePicker() {
+      const dateInput = document.getElementById("date");
+      if (dateInput) {
+        if (typeof dateInput.showPicker === "function") {
+          try {
+            dateInput.showPicker();
+          } catch (e) {
+            dateInput.focus();
+          }
+        } else {
+          dateInput.focus();
+        }
+      }
+    }
+
+    function setQuickDate(daysFromNow) {
+      const d = new Date();
+      d.setDate(d.getDate() + daysFromNow);
+      const yyyy = d.getFullYear();
+      const mm = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      const iso = `${yyyy}-${mm}-${dd}`;
+      const dateInput = document.getElementById("date");
+      if (dateInput) {
+        dateInput.value = iso;
+        updateDateDisplay(iso);
+      }
+      showToast(`Date set to ${dd}/${mm}/${yyyy} (${d.toLocaleDateString("en-IN", { weekday: 'short' })})`);
+    }
+
+    function setupAutocomplete(inputId, hiddenId, dropdownId, stateBadgeId, defaultCode) {
+      const input = document.getElementById(inputId);
+      const hidden = document.getElementById(hiddenId);
+      const dropdown = document.getElementById(dropdownId);
+      const stateBadge = document.getElementById(stateBadgeId);
+
+      function setStation(station) {
+        if (!station) return;
+        hidden.value = station.code;
+        input.value = `${station.name} (${station.code})`;
+        stateBadge.textContent = station.state || "";
+        dropdown.classList.remove("open");
+      }
+
+      function resolveStationFromText(text) {
+        if (!text) return null;
+        const q = text.trim().toLowerCase();
+        if (!q) return null;
+
+        // 1. Exact match with station code (e.g., 'dhn', 'cnb', 'lko', 'ndls')
+        const codeMatch = stations.find(s => s.code.toLowerCase() === q);
+        if (codeMatch) return codeMatch;
+
+        // 2. Format like "Dhanbad (DHN)"
+        const parenMatch = text.match(/\(([A-Za-z0-9]+)\)$/);
+        if (parenMatch) {
+          const code = parenMatch[1].toUpperCase();
+          const st = stations.find(s => s.code === code);
+          if (st) return st;
+        }
+
+        // 3. Exact match with station name
+        const nameMatch = stations.find(s => s.name.toLowerCase() === q);
+        if (nameMatch) return nameMatch;
+
+        return null;
+      }
+
+      function renderSuggestions(query) {
+        dropdown.innerHTML = "";
+        const q = query.trim().toLowerCase();
+        let matches = [];
+        if (!q) {
+          matches = stations.slice(0, 15);
+        } else {
+          matches = stations.filter(s =>
+            s.code.toLowerCase().includes(q) ||
+            s.name.toLowerCase().includes(q) ||
+            (s.state && s.state.toLowerCase().includes(q))
+          ).slice(0, 25);
+        }
+
+        if (matches.length === 0) {
+          dropdown.innerHTML = `<div style="padding:10px; color:#94a3b8; font-size:0.82rem; text-align:center;">No matching stations found</div>`;
+          dropdown.classList.add("open");
+          return;
+        }
+
+        matches.forEach((st) => {
+          const item = document.createElement("div");
+          item.className = "station-option";
+          item.innerHTML = `
+            <div>
+              <span class="opt-name">${st.name}</span>
+              <span class="opt-state">${st.state || ""}</span>
+            </div>
+            <span class="opt-code">${st.code}</span>
+          `;
+          item.addEventListener("click", () => setStation(st));
+          dropdown.appendChild(item);
+        });
+        dropdown.classList.add("open");
+      }
+
+      input.addEventListener("focus", () => renderSuggestions(input.value));
+      
+      // Auto-detect valid station code while typing
+      input.addEventListener("input", () => {
+        const matched = resolveStationFromText(input.value);
+        if (matched) {
+          hidden.value = matched.code;
+          stateBadge.textContent = matched.state || "";
+        } else {
+          // If user deleted or changed input, clear hidden until verified
+          hidden.value = "";
+          stateBadge.textContent = "";
+        }
+        renderSuggestions(input.value);
+      });
+
+      // Auto-select and format on blur
+      input.addEventListener("blur", () => {
+        const matched = resolveStationFromText(input.value);
+        if (matched) {
+          setStation(matched);
+        } else if (input.value.trim().length >= 2) {
+          // Check if starts with a unique code
+          const q = input.value.trim().toLowerCase();
+          const prefixMatch = stations.find(s => s.code.toLowerCase().startsWith(q) || s.name.toLowerCase().startsWith(q));
+          if (prefixMatch && q.length >= 3) {
+            setStation(prefixMatch);
+          }
+        }
+        setTimeout(() => dropdown.classList.remove("open"), 200);
+      });
+
+      // Auto-select on Enter or Tab
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === "Tab") {
+          const matched = resolveStationFromText(input.value) ||
+            stations.find(s => s.code.toLowerCase().startsWith(input.value.trim().toLowerCase()) || s.name.toLowerCase().startsWith(input.value.trim().toLowerCase()));
+          if (matched) {
+            setStation(matched);
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
+          }
+        }
+      });
+
+      document.addEventListener("click", (e) => {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.remove("open");
+        }
+      });
+
+      if (defaultCode) {
+        const defaultSt = stations.find(s => s.code === defaultCode);
+        if (defaultSt) setStation(defaultSt);
+      }
+    }
+
+    window.applyPreset = function(src, dst) {
+      const srcSt = stations.find(s => s.code === src);
+      const dstSt = stations.find(s => s.code === dst);
+      if (srcSt) {
+        document.getElementById("source").value = srcSt.code;
+        document.getElementById("sourceInput").value = `${srcSt.name} (${srcSt.code})`;
+        document.getElementById("sourceStateBadge").textContent = srcSt.state || "";
+      }
+      if (dstSt) {
+        document.getElementById("destination").value = dstSt.code;
+        document.getElementById("destInput").value = `${dstSt.name} (${dstSt.code})`;
+        document.getElementById("destStateBadge").textContent = dstSt.state || "";
+      }
+      showToast(`Selected ${src} to ${dst}`);
+      searchRoutes();
+    };
+
+    document.getElementById("swapBtn").addEventListener("click", () => {
+      const srcCode = document.getElementById("source").value;
+      const dstCode = document.getElementById("destination").value;
+      const srcInput = document.getElementById("sourceInput").value;
+      const dstInput = document.getElementById("destInput").value;
+      const srcBadge = document.getElementById("sourceStateBadge").textContent;
+      const dstBadge = document.getElementById("destStateBadge").textContent;
+
+      document.getElementById("source").value = dstCode;
+      document.getElementById("destination").value = srcCode;
+      document.getElementById("sourceInput").value = dstInput;
+      document.getElementById("destInput").value = srcInput;
+      document.getElementById("sourceStateBadge").textContent = dstBadge;
+      document.getElementById("destStateBadge").textContent = srcBadge;
+      showToast("Stations swapped");
+    });
+
+    function formatDuration(totalMin) {
+      if (!totalMin) return "0m";
+      const days = Math.floor(totalMin / 1440);
+      const hrs = Math.floor((totalMin % 1440) / 60);
+      const mins = totalMin % 60;
+      const parts = [];
+      if (days) parts.push(`${days}d`);
+      if (hrs || days) parts.push(`${hrs}h`);
+      parts.push(`${mins}m`);
+      return parts.join(" ");
+    }
+
+    function formatDistance(distKm) {
+      if (distKm === null || distKm === undefined) return "";
+      return `${distKm.toLocaleString(undefined, { maximumFractionDigits: 1 })} km`;
+    }
+
+    function shortDate(iso) {
+      if (!iso) return "";
+      const parts = iso.split("-");
+      if (parts.length === 3) {
+        const d = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+        if (!isNaN(d)) {
+          const day = d.getDate();
+          const month = d.toLocaleDateString("en-IN", { month: "short" });
+          const year = d.getFullYear();
+          const weekday = d.toLocaleDateString("en-IN", { weekday: "short" });
+          return `${day} ${month} ${year} (${weekday})`;
+        }
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      }
+      return iso;
+    }
+
+    // Map Tile Provider API Keys
+    const MAPTILER_API_KEY = "xFhO3woMXHW5y5qJX1Sk";
+    const STADIA_API_KEY = "26026d85-ab4c-4f06-974f-6ffb543fe6ac";
+    let GOOGLE_MAPS_API_KEY = localStorage.getItem("SAFARNAMA_GOOGLE_MAPS_KEY") || "";
+
+    let activeBaseLayerKey = 'stadiaDark';
+    const mapBaseLayers = {};
+    const mapBaseLayerNames = {
+      'stadiaDark': '🌙 Stadia Dark',
+      'maptilerStreets': '🗺️ MapTiler Streets',
+      'googleHybrid': '🌐 Google Hybrid',
+      'googleSatellite': '🛰️ Google Satellite',
+      'googleRoadmap': '🚗 Google Roads',
+      'googleTerrain': '🏔️ Google Terrain',
+      'stadiaOutdoors': '🌲 Stadia Outdoors',
+      'stadiaSmooth': '☀️ Stadia Light'
+    };
+
+    function getGoogleTileUrl(lyrs) {
+      const keyParam = GOOGLE_MAPS_API_KEY ? `&key=${encodeURIComponent(GOOGLE_MAPS_API_KEY)}` : '';
+      return `https://mt{s}.google.com/vt/lyrs=${lyrs}&x={x}&y={y}&z={z}${keyParam}`;
+    }
+
+    window.switchBaseLayer = function(layerKey) {
+      if (!leafletMap || !mapBaseLayers[layerKey]) return;
+
+      // Remove current active base layers
+      Object.keys(mapBaseLayers).forEach(k => {
+        if (leafletMap.hasLayer(mapBaseLayers[k])) {
+          leafletMap.removeLayer(mapBaseLayers[k]);
+        }
+      });
+
+      // Add selected layer to map
+      mapBaseLayers[layerKey].addTo(leafletMap);
+      if (typeof mapBaseLayers[layerKey].bringToBack === 'function') {
+        mapBaseLayers[layerKey].bringToBack();
+      }
+      activeBaseLayerKey = layerKey;
+
+      // Update badge
+      const badge = document.getElementById('activeMapNameBadge');
+      if (badge && mapBaseLayerNames[layerKey]) {
+        badge.textContent = mapBaseLayerNames[layerKey];
+      }
+
+      // Update quick-switch pills
+      document.querySelectorAll('.map-pill-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btnMap-${layerKey}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Keep railway tracks overlay on top if currently added
+      if (window.railwayTracksLayer && leafletMap.hasLayer(window.railwayTracksLayer)) {
+        window.railwayTracksLayer.bringToFront();
+      }
+    };
+
+    function initMap() {
+      if (leafletMap) return;
+      leafletMap = L.map('routeMap', {
+        zoomControl: true,
+        attributionControl: true,
+        preferCanvas: true
+      }).setView([20.5937, 78.9629], 5);
+
+      // 1. Stadia Dark (alidade_smooth_dark) - Sleek match for the app's dark neon aesthetic
+      const stadiaDark = L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      });
+
+      // 2. MapTiler Streets v4 - High detail street & rail network
+      const maptilerStreets = L.tileLayer(`https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`, {
+        maxZoom: 19,
+        tileSize: 512,
+        zoomOffset: -1,
+        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+      });
+
+      // 3. Google Hybrid (Satellite Imagery + Roads, Labels & Rail Network)
+      const googleHybrid = L.tileLayer(getGoogleTileUrl('y'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 4. Google Satellite (Real-world Photographic Aerial Imagery)
+      const googleSatellite = L.tileLayer(getGoogleTileUrl('s'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 5. Google Roadmap (Standard Street Navigation)
+      const googleRoadmap = L.tileLayer(getGoogleTileUrl('m'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 6. Google Terrain (Elevation & Physical Topography)
+      const googleTerrain = L.tileLayer(getGoogleTileUrl('p'), {
+        maxZoom: 20,
+        subdomains: ['0', '1', '2', '3'],
+        attribution: '&copy; Google Maps'
+      });
+
+      // 7. Stadia Outdoors - Terrain, mountains & outdoor transit
+      const stadiaOutdoors = L.tileLayer(`https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      });
+
+      // 8. Stadia Smooth Light - Clean daytime view
+      const stadiaSmooth = L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
+        maxZoom: 20,
+        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      });
+
+      // 9. OpenRailwayMap Tracks Overlay - Visualizes real physical railway tracks across India
+      const railwayTracks = L.tileLayer('https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        subdomains: 'abc',
+        attribution: 'Tracks: &copy; <a href="https://www.OpenRailwayMap.org" target="_blank">OpenRailwayMap</a>'
+      });
+      window.railwayTracksLayer = railwayTracks;
+
+      // Register layers in base dictionary
+      mapBaseLayers['stadiaDark'] = stadiaDark;
+      mapBaseLayers['maptilerStreets'] = maptilerStreets;
+      mapBaseLayers['googleHybrid'] = googleHybrid;
+      mapBaseLayers['googleSatellite'] = googleSatellite;
+      mapBaseLayers['googleRoadmap'] = googleRoadmap;
+      mapBaseLayers['googleTerrain'] = googleTerrain;
+      mapBaseLayers['stadiaOutdoors'] = stadiaOutdoors;
+      mapBaseLayers['stadiaSmooth'] = stadiaSmooth;
+
+      // Default active base layer is Stadia Dark + Railway Tracks overlay
+      stadiaDark.addTo(leafletMap);
+      railwayTracks.addTo(leafletMap);
+
+      const baseLayers = {
+        "🌙 Stadia Dark (Neon Rail)": stadiaDark,
+        "🗺️ MapTiler Streets": maptilerStreets,
+        "🌐 Google Hybrid": googleHybrid,
+        "🛰️ Google Satellite": googleSatellite,
+        "🚗 Google Roads": googleRoadmap,
+        "🏔️ Google Terrain": googleTerrain,
+        "🌲 Stadia Outdoors": stadiaOutdoors,
+        "☀️ Stadia Light": stadiaSmooth
+      };
+
+      const overlayLayers = {
+        "🚆 Railway Track Lines": railwayTracks
+      };
+
+      L.control.layers(baseLayers, overlayLayers, { position: 'topright' }).addTo(leafletMap);
+
+      // Two-way synchronization with Leaflet radio button controls
+      leafletMap.on('baselayerchange', (e) => {
+        for (const [k, layer] of Object.entries(mapBaseLayers)) {
+          if (layer === e.layer) {
+            activeBaseLayerKey = k;
+            const badge = document.getElementById('activeMapNameBadge');
+            if (badge && mapBaseLayerNames[k]) {
+              badge.textContent = mapBaseLayerNames[k];
+            }
+            document.querySelectorAll('.map-pill-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`btnMap-${k}`);
+            if (activeBtn) activeBtn.classList.add('active');
+            break;
+          }
+        }
+      });
+    }
+
+    function catmullRomRailwaySpline(points, numSegments = 10) {
+      if (!points || points.length < 2) return points || [];
+      if (points.length === 2) return points;
+
+      const smoothed = [];
+      const pts = [points[0], ...points, points[points.length - 1]];
+
+      for (let i = 1; i < pts.length - 2; i++) {
+        const p0 = pts[i - 1];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = pts[i + 2];
+
+        for (let t = 0; t < numSegments; t++) {
+          const s = t / numSegments;
+          const s2 = s * s;
+          const s3 = s2 * s;
+
+          const lat = 0.5 * (
+            (2 * p1[0]) +
+            (-p0[0] + p2[0]) * s +
+            (2 * p0[0] - 5 * p1[0] + 4 * p2[0] - p3[0]) * s2 +
+            (-p0[0] + 3 * p1[0] - 3 * p2[0] + p3[0]) * s3
+          );
+          const lon = 0.5 * (
+            (2 * p1[1]) +
+            (-p0[1] + p2[1]) * s +
+            (2 * p0[1] - 5 * p1[1] + 4 * p2[1] - p3[1]) * s2 +
+            (-p0[1] + 3 * p1[1] - 3 * p2[1] + p3[1]) * s3
+          );
+          smoothed.push([lat, lon]);
+        }
+      }
+      smoothed.push(points[points.length - 1]);
+      return smoothed;
+    }
+
+    window.toggleMapFullscreen = function() {
+      const mapCard = document.getElementById('mapCard');
+      if (!mapCard) return;
+      const isFull = mapCard.classList.toggle('fullscreen-map');
+      const btn = document.getElementById('mapFullscreenBtn');
+      const floatBtn = document.getElementById('floatingExpandIcon');
+      if (btn) {
+        btn.innerHTML = isFull ? '<span>⤡ Exit Fullscreen</span>' : '<span>⤢ Full Map</span>';
+        btn.classList.toggle('active', isFull);
+      }
+      if (floatBtn) {
+        floatBtn.textContent = isFull ? '⤡' : '⤢';
+      }
+      document.body.style.overflow = isFull ? 'hidden' : '';
+      setTimeout(() => {
+        if (leafletMap) {
+          leafletMap.invalidateSize();
+          if (mapPolyline && typeof mapPolyline.getBounds === 'function') {
+            try {
+              leafletMap.fitBounds(mapPolyline.getBounds(), { padding: [60, 60] });
+            } catch (e) {}
+          }
+        }
+      }, 180);
+    };
+
+    // Exit fullscreen with ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const mapCard = document.getElementById('mapCard');
+        if (mapCard && mapCard.classList.contains('fullscreen-map')) {
+          window.toggleMapFullscreen();
+        }
+      }
+    });
+
+    function plotRouteOnMap(itinerary) {
+      if (!itinerary || !itinerary.legs || !itinerary.legs.length) return;
+      initMap();
+      document.getElementById("mapCard").style.display = "block";
+      setTimeout(() => leafletMap.invalidateSize(), 150);
+
+      if (mapPolyline) leafletMap.removeLayer(mapPolyline);
+      mapMarkers.forEach(m => leafletMap.removeLayer(m));
+      mapMarkers = [];
+
+      const layerElements = [];
+      const seenCoords = new Set();
+      const allStationsInOrder = [];
+      const interchangeCodes = new Set();
+      let realGeomLegCount = 0;
+      let fallbackLegCount = 0;
+      let totalCurvingWaypoints = 0;
+
+      itinerary.legs.forEach((leg, index) => {
+        if (index > 0) interchangeCodes.add(leg.source);
+
+        // Track stations for markers
+        if (leg.path_stations && leg.path_stations.length > 0) {
+          leg.path_stations.forEach((st, i) => {
+            if (!st || !st.lat || !st.lon) return;
+            const key = `${st.lat.toFixed(5)},${st.lon.toFixed(5)}`;
+            if (!seenCoords.has(key)) {
+              seenCoords.add(key);
+              allStationsInOrder.push({
+                st,
+                isStart: index === 0 && i === 0,
+                isEnd: index === itinerary.legs.length - 1 && i === leg.path_stations.length - 1,
+                isInterchange: interchangeCodes.has(st.code),
+                leg
+              });
+            }
+          });
+        } else {
+          const srcSt = stationMap.get(leg.source);
+          const dstSt = stationMap.get(leg.destination);
+          if (srcSt && srcSt.lat && srcSt.lon) {
+            const key = `${srcSt.lat.toFixed(5)},${srcSt.lon.toFixed(5)}`;
+            if (!seenCoords.has(key)) {
+              seenCoords.add(key);
+              allStationsInOrder.push({ st: srcSt, isStart: index === 0, leg });
+            }
+          }
+          if (dstSt && dstSt.lat && dstSt.lon) {
+            const key = `${dstSt.lat.toFixed(5)},${dstSt.lon.toFixed(5)}`;
+            if (!seenCoords.has(key)) {
+              seenCoords.add(key);
+              allStationsInOrder.push({ st: dstSt, isEnd: index === itinerary.legs.length - 1, leg });
+            }
+          }
+        }
+
+        // Get track geometry coordinates for this leg
+        let legCoords = leg.track_geometry || leg.path_coordinates;
+        if (!legCoords || legCoords.length < 2) {
+          const sA = stationMap.get(leg.source);
+          const sB = stationMap.get(leg.destination);
+          if (sA && sB && sA.lat && sB.lat) {
+            legCoords = [[sA.lat, sA.lon], [sB.lat, sB.lon]];
+          }
+        }
+
+        if (legCoords && legCoords.length >= 2) {
+          const isReal = Boolean(leg.is_real_geometry);
+          if (isReal) {
+            realGeomLegCount++;
+            totalCurvingWaypoints += legCoords.length;
+
+            // Real physical railway track geometry from trains.json
+            // Layer 1: Dark ballast base bed casing
+            const bed = L.polyline(legCoords, {
+              color: '#020617',
+              weight: 8,
+              opacity: 0.95,
+              lineCap: 'round',
+              lineJoin: 'round'
+            });
+
+            // Layer 2: White railroad ties/sleepers
+            const ties = L.polyline(legCoords, {
+              color: '#f8fafc',
+              weight: 6,
+              dashArray: '3, 9',
+              opacity: 0.95,
+              lineCap: 'butt',
+              lineJoin: 'round'
+            });
+
+            // Layer 3: Vibrant steel cyan/blue rail center
+            const rail = L.polyline(legCoords, {
+              color: '#0284c7',
+              weight: 3.5,
+              opacity: 1,
+              lineCap: 'round',
+              lineJoin: 'round'
+            });
+
+            const legGroup = L.featureGroup([bed, ties, rail]);
+            legGroup.bindPopup(`
+              <div style="font-family:Inter; color:#0f172a; padding:4px;">
+                <span style="font-size:0.68rem; font-weight:700; color:#10b981; text-transform:uppercase;">✓ Real Rail Track Geometry (${legCoords.length} track points)</span><br/>
+                <b style="font-size:0.95rem;">${leg.train_number ? 'Train ' + leg.train_number + (leg.train_name ? ' &middot; ' + leg.train_name : '') : leg.mode.toUpperCase()}</b><br/>
+                <span style="font-size:0.8rem; color:#475569;">${leg.source_name || leg.source} &rarr; ${leg.destination_name || leg.destination}</span>
+              </div>
+            `);
+            layerElements.push(legGroup);
+          } else {
+            fallbackLegCount++;
+
+            // Fallback straight-line behavior: visibly different
+            // Thinner line, dashed, lower opacity, small approximate style
+            const casing = L.polyline(legCoords, {
+              color: '#1e293b',
+              weight: 4.5,
+              opacity: 0.35,
+              lineCap: 'round',
+              lineJoin: 'round'
+            });
+
+            const line = L.polyline(legCoords, {
+              color: '#94a3b8',
+              weight: 2.5,
+              dashArray: '6, 6',
+              opacity: 0.75,
+              lineCap: 'round',
+              lineJoin: 'round'
+            });
+
+            const legGroup = L.featureGroup([casing, line]);
+            legGroup.bindPopup(`
+              <div style="font-family:Inter; color:#0f172a; padding:4px;">
+                <span style="font-size:0.68rem; font-weight:700; color:#f59e0b; text-transform:uppercase;">⚠️ Approximate Path (Unlisted in GeoJSON)</span><br/>
+                <b style="font-size:0.95rem;">${leg.train_number ? 'Train ' + leg.train_number : leg.mode.toUpperCase()}</b><br/>
+                <span style="font-size:0.8rem; color:#64748b;">${leg.source_name || leg.source} &rarr; ${leg.destination_name || leg.destination} (Direct halt corridor)</span>
+              </div>
+            `);
+            layerElements.push(legGroup);
+          }
+        }
+      });
+
+      if (!layerElements.length) return;
+
+      mapPolyline = L.featureGroup(layerElements).addTo(leafletMap);
+
+      // Update Track Alignment Badge in Header
+      const trackBadge = document.getElementById("trackAlignmentBadge");
+      if (trackBadge) {
+        trackBadge.style.display = "inline-flex";
+        if (realGeomLegCount > 0 && fallbackLegCount === 0) {
+          trackBadge.innerHTML = `✓ Real Track Geometry (${totalCurvingWaypoints.toLocaleString()} curve waypoints)`;
+          trackBadge.style.color = "#10b981";
+          trackBadge.style.background = "rgba(16,185,129,0.15)";
+          trackBadge.style.borderColor = "rgba(16,185,129,0.3)";
+        } else if (realGeomLegCount > 0 && fallbackLegCount > 0) {
+          trackBadge.innerHTML = `✓ Real Track (${realGeomLegCount}/${itinerary.legs.length} legs) &middot; ⚠️ Approximate fallback for others`;
+          trackBadge.style.color = "#f59e0b";
+          trackBadge.style.background = "rgba(245,158,11,0.15)";
+          trackBadge.style.borderColor = "rgba(245,158,11,0.3)";
+        } else {
+          trackBadge.innerHTML = `⚠️ Approximate Path (between scheduled halts)`;
+          trackBadge.style.color = "#94a3b8";
+          trackBadge.style.background = "rgba(148,163,184,0.15)";
+          trackBadge.style.borderColor = "rgba(148,163,184,0.3)";
+        }
+      }
+
+      allStationsInOrder.forEach(item => {
+        if (!item.st.lat || !item.st.lon) return;
+        const isMajor = item.isStart || item.isEnd || item.isInterchange;
+
+        if (isMajor) {
+          const color = item.isStart ? '#3b82f6' : (item.isEnd ? '#10b981' : '#f59e0b');
+          const customIcon = L.divIcon({
+            className: 'custom-map-pin',
+            html: `<div style="width:14px; height:14px; border-radius:50%; background:${color}; border:2.5px solid #ffffff; box-shadow:0 0 10px ${color}, 0 2px 6px rgba(0,0,0,0.7);"></div>`,
+            iconSize: [14, 14],
+            iconAnchor: [7, 7]
+          });
+
+          const badgeTitle = item.isStart ? "Origin Station" : (item.isEnd ? "Destination Station" : "Transfer Station");
+          const distStr = item.leg.distance_km ? ` &middot; ${formatDistance(item.leg.distance_km)}` : "";
+          const marker = L.marker([item.st.lat, item.st.lon], { icon: customIcon, zIndexOffset: 1000 }).addTo(leafletMap);
+          marker.bindPopup(`
+            <div style="font-family:Inter; color:#0f172a; padding:4px;">
+              <span style="font-size:0.7rem; font-weight:700; color:${color}; text-transform:uppercase;">${badgeTitle}</span><br/>
+              <b style="font-size:0.95rem;">${item.st.name} (${item.st.code})</b><br/>
+              <span style="font-size:0.76rem; color:#64748b;">${item.st.state || ""}${distStr}</span>
+            </div>
+          `);
+          mapMarkers.push(marker);
+        } else {
+          // Intermediate railway halt along the line
+          const haltIcon = L.divIcon({
+            className: 'halt-map-dot',
+            html: `<div style="width:7px; height:7px; border-radius:50%; background:#93c5fd; border:1px solid #0f172a; box-shadow:0 0 4px rgba(59,130,246,0.6);"></div>`,
+            iconSize: [7, 7],
+            iconAnchor: [3.5, 3.5]
+          });
+          const marker = L.marker([item.st.lat, item.st.lon], { icon: haltIcon, zIndexOffset: 400 }).addTo(leafletMap);
+          marker.bindPopup(`
+            <div style="font-family:Inter; color:#0f172a; padding:3px;">
+              <span style="font-size:0.68rem; font-weight:600; color:#64748b;">Railway Halt Station</span><br/>
+              <b style="font-size:0.88rem;">${item.st.name} (${item.st.code})</b><br/>
+              <span style="font-size:0.72rem; color:#64748b;">${item.st.state || ""}</span>
+            </div>
+          `);
+          mapMarkers.push(marker);
+        }
+      });
+
+      leafletMap.fitBounds(mapPolyline.getBounds(), { padding: [40, 40] });
+    }
+
+    window.plotRouteFromEncoded = function(legsJson) {
+      try {
+        const legs = JSON.parse(decodeURIComponent(legsJson));
+        plotRouteOnMap({ legs });
+        const mapEl = document.getElementById("mapCard");
+        if (mapEl) {
+          mapEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      } catch (e) {
+        console.error("Error displaying route on map:", e);
+      }
+    };
+
+    window.copyItineraryText = function(btn, title, duration, cost, distStr, legsJson) {
+      try {
+        const legs = JSON.parse(decodeURIComponent(legsJson));
+        let text = `Journey: ${title}\nDistance: ${distStr || "Direct Rail"} | Duration: ${duration} | Fare: Rs.${cost}\n----------------------------------\n`;
+        legs.forEach((l, i) => {
+          const trainStr = l.train_number ? ` | Train ${l.train_name || ""} (${l.train_number})` : ` | ${l.mode.toUpperCase()}`;
+          const distLeg = l.distance_km ? ` [${formatDistance(l.distance_km)}]` : "";
+          const dep = l.dep_time ? `\n  Dep: ${l.dep_time} (${shortDate(l.dep_date)}) -> Arr: ${l.arr_time} (${shortDate(l.arr_date)})` : "";
+          text += `${i + 1}. ${l.source_name} to ${l.destination_name}${distLeg}${trainStr}${dep}\n`;
+        });
+        text += `----------------------------------\nPlanned via Indian Railways Route Finder`;
+        navigator.clipboard.writeText(text);
+        showToast("Journey details copied to clipboard");
+      } catch (e) {
+        showToast("Copied");
+      }
+    };
+
+    window.shareOnWhatsApp = function(title, fare, duration, distStr, legsJson) {
+      try {
+        const legs = JSON.parse(decodeURIComponent(legsJson));
+        let text = `🚆 *Indian Railways Journey Plan: ${title}*\n`;
+        text += `⏱️ *Duration:* ${duration} | 💰 *Fare:* Rs.${fare} | 📍 *Distance:* ${distStr || "Direct Rail"}\n----------------------------------\n`;
+        legs.forEach((l, i) => {
+          const trainStr = l.train_number ? `*${l.train_name || "Express"}* (${l.train_number})` : `${l.mode.toUpperCase()}`;
+          const dep = l.dep_time ? `\n  Dep: ${l.dep_time} (${shortDate(l.dep_date)}) ➔ Arr: ${l.arr_time} (${shortDate(l.arr_date)})` : "";
+          text += `${i + 1}. ${l.source_name} ➔ ${l.destination_name} | ${trainStr}${dep}\n`;
+        });
+        text += `----------------------------------\n_Planned via Safarnama Indian Railways Engine_`;
+        const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
+        window.open(url, "_blank");
+      } catch (e) {
+        showToast("Unable to share via WhatsApp");
+      }
+    };
+
+    window.openCoachLayoutModal = function(coachClass = '3A', targetBerth = null) {
+      const modal = document.getElementById('coachLayoutModal');
+      const title = document.getElementById('coachModalTitle');
+      const body = document.getElementById('coachModalBody');
+      if (!modal || !body) return;
+
+      targetBerth = targetBerth ? parseInt(targetBerth, 10) : null;
+      title.textContent = `Interactive Coach & Berth Layout: ${coachClass.toUpperCase()}`;
+
+      let totalBerths = 72;
+      let baySize = 8;
+      let layoutMap = [
+        { num: 1, type: "Lower Berth (LB)" },
+        { num: 2, type: "Middle Berth (MB)" },
+        { num: 3, type: "Upper Berth (UB)" },
+        { num: 4, type: "Lower Berth (LB)" },
+        { num: 5, type: "Middle Berth (MB)" },
+        { num: 6, type: "Upper Berth (UB)" },
+        { num: 7, type: "Side Lower (SL)" },
+        { num: 8, type: "Side Upper (SU)" }
+      ];
+
+      if (coachClass === '2A') {
+        totalBerths = 54;
+        baySize = 6;
+        layoutMap = [
+          { num: 1, type: "Lower Berth (LB)" },
+          { num: 2, type: "Upper Berth (UB)" },
+          { num: 3, type: "Lower Berth (LB)" },
+          { num: 4, type: "Upper Berth (UB)" },
+          { num: 5, type: "Side Lower (SL)" },
+          { num: 6, type: "Side Upper (SU)" }
+        ];
+      } else if (coachClass === '1A') {
+        totalBerths = 24;
+        baySize = 4;
+        layoutMap = [
+          { num: 1, type: "Lower Cabin (LB)" },
+          { num: 2, type: "Upper Cabin (UB)" },
+          { num: 3, type: "Lower Cabin (LB)" },
+          { num: 4, type: "Upper Cabin (UB)" }
+        ];
+      }
+
+      let baysHtml = "";
+      const numBays = Math.ceil(totalBerths / baySize);
+
+      for (let b = 0; b < numBays; b++) {
+        let berthsInBay = "";
+        for (let i = 0; i < baySize; i++) {
+          const bNum = b * baySize + i + 1;
+          if (bNum > totalBerths) break;
+          const bType = layoutMap[i % baySize].type;
+          const isTarget = targetBerth && targetBerth === bNum;
+          berthsInBay += `
+            <div class="berth-cell ${isTarget ? 'highlight' : ''}">
+              <span>#${bNum} ${bType.split(' ')[0]}</span>
+              <span style="opacity:0.8;">${bType.match(/\((.*?)\)/)?.[1] || ''}</span>
+            </div>
+          `;
+        }
+        baysHtml += `
+          <div class="coach-bay">
+            <div style="font-size:0.75rem; font-weight:700; color:#93c5fd; margin-bottom:6px;">Bay ${b + 1}</div>
+            ${berthsInBay}
+          </div>
+        `;
+      }
+
+      body.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+          <div style="font-size:0.82rem; color:#cbd5e1;">
+            Standard Indian Railways Coach Layout (${totalBerths} Berths)
+            ${targetBerth ? `<b style="color:#fcd34d; margin-left:8px;">★ Highlighted Berth: #${targetBerth}</b>` : ''}
+          </div>
+          <div style="display:flex; gap:6px;">
+            <button class="chip-btn ${coachClass === '3A' ? 'active' : ''}" onclick="openCoachLayoutModal('3A', ${targetBerth || 'null'})">3A</button>
+            <button class="chip-btn ${coachClass === '2A' ? 'active' : ''}" onclick="openCoachLayoutModal('2A', ${targetBerth || 'null'})">2A</button>
+            <button class="chip-btn ${coachClass === 'SL' ? 'active' : ''}" onclick="openCoachLayoutModal('SL', ${targetBerth || 'null'})">SL</button>
+            <button class="chip-btn ${coachClass === '1A' ? 'active' : ''}" onclick="openCoachLayoutModal('1A', ${targetBerth || 'null'})">1A</button>
+          </div>
+        </div>
+        <div class="coach-bay-grid">
+          ${baysHtml}
+        </div>
+      `;
+      modal.classList.add('active');
+    };
+
+    window.closeCoachLayoutModal = function() {
+      document.getElementById('coachLayoutModal')?.classList.remove('active');
+    };
+
+    window.openApiKeysModal = async function() {
+      const modal = document.getElementById('apiKeysModal');
+      if (!modal) return;
+      modal.classList.add('active');
+      const body = document.getElementById('apiKeysStatusBody');
+      if (body) {
+        body.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:15px; color:#94a3b8;">Fetching live service status...</div>`;
+        try {
+          const res = await fetch('/api/config/status');
+          const data = await res.json();
+          body.innerHTML = `
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.gemini?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">🤖 Gemini AI</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.gemini?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}; color:${data.gemini?.configured ? '#4ade80' : '#f87171'}; font-weight:700;">
+                  ${data.gemini?.configured ? 'ACTIVE (' + data.gemini.masked + ')' : 'MISSING'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Natural language & voice assistant.</div>
+              <a href="https://aistudio.google.com/" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">Get Free Key &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.railkit?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">📡 RailKit SDK</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.railkit?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(245,158,11,0.2)'}; color:${data.railkit?.configured ? '#4ade80' : '#fbbf24'}; font-weight:700;">
+                  ${data.railkit?.configured ? `${data.railkit.count} Keys Pool` : 'Standby / Default'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Live satellite GPS & PNR engine.</div>
+              <a href="https://www.railkit.in/dashboard" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">RailKit Dashboard &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.rapidapi?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(245,158,11,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">⚡ RapidAPI IRCTC</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.rapidapi?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(245,158,11,0.2)'}; color:${data.rapidapi?.configured ? '#4ade80' : '#fbbf24'}; font-weight:700;">
+                  ${data.rapidapi?.configured ? `${data.rapidapi.count} Keys Pool` : 'Standby'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">IRCTC failover backup provider.</div>
+              <a href="https://rapidapi.com/IRCTCAPI/api/irctc1" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">RapidAPI Hub &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid ${data.google_maps?.configured ? 'rgba(34,197,94,0.3)' : 'rgba(59,130,246,0.3)'}; border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">🗺️ Google Maps</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:${data.google_maps?.configured ? 'rgba(34,197,94,0.2)' : 'rgba(59,130,246,0.2)'}; color:${data.google_maps?.configured ? '#4ade80' : '#93c5fd'}; font-weight:700;">
+                  ${data.google_maps?.configured ? 'ACTIVE (' + data.google_maps.masked + ')' : 'READY (DUAL ENGINE)'}
+                </span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">Google Satellite, Hybrid, Roadmap & Terrain layers.</div>
+              <a href="https://console.cloud.google.com/google/maps-apis/" target="_blank" style="color:#60a5fa; font-size:0.72rem; display:inline-block; margin-top:4px;">Google Cloud Console &rarr;</a>
+            </div>
+
+            <div style="padding:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(34,197,94,0.3); border-radius:10px;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <b style="color:#fff; font-size:0.85rem;">💾 Offline Database</b>
+                <span style="font-size:0.7rem; padding:2px 8px; border-radius:6px; background:rgba(34,197,94,0.2); color:#4ade80; font-weight:700;">ONLINE</span>
+              </div>
+              <div style="font-size:0.72rem; color:#94a3b8; margin-top:4px;">${data.offline_database?.routes_count?.toLocaleString() || '144,834'} routes & ${data.offline_database?.stations_count || '1,894'} stations.</div>
+              <span style="color:#4ade80; font-size:0.72rem; display:inline-block; margin-top:4px;">Zero-Downtime Local Graph</span>
+            </div>
+          `;
+        } catch (e) {
+          body.innerHTML = `<div style="grid-column:1/-1; color:#f87171; padding:10px;">Error reading service status: ${e.message}</div>`;
+        }
+      }
+    };
+
+    window.closeApiKeysModal = function() {
+      document.getElementById('apiKeysModal')?.classList.remove('active');
+    };
+
+    window.copyEnvTemplate = function() {
+      const code = document.getElementById('envTemplateCode')?.textContent || '';
+      navigator.clipboard.writeText(code).then(() => {
+        showToast('📋 .env template copied to clipboard!');
+      }).catch(() => {
+        showToast('Please copy manually from the box.');
+      });
+    };
+
+    // Recent Searches Storage & Display
+    function saveRecentSearch(srcCode, dstCode, srcName, dstName) {
+      if (!srcCode || !dstCode || srcCode === dstCode) return;
+      try {
+        let history = JSON.parse(localStorage.getItem('recent_train_searches') || '[]');
+        history = history.filter(item => !(item.src === srcCode && item.dst === dstCode));
+        history.unshift({ src: srcCode, dst: dstCode, srcName: srcName || srcCode, dstName: dstName || dstCode });
+        if (history.length > 6) history = history.slice(0, 6);
+        localStorage.setItem('recent_train_searches', JSON.stringify(history));
+        renderRecentSearches();
+      } catch (e) {}
+    }
+
+    function renderRecentSearches() {
+      const container = document.getElementById('recentChipsContainer');
+      const strip = document.getElementById('recentSearchesStrip');
+      if (!container || !strip) return;
+      try {
+        const history = JSON.parse(localStorage.getItem('recent_train_searches') || '[]');
+        if (history.length === 0) {
+          strip.style.display = 'none';
+          return;
+        }
+        strip.style.display = 'flex';
+        container.innerHTML = history.map(item => `
+          <span class="recent-chip" onclick="applyPreset('${item.src}', '${item.dst}')">
+            <span>${item.src} ➔ ${item.dst}</span>
+          </span>
+        `).join('');
+      } catch (e) {
+        strip.style.display = 'none';
+      }
+    }
+
+    window.openTicketModal = function(title, fare, duration, distStr, legsJson) {
+      const legs = JSON.parse(decodeURIComponent(legsJson));
+      const modal = document.getElementById("ticketModal");
+      const sub = document.getElementById("modalTicketSubtitle");
+      const body = document.getElementById("modalTicketBody");
+
+      sub.textContent = `${title} • ${duration} Total Duration • ${distStr || ""}`;
+      let legsHtml = "";
+      legs.forEach((l) => {
+        legsHtml += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid rgba(255,255,255,0.06);">
+            <div>
+              <div style="font-weight:600; font-size:0.9rem; color:#fff;">
+                ${l.source_name} to ${l.destination_name}
+                ${l.distance_km ? `<span style="font-size:0.75rem; color:#fcd34d; margin-left:6px;">(${formatDistance(l.distance_km)})</span>` : ''}
+              </div>
+              <div style="font-size:0.76rem; color:#94a3b8;">${l.train_name || "Express"} (${l.train_number || l.mode})</div>
+              ${renderTrainBadges(l)}
+            </div>
+            <div style="text-align:right;">
+              <div style="font-weight:700; color:#60a5fa;">Rs.${l.cost_inr ? l.cost_inr.toFixed(0) : "-"}</div>
+              <div style="font-size:0.72rem; color:#64748b;">${formatDuration(l.duration_min)}</div>
+            </div>
+          </div>
+        `;
+      });
+
+      body.innerHTML = `
+        <div style="display:flex; justify-content:space-between; margin-bottom:14px; font-size:0.85rem;">
+          <div><span style="color:#94a3b8;">Total Fare:</span> <b style="color:#10b981; font-size:1.1rem;">Rs.${fare}</b></div>
+          <div><span style="color:#94a3b8;">Distance:</span> <b style="color:#fcd34d;">${distStr || "-"}</b></div>
+          <div><span style="color:#94a3b8;">Connections:</span> <b style="color:#fff;">${legs.length} Leg(s)</b></div>
+        </div>
+        <div>${legsHtml}</div>
+      `;
+      modal.classList.add("active");
+    };
+
+    window.closeTicketModal = function() {
+      document.getElementById("ticketModal").classList.remove("active");
+    };
+
+    function renderTrainBadges(leg) {
+      if (!leg) return "";
+      const badges = [];
+      const tags = leg.tags || [];
+
+      if (tags.includes("Vande Bharat") || (leg.train_type && (leg.train_type === "VB" || leg.train_type === "VBS"))) {
+        badges.push(`<span class="badge-tag" style="background:rgba(239,68,68,0.22); color:#fca5a5; border:1px solid rgba(239,68,68,0.5);">🚅 Vande Bharat</span>`);
+      } else if (tags.includes("Namo Bharat") || leg.train_type === "NB") {
+        badges.push(`<span class="badge-tag" style="background:rgba(249,115,22,0.22); color:#fdba74; border:1px solid rgba(249,115,22,0.5);">🚄 Namo Bharat</span>`);
+      }
+
+      if (tags.includes("LHB Coach")) {
+        badges.push(`<span class="badge-tag" style="background:rgba(59,130,246,0.18); color:#93c5fd; border:1px solid rgba(59,130,246,0.45);">🚄 Modern LHB</span>`);
+      }
+
+      if (tags.includes("Bedroll")) {
+        badges.push(`<span class="badge-tag" style="background:rgba(16,185,129,0.18); color:#6ee7b7; border:1px solid rgba(16,185,129,0.45);">🛏️ Bedroll</span>`);
+      }
+
+      if (leg.zone) {
+        badges.push(`<span class="badge-tag" style="background:rgba(168,85,247,0.18); color:#d8b4fe; border:1px solid rgba(168,85,247,0.45);">🏢 Zone: ${leg.zone}</span>`);
+      }
+
+      if (leg.classes) {
+        badges.push(`<span class="badge-tag" style="background:rgba(234,179,8,0.18); color:#fde047; border:1px solid rgba(234,179,8,0.45);">🎫 ${leg.classes}</span>`);
+      }
+
+      if (leg.speed_kmh || leg.halts) {
+        const spdText = leg.speed_kmh ? `${leg.speed_kmh} km/h` : "";
+        const hltText = leg.halts ? `${leg.halts} halts` : "";
+        const combined = [spdText, hltText].filter(Boolean).join(" · ");
+        if (combined) {
+          badges.push(`<span class="badge-tag" style="background:rgba(14,165,233,0.18); color:#7dd3fc; border:1px solid rgba(14,165,233,0.45);">⚡ ${combined}</span>`);
+        }
+      }
+
+      return badges.length ? `<div style="display:flex; flex-wrap:wrap; gap:5px; margin-top:6px;">${badges.join("")}</div>` : "";
+    }
+
+    function renderTimelineLeg(leg, index, allLegs) {
+      let waitHtml = "";
+      if (index > 0 && allLegs) {
+        const prevLeg = allLegs[index - 1];
+        let layoverText = "";
+        if (leg.wait_min !== undefined && leg.wait_min !== null && leg.wait_min > 0) {
+          layoverText = `${formatDuration(leg.wait_min)} at ${leg.source_name}`;
+        } else if (leg.dep_time && prevLeg && prevLeg.arr_time) {
+          try {
+            const [ah, am] = prevLeg.arr_time.split(":").map(Number);
+            const [dh, dm] = leg.dep_time.split(":").map(Number);
+            let diff = (dh * 60 + dm) - (ah * 60 + am);
+            if (diff < 0) diff += 1440;
+            layoverText = `${formatDuration(diff)} at ${leg.source_name}`;
+          } catch(e) {
+            layoverText = `Connection at ${leg.source_name}`;
+          }
+        } else {
+          layoverText = `Connection at ${leg.source_name}`;
+        }
+
+        waitHtml = `
+          <div class="transfer-alert">
+            <span>⏳ Transfer Layover: <b>${layoverText}</b></span>
+          </div>
+        `;
+      }
+
+      const trainTitle = leg.train_number
+        ? `${leg.train_name || "Superfast Express"} (${leg.train_number})`
+        : `${leg.mode.toUpperCase()} Transit`;
+      const distBadge = leg.distance_km ? `<span>📍 ${formatDistance(leg.distance_km)}</span> &middot;` : "";
+      const badgesHtml = renderTrainBadges(leg);
+
+      let timesHtml = "";
+      if (leg.dep_time) {
+        timesHtml = `
+          <div>
+            <div class="clock-text">${leg.dep_time}</div>
+            <div class="date-text">${shortDate(leg.dep_date)}</div>
+          </div>
+          <div>
+            <div class="clock-text">${leg.arr_time || "--:--"}</div>
+            <div class="date-text">${shortDate(leg.arr_date)}</div>
+          </div>
+        `;
+      } else {
+        timesHtml = `
+          <div>
+            <div class="clock-text">${formatDuration(leg.duration_min)}</div>
+            <div class="date-text">Duration</div>
+          </div>
+        `;
+      }
+
+      return `
+        ${waitHtml}
+        <div class="timeline-row">
+          <div class="timeline-times">
+            ${timesHtml}
+          </div>
+          <div class="timeline-track">
+            <span class="track-dot"></span>
+            <span class="track-line"></span>
+            <span class="track-dot end"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="station-title">${leg.source_name} &rarr; ${leg.destination_name}</div>
+            <div class="train-detail">
+              <span class="mode-badge">${leg.mode}</span>
+              <span>${trainTitle}</span>
+            </div>
+            <div class="timeline-meta">
+              ${distBadge}
+              <span>Duration: ${formatDuration(leg.duration_min)}</span> &middot;
+              <span>Fare: Rs.${leg.cost_inr ? Math.round(leg.cost_inr) : "0"}</span>
+            </div>
+            ${badgesHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDetailedRouteCard(option, isRecommended) {
+      if (!option || !option.itinerary) return "";
+      const it = option.itinerary;
+      const legs = it.legs || [];
+      if (legs.length === 0) return "";
+
+      const legsEncoded = encodeURIComponent(JSON.stringify(legs));
+      const title = `${legs[0].source_name} to ${legs[legs.length - 1].destination_name}`;
+      const isDirect = legs.length === 1;
+      const totalDistStr = formatDistance(it.total_distance_km);
+      const totalDur = it.total_elapsed_min || it.total_duration_min || 0;
+      const fareVal = it.total_cost_inr ? Math.round(it.total_cost_inr) : 0;
+      const daysVal = it.total_days || Math.ceil(totalDur / 1440) || 1;
+
+      let dateSub = "";
+      if (it.start_date && it.start_time) {
+        dateSub = `Departure: <b>${shortDate(it.start_date)} at ${it.start_time}</b> &rarr; Arrival: <b>${shortDate(it.arrival_date)} at ${it.arrival_time}</b>`;
+      } else if (legs[0].dep_date && legs[0].dep_time) {
+        dateSub = `Departure: <b>${shortDate(legs[0].dep_date)} at ${legs[0].dep_time}</b> &rarr; Arrival: <b>${shortDate(legs[legs.length - 1].arr_date)} at ${legs[legs.length - 1].arr_time}</b>`;
+      } else {
+        dateSub = `Station-to-Station Transit: <b>${title}</b>`;
+      }
+
+      const classFares = it.total_class_fares || (legs[0] && legs[0].class_fares) || {};
+      let classFaresHtml = "";
+      if (classFares && Object.keys(classFares).length > 0) {
+        const farePills = Object.entries(classFares).map(([cls, fare]) => `
+          <span class="class-fare-chip" style="background:rgba(30,41,59,0.85); border:1px solid rgba(255,255,255,0.12); padding:4px 9px; border-radius:6px; font-size:0.75rem; font-family:var(--font-main); cursor:pointer;" onclick="openCoachLayoutModal('${cls}', null)" title="View ${cls} Coach Layout">
+            <b style="color:#93c5fd;">${cls}</b>: <span style="color:#fcd34d; font-weight:700; font-family:monospace;">₹${fare}</span>
+          </span>
+        `).join("");
+        classFaresHtml = `
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin: 12px 0 6px; padding:8px 12px; background:rgba(15,23,42,0.65); border-radius:8px; border:1px solid rgba(255,255,255,0.08);">
+            <span style="font-size:0.72rem; font-weight:700; text-transform:uppercase; color:#94a3b8; letter-spacing:0.5px; margin-right:4px;">💺 Dynamic Class Fares:</span>
+            ${farePills}
+          </div>
+        `;
+      }
+
+      return `
+        <div class="result-card ${isRecommended ? "best-card" : ""}" id="activeDetailCard">
+          <div class="card-top">
+            <div>
+              <div class="card-name">
+                <span>Option ${option.index + 1}: ${option.fullTitle || option.label}</span>
+                <span class="badge-tag ${isDirect ? 'direct' : 'primary'}" style="font-size:0.75rem; margin-left:6px;">${option.badge}</span>
+              </div>
+              <div style="font-size:0.84rem; color:var(--text-muted); margin-top:3px;">
+                ${dateSub}
+              </div>
+            </div>
+            <div class="card-fare">Rs.${fareVal}</div>
+          </div>
+
+          <div class="tag-strip">
+            <span class="badge-tag ${isDirect ? 'direct' : 'primary'}">${isDirect ? 'Direct 1-Leg Train (No Transfers)' : `Connections: <b>${legs.length} Leg(s)</b>`}</span>
+            ${totalDistStr ? `<span class="badge-tag distance">📍 Total Distance: <b>${totalDistStr}</b></span>` : ''}
+            <span class="badge-tag primary">Total Time: <b>${formatDuration(totalDur)}</b></span>
+            <span class="badge-tag">Travel Days: <b>${daysVal}</b></span>
+            ${it.total_wait_min > 0 ? `<span class="badge-tag warning">Layover Wait: <b>${formatDuration(it.total_wait_min)}</b></span>` : ''}
+          </div>
+
+          ${classFaresHtml}
+
+          <div class="timeline-list">
+            ${legs.map((leg, idx) => renderTimelineLeg(leg, idx, legs)).join("")}
+          </div>
+
+          <div class="action-bar" style="display:flex; flex-wrap:wrap; gap:8px;">
+            <button class="action-btn" onclick="copyItineraryText(this, '${title}', '${formatDuration(totalDur)}', '${fareVal}', '${totalDistStr}', '${legsEncoded}')">
+              📋 Copy Itinerary
+            </button>
+            <button class="action-btn" style="background:rgba(37,211,102,0.18); border-color:rgba(37,211,102,0.5); color:#4ade80;" onclick="shareOnWhatsApp('${title}', '${fareVal}', '${formatDuration(totalDur)}', '${totalDistStr}', '${legsEncoded}')">
+              💬 WhatsApp
+            </button>
+            <button class="action-btn" onclick="openTicketModal('${title}', '${fareVal}', '${formatDuration(totalDur)}', '${totalDistStr}', '${legsEncoded}')">
+              🎫 Ticket Summary
+            </button>
+            <button class="action-btn" style="background:rgba(234,179,8,0.18); border-color:rgba(234,179,8,0.45); color:#fde047;" onclick="openCoachLayoutModal('3A', 35)">
+              🗺️ Coach Layout
+            </button>
+            <button class="action-btn" onclick="plotRouteFromEncoded('${legsEncoded}')">
+              🗺️ Show on Map
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    window.selectRouteOption = function(idx) {
+      if (!window.allRouteOptions || !window.allRouteOptions[idx]) return;
+      window.selectedOptionIndex = idx;
+
+      // Update active state on option selector tiles
+      document.querySelectorAll(".option-tile-btn").forEach((btn, i) => {
+        if (i === idx) btn.classList.add("active");
+        else btn.classList.remove("active");
+      });
+
+      // Update active state on wrapped cards
+      document.querySelectorAll(".wrapped-option-card").forEach((card, i) => {
+        if (i === idx) card.classList.add("active");
+        else card.classList.remove("active");
+      });
+
+      // Re-render active detail card
+      const detailContainer = document.getElementById("selectedRouteDetailContainer");
+      if (detailContainer) {
+        detailContainer.innerHTML = renderDetailedRouteCard(window.allRouteOptions[idx], idx === 0);
+      }
+
+      // Plot route on Leaflet map
+      plotRouteOnMap(window.allRouteOptions[idx].itinerary);
+
+      // Scroll to active card smoothly
+      if (detailContainer) {
+        detailContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+    };
+
+    // Switch to a flexible date option
+    window.selectFlexibleDate = function(targetDate) {
+      document.getElementById("date").value = targetDate;
+      updateDateDisplay(targetDate);
+      showToast(`Updated departure date to ${formatToDDMMYYYY(targetDate)}`);
+      searchRoutes();
+    };
+
+    function renderFlexibleRecommendations(flexibleOptions, exactPlan) {
+      const container = document.getElementById("flexibleRecommendationsContainer");
+      if (!flexibleOptions || flexibleOptions.length === 0) {
+        container.innerHTML = "";
+        return;
+      }
+
+      let cardsHtml = "";
+      flexibleOptions.forEach(opt => {
+        const p = opt.plan;
+        const offsetSign = opt.offset_days > 0 ? `+${opt.offset_days}` : `${opt.offset_days}`;
+        const dayWord = Math.abs(opt.offset_days) === 1 ? "Day" : "Days";
+        const pillClass = opt.is_direct ? "direct" : "twolog";
+        const pillText = opt.is_direct ? "1-Leg Direct Train" : `${opt.num_legs}-Leg Route`;
+        const firstLeg = p.legs[0];
+        const trainDesc = firstLeg.train_number ? `${firstLeg.train_name || "Express"} (${firstLeg.train_number})` : firstLeg.mode.toUpperCase();
+        const distStr = formatDistance(p.total_distance_km);
+
+        cardsHtml += `
+          <div class="flex-option-card">
+            <div class="flex-card-top">
+              <div>
+                <div class="flex-date-label">${shortDate(opt.date)}</div>
+                <div style="font-size:0.75rem; color:#94a3b8;">${offsetSign} ${dayWord} from selected date</div>
+              </div>
+              <span class="flex-offset-pill ${pillClass}">${pillText}</span>
+            </div>
+            <div class="flex-card-details">
+              <div style="font-weight:600; color:#ffffff;">${trainDesc}</div>
+              <div style="font-size:0.78rem; color:#93c5fd; margin-top:2px;">
+                Departs ${p.start_time} &rarr; Arrives ${p.arrival_time} (${formatDuration(p.total_elapsed_min)})
+              </div>
+            </div>
+            <div class="flex-card-meta">
+              <div>
+                <b style="color:#10b981;">Rs.${p.total_cost_inr.toFixed(0)}</b>
+                ${distStr ? ` &middot; <span style="color:#fcd34d;">${distStr}</span>` : ''}
+              </div>
+              <button class="flex-action-btn" onclick="selectFlexibleDate('${opt.date}')">
+                Select ${shortDate(opt.date)}
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = `
+        <div class="flexible-recommendations-panel">
+          <div class="flex-header">
+            <div class="flex-title">
+              <span>📅 Flexible Dates Recommendations</span>
+            </div>
+            <span class="flex-badge-info">Direct 1-Leg &amp; Faster Connections Found</span>
+          </div>
+          <div class="flex-cards-grid">
+            ${cardsHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    async function searchRoutes() {
+      let source = document.getElementById("source").value.trim();
+      let destination = document.getElementById("destination").value.trim();
+      const srcInput = document.getElementById("sourceInput").value.trim();
+      const dstInput = document.getElementById("destInput").value.trim();
+
+      // Auto-resolve if user typed station code/name directly without clicking dropdown
+      if (srcInput) {
+        const q = srcInput.trim().toLowerCase();
+        const parenMatch = srcInput.match(/\(([A-Za-z0-9]+)\)$/);
+        if (parenMatch) {
+          source = parenMatch[1].toUpperCase();
+        } else {
+          const m = stations.find(s => s.code.toLowerCase() === q) || stations.find(s => s.name.toLowerCase() === q);
+          if (m) {
+            source = m.code;
+            document.getElementById("sourceInput").value = `${m.name} (${m.code})`;
+            document.getElementById("sourceStateBadge").textContent = m.state || "";
+          }
+        }
+        document.getElementById("source").value = source;
+      }
+      if (dstInput) {
+        const q = dstInput.trim().toLowerCase();
+        const parenMatch = dstInput.match(/\(([A-Za-z0-9]+)\)$/);
+        if (parenMatch) {
+          destination = parenMatch[1].toUpperCase();
+        } else {
+          const m = stations.find(s => s.code.toLowerCase() === q) || stations.find(s => s.name.toLowerCase() === q);
+          if (m) {
+            destination = m.code;
+            document.getElementById("destInput").value = `${m.name} (${m.code})`;
+            document.getElementById("destStateBadge").textContent = m.state || "";
+          }
+        }
+        document.getElementById("destination").value = destination;
+      }
+
+      let date = document.getElementById("date").value;
+      if (!date) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, "0");
+        const dd = String(tomorrow.getDate()).padStart(2, "0");
+        date = `${yyyy}-${mm}-${dd}`;
+        document.getElementById("date").value = date;
+        updateDateDisplay(date);
+      }
+      const time = document.getElementById("time").value || "08:00";
+      const flexible = document.getElementById("flexibleCheck").checked;
+      const daysRange = document.getElementById("flexibleDays").value || "3";
+      const container = document.getElementById("resultsContainer");
+      const flexContainer = document.getElementById("flexibleRecommendationsContainer");
+
+      if (!source || !destination) {
+        showToast("Please enter or select both origin and destination stations");
+        return;
+      }
+      if (source === destination) {
+        showToast("Origin and destination must be different stations");
+        return;
+      }
+
+      saveRecentSearch(source, destination, srcInput || source, dstInput || destination);
+
+      container.innerHTML = `
+        <div style="text-align:center; padding:40px 20px; color:#94a3b8;">
+          <div style="font-size:1.1rem; color:#fff; font-weight:600; margin-bottom:4px;">Searching Indian Railways Timetable...</div>
+          <div style="font-size:0.85rem;">Calculating station distances, layovers and flexible dates (&plusmn;${daysRange} days)...</div>
+        </div>
+      `;
+      flexContainer.innerHTML = "";
+
+      const params = new URLSearchParams({ source, destination });
+      if (date) {
+        params.set("date", date);
+        params.set("time", time);
+        if (flexible) {
+          params.set("flexible", "true");
+          params.set("days", daysRange);
+        }
+      }
+
+      try {
+        const res = await fetch(`${API}/api/route?${params}`);
+        const data = await res.json();
+
+        if (data.error) {
+          container.innerHTML = `<div class="notice-banner" style="border-color:#ef4444; color:#fca5a5;">${data.error}</div>`;
+          return;
+        }
+
+        let html = "";
+
+        if (data.warnings && data.warnings.length) {
+          data.warnings.forEach(w => {
+            html += `<div class="notice-banner">Notice: Train ${w.train_number} on ${w.leg} is sold out for ${w.requested_date}. ${w.alt_dates_available.length ? `Alternative dates available: ${w.alt_dates_available.join(", ")}` : "No nearby dates available."}</div>`;
+          });
+        }
+
+        if (data.flexible_options && data.flexible_options.length > 0) {
+          renderFlexibleRecommendations(data.flexible_options, data.planned);
+        }
+
+        // Collect all options into a clean, deduplicated list
+        const rawCandidates = [];
+        if (data.planned && data.planned.best) {
+          rawCandidates.push({ fullTitle: "Recommended Scheduled Itinerary", badge: "⭐ Recommended", itinerary: data.planned.best });
+        } else if (data.recommended) {
+          rawCandidates.push({ fullTitle: "Recommended Route", badge: "⭐ Recommended", itinerary: data.recommended });
+        }
+
+        if (data.fastest) {
+          rawCandidates.push({ fullTitle: "Fastest Route Option", badge: "⚡ Fastest", itinerary: data.fastest });
+        }
+        if (data.cheapest) {
+          rawCandidates.push({ fullTitle: "Most Economical Route", badge: "💰 Economical", itinerary: data.cheapest });
+        }
+        if (data.simplest) {
+          rawCandidates.push({ fullTitle: "Direct 1-Leg Route", badge: "🚅 Direct", itinerary: data.simplest });
+        }
+
+        // Add planned alternatives or graph alternatives
+        const altList = (data.planned && data.planned.alternatives && data.planned.alternatives.length)
+          ? data.planned.alternatives
+          : (data.alternatives || []);
+
+        altList.forEach((alt, idx) => {
+          rawCandidates.push({ fullTitle: `Alternative Route Option ${idx + 1}`, badge: null, itinerary: alt });
+        });
+
+        // Deduplicate candidates
+        const uniqueOptions = [];
+        const seenKeys = new Set();
+        rawCandidates.forEach((cand) => {
+          if (!cand.itinerary || !cand.itinerary.legs || cand.itinerary.legs.length === 0) return;
+          const key = cand.itinerary.legs.map(l => (l.train_number || l.mode) + "_" + l.source + "_" + l.destination).join("|");
+          if (!seenKeys.has(key)) {
+            seenKeys.add(key);
+            const idx = uniqueOptions.length;
+            const isDirect = cand.itinerary.legs.length === 1;
+            let badge = cand.badge;
+            if (!badge) {
+              if (idx === 0) badge = "⭐ Recommended";
+              else if (isDirect) badge = "🚅 Direct";
+              else badge = `🔄 ${cand.itinerary.legs.length}-Legs`;
+            }
+
+            uniqueOptions.push({
+              index: idx,
+              label: `Option ${idx + 1}`,
+              fullTitle: cand.fullTitle || `Option ${idx + 1}`,
+              badge: badge,
+              itinerary: cand.itinerary
+            });
+          }
+        });
+
+        if (uniqueOptions.length === 0) {
+          container.innerHTML = `<div class="notice-banner" style="border-color:#ef4444; color:#fca5a5;">No direct or connecting train routes found between these stations.</div>`;
+          return;
+        }
+
+        window.allRouteOptions = uniqueOptions;
+        window.selectedOptionIndex = 0;
+
+        const fastestMin = uniqueOptions.reduce((min, o) => Math.min(min, o.itinerary.total_elapsed_min || o.itinerary.total_duration_min || 9999), 9999);
+        const cheapestFare = uniqueOptions.reduce((min, o) => Math.min(min, o.itinerary.total_cost_inr || 9999), 9999);
+        const totalDistance = uniqueOptions[0].itinerary.total_distance_km;
+
+        // 1. Metrics Grid
+        html += `
+          <div class="metrics-grid">
+            <div class="metric-box">
+              <div class="metric-title">Fastest Duration</div>
+              <div class="metric-data">${formatDuration(fastestMin)}</div>
+              <div class="metric-desc">Shortest transit time</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Total Distance</div>
+              <div class="metric-data">${totalDistance ? formatDistance(totalDistance) : "Direct Track"}</div>
+              <div class="metric-desc">Station-to-station distance</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Lowest Fare</div>
+              <div class="metric-data">Rs.${Math.round(cheapestFare)}</div>
+              <div class="metric-desc">Standard fare rate</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-title">Available Options</div>
+              <div class="metric-data">${uniqueOptions.length} Route(s)</div>
+              <div class="metric-desc">Interactive route comparison</div>
+            </div>
+          </div>
+        `;
+
+        // 2. Interactive Route Option Selection Bar (Uniform Box Grid)
+        html += `
+          <div style="margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+            <div style="font-family:var(--font-heading); font-size:1.15rem; font-weight:700; color:#fff;">
+              🚆 Choose Your Preferred Route Option
+            </div>
+            <span style="font-size:0.75rem; color:#94a3b8;">Click any box below to view complete timetable &amp; transfer layovers</span>
+          </div>
+
+          <div class="options-selector-bar">
+        `;
+
+        uniqueOptions.forEach((opt, idx) => {
+          const it = opt.itinerary;
+          const isDirect = it.legs.length === 1;
+          const dur = formatDuration(it.total_elapsed_min || it.total_duration_min || 0);
+          const fare = Math.round(it.total_cost_inr || 0);
+          const transitSummary = isDirect ? "Direct 1-Leg Train" : `${it.legs.length} Legs (via ${it.legs[0].destination_name})`;
+          const waitStr = it.total_wait_min > 0 ? `⏳ Layover: ${formatDuration(it.total_wait_min)}` : "🟢 Direct Rail";
+
+          html += `
+            <button class="option-tile-btn ${idx === 0 ? "active" : ""}" onclick="selectRouteOption(${idx})">
+              <div class="option-tile-top">
+                <span class="option-tile-label">Option ${idx + 1}</span>
+                <span class="option-tile-fare">Rs.${fare}</span>
+              </div>
+              <div class="option-tile-sub">${transitSummary} &middot; <b>${dur}</b></div>
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-top:2px;">
+                <span class="option-tile-tag">${opt.badge}</span>
+                <span style="font-size:0.72rem; color:#fde047; font-weight:600;">${waitStr}</span>
+              </div>
+            </button>
+          `;
+        });
+
+        html += `</div>`;
+
+        // 3. Active Detailed Route Card Container
+        html += `<div id="selectedRouteDetailContainer">${renderDetailedRouteCard(uniqueOptions[0], true)}</div>`;
+
+        // 4. Wrapped / Collapsible Other Options Section
+        if (uniqueOptions.length > 1) {
+          html += `
+            <div style="margin:28px 0 14px; border-top:1px solid rgba(255,255,255,0.1); padding-top:20px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-family:var(--font-heading); font-size:1.1rem; color:#ffffff; margin:0;">
+                  📋 Alternative Route Options (Click to Switch)
+                </h3>
+                <span style="font-size:0.75rem; color:#94a3b8;">${uniqueOptions.length - 1} more option(s) available</span>
+              </div>
+          `;
+
+          uniqueOptions.forEach((opt, idx) => {
+            const it = opt.itinerary;
+            const isDirect = it.legs.length === 1;
+            const dur = formatDuration(it.total_elapsed_min || it.total_duration_min || 0);
+            const fare = Math.round(it.total_cost_inr || 0);
+            const transitSummary = isDirect ? "Direct 1-Leg Train" : `${it.legs.length} Legs (via ${it.legs.slice(0, -1).map(l => l.destination_name).join(", ")})`;
+            const waitStr = it.total_wait_min > 0 ? ` &middot; <span style="color:#fde047;">⏳ Layover: ${formatDuration(it.total_wait_min)}</span>` : "";
+
+            html += `
+              <div class="wrapped-option-card ${idx === 0 ? "active" : ""}" onclick="selectRouteOption(${idx})">
+                <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                  <span class="option-tile-tag">${opt.badge}</span>
+                  <div>
+                    <div style="font-weight:700; color:#fff; font-size:0.92rem;">Option ${idx + 1}: ${opt.fullTitle}</div>
+                    <div style="font-size:0.78rem; color:#94a3b8; margin-top:2px;">
+                      ${transitSummary} &middot; <span style="color:#93c5fd;">${dur}</span>${waitStr}
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:14px;">
+                  <span style="font-size:1.15rem; font-weight:800; color:#10b981;">Rs.${fare}</span>
+                  <button class="action-btn" style="background:var(--primary-blue); border-color:var(--primary-blue); color:#fff;" onclick="event.stopPropagation(); selectRouteOption(${idx});">
+                    <span>Choose Option ${idx + 1} &rarr;</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          });
+
+          html += `</div>`;
+        }
+
+        container.innerHTML = html;
+        plotRouteOnMap(uniqueOptions[0].itinerary);
+      } catch (err) {
+        container.innerHTML = `<div class="notice-banner" style="border-color:#ef4444; color:#fca5a5;">Error fetching routes: ${err.message}</div>`;
+      }
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", searchRoutes);
+
+    async function init() {
+      try {
+        const res = await fetch(`${API}/api/stations`);
+        stations = await res.json();
+        stations.forEach(s => stationMap.set(s.code, s));
+
+        setupAutocomplete("sourceInput", "source", "sourceDropdown", "sourceStateBadge", "JSME");
+        setupAutocomplete("destInput", "destination", "destDropdown", "destStateBadge", "DHN");
+
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const yyyy = tomorrow.getFullYear();
+        const mm = String(tomorrow.getMonth() + 1).padStart(2, "0");
+        const dd = String(tomorrow.getDate()).padStart(2, "0");
+        const tomorrowIso = `${yyyy}-${mm}-${dd}`;
+
+        const dateEl = document.getElementById("date");
+        if (dateEl) {
+          dateEl.value = tomorrowIso;
+          updateDateDisplay(tomorrowIso);
+          dateEl.addEventListener("change", (e) => updateDateDisplay(e.target.value));
+          dateEl.addEventListener("input", (e) => updateDateDisplay(e.target.value));
+        }
+
+        // Fetch API configuration status to pick up Google Maps key if configured
+        fetch('/api/config/status')
+          .then(res => res.json())
+          .then(data => {
+            if (data.google_maps?.key) {
+              GOOGLE_MAPS_API_KEY = data.google_maps.key;
+              localStorage.setItem("SAFARNAMA_GOOGLE_MAPS_KEY", data.google_maps.key);
+            }
+          })
+          .catch(() => {});
+
+        renderRecentSearches();
+        searchRoutes();
+      } catch (err) {
+        console.error("Failed to load stations:", err);
+      }
+    }
+
+    init();
+
+    // ==========================================================================
+    // Robust, Zero-Leak Procedural Night Crickets Sound Engine (Web Audio API)
+    // Uses a single looping AudioBufferSourceNode with zero interval allocations
+    // ==========================================================================
+    let nightAudioCtx = null;
+    let cricketBufferSource = null;
+    let nightMasterGain = null;
+    let isNightSoundActive = false;
+
+    function createProceduralCricketBuffer(ctx) {
+      const sampleRate = ctx.sampleRate || 44100;
+      const duration = 3.6;
+      const totalSamples = Math.floor(sampleRate * duration);
+      const buffer = ctx.createBuffer(1, totalSamples, sampleRate);
+      const data = buffer.getChannelData(0);
+
+      // Natural rhythmic insect chirps across 3.6s loop
+      const chirpStarts = [0.35, 1.25, 2.1, 2.9];
+      chirpStarts.forEach((evStart, idx) => {
+        const baseFreq = 4600 + (idx % 2) * 250;
+        const numPulses = 3;
+        for (let p = 0; p < numPulses; p++) {
+          const pStart = evStart + p * 0.042;
+          const pDur = 0.032;
+          const pSamples = Math.floor(pDur * sampleRate);
+          const startIdx = Math.floor(pStart * sampleRate);
+          for (let i = 0; i < pSamples; i++) {
+            const arrIdx = startIdx + i;
+            if (arrIdx < totalSamples) {
+              const t = i / sampleRate;
+              // Hann window envelope
+              const env = 0.5 * (1 - Math.cos((2 * Math.PI * t) / pDur));
+              const carrier = Math.sin(2 * Math.PI * baseFreq * t);
+              data[arrIdx] += 0.22 * env * carrier;
+            }
+          }
+        }
+      });
+
+      return buffer;
+    }
+
+    window.toggleNightSound = function() {
+      try {
+        const soundBtn = document.getElementById('soundToggleBtn');
+        const soundIcon = document.getElementById('soundIcon');
+        const soundLabel = document.getElementById('soundLabel');
+
+        if (!nightAudioCtx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          nightAudioCtx = new AudioContext();
+          nightMasterGain = nightAudioCtx.createGain();
+          nightMasterGain.gain.setValueAtTime(0.001, nightAudioCtx.currentTime);
+          nightMasterGain.connect(nightAudioCtx.destination);
+        }
+
+        if (nightAudioCtx.state === 'suspended') {
+          nightAudioCtx.resume();
+        }
+
+        if (!isNightSoundActive) {
+          // Create 1 single looping buffer source
+          const buffer = createProceduralCricketBuffer(nightAudioCtx);
+          cricketBufferSource = nightAudioCtx.createBufferSource();
+          cricketBufferSource.buffer = buffer;
+          cricketBufferSource.loop = true;
+          cricketBufferSource.connect(nightMasterGain);
+          cricketBufferSource.start(0);
+
+          nightMasterGain.gain.cancelScheduledValues(nightAudioCtx.currentTime);
+          nightMasterGain.gain.setValueAtTime(0.001, nightAudioCtx.currentTime);
+          nightMasterGain.gain.linearRampToValueAtTime(0.065, nightAudioCtx.currentTime + 0.4);
+
+          isNightSoundActive = true;
+          if (soundBtn) soundBtn.classList.add('active');
+          if (soundIcon) soundIcon.textContent = '🔊';
+          if (soundLabel) soundLabel.textContent = 'Night Sounds ON';
+          showToast('Night forest insect sounds ON');
+        } else {
+          // Smoothly ramp down volume and clean up
+          if (nightMasterGain && cricketBufferSource) {
+            nightMasterGain.gain.cancelScheduledValues(nightAudioCtx.currentTime);
+            nightMasterGain.gain.setValueAtTime(nightMasterGain.gain.value, nightAudioCtx.currentTime);
+            nightMasterGain.gain.linearRampToValueAtTime(0.001, nightAudioCtx.currentTime + 0.3);
+            const prevSrc = cricketBufferSource;
+            setTimeout(() => {
+              try {
+                prevSrc.stop();
+                prevSrc.disconnect();
+              } catch (e) {}
+            }, 350);
+            cricketBufferSource = null;
+          }
+
+          isNightSoundActive = false;
+          if (soundBtn) soundBtn.classList.remove('active');
+          if (soundIcon) soundIcon.textContent = '🔇';
+          if (soundLabel) soundLabel.textContent = 'Night Sounds';
+          showToast('Night forest insect sounds OFF');
+        }
+      } catch (err) {
+        console.error('Audio toggle error:', err);
+      }
+    };
+
+    // ==========================================================================
+    // Interactive Glowing Firefly Cursor & Grand Overlapping Headlight Tracker
+    // Features: 5s Idle Detection -> Wide Exploration Flight -> Next-to-Next Box Hopping
+    // ==========================================================================
+    (function setupFireflyAndHeadlights() {
+      const firefly = document.getElementById('fireflyCursor');
+      const fireflySprite = firefly ? firefly.querySelector('.firefly-sprite') : null;
+      const stage = document.getElementById('loco');
+      const beamL = stage ? stage.querySelector('.beam-l') : null;
+      const beamR = stage ? stage.querySelector('.beam-r') : null;
+
+      let targetX = window.innerWidth * 0.5;
+      let targetY = window.innerHeight * 0.45;
+      let curX = targetX;
+      let curY = targetY;
+      let prevX = curX;
+      let prevY = curY;
+      let tiltAngle = 0;
+      let raf = 0;
+
+      // Golden Sparkling Spores Dust Particle Engine
+      const dustCanvas = document.getElementById('dustCanvas');
+      const dustCtx = dustCanvas ? dustCanvas.getContext('2d') : null;
+      let spores = [];
+
+      function resizeDustCanvas() {
+        if (!dustCanvas) return;
+        dustCanvas.width = window.innerWidth;
+        dustCanvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeDustCanvas, { passive: true });
+      resizeDustCanvas();
+
+      function spawnSpore(x, y, vx = 0, vy = 0, isBurst = false) {
+        if (spores.length > 80) spores.shift();
+        spores.push({
+          x: x + (Math.random() - 0.5) * 6,
+          y: y + (Math.random() - 0.5) * 6,
+          vx: vx + (Math.random() - 0.5) * (isBurst ? 3.5 : 1.0),
+          vy: vy + (Math.random() - 0.5) * (isBurst ? 3.5 : 1.0) - 0.2,
+          size: isBurst ? (2.5 + Math.random() * 3.5) : (1.8 + Math.random() * 2.2),
+          birth: performance.now(),
+          life: isBurst ? (700 + Math.random() * 500) : (600 + Math.random() * 400),
+          hue: 45 + Math.random() * 15 // warm yellow-gold hue
+        });
+      }
+
+      let sporeSpawnCooldown = 0;
+
+      // Autonomous free flight & realistic physical edge perching state
+      let lastUserMoveTime = performance.now();
+      let isAutonomous = false;
+      let autoState = 'idle'; // 'wandering', 'perched'
+      let autoWaypoints = [];
+      let waypointIdx = 0;
+      let waypointStartTime = 0;
+      let autoStartX = 0, autoStartY = 0;
+      let perchStartTime = 0;
+      let perchRestDuration = 4000;
+      let targetPerchTilt = 0;
+      const recentVisitedElements = [];
+
+      function sampleDynamicEdgeSpot() {
+        const selectors = [
+          // Station Input Boxes
+          '.input-card',
+          '#sourceInput',
+          '#destInput',
+          
+          // Date & Time Boxes
+          '.custom-date-box',
+          '.time-col .form-input',
+          '#dateDisplay',
+          '#time',
+          
+          // Search & Action Buttons
+          '.search-submit-btn',
+          '#searchBtn',
+          '.swap-button',
+          '#swapBtn',
+          
+          // Search Panel Border
+          '.search-panel',
+          
+          // Popular Route Chips
+          '.popular-btn',
+          
+          // Route Option Selector Tiles & Cards
+          '.option-tile-btn',
+          '.metrics-grid > div',
+          '.metric-card',
+          '.metric-box',
+          '.result-card',
+          '.schedule-card',
+          '.route-card',
+          '.train-card',
+          '.flex-option-card',
+          '.flex-card',
+          
+          // Top Navigation
+          '.top-nav',
+          '.nav-btn',
+          '.sound-btn'
+        ];
+
+        // Find all layout boxes currently visible in the active viewport
+        const elements = Array.from(document.querySelectorAll(selectors.join(',')))
+          .filter(el => {
+            const r = el.getBoundingClientRect();
+            return r.width >= 20 && r.height >= 12 && r.top >= 20 && r.bottom <= window.innerHeight - 20;
+          });
+
+        // Filter out recently visited elements so she visits fresh rectangle boxes every time
+        let candidates = elements;
+        if (recentVisitedElements.length > 0) {
+          const unvisited = elements.filter(el => !recentVisitedElements.includes(el));
+          if (unvisited.length > 0) candidates = unvisited;
+        }
+
+        // 25% chance for a pure free-air exploratory loop in open space anywhere on screen
+        if (Math.random() < 0.25 || !candidates.length) {
+          return {
+            x: 60 + Math.random() * (window.innerWidth - 120),
+            y: 50 + Math.random() * (window.innerHeight - 140),
+            tilt: (Math.random() - 0.5) * 16,
+            el: null,
+            isAirFloat: true
+          };
+        }
+
+        const chosenEl = candidates[Math.floor(Math.random() * candidates.length)];
+        recentVisitedElements.push(chosenEl);
+        if (recentVisitedElements.length > 7) recentVisitedElements.shift();
+
+        const r = chosenEl.getBoundingClientRect();
+
+        // Perfectly sit right on the top edge border of the rectangle box
+        const pad = Math.min(22, r.width * 0.2);
+        const usableWidth = Math.max(10, r.width - pad * 2);
+        const spotX = r.left + pad + Math.random() * usableWidth;
+        // Firefly height is 38px (centered at 50%), so top - 12px places feet precisely on the top edge
+        const spotY = r.top - 12;
+        const tilt = (Math.random() - 0.5) * 6; // Upright resting posture
+
+        // Ensure within visible screen margins
+        const clampedX = Math.max(20, Math.min(window.innerWidth - 20, spotX));
+        const clampedY = Math.max(25, Math.min(window.innerHeight - 50, spotY));
+
+        return { x: clampedX, y: clampedY, tilt: tilt, el: chosenEl, isAirFloat: false };
+      }
+
+      function startAutonomousFlight() {
+        isAutonomous = true;
+        autoState = 'wandering';
+
+        const destination = sampleDynamicEdgeSpot();
+        targetPerchTilt = destination.tilt;
+
+        const distance = Math.hypot(destination.x - curX, destination.y - curY);
+        const midX = (curX + destination.x) * 0.5;
+
+        // Dynamic arc height and sweeping curve based on flight distance
+        const arcHeight = Math.min(220, Math.max(70, distance * 0.3));
+        const lateralSweep = (Math.random() - 0.5) * Math.min(280, distance * 0.5);
+
+        // Waypoint 1: Energetic take-off burst into the air
+        const wp1 = {
+          x: curX + (destination.x - curX) * 0.25 + (Math.random() - 0.5) * 100,
+          y: Math.max(50, curY - arcHeight * 0.7 + (Math.random() - 0.5) * 40),
+          duration: 1000 + Math.random() * 300
+        };
+
+        // Waypoint 2: Wide sweeping flight across open space
+        const wp2 = {
+          x: Math.max(50, Math.min(window.innerWidth - 50, midX + lateralSweep)),
+          y: Math.max(40, Math.min(curY, destination.y) - arcHeight + (Math.random() - 0.5) * 50),
+          duration: 1300 + Math.random() * 400
+        };
+
+        // Waypoint 3: Gliding approach towards destination edge
+        const wp3 = {
+          x: destination.x + (Math.random() - 0.5) * 60,
+          y: Math.max(50, destination.y - 45 - Math.random() * 30),
+          duration: 1200 + Math.random() * 300
+        };
+
+        // Waypoint 4: Precise touchdown directly on the physical edge
+        const wp4 = {
+          x: destination.x,
+          y: destination.y,
+          duration: 1400,
+          isLanding: true
+        };
+
+        autoWaypoints = [wp1, wp2, wp3, wp4];
+        waypointIdx = 0;
+        waypointStartTime = performance.now();
+        autoStartX = curX;
+        autoStartY = curY;
+      }
+
+      function onMove(e) {
+        lastUserMoveTime = performance.now();
+        if (isAutonomous) {
+          isAutonomous = false;
+          autoState = 'idle';
+        }
+        targetX = e.clientX;
+        targetY = e.clientY;
+        if (firefly) firefly.classList.add('active');
+        if (!raf) raf = requestAnimationFrame(tick);
+      }
+
+      function tick() {
+        const now = performance.now();
+
+        // 5-Second Inactivity Check: start autonomous free flight
+        if (!isAutonomous && (now - lastUserMoveTime > 5000)) {
+          startAutonomousFlight();
+        }
+
+        // Multi-Hop Continuous Flight & Perch System
+        if (isAutonomous) {
+          if (autoState === 'wandering' && autoWaypoints.length > 0) {
+            const currentWp = autoWaypoints[waypointIdx];
+            const progress = Math.min(1, (now - waypointStartTime) / currentWp.duration);
+
+            // Smooth cubic easing
+            const ease = progress < 0.5
+              ? 4 * progress * progress * progress
+              : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+            // Micro-turbulence flutter (softens gracefully upon touchdown)
+            const flutterAmp = currentWp.isLanding ? 4 * (1 - ease) : 12;
+            const flutterY = Math.sin(progress * Math.PI * 4) * flutterAmp;
+            const flutterX = Math.cos(progress * Math.PI * 3) * (flutterAmp * 0.6);
+
+            targetX = autoStartX + (currentWp.x - autoStartX) * ease + flutterX;
+            targetY = autoStartY + (currentWp.y - autoStartY) * ease + flutterY;
+
+            if (progress >= 1) {
+              waypointIdx++;
+              if (waypointIdx < autoWaypoints.length) {
+                autoStartX = currentWp.x;
+                autoStartY = currentWp.y;
+                waypointStartTime = now;
+              } else {
+                // Sits peacefully on the physical edge of the box!
+                autoState = 'perched';
+                perchStartTime = now;
+                perchRestDuration = 4000 + Math.random() * 4000; // Rest for 4 to 8 seconds
+                targetX = currentWp.x;
+                targetY = currentWp.y;
+              }
+            }
+          } else if (autoState === 'perched') {
+            // After resting, take off to explore another new place!
+            if (now - perchStartTime > perchRestDuration) {
+              startAutonomousFlight();
+            }
+          }
+        }
+
+        const vx = targetX - curX;
+        const vy = targetY - curY;
+
+        curX += vx * (isAutonomous && autoState === 'perched' ? 0.3 : 0.18);
+        curY += vy * (isAutonomous && autoState === 'perched' ? 0.3 : 0.18);
+
+        // Settle smoothly into edge tilt angle when perched, or tilt with velocity in flight
+        let desiredTilt = 0;
+        if (isAutonomous && autoState === 'perched') {
+          desiredTilt = targetPerchTilt;
+        } else {
+          desiredTilt = Math.max(-25, Math.min(25, (curX - prevX) * 2.2));
+        }
+
+        tiltAngle += (desiredTilt - tiltAngle) * 0.2;
+        prevX = curX;
+        prevY = curY;
+
+        // Position firefly cursor smoothly
+        if (firefly) {
+          firefly.style.left = curX.toFixed(1) + 'px';
+          firefly.style.top = curY.toFixed(1) + 'px';
+          if (fireflySprite) {
+            fireflySprite.style.transform = `rotate(${tiltAngle.toFixed(1)}deg)`;
+          }
+
+          // Spawn sparkling dust trail while moving
+          const moveDist = Math.hypot(curX - prevX, curY - prevY);
+          sporeSpawnCooldown++;
+          if (moveDist > 0.4 && sporeSpawnCooldown % 3 === 0) {
+            spawnSpore(curX, curY + 4, (curX - prevX) * -0.15, (curY - prevY) * -0.15);
+          }
+        }
+
+        // Render dust particles
+        if (dustCtx && dustCanvas) {
+          dustCtx.clearRect(0, 0, dustCanvas.width, dustCanvas.height);
+          const activeSpores = [];
+          for (let i = 0; i < spores.length; i++) {
+            const s = spores[i];
+            const age = now - s.birth;
+            if (age < s.life) {
+              const alpha = (1 - age / s.life);
+              s.x += s.vx;
+              s.y += s.vy + 0.12;
+              s.vx *= 0.96;
+              s.vy *= 0.96;
+
+              dustCtx.save();
+              dustCtx.beginPath();
+              dustCtx.arc(s.x, s.y, s.size * alpha, 0, Math.PI * 2);
+              dustCtx.fillStyle = `hsla(${s.hue}, 100%, 75%, ${alpha * 0.85})`;
+              dustCtx.shadowColor = `hsla(${s.hue}, 100%, 65%, 1)`;
+              dustCtx.shadowBlur = 8;
+              dustCtx.fill();
+              dustCtx.restore();
+
+              activeSpores.push(s);
+            }
+          }
+          spores = activeSpores;
+        }
+
+        // Project grand overlapping locomotive headlight beams onto the firefly
+        if (stage && beamL && beamR) {
+          const stageRect = stage.getBoundingClientRect();
+          const side = Math.min(stageRect.width, stageRect.height);
+          const artLeft = (stageRect.width - side) / 2;
+          const artTop = 0;
+
+          // Headlight lamps positions in the circular headlight housing
+          const lamps = [
+            { x: 0.485, y: 0.428, el: beamL },
+            { x: 0.515, y: 0.428, el: beamR }
+          ];
+
+          stage.style.setProperty('--mx', (curX - stageRect.left).toFixed(1) + 'px');
+          stage.style.setProperty('--my', (curY - stageRect.top).toFixed(1) + 'px');
+
+          // Find the bottom boundary of the search panel
+          const searchPanel = document.querySelector('.search-panel');
+          const mapCard = document.getElementById('mapCard');
+          let limitY = window.innerHeight;
+          if (searchPanel) {
+            limitY = searchPanel.getBoundingClientRect().bottom + 8;
+          } else if (mapCard) {
+            limitY = mapCard.getBoundingClientRect().top;
+          }
+
+          lamps.forEach(lamp => {
+            if (!lamp.el) return;
+            const lx = artLeft + lamp.x * side;
+            const ly = artTop + lamp.y * side;
+
+            const lampScreenX = stageRect.left + lx;
+            const lampScreenY = stageRect.top + ly;
+
+            const dx = curX - lampScreenX;
+            const dy = curY - lampScreenY;
+            const dist = Math.hypot(dx, dy);
+            const angle = Math.atan2(dy, dx);
+
+            // Ray intersection with the horizontal boundary line (y = limitY)
+            let beamLength = Math.max(10, dist + 8);
+            if (dy > 0 && lampScreenY < limitY) {
+              const maxDistToBorder = (limitY - lampScreenY) / Math.sin(angle);
+              if (maxDistToBorder > 0) {
+                beamLength = Math.min(beamLength, maxDistToBorder);
+              }
+            }
+
+            lamp.el.style.left = lx + 'px';
+            lamp.el.style.top = ly + 'px';
+            lamp.el.style.width = beamLength.toFixed(1) + 'px';
+            lamp.el.style.transform = `translateY(-50%) rotate(${angle}rad)`;
+          });
+        }
+
+        // Keep loop running if moving, autonomous, active particles, or idle timer checking
+        if (isAutonomous || spores.length > 0 || Math.abs(targetX - curX) > 0.1 || Math.abs(targetY - curY) > 0.1 || Math.abs(tiltAngle) > 0.1 || (now - lastUserMoveTime < 5500)) {
+          raf = requestAnimationFrame(tick);
+        } else {
+          raf = 0;
+        }
+      }
+
+      // Periodic check so 5s idle wakes up animation loop even if mouse has stopped
+      setInterval(() => {
+        if (!isAutonomous && (performance.now() - lastUserMoveTime > 5000)) {
+          if (!raf) raf = requestAnimationFrame(tick);
+        }
+      }, 1000);
+
+      window.addEventListener('mousemove', onMove, { passive: true });
+      window.addEventListener('mouseenter', () => { if (firefly) firefly.classList.add('active'); });
+      document.addEventListener('mouseleave', () => { if (firefly) firefly.classList.remove('active'); });
+      window.addEventListener('resize', () => { if (!raf) raf = requestAnimationFrame(tick); });
+
+      tick();
+    })();
+
+    // =========================================================================
+    // Safarnama AI Assistant & Voice Speech-to-Text Controller
+    // =========================================================================
+    let aiChatOpen = false;
+    let speechRecognizer = null;
+    let isRecordingVoice = false;
+    const aiChatHistory = [];
+
+    window.toggleAIChat = function() {
+      const win = document.getElementById('aiChatWindow');
+      aiChatOpen = !aiChatOpen;
+      if (aiChatOpen) {
+        if (win) win.classList.add('active');
+        setTimeout(() => document.getElementById('aiChatInput')?.focus(), 150);
+      } else {
+        if (win) win.classList.remove('active');
+        if (isRecordingVoice) stopVoiceRecognition();
+      }
+    };
+
+    window.sendQuickPrompt = function(text) {
+      const input = document.getElementById('aiChatInput');
+      if (input) input.value = text;
+      sendAIChatMessage();
+    };
+
+    function appendAIMessage(sender, text, htmlContent) {
+      const body = document.getElementById('aiChatBody');
+      if (!body) return;
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `ai-msg ${sender === 'user' ? 'ai-msg-user' : 'ai-msg-bot'}`;
+      if (htmlContent) {
+        msgDiv.innerHTML = htmlContent;
+      } else {
+        // Basic markdown formatting
+        let formatted = (text || '')
+          .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+          .replace(/\*(.*?)\*/g, '<i>$1</i>')
+          .replace(/\n/g, '<br/>');
+        msgDiv.innerHTML = formatted;
+      }
+      body.appendChild(msgDiv);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function showAITyping() {
+      const body = document.getElementById('aiChatBody');
+      if (!body) return;
+      const typing = document.createElement('div');
+      typing.className = 'ai-typing-indicator';
+      typing.id = 'aiTypingInd';
+      typing.innerHTML = '<span class="ai-typing-dot"></span><span class="ai-typing-dot"></span><span class="ai-typing-dot"></span>';
+      body.appendChild(typing);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function hideAITyping() {
+      const typing = document.getElementById('aiTypingInd');
+      if (typing) typing.remove();
+    }
+
+    window.sendAIChatMessage = async function() {
+      const input = document.getElementById('aiChatInput');
+      if (!input) return;
+      const msg = input.value.trim();
+      if (!msg) return;
+      
+      input.value = '';
+      appendAIMessage('user', msg);
+      showAITyping();
+
+      aiChatHistory.push({ role: 'user', content: msg });
+      if (aiChatHistory.length > 12) aiChatHistory.shift();
+
+      try {
+        const res = await fetch('/api/assistant/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, history: aiChatHistory })
+        });
+        const data = await res.json();
+        hideAITyping();
+
+        if (data.reply) {
+          appendAIMessage('bot', data.reply);
+          aiChatHistory.push({ role: 'assistant', content: data.reply, extracted: data.extracted });
+          if (aiChatHistory.length > 12) aiChatHistory.shift();
+        }
+
+        // Handle Automated Route Search & Form Fill
+        if (data.action && data.action.type === 'fill_and_search') {
+          const act = data.action;
+          showToast(`AI: Setting route ${act.source_name || act.source} ➔ ${act.destination_name || act.destination}`);
+          
+          // Fill station inputs
+          const srcHidden = document.getElementById('source');
+          const srcInput = document.getElementById('sourceInput');
+          const dstHidden = document.getElementById('destination');
+          const dstInput = document.getElementById('destInput');
+          const dateEl = document.getElementById('date');
+
+          if (srcHidden && act.source) srcHidden.value = act.source;
+          if (srcInput && (act.source_name || act.source)) srcInput.value = `${act.source_name || act.source} (${act.source})`;
+          if (dstHidden && act.destination) dstHidden.value = act.destination;
+          if (dstInput && (act.destination_name || act.destination)) dstInput.value = `${act.destination_name || act.destination} (${act.destination})`;
+          if (dateEl && act.date) {
+            dateEl.value = act.date;
+            if (typeof updateDateDisplay === 'function') updateDateDisplay(act.date);
+          }
+
+          // Trigger search automatically
+          if (typeof searchRoutes === 'function') {
+            setTimeout(() => {
+              searchRoutes();
+              document.getElementById('resultsContainer')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 400);
+          }
+        } else if (data.action && data.action.type === 'pnr_lookup') {
+          window.location.href = `/live?tab=pnr&pnr=${encodeURIComponent(data.action.pnr)}`;
+        } else if (data.action && data.action.type === 'spot_train') {
+          window.location.href = `/live?tab=spot&train=${encodeURIComponent(data.action.train_number)}`;
+        }
+      } catch (err) {
+        hideAITyping();
+        appendAIMessage('bot', 'Maafi chahta hoon, network mein koi samasya aayi. Kripya dobara try karein.');
+      }
+    };
+
+    // Voice Recognition (Web Speech API)
+    function initSpeechRecognition() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) {
+        return null;
+      }
+      const recognizer = new SpeechRec();
+      recognizer.continuous = false;
+      recognizer.interimResults = false;
+      recognizer.lang = 'hi-IN'; // Indian Hindi & English
+
+      recognizer.onstart = function() {
+        isRecordingVoice = true;
+        const micBtn = document.getElementById('aiMicBtn');
+        const banner = document.getElementById('aiListeningBanner');
+        if (micBtn) micBtn.classList.add('recording');
+        if (banner) banner.classList.add('active');
+      };
+
+      recognizer.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        const input = document.getElementById('aiChatInput');
+        if (input) input.value = transcript;
+        stopVoiceRecognition();
+        setTimeout(() => sendAIChatMessage(), 250);
+      };
+
+      recognizer.onerror = function(event) {
+        console.warn('Speech recognition error:', event.error);
+        stopVoiceRecognition();
+        showToast('Aapki aawaz clearly sunayi nahi di. Kripya type karein ya dobara bolein.');
+      };
+
+      recognizer.onend = function() {
+        stopVoiceRecognition();
+      };
+
+      return recognizer;
+    }
+
+    window.toggleVoiceRecognition = function() {
+      if (!speechRecognizer) {
+        speechRecognizer = initSpeechRecognition();
+      }
+      if (!speechRecognizer) {
+        alert('Speech Recognition is not supported by your browser. Please use Google Chrome/Microsoft Edge or type your query in the input box.');
+        return;
+      }
+
+      if (!isRecordingVoice) {
+        try {
+          speechRecognizer.start();
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        stopVoiceRecognition();
+      }
+    };
+
+    function stopVoiceRecognition() {
+      isRecordingVoice = false;
+      if (speechRecognizer) {
+        try { speechRecognizer.stop(); } catch (e) {}
+      }
+      const micBtn = document.getElementById('aiMicBtn');
+      const banner = document.getElementById('aiListeningBanner');
+      if (micBtn) micBtn.classList.remove('recording');
+      if (banner) banner.classList.remove('active');
+    }
+
+    // Register Service Worker for PWA & Low-End Offline Caching
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js').catch(err => {
+          console.log('SW registration note:', err);
+        });
+      });
+    }
+
+    // Android Native Back Button Bridge
+    window.handleAndroidBack = function() {
+      // 1. Close full-map if open
+      const mapCard = document.getElementById('mapCard');
+      if (mapCard && mapCard.classList.contains('fullscreen-map')) {
+        window.toggleMapFullscreen();
+        return true;
+      }
+      // 2. Close AI Chat modal if open
+      const aiOverlay = document.getElementById('aiChatOverlay');
+      if (aiOverlay && aiOverlay.classList.contains('active')) {
+        window.toggleAIChat();
+        return true;
+      }
+      // 3. Close itinerary modal if open
+      const itineraryModal = document.getElementById('itineraryModal');
+      if (itineraryModal && itineraryModal.classList.contains('active')) {
+        closeModal();
+        return true;
+      }
+      return false;
+    };
+
+    // Low-end mobile device optimization: auto pause video on small screens or slow devices
+    if (window.innerWidth <= 600 || (navigator.deviceMemory && navigator.deviceMemory <= 4)) {
+      const bgVid = document.getElementById('bgForestVideo');
+      if (bgVid) {
+        bgVid.pause();
+        bgVid.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

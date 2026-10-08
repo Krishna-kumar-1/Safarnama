@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Indian Railways Route & Connection Finder</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover" />
+<meta name="theme-color" content="#02040a" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="manifest" href="/static/manifest.json" />
+<link rel="icon" type="image/png" href="/static/images/logo.png" />
+<link rel="apple-touch-icon" href="/static/images/logo.png" />
+<title>Safarnama - Indian Railways Route & Connection Finder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
@@ -1983,6 +1990,124 @@
     border-color: #60a5fa;
     color: #fff;
   }
+
+  /* =========================================================================
+     Mobile Responsive & Low-End Device Optimizations
+     ========================================================================= */
+  @media (max-width: 640px) {
+    /* Low-power CPU & GPU saving: disable continuous heavy 1080p video decode */
+    .bg-forest-video {
+      display: none !important;
+    }
+    .forest-video-scrim {
+      background: radial-gradient(circle at 50% 20%, #0d1527 0%, #02040a 100%) !important;
+    }
+    #fireflyCursor {
+      display: none !important;
+    }
+    #dustCanvas {
+      opacity: 0.25;
+    }
+
+    body {
+      padding-top: max(8px, env(safe-area-inset-top));
+      padding-bottom: max(16px, env(safe-area-inset-bottom));
+      padding-left: max(8px, env(safe-area-inset-left));
+      padding-right: max(8px, env(safe-area-inset-right));
+    }
+    .app-layout {
+      width: 100% !important;
+      padding: 0 4px !important;
+    }
+
+    .header-title {
+      font-size: 1.6rem !important;
+      line-height: 1.25 !important;
+    }
+    .header-subtitle {
+      font-size: 0.85rem !important;
+      margin-bottom: 14px !important;
+    }
+
+    .popular-strip {
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
+      scrollbar-width: none;
+    }
+    .popular-strip::-webkit-scrollbar {
+      display: none;
+    }
+    .popular-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .search-panel {
+      padding: 16px 14px !important;
+      border-radius: var(--radius-md) !important;
+    }
+    .swap-button {
+      width: 44px;
+      height: 44px;
+      margin: 4px auto;
+    }
+
+    .map-box {
+      height: 340px !important;
+    }
+    .map-switch-pills {
+      flex-wrap: nowrap !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 4px;
+      width: 100%;
+      scrollbar-width: none;
+    }
+    .map-switch-pills::-webkit-scrollbar {
+      display: none;
+    }
+    .map-pill-btn {
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding: 5px 10px !important;
+      font-size: 0.72rem !important;
+    }
+
+    .ai-chat-window {
+      width: 100vw !important;
+      height: 92vh !important;
+      bottom: 0 !important;
+      right: 0 !important;
+      border-radius: 20px 20px 0 0 !important;
+    }
+    .ai-floating-btn {
+      bottom: 16px !important;
+      right: 16px !important;
+      width: 52px !important;
+      height: 52px !important;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .header-title {
+      font-size: 1.35rem !important;
+    }
+    .nav-title {
+      font-size: 0.95rem !important;
+    }
+    .nav-tag {
+      display: none;
+    }
+    .search-panel {
+      padding: 12px 10px !important;
+    }
+    .chip-btn {
+      font-size: 0.68rem !important;
+      padding: 2px 6px !important;
+    }
+  }
 </style>
 </head>
 <body>
@@ -2678,7 +2803,8 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       if (leafletMap) return;
       leafletMap = L.map('routeMap', {
         zoomControl: true,
-        attributionControl: true
+        attributionControl: true,
+        preferCanvas: true
       }).setView([20.5937, 78.9629], 5);
 
       // 1. Stadia Dark (alidade_smooth_dark) - Sleek match for the app's dark neon aesthetic
@@ -4736,6 +4862,47 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       const banner = document.getElementById('aiListeningBanner');
       if (micBtn) micBtn.classList.remove('recording');
       if (banner) banner.classList.remove('active');
+    }
+
+    // Register Service Worker for PWA & Low-End Offline Caching
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/static/sw.js').catch(err => {
+          console.log('SW registration note:', err);
+        });
+      });
+    }
+
+    // Android Native Back Button Bridge
+    window.handleAndroidBack = function() {
+      // 1. Close full-map if open
+      const mapCard = document.getElementById('mapCard');
+      if (mapCard && mapCard.classList.contains('fullscreen-map')) {
+        window.toggleMapFullscreen();
+        return true;
+      }
+      // 2. Close AI Chat modal if open
+      const aiOverlay = document.getElementById('aiChatOverlay');
+      if (aiOverlay && aiOverlay.classList.contains('active')) {
+        window.toggleAIChat();
+        return true;
+      }
+      // 3. Close itinerary modal if open
+      const itineraryModal = document.getElementById('itineraryModal');
+      if (itineraryModal && itineraryModal.classList.contains('active')) {
+        closeModal();
+        return true;
+      }
+      return false;
+    };
+
+    // Low-end mobile device optimization: auto pause video on small screens or slow devices
+    if (window.innerWidth <= 600 || (navigator.deviceMemory && navigator.deviceMemory <= 4)) {
+      const bgVid = document.getElementById('bgForestVideo');
+      if (bgVid) {
+        bgVid.pause();
+        bgVid.style.display = 'none';
+      }
     }
   </script>
 </body>

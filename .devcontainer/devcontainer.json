@@ -1,0 +1,20 @@
+{
+  "name": "Safarnama (Indian Railways Route Finder)",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Safarnama Web App",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt",
+  "postStartCommand": "python app.py",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  }
+}

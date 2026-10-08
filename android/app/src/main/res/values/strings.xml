@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Safarnama</string>
+    <string name="app_subtitle">Indian Railways Route &amp; Connection Finder</string>
+    <string name="server_url_dialog_title">Server Configuration</string>
+    <string name="server_url_hint">Enter backend URL (e.g. http://192.168.1.5:5000)</string>
+    <string name="exit_prompt">Press back again to exit Safarnama</string>
+</resources>

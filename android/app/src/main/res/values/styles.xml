@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.Safarnama" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary_blue</item>
+        <item name="colorPrimaryVariant">@color/bg_page</item>
+        <item name="colorOnPrimary">@color/text_white</item>
+        <item name="android:statusBarColor">@color/bg_page</item>
+        <item name="android:navigationBarColor">@color/bg_page</item>
+        <item name="android:windowBackground">@color/bg_page</item>
+    </style>
+</resources>

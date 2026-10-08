@@ -118,16 +118,32 @@ graph TD
 
 ## 🚀 Quick Start & Installation
 
-Choose your operating system below for simple, step-by-step installation instructions.
+### 📱 1. Android APK (Direct Mobile Install)
 
-### 📋 Prerequisites
-* **Python 3.10 or higher** (Python 3.10 - 3.14 fully supported)
-* **Node.js 18+** *(Optional: only needed for the live RailKit satellite bridge; core graph routing and timetable search work 100% offline without Node.js)*
-* **Git** (for cloning the repository)
+[![Android APK Release](https://img.shields.io/badge/Android%20APK-Download%20Latest%20(v1.0)-success?logo=android&logoColor=white)](https://github.com/Krishna-kumar-1/Safarnama/releases)
+[![GitHub Actions Build](https://github.com/Krishna-kumar-1/Safarnama/actions/workflows/build-apk.yml/badge.svg)](https://github.com/Krishna-kumar-1/Safarnama/actions)
+
+* **Direct Phone Download**: Go to [**GitHub Releases (apk-latest)**](https://github.com/Krishna-kumar-1/Safarnama/releases) or the [**GitHub Actions Artifacts**](https://github.com/Krishna-kumar-1/Safarnama/actions) tab and download `Safarnama-v1.0-Release.apk` directly on your Android phone!
+* **Universal Compatibility**: Works on **Android 5.0 (Lollipop) up to Android 15** (minSdk 21, targetSdk 34).
+* **All Screen Sizes**: Fully responsive UI adapted for compact budget smartphones (320px–360px), standard phones, and tablets.
+* **Low-End Device Optimized**: Ultra-lightweight APK size, low memory consumption (<30 MB RAM), hardware-accelerated Canvas rendering, and low-power CPU/battery optimizations.
+* **AI Voice Search Ready**: Native audio/microphone permissions enabled for Hindi/English voice queries ("Bol kar search karein").
 
 ---
 
-### 🪟 1. Windows Installation & Direct Run
+### ☁️ 2. Run Directly on GitHub (1-Click Codespaces)
+
+You can run Safarnama completely online inside GitHub without installing anything on your computer:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Krishna-kumar-1/Safarnama)
+
+1. Click the **Open in GitHub Codespaces** badge above (or navigate to `Code` &rarr; `Codespaces` &rarr; `Create codespace on main`).
+2. GitHub automatically sets up Python, installs requirements, and launches the Safarnama server on port `5000`.
+3. Click **Open in Browser** when the port forward prompt appears to use Safarnama directly in your browser!
+
+---
+
+### 🪟 3. Windows Installation & Direct Run
 
 #### Option A: One-Click Direct Launcher (Easiest)
 1. Double-click the **`start-app.bat`** file in the project folder.
