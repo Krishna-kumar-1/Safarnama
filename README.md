@@ -145,14 +145,18 @@ You can run Safarnama completely online inside GitHub without installing anythin
 
 ### 🪟 3. Windows Installation & Direct Run
 
-#### Option A: One-Click Direct Launcher (Easiest)
-1. Double-click the **`start-app.bat`** file in the project folder.
-   * It will automatically detect Python, copy `.env.example` to `.env`, install dependencies, launch the server, and open your default browser!
-
-#### Option B: Universal Python Launcher
+#### Option A: Universal Python Launcher (Recommended - Never Blocked)
 ```powershell
 python run.py
 ```
+*Tip: Works on all Windows versions directly without triggering Smart App Control.*
+
+#### Option B: One-Click Direct Launcher (`start-app.bat` or `start-app.ps1`)
+1. Double-click the **`start-app.bat`** (or right-click `start-app.ps1` &rarr; Run with PowerShell).
+   * It will automatically unblock files, detect Python, install dependencies, launch the server, and open your browser!
+2. **If Windows 11 Smart App Control shows a block popup:**
+   * Right-click the downloaded zip (or `start-app.bat`) &rarr; **Properties** &rarr; check **Unblock** at the bottom &rarr; **OK**.
+   * Or simply run **`python run.py`** in Terminal/Command Prompt.
 
 #### Option C: Manual Command Line (PowerShell / CMD)
 ```powershell

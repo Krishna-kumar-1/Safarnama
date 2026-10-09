@@ -1,4 +1,6 @@
 networkx
 flask
 flask-cors
+cryptography
+python-dotenv
 gunicorn

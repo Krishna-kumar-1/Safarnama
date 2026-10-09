@@ -46,7 +46,7 @@ fi
 
 # 4. Check & Install Python Dependencies
 echo "📦 Checking Python dependencies..."
-if ! $PY_BIN -c "import flask, networkx, flask_cors" >/dev/null 2>&1; then
+if ! $PY_BIN -c "import flask, networkx, flask_cors, cryptography" >/dev/null 2>&1; then
     echo "First run - installing required packages from requirements.txt..."
     $PY_BIN -m pip install -r requirements.txt
     echo "✔ Dependencies installed successfully."

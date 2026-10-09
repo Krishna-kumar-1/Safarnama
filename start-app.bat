@@ -36,8 +36,11 @@ if errorlevel 1 (
     echo.
 )
 
+REM Unblock downloaded files if restricted by Windows
+powershell -NoProfile -Command "Get-ChildItem -Path '%~dp0' -Recurse | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
+
 REM Install anything missing; harmless if already present.
-python -c "import flask, networkx, flask_cors" >nul 2>&1
+python -c "import flask, networkx, flask_cors, cryptography" >nul 2>&1
 if errorlevel 1 (
     echo First run - installing dependencies, please wait...
     python -m pip install -r requirements.txt

@@ -27,7 +27,7 @@ def ensure_env():
 
 def ensure_dependencies():
     missing = []
-    for pkg in ["flask", "networkx", "flask_cors"]:
+    for pkg in ["flask", "networkx", "flask_cors", "cryptography"]:
         try:
             __import__(pkg)
         except ImportError:
