@@ -3,12 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NTES - National Train Enquiry System &amp; Live Operations</title>
+  <title>Train-Dhundho - National Train Enquiry &amp; Live Operations</title>
+  <link rel="icon" type="image/jpeg" href="/static/images/train-red-3d.jpg" />
+  <link rel="apple-touch-icon" href="/static/images/train-red-3d.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   
   <style>
+    .menu-img-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      object-fit: cover;
+      vertical-align: middle;
+      flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
     :root {
       --ntes-bg: #121324;
       --ntes-sidebar: #1e1b38;
@@ -1041,15 +1052,18 @@
   <!-- Top Navbar -->
   <header class="ntes-navbar">
     <a href="/" class="brand-group">
-      <div class="ntes-badge">NTES</div>
+      <img src="/static/images/train-red-3d.jpg" alt="Train-Dhundho" style="width:38px; height:38px; border-radius:10px; object-fit:cover; box-shadow:0 2px 10px rgba(239,68,68,0.4);" />
+      <div class="ntes-badge" style="background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 2px 8px rgba(239,68,68,0.3);">Train-Dhundho</div>
       <div>
-        <div style="font-weight:700; font-size:0.95rem; color:#fff;">National Train Enquiry System</div>
-        <div class="brand-sub">Indian Railways Operations &middot; Ministry of Railways</div>
+        <div style="font-weight:700; font-size:0.95rem; color:#fff;">Live Train Operations</div>
+        <div class="brand-sub">Indian Railways Official Timetables &middot; Real-Time Radar</div>
       </div>
     </a>
     <div class="top-actions">
       <button type="button" class="nav-pill" onclick="openApiKeysModal()" style="background:rgba(255,255,255,0.06); cursor:pointer; display:inline-flex; align-items:center; gap:5px;">⚙️ API Keys</button>
-      <a href="/" class="nav-pill active">🔍 Route Finder</a>
+      <a href="/" class="nav-pill active">
+        <img src="/static/images/route-map-3d.jpg" style="width:16px; height:16px; border-radius:3px; object-fit:cover;" /> Route Finder
+      </a>
       <a href="/journey" class="nav-pill">Overview</a>
     </div>
   </header>
@@ -1060,19 +1074,19 @@
     <aside class="ntes-sidebar">
       <ul class="sidebar-menu">
         <li class="menu-item active" onclick="switchNtesTab('spot')">
-          <span class="menu-icon">🔍</span>
+          <img src="/static/images/train-red-3d.jpg" class="menu-img-icon" alt="Spot Train" />
           <span>Spot Your Train</span>
         </li>
         <li class="menu-item" onclick="switchNtesTab('station')">
-          <span class="menu-icon">🔔</span>
+          <img src="/static/images/station-3d.jpg" class="menu-img-icon" alt="Live Station" />
           <span>Live Station</span>
         </li>
         <li class="menu-item" onclick="switchNtesTab('schedule')">
-          <span class="menu-icon">📅</span>
+          <img src="/static/images/train-blue-3d.jpg" class="menu-img-icon" alt="Train Schedule" />
           <span>Train Schedule</span>
         </li>
         <li class="menu-item" onclick="switchNtesTab('between')">
-          <span class="menu-icon">🚆</span>
+          <img src="/static/images/route-map-3d.jpg" class="menu-img-icon" alt="Trains Between Stations" />
           <span>Trains B/w Stations</span>
         </li>
         <li class="menu-item" onclick="switchNtesTab('exceptions')">
@@ -1083,21 +1097,21 @@
         <div class="sidebar-divider"></div>
         
         <li class="menu-item" onclick="switchNtesTab('pnr')">
-          <span class="menu-icon">🎫</span>
+          <img src="/static/images/train-blue-3d.jpg" class="menu-img-icon" alt="Live PNR" />
           <span>Live PNR Status</span>
         </li>
         <li class="menu-item" onclick="switchNtesTab('seats')">
-          <span class="menu-icon">💺</span>
+          <img src="/static/images/station-3d.jpg" class="menu-img-icon" alt="Seat Availability" />
           <span>Seat Availability</span>
         </li>
       </ul>
 
       <div class="sidebar-footer-links">
-        <div><b>Indian Railways NTES Portal</b></div>
+        <div><b>Train-Dhundho Rail Portal</b></div>
         <div>Official timetable data synchronized with 12,466+ train schedules.</div>
         <div class="app-badges-row">
-          <div class="app-badge-btn" onclick="alert('Android NTES App Link')">🤖 Android</div>
-          <div class="app-badge-btn" onclick="alert('iOS NTES App Link')">🍎 iOS</div>
+          <div class="app-badge-btn" onclick="alert('Android Train-Dhundho App Link')">🤖 Android</div>
+          <div class="app-badge-btn" onclick="alert('iOS Train-Dhundho App Link')">🍎 iOS</div>
         </div>
       </div>
     </aside>

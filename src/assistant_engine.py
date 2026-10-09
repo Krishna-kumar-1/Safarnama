@@ -571,7 +571,7 @@ class SafarnamaAssistant:
             elif lang == "english":
                 reply = f"Tracking live running status and GPS position for train **{t_no}**. Opening Spot Your Train view."
             else:
-                reply = f"Train **{t_no}** ka live running status aur GPS position check kar raha hoon. Aap ise NTES Spot Your Train portal par track kar sakte hain!"
+                reply = f"Train **{t_no}** ka live running status aur GPS position check kar raha hoon. Aap ise Train-Dhundho Spot Your Train portal par track kar sakte hain!"
             return {
                 "reply": reply,
                 "action": {"type": "spot_train", "train_number": t_no}

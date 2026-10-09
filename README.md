@@ -1,4 +1,4 @@
-# 🚆 Safarnama: Indian Railways Route Finder & NTES Live Cloud Portal
+# 🚆 Safarnama: Indian Railways Route Finder & Train-Dhundho Live Cloud Portal
 
 <div align="center">
 
@@ -7,11 +7,11 @@
 [![NetworkX](https://img.shields.io/badge/Graph%20Engine-NetworkX-orange.svg)](https://networkx.org/)
 [![Google Gemini AI](https://img.shields.io/badge/AI%20Assistant-Gemini%202.5%20Flash-8E75B2.svg?logo=google&logoColor=white)](https://aistudio.google.com/)
 [![Platforms](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-success.svg)](https://github.com/Krishna-kumar-1/Safarnama)
-[![Test Suite](https://img.shields.io/badge/Tests-43%2F43%20Passing%20(100%25)-brightgreen.svg)](tests/)
+[![Test Suite](https://img.shields.io/badge/Tests-68%2F68%20Passing%20(100%25)-brightgreen.svg)](tests/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 <p align="center">
-  <b>An intelligent, multi-modal Indian Railways routing engine, journey planner, and official National Train Enquiry System (NTES) live telemetry portal.</b>
+  <b>An intelligent, multi-modal Indian Railways routing engine, journey planner, and official Train-Dhundho (NTES) live telemetry portal.</b>
 </p>
 
 <p align="center">
@@ -59,7 +59,7 @@
 
 ---
 
-### 2. 🛰️ Official NTES Live Operations Portal (`/live`)
+### 2. 🛰️ Train-Dhundho Live Operations Portal (`/live`)
 * 🔍 **Spot Your Train (3-Column Ladder Track View with Live Satellite Telemetry)**:
   * **Intelligent Active Rake Auto-Selection**: Identifies active trains running on tracks today or yesterday so you never see an unstarted future train by mistake.
   * **Accurate Intermediate Station Placement**: Tracks train position through intermediate non-commercial cabins and crossings.
@@ -277,7 +277,7 @@ Once started, open your web browser to:
 | :--- | :--- | :--- |
 | **Landing & Overview** | [http://localhost:5000/journey](http://localhost:5000/journey) | Overview, system telemetry & quick entry |
 | **Route Finder** | [http://localhost:5000](http://localhost:5000) | Multi-modal train route finder, class fares & seat maps |
-| **NTES Live Portal** | [http://localhost:5000/live](http://localhost:5000/live) | Spot Your Train, platform boards, PNR & seat availability |
+| **Train-Dhundho Live Portal** | [http://localhost:5000/live](http://localhost:5000/live) | Spot Your Train, platform boards, PNR & seat availability |
 | **API Health & Status** | [http://localhost:5000/api/config/status](http://localhost:5000/api/config/status) | Safe JSON inspection of active API keys & database size |
 
 ---
@@ -420,7 +420,7 @@ route-finder final/
 │   └── models.py               # Data Models (Station, RouteLeg, Itinerary)
 ├── static/                     # Web Frontend Assets & Single Page Apps
 │   ├── index.html              # Modern Route Finder Dashboard, Interactive Map & Coach Layout
-│   ├── live.html               # Authentic NTES Live Tracking & PNR Operations Portal
+│   ├── live.html               # Train-Dhundho Live Tracking & PNR Operations Portal
 │   ├── journey.html            # Panoramic Overview & System Architecture Page
 │   ├── train.mp4               # Ultra-HD Ambient Cinematic Train Video
 │   ├── train-front.png         # Locomotive Headlight Stage Asset

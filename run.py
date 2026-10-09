@@ -52,7 +52,7 @@ def open_browser():
 
 def main():
     print("=" * 60)
-    print("  🚆 Safarnama: Indian Railways Route Finder & NTES Cloud")
+    print("  🚆 Safarnama: Indian Railways Route Finder & Train-Dhundho Live")
     print("=" * 60)
     print(f"Python: {sys.version.split()[0]} on {sys.platform}")
 
@@ -62,7 +62,7 @@ def main():
     print("\n🚀 Starting server...")
     print("   • Landing Portal : http://localhost:5000/journey")
     print("   • Route Planner  : http://localhost:5000")
-    print("   • NTES Live      : http://localhost:5000/live")
+    print("   • Train-Dhundho  : http://localhost:5000/live")
     print("\nPress Ctrl+C to stop.\n")
 
     threading.Thread(target=open_browser, daemon=True).start()

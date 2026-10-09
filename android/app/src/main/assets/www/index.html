@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <link rel="manifest" href="/static/manifest.json" />
-<link rel="icon" type="image/png" href="/static/images/logo.png" />
-<link rel="apple-touch-icon" href="/static/images/logo.png" />
+<link rel="icon" type="image/jpeg" href="/static/images/train-red-3d.jpg" />
+<link rel="apple-touch-icon" href="/static/images/train-red-3d.jpg" />
 <title>Safarnama - Indian Railways Route & Connection Finder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2130,15 +2130,16 @@
     <!-- Navbar -->
     <nav class="top-nav">
       <a href="/" class="nav-brand">
-        <div class="nav-logo">🚆</div>
+        <img src="/static/images/train-red-3d.jpg" alt="Safarnama" style="width:34px; height:34px; border-radius:8px; object-fit:cover; box-shadow:0 2px 8px rgba(0,0,0,0.5); vertical-align:middle;" />
         <div>
           <div class="nav-title">Route Finder</div>
         </div>
         <span class="nav-tag">Indian Railways</span>
       </a>
       <div class="nav-links">
-        <a href="/live" class="nav-btn live-nav-btn" title="Live Train Tracking, IRCTC Seat Availability, PNR Status & Station Boards">
-          <span>📡 Live Services</span>
+        <a href="/live" class="nav-btn live-nav-btn" title="Train-Dhundho: Live Train Tracking, IRCTC Seat Availability, PNR Status & Station Boards">
+          <img src="/static/images/train-blue-3d.jpg" style="width:18px; height:18px; border-radius:4px; object-fit:cover; vertical-align:middle; margin-right:4px;" />
+          <span>Train-Dhundho</span>
         </a>
         <button id="soundToggleBtn" class="sound-btn" onclick="toggleNightSound()" title="Toggle Night Forest Sounds" aria-label="Toggle Night Sounds">
           <span id="soundIcon">🔇</span>
@@ -2184,7 +2185,10 @@
         <!-- Origin Station -->
         <div class="input-card">
           <div class="input-label-row">
-            <span class="input-label">Origin Station</span>
+            <span class="input-label" style="display:inline-flex; align-items:center; gap:6px;">
+              <img src="/static/images/station-3d.jpg" style="width:18px; height:18px; border-radius:4px; object-fit:cover;" alt="Station" />
+              Origin Station
+            </span>
             <span class="state-info" id="sourceStateBadge">State</span>
           </div>
           <input type="text" class="station-search-box" id="sourceInput" placeholder="Search station name or code (e.g. NDLS)..." autocomplete="off" />
@@ -2200,7 +2204,10 @@
         <!-- Destination Station -->
         <div class="input-card">
           <div class="input-label-row">
-            <span class="input-label">Destination Station</span>
+            <span class="input-label" style="display:inline-flex; align-items:center; gap:6px;">
+              <img src="/static/images/route-map-3d.jpg" style="width:18px; height:18px; border-radius:4px; object-fit:cover;" alt="Destination" />
+              Destination Station
+            </span>
             <span class="state-info" id="destStateBadge">State</span>
           </div>
           <input type="text" class="station-search-box" id="destInput" placeholder="Search station name or code (e.g. Mumbai)..." autocomplete="off" />
@@ -2242,6 +2249,7 @@
             <span class="form-label" style="visibility:hidden;">Action</span>
           </div>
           <button class="search-submit-btn" id="searchBtn">
+            <img src="/static/images/train-red-3d.jpg" style="width:20px; height:20px; border-radius:4px; object-fit:cover; vertical-align:middle; margin-right:6px;" alt="Search" />
             <span>Search Available Routes</span>
           </button>
         </div>

@@ -1,16 +1,16 @@
 @echo off
 REM ==============================================================================
-REM   Safarnama: Indian Railways Route Finder & NTES Live Cloud Portal
+REM   Safarnama: Indian Railways Route Finder & Train-Dhundho Live Portal
 REM   All-in-One Launcher: Auto-Installs Dependencies & Launches Server
 REM   Double-click this file to run the web app.
 REM   Keep this window OPEN while using the site. Closing it stops the server.
 REM ==============================================================================
 
 cd /d "%~dp0"
-title Safarnama - Indian Railways Portal
+title Safarnama - Indian Railways & Train-Dhundho Portal
 
 echo ==============================================================================
-echo   🚆 Safarnama: Indian Railways Route Finder & NTES Live Portal
+echo   🚆 Safarnama: Indian Railways Route Finder & Train-Dhundho Live Portal
 echo ==============================================================================
 echo.
 
@@ -91,9 +91,9 @@ if errorlevel 1 (
 REM 6. Launch Server & Open Browser
 echo [2/2] Server starting...
 echo.
-echo   🚆 Landing page : http://localhost:5000/journey
-echo   🗺️  Route planner: http://localhost:5000
-echo   🔴 NTES Live    : http://localhost:5000/live
+echo   🚆 Landing page  : http://localhost:5000/journey
+echo   🗺️  Route planner : http://localhost:5000
+echo   🔴 Train-Dhundho : http://localhost:5000/live
 echo.
 echo Opening your browser in 2 seconds. KEEP THIS WINDOW OPEN.
 echo Press Ctrl+C here (or close this window) to stop the server.

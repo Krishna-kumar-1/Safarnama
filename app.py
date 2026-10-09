@@ -326,15 +326,17 @@ def api_railkit_station(station_code):
 
 
 # =========================================================================
-# NTES Authentic Train Running Status & Ladder Route Engine
+# Train-Dhundho (NTES) Authentic Train Running Status & Ladder Route Engine
 # =========================================================================
 @app.get("/api/ntes/track/<train_no>")
+@app.get("/api/traindhundho/track/<train_no>")
 def api_ntes_track(train_no):
     date = request.args.get("date", None)
     return jsonify(get_train_ntes_details(engine, train_no, date))
 
 
 @app.get("/api/ntes/trains-between")
+@app.get("/api/traindhundho/trains-between")
 def api_ntes_trains_between():
     src = request.args.get("source", "")
     dst = request.args.get("destination", "")
@@ -342,6 +344,7 @@ def api_ntes_trains_between():
 
 
 @app.get("/api/ntes/exceptions")
+@app.get("/api/traindhundho/exceptions")
 def api_ntes_exceptions():
     return jsonify(get_train_exceptions())
 
