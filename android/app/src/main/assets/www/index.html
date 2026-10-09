@@ -2744,8 +2744,8 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
 
     // Map Tile Provider API Keys
     const MAPTILER_API_KEY = "xFhO3woMXHW5y5qJX1Sk";
-    const STADIA_API_KEY = "26026d85-ab4c-4f06-974f-6ffb543fe6ac";
-    let GOOGLE_MAPS_API_KEY = localStorage.getItem("SAFARNAMA_GOOGLE_MAPS_KEY") || "";
+    let GOOGLE_MAPS_API_KEY = "";
+    try { GOOGLE_MAPS_API_KEY = localStorage.getItem("SAFARNAMA_GOOGLE_MAPS_KEY") || ""; } catch (e) {}
 
     let activeBaseLayerKey = 'stadiaDark';
     const mapBaseLayers = {};
@@ -4116,7 +4116,7 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
           .then(data => {
             if (data.google_maps?.key) {
               GOOGLE_MAPS_API_KEY = data.google_maps.key;
-              localStorage.setItem("SAFARNAMA_GOOGLE_MAPS_KEY", data.google_maps.key);
+              try { localStorage.setItem("SAFARNAMA_GOOGLE_MAPS_KEY", data.google_maps.key); } catch (e) {}
             }
           })
           .catch(() => {});

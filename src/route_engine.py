@@ -89,6 +89,7 @@ class RouteEngine:
         # is fine at hundreds of legs but scales badly past a few thousand.
         self._legs_by_pair: dict[tuple[str, str], list[RouteLeg]] = {}
         self._legs_by_train: dict[str, list[RouteLeg]] = {}
+        self._static_graphs: dict[str, nx.DiGraph] = {}
         for leg in self.legs:
             self._legs_by_pair.setdefault((leg.source, leg.destination), []).append(leg)
             if leg.train_number:
@@ -172,11 +173,13 @@ class RouteEngine:
     # ---- graph construction ----------------------------------------------
 
     def _build_graph(self, date: str | None, criterion: str) -> nx.DiGraph:
+        if date is None and criterion in self._static_graphs:
+            return self._static_graphs[criterion]
+
         weight_attr = "duration_min" if criterion == "duration_min" else "cost_inr"
         graph = nx.DiGraph()
         graph.add_nodes_from(self.stations.keys())
-        pairs = {(leg.source, leg.destination) for leg in self.legs}
-        for source, destination in pairs:
+        for (source, destination) in self._legs_by_pair.keys():
             # "hops" picks the fewest-transfer route: every edge costs the same
             # (1), so shortest_path minimizes leg count instead of time/fare.
             # duration_min still breaks ties between parallel trains on the
@@ -190,6 +193,10 @@ class RouteEngine:
                     if criterion == "duration_min":
                         weight += TRANSFER_PENALTY_MIN
                 graph.add_edge(source, destination, weight=weight, leg=best)
+
+        if date is None:
+            self._static_graphs[criterion] = graph
+
         return graph
 
     def _path_to_itinerary(self, graph: nx.DiGraph, path: list[str]) -> Itinerary:
@@ -231,17 +238,21 @@ class RouteEngine:
             simplest_path = nx.shortest_path(simplest_graph, source, destination, weight="weight")
             result["simplest"] = self._path_to_itinerary(simplest_graph, simplest_path)
 
-        if result["fastest"] and result["cheapest"]:
-            result["recommended"] = self._pick_balanced(result["fastest"], result["cheapest"], fastest_graph, cheapest_graph, source, destination)
-
-        # top-N alternatives on the fastest-graph topology
+        # top-N alternatives on the fastest-graph topology (computed once and shared with _pick_balanced)
+        alt_itineraries = []
         if nx.has_path(fastest_graph, source, destination):
-            simple_graph = fastest_graph.to_undirected(as_view=False)
+            num_to_fetch = max(top_n, 5)
             try:
-                paths = list(islice(nx.shortest_simple_paths(fastest_graph, source, destination, weight="weight"), top_n))
-            except nx.NetworkXNoPath:
+                paths = list(islice(nx.shortest_simple_paths(fastest_graph, source, destination, weight="weight"), num_to_fetch))
+            except (nx.NetworkXNoPath, nx.NodeNotFound):
                 paths = []
-            result["alternatives"] = [self._path_to_itinerary(fastest_graph, p) for p in paths]
+            alt_itineraries = [self._path_to_itinerary(fastest_graph, p) for p in paths]
+            result["alternatives"] = alt_itineraries[:top_n]
+
+        if result["fastest"] and result["cheapest"]:
+            result["recommended"] = self._pick_balanced(
+                result["fastest"], result["cheapest"], fastest_graph, cheapest_graph, source, destination, candidate_itineraries=alt_itineraries
+            )
 
         # date-based sold-out detection + suggestions, checked against the fastest itinerary's legs
         if date and result["fastest"]:
@@ -478,16 +489,28 @@ class RouteEngine:
             "flexible_options": flexible_options[:6]
         }
 
-    def _pick_balanced(self, fastest: Itinerary, cheapest: Itinerary, fastest_graph, cheapest_graph, source, destination) -> Itinerary:
+    def _pick_balanced(
+        self,
+        fastest: Itinerary,
+        cheapest: Itinerary,
+        fastest_graph,
+        cheapest_graph,
+        source: str,
+        destination: str,
+        candidate_itineraries: list[Itinerary] | None = None,
+    ) -> Itinerary:
         if fastest.legs == cheapest.legs:
             return fastest
 
         candidates = [fastest, cheapest]
-        try:
-            for path in islice(nx.shortest_simple_paths(fastest_graph, source, destination, weight="weight"), 5):
-                candidates.append(self._path_to_itinerary(fastest_graph, path))
-        except nx.NetworkXNoPath:
-            pass
+        if candidate_itineraries is not None:
+            candidates.extend(candidate_itineraries[:5])
+        else:
+            try:
+                for path in islice(nx.shortest_simple_paths(fastest_graph, source, destination, weight="weight"), 5):
+                    candidates.append(self._path_to_itinerary(fastest_graph, path))
+            except (nx.NetworkXNoPath, nx.NodeNotFound):
+                pass
 
         durations = [c.total_duration_min for c in candidates]
         costs = [c.total_cost_inr for c in candidates]

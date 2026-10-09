@@ -318,7 +318,10 @@ def api_railkit_track():
 
 @app.get("/api/railkit/live-station/<station_code>")
 def api_railkit_station(station_code):
-    hours = int(request.args.get("hours", 4))
+    try:
+        hours = int(request.args.get("hours") or 4)
+    except (ValueError, TypeError):
+        hours = 4
     return jsonify(get_live_station(station_code, hours))
 
 

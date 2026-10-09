@@ -407,23 +407,33 @@ route-finder final/
 │   ├── github.png
 │   └── linkedin.png
 ├── src/                        # Core Python Algorithms & Data Handlers
-│   ├── route_engine.py         # NetworkX Multi-Criteria Graph Router & Fare Calculator
+│   ├── route_engine.py         # NetworkX Multi-Criteria Graph Router & Dynamic Fares (Optimized)
 │   ├── ntes_engine.py          # Official NTES Live Train Running & Route Ladder Engine
-│   ├── assistant_engine.py     # Gemini 2.5 Flash AI Voice & Hinglish Assistant
+│   ├── assistant_engine.py     # Gemini AI Voice & Hinglish Conversational Assistant
+│   ├── track_geometry.py       # High-Density Physical Railway Track Snapping (OSM/BRouter)
+│   ├── train_geometry.py       # Train Route Stoppage Geometry Stitcher
+│   ├── vault.py                # AES-256 Memory-Decrypted Railway Vault Engine
 │   ├── railkit_client.py       # Multi-Key Pool & Node.js Bridge Client
 │   ├── rapidapi_client.py      # RapidAPI IRCTC Fallback Client
 │   ├── data_loader.py          # CSV Dataset Ingestion (12,466 trains, 1,894 stations)
 │   ├── last_mile.py            # Haversine distance calculator & road modal snapper
 │   └── models.py               # Data Models (Station, RouteLeg, Itinerary)
 ├── static/                     # Web Frontend Assets & Single Page Apps
-│   ├── index.html              # Modern Route Finder Dashboard, Fare Strip & Coach Map
+│   ├── index.html              # Modern Route Finder Dashboard, Interactive Map & Coach Layout
 │   ├── live.html               # Authentic NTES Live Tracking & PNR Operations Portal
 │   ├── journey.html            # Panoramic Overview & System Architecture Page
-│   ├── bg forest video.mp4     # Atmospheric Background Video
-│   └── firefly.png             # Bio-luminescent Cursor Sprite
-├── tests/                      # Automated Unit Test Suite (43 Unit Tests)
-│   ├── test_route_engine.py    # Route Engine, Transfers, Layover & Graph Tests
-│   └── test_datagov.py         # Data.gov.in API & Station Name Tests
+│   ├── train.mp4               # Ultra-HD Ambient Cinematic Train Video
+│   ├── train-front.png         # Locomotive Headlight Stage Asset
+│   ├── firefly.png             # Bio-luminescent Cursor Sprite
+│   ├── manifest.json           # Progressive Web App (PWA) Manifest
+│   └── sw.js                   # Service Worker Offline Asset Cacher
+├── tests/                      # Automated Unit Test Suite (68 Unit Tests - 100% Pass)
+│   ├── test_route_engine.py    # Route Engine, Transfers, Layover & Graph Performance Tests
+│   ├── test_track_geometry.py  # Physical Track Snapping & Curvature Caching Tests
+│   ├── test_train_geometry.py  # Station Coordinates & Route Geometry Stitching Tests
+│   ├── test_vault.py           # Encrypted Data Vault & File Integrity Tests
+│   ├── test_assistant_conversational.py # AI Assistant Slot-Filling & Multi-Turn Tests
+│   └── test_datagov.py         # Data.gov.in API & Station Name Validation Tests
 └── tools/
     └── railkit_node/           # RailKit Official Node.js SDK Cryptographic Bridge
         ├── bridge.cjs          # Multi-Key Failover SDK Executor
