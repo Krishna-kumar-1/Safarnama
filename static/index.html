@@ -2752,13 +2752,14 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
 
     // Map Tile Provider API Keys
     const MAPTILER_API_KEY = "xFhO3woMXHW5y5qJX1Sk";
+    const STADIA_API_KEY = "26026d85-ab4c-4f06-974f-6ffb543fe6ac";
     let GOOGLE_MAPS_API_KEY = "";
     try { GOOGLE_MAPS_API_KEY = localStorage.getItem("SAFARNAMA_GOOGLE_MAPS_KEY") || ""; } catch (e) {}
 
     let activeBaseLayerKey = 'stadiaDark';
     const mapBaseLayers = {};
     const mapBaseLayerNames = {
-      'stadiaDark': '🌙 Stadia Dark',
+      'stadiaDark': '🌙 Dark Rail',
       'maptilerStreets': '🗺️ MapTiler Streets',
       'googleHybrid': '🌐 Google Hybrid',
       'googleSatellite': '🛰️ Google Satellite',
@@ -2789,6 +2790,7 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
         mapBaseLayers[layerKey].bringToBack();
       }
       activeBaseLayerKey = layerKey;
+      if (leafletMap) leafletMap.invalidateSize();
 
       // Update badge
       const badge = document.getElementById('activeMapNameBadge');
@@ -2816,17 +2818,33 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       }).setView([20.5937, 78.9629], 5);
 
       // 1. Stadia Dark (alidade_smooth_dark) - Sleek match for the app's dark neon aesthetic
+      // Equipped with automatic fallback to CartoDB Dark Matter if Stadia tiles fail
       const stadiaDark = L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
         maxZoom: 20,
-        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+        subdomains: 'abcd',
+        attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://carto.com/">CARTO</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      });
+      stadiaDark.on('tileerror', function() {
+        if (!stadiaDark._hasFallenBack) {
+          stadiaDark._hasFallenBack = true;
+          console.warn('Stadia Dark tile error detected. Switching fallback to CartoDB Dark Matter.');
+          stadiaDark.setUrl('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png');
+        }
       });
 
-      // 2. MapTiler Streets v4 - High detail street & rail network
+      // 2. MapTiler Streets v4 - High detail street & rail network (with OSM fallback)
       const maptilerStreets = L.tileLayer(`https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=${MAPTILER_API_KEY}`, {
         maxZoom: 19,
         tileSize: 512,
         zoomOffset: -1,
         attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+      });
+      maptilerStreets.on('tileerror', function() {
+        if (!maptilerStreets._hasFallenBack) {
+          maptilerStreets._hasFallenBack = true;
+          console.warn('MapTiler Streets tile error. Switching fallback to OpenStreetMap.');
+          maptilerStreets.setUrl('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        }
       });
 
       // 3. Google Hybrid (Satellite Imagery + Roads, Labels & Rail Network)
@@ -2857,16 +2875,28 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
         attribution: '&copy; Google Maps'
       });
 
-      // 7. Stadia Outdoors - Terrain, mountains & outdoor transit
+      // 7. Stadia Outdoors - Terrain, mountains & outdoor transit (with OSM fallback)
       const stadiaOutdoors = L.tileLayer(`https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
         maxZoom: 20,
         attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
       });
+      stadiaOutdoors.on('tileerror', function() {
+        if (!stadiaOutdoors._hasFallenBack) {
+          stadiaOutdoors._hasFallenBack = true;
+          stadiaOutdoors.setUrl('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+        }
+      });
 
-      // 8. Stadia Smooth Light - Clean daytime view
+      // 8. Stadia Smooth Light - Clean daytime view (with CartoDB Light fallback)
       const stadiaSmooth = L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png?api_key=${STADIA_API_KEY}`, {
         maxZoom: 20,
         attribution: '&copy; <a href="https://stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>'
+      });
+      stadiaSmooth.on('tileerror', function() {
+        if (!stadiaSmooth._hasFallenBack) {
+          stadiaSmooth._hasFallenBack = true;
+          stadiaSmooth.setUrl('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png');
+        }
       });
 
       // 9. OpenRailwayMap Tracks Overlay - Visualizes real physical railway tracks across India
@@ -3002,8 +3032,10 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
     function plotRouteOnMap(itinerary) {
       if (!itinerary || !itinerary.legs || !itinerary.legs.length) return;
       initMap();
-      document.getElementById("mapCard").style.display = "block";
-      setTimeout(() => leafletMap.invalidateSize(), 150);
+      const mapCard = document.getElementById("mapCard");
+      if (mapCard) mapCard.style.display = "block";
+      setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 60);
+      setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 200);
 
       if (mapPolyline) leafletMap.removeLayer(mapPolyline);
       mapMarkers.forEach(m => leafletMap.removeLayer(m));
@@ -3190,6 +3222,7 @@ GOOGLE_MAPS_API_KEY="your_google_maps_key"</pre>
       });
 
       leafletMap.fitBounds(mapPolyline.getBounds(), { padding: [40, 40] });
+      setTimeout(() => { if (leafletMap) leafletMap.invalidateSize(); }, 250);
     }
 
     window.plotRouteFromEncoded = function(legsJson) {
