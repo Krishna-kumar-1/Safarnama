@@ -151,9 +151,9 @@ python run.py
 ```
 *Tip: Works on all Windows versions directly without triggering Smart App Control.*
 
-#### Option B: One-Click Direct Launcher (`start-app.bat` or `start-app.ps1`)
-1. Double-click the **`start-app.bat`** (or right-click `start-app.ps1` &rarr; Run with PowerShell).
-   * It will automatically unblock files, detect Python, install dependencies, launch the server, and open your browser!
+#### Option B: One-Click Direct Launcher (`start-app.bat`)
+1. Double-click the **`start-app.bat`** file in the project folder.
+   * It will automatically unblock files, detect Python, install dependencies if missing, launch the server, and open your browser!
 2. **If Windows 11 Smart App Control shows a block popup:**
    * Right-click the downloaded zip (or `start-app.bat`) &rarr; **Properties** &rarr; check **Unblock** at the bottom &rarr; **OK**.
    * Or simply run **`python run.py`** in Terminal/Command Prompt.
@@ -185,10 +185,10 @@ python app.py
 #### Option A: One-Click Shell Script
 ```bash
 # 1. Make the script executable
-chmod +x start-app.sh
+chmod +x tools/start-app.sh
 
 # 2. Run the launcher
-./start-app.sh
+./tools/start-app.sh
 ```
 
 #### Option B: Universal Python Launcher
@@ -233,10 +233,10 @@ python3 app.py
 #### Option A: One-Click Shell Script
 ```bash
 # 1. Make executable
-chmod +x start-app.sh
+chmod +x tools/start-app.sh
 
 # 2. Run
-./start-app.sh
+./tools/start-app.sh
 ```
 
 #### Option B: Universal Python Launcher

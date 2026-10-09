@@ -1,65 +1,107 @@
 @echo off
-REM Double-click this file to start the Route Finder web app.
-REM Keep this window OPEN while using the site. Closing it stops the server.
+REM ==============================================================================
+REM   Safarnama: Indian Railways Route Finder & NTES Live Cloud Portal
+REM   All-in-One Launcher: Auto-Installs Dependencies & Launches Server
+REM   Double-click this file to run the web app.
+REM   Keep this window OPEN while using the site. Closing it stops the server.
+REM ==============================================================================
 
 cd /d "%~dp0"
+title Safarnama - Indian Railways Portal
 
-echo ============================================
-echo   Route Finder - starting local server
-echo ============================================
+echo ==============================================================================
+echo   🚆 Safarnama: Indian Railways Route Finder & NTES Live Portal
+echo ==============================================================================
 echo.
 
+REM 1. Unblock downloaded files if restricted by Windows Smart App Control
+powershell -NoProfile -Command "Get-ChildItem -Path '%~dp0' -Recurse | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
+
+REM 2. Check Python installation (detects python, py launcher, or python3)
+set "PY_CMD=python"
 python --version >nul 2>&1
 if errorlevel 1 (
-    echo ERROR: Python was not found.
-    echo Install it from https://python.org and tick "Add Python to PATH".
-    echo.
-    pause
-    exit /b 1
+    py --version >nul 2>&1
+    if not errorlevel 1 (
+        set "PY_CMD=py"
+    ) else (
+        python3 --version >nul 2>&1
+        if not errorlevel 1 (
+            set "PY_CMD=python3"
+        ) else (
+            echo [ERROR] Python was not found on your system!
+            echo.
+            echo Please install Python 3.10+ from:
+            echo   https://www.python.org/downloads/
+            echo.
+            echo IMPORTANT: During installation, tick the box:
+            echo   "[X] Add Python to PATH"
+            echo.
+            pause
+            exit /b 1
+        )
+    )
 )
 
-REM Copy .env.example if .env does not exist yet
+echo [OK] Python detected:
+%PY_CMD% --version
+echo.
+
+REM 3. Create .env from template if missing
 if not exist .env (
     if exist .env.example (
-        echo [INFO] First time setup: creating .env from .env.example...
+        echo [INFO] First time setup: creating .env configuration file...
         copy .env.example .env >nul
-        echo [INFO] Created .env file. You can add your Gemini and RailKit API keys in it.
+        echo [OK] Created .env file.
         echo.
     )
 )
 
-REM Check Node.js (Optional for RailKit bridge)
+REM 4. Check & Auto-Install Missing Dependencies
+%PY_CMD% -c "import flask, networkx, flask_cors, cryptography" >nul 2>&1
+if errorlevel 1 (
+    echo [1/2] Installing required dependencies (first-time setup, please wait)...
+    echo.
+    %PY_CMD% -m pip install -r requirements.txt
+    if errorlevel 1 (
+        echo.
+        echo [ERROR] Failed to install dependencies.
+        echo Please ensure you have internet access and try running:
+        echo   pip install -r requirements.txt
+        echo.
+        pause
+        exit /b 1
+    )
+    echo.
+    echo [OK] All dependencies successfully installed!
+    echo.
+) else (
+    echo [OK] All dependencies already satisfied.
+    echo.
+)
+
+REM 5. Optional Node.js notice for satellite RailKit bridge
 node --version >nul 2>&1
 if errorlevel 1 (
-    echo [NOTICE] Node.js not detected. Core graph routing and timetable works 100%% offline;
-    echo          install Node.js 18+ to enable live satellite RailKit bridge if desired.
+    echo [NOTICE] Node.js not detected. Offline timetable and route graph work 100%%.
+    echo          (Node.js 18+ is optional for live satellite RailKit bridge).
     echo.
 )
 
-REM Unblock downloaded files if restricted by Windows
-powershell -NoProfile -Command "Get-ChildItem -Path '%~dp0' -Recurse | Unblock-File -ErrorAction SilentlyContinue" >nul 2>&1
-
-REM Install anything missing; harmless if already present.
-python -c "import flask, networkx, flask_cors, cryptography" >nul 2>&1
-if errorlevel 1 (
-    echo First run - installing dependencies, please wait...
-    python -m pip install -r requirements.txt
-    echo.
-)
-
-echo Server starting...
+REM 6. Launch Server & Open Browser
+echo [2/2] Server starting...
 echo.
-echo   Landing page : http://localhost:5000/journey
-echo   Route planner: http://localhost:5000
+echo   🚆 Landing page : http://localhost:5000/journey
+echo   🗺️  Route planner: http://localhost:5000
+echo   🔴 NTES Live    : http://localhost:5000/live
 echo.
-echo Opening your browser. KEEP THIS WINDOW OPEN.
+echo Opening your browser in 2 seconds. KEEP THIS WINDOW OPEN.
 echo Press Ctrl+C here (or close this window) to stop the server.
 echo.
 
-REM Give Flask a moment to bind the port before the browser opens.
-start "" /b cmd /c "timeout /t 3 >nul && start http://localhost:5000/journey"
+start "" /b cmd /c "timeout /t 2 >nul && start http://localhost:5000/journey"
 
-python app.py
+%PY_CMD% app.py
 
 echo.
 echo Server stopped.
