@@ -1,7 +1,9 @@
 import csv
+import io
 from pathlib import Path
 
 from .models import RouteLeg, Station
+from .vault import load_vault_files
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
@@ -15,18 +17,34 @@ DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 EXTRA_SUFFIXES = ("rr", "iri", "specials", "extra")
 
 
-def _extra_file(path: Path, suffix: str) -> Path | None:
-    """Companion '<name>_<suffix>.csv' beside the given file, if it exists."""
-    candidate = path.with_name(f"{path.stem}_{suffix}{path.suffix}")
-    return candidate if candidate.exists() else None
+def _get_stream(name: str, path: Path):
+    """Returns an open context manager/stream for a CSV file from disk or decrypted vault."""
+    if path.exists():
+        return open(path, newline="", encoding="utf-8")
+    vault = load_vault_files()
+    if name in vault:
+        return io.StringIO(vault[name])
+    # Fallback if custom or test path was supplied (e.g. non_existent_stations.csv)
+    for prefix in ("stations", "routes"):
+        if prefix in name:
+            for suffix in EXTRA_SUFFIXES:
+                if suffix in name and f"{prefix}_{suffix}.csv" in vault:
+                    return io.StringIO(vault[f"{prefix}_{suffix}.csv"])
+            if not any(s in name for s in EXTRA_SUFFIXES) and f"{prefix}.csv" in vault:
+                return io.StringIO(vault[f"{prefix}.csv"])
+    return None
 
 
 def _sources(path: Path, extras=EXTRA_SUFFIXES):
-    yield path
+    s = _get_stream(path.name, path)
+    if s is not None:
+        yield s
     for suffix in extras:
-        extra = _extra_file(path, suffix)
-        if extra is not None:
-            yield extra
+        extra_name = f"{path.stem}_{suffix}{path.suffix}"
+        extra_path = path.with_name(extra_name)
+        s_extra = _get_stream(extra_name, extra_path)
+        if s_extra is not None:
+            yield s_extra
 
 
 def _coord(value: str) -> float | None:
@@ -212,8 +230,8 @@ STATION_STATE_MAP = {
 
 def load_stations(path: Path = DATA_DIR / "stations.csv") -> dict[str, Station]:
     stations = {}
-    for source in _sources(path):
-        with open(source, newline="", encoding="utf-8") as f:
+    for f in _sources(path):
+        with f:
             for row in csv.DictReader(f):
                 code = row["code"].strip()
                 st_state = row.get("state", "").strip() or STATION_STATE_MAP.get(code, "")
@@ -246,25 +264,25 @@ def load_routes(path: Path = DATA_DIR / "routes.csv",
                 extras=EXTRA_SUFFIXES) -> list[RouteLeg]:
     legs = []
     seen = set()
-    for source in _sources(path, extras):
-        before = len(legs)
-        _read_route_rows(source, legs)
-        # A train can appear in more than one listing; keep the first copy.
-        deduped = []
-        for leg in legs[before:]:
-            key = (leg.train_number, leg.source, leg.destination)
-            if leg.train_number and key in seen:
-                continue
-            seen.add(key)
-            deduped.append(leg)
-        legs[before:] = deduped
+    for f in _sources(path, extras):
+        with f:
+            before = len(legs)
+            _read_route_rows(f, legs)
+            # A train can appear in more than one listing; keep the first copy.
+            deduped = []
+            for leg in legs[before:]:
+                key = (leg.train_number, leg.source, leg.destination)
+                if leg.train_number and key in seen:
+                    continue
+                seen.add(key)
+                deduped.append(leg)
+            legs[before:] = deduped
     return legs
 
 
-def _read_route_rows(path: Path, legs: list[RouteLeg]) -> None:
-    with open(path, newline="", encoding="utf-8") as f:
-        for row in csv.DictReader(f):
-            legs.append(
+def _read_route_rows(f, legs: list[RouteLeg]) -> None:
+    for row in csv.DictReader(f):
+        legs.append(
                 RouteLeg(
                     source=row["source"],
                     destination=row["destination"],

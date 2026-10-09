@@ -7,6 +7,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-apk:
     name: Build Safarnama Android APK
@@ -22,8 +25,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Sync Static Assets to Android Project
         run: |
@@ -43,50 +47,44 @@ jobs:
       - name: Make Gradle Wrapper Executable
         run: chmod +x android/gradlew
 
-      - name: Build Android APK (Debug & Release)
+      - name: Build Android APK
         run: |
           cd android
-          ./gradlew assembleDebug assembleRelease --no-daemon
+          ./gradlew assembleDebug --no-daemon
 
       - name: Prepare APK Outputs
         run: |
           mkdir -p apk-output
           if [ -f android/app/build/outputs/apk/debug/app-debug.apk ]; then
-            cp android/app/build/outputs/apk/debug/app-debug.apk apk-output/Safarnama-v1.0-Debug.apk
-          fi
-          if [ -f android/app/build/outputs/apk/release/app-release.apk ]; then
-            cp android/app/build/outputs/apk/release/app-release.apk apk-output/Safarnama-v1.0-Release.apk
-          elif [ -f android/app/build/outputs/apk/release/app-release-unsigned.apk ]; then
-            cp android/app/build/outputs/apk/release/app-release-unsigned.apk apk-output/Safarnama-v1.0-Release.apk
+            cp android/app/build/outputs/apk/debug/app-debug.apk apk-output/Safarnama-v1.0.apk
           fi
           ls -la apk-output/
 
-      - name: Upload APK Artifacts
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: Safarnama-Android-APK
-          path: apk-output/*.apk
+          path: apk-output/Safarnama-v1.0.apk
           retention-days: 30
 
       - name: Create or Update GitHub Release
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: apk-latest
-          name: "Safarnama Android APK (Latest)"
+          tag_name: v1.0.0
+          name: "Safarnama Android App v1.0.0"
           body: |
-            ### 📱 Safarnama - Indian Railways Route & Connection Finder (Android APK)
-            
-            - **Compatibility**: Compatible with **Android 5.0 (Lollipop) up to Android 15** (minSdk 21, targetSdk 34).
-            - **All Screen Sizes**: Compact, responsive layout for small budget phones (320px–360px) up to large displays.
-            - **Low-End Hardware Optimized**: Ultra-lightweight APK, hardware accelerated Canvas rendering, low memory footprint (<30 MB RAM).
-            - **Voice Assistant Ready**: Built-in audio/microphone permissions for Safarnama AI Voice Search ("Bol kar search karein").
-            
-            #### 📥 Download and Install:
-            1. Download `Safarnama-v1.0-Debug.apk` or `Safarnama-v1.0-Release.apk` directly on your Android phone.
-            2. Tap the downloaded file and select **Install**. (If prompted, allow *Install from Unknown Sources*).
-            3. Enjoy 100% authentic Indian Railways routes and real physical rail track geometry!
-          files: apk-output/*.apk
+            ### 📱 Safarnama - Indian Railways Route Finder Android App (v1.0.0)
+
+            - **Universal Compatibility**: Android 5.0 (Lollipop) up to Android 15.
+            - **All Screen Sizes**: Compact, responsive layout for small budget phones up to large displays.
+            - **Low-End Hardware**: Ultra-lightweight APK, hardware accelerated Canvas rendering, low memory footprint (<30 MB RAM).
+            - **AI Voice Assistant**: Microphone permission enabled for Hindi/English voice queries ("Bol kar search karein").
+
+            #### 📥 Direct Installation:
+            1. Download `Safarnama-v1.0.apk` below directly to your phone.
+            2. Tap the file on your Android phone and install! (If prompted, allow *Install from Unknown Sources*).
+          files: apk-output/Safarnama-v1.0.apk
           draft: false
           prerelease: false
         env:

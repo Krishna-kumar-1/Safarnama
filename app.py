@@ -35,6 +35,14 @@ if META_FILE.exists():
             TRAIN_METADATA = json.load(f)
     except Exception as e:
         print("Warning: failed to load train metadata:", e)
+else:
+    try:
+        from src.vault import load_vault_files
+        _vf = load_vault_files()
+        if "train_metadata.json" in _vf:
+            TRAIN_METADATA = json.loads(_vf["train_metadata.json"])
+    except Exception as e:
+        print("Warning: failed to load train metadata from vault:", e)
 
 
 def get_station_distance_km(source_code, dest_code):

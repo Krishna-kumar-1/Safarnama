@@ -25,3 +25,9 @@ yarn-debug.log*
 # Operating System
 .DS_Store
 Thumbs.db
+
+data/*.csv
+data/train_metadata.json
+data/my_private_excel_files/
+data/raw/
+data/Rail raw all datasets/

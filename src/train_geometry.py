@@ -33,15 +33,27 @@ def load_train_geometries(path: Path = TRAINS_GEOJSON_PATH) -> Dict[str, List[Li
     if _INITIALIZED:
         return _TRAIN_LINESTRINGS
 
-    if not path.exists():
-        logger.warning(f"trains.json not found at {path}")
+    data = None
+    if path.exists():
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception as e:
+            logger.warning(f"Error reading trains.json from disk: {e}")
+    else:
+        try:
+            from .vault import load_vault_files
+            v = load_vault_files()
+            if "raw/trains.json" in v:
+                data = json.loads(v["raw/trains.json"])
+        except Exception as e:
+            logger.warning(f"Error reading trains.json from vault: {e}")
+
+    if not data:
         _INITIALIZED = True
         return _TRAIN_LINESTRINGS
 
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-
         features = data.get("features", [])
         for feat in features:
             props = feat.get("properties", {})
