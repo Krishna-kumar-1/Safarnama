@@ -1,311 +1,65 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-RailKit + RapidAPI Resilient Client (3-Tier Fault-Tolerant Engine)
-Tier 1: RailKit Multi-Account Pool (5 keys = 250 req/day)
-Tier 2: RapidAPI Official IRCTC Endpoint (irctc1.p.rapidapi.com)
-Tier 3: Local Timetable & Route Graph Database Fallback
-"""
-
-import os
-import time
-import json
-import subprocess
-from pathlib import Path
-from src.rapidapi_client import rapid_get_pnr_status, rapid_get_live_train, rapid_get_live_station
-
-CACHE_TTL_SECONDS = 300  # 5 minutes cache
-_CACHE = {}
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-BRIDGE_SCRIPT = PROJECT_ROOT / "tools" / "railkit_node" / "bridge.cjs"
-
-
-def _get_from_cache(key):
-    now = time.time()
-    if key in _CACHE:
-        ts, data = _CACHE[key]
-        if now - ts < CACHE_TTL_SECONDS:
-            return data
-    return None
-
-
-def _set_cache(key, data):
-    _CACHE[key] = (time.time(), data)
-
-
-def _run_sdk_bridge(action, *args):
-    """Executes the official RailKit Node.js SDK bridge with robust timeout handling."""
-    try:
-        cmd = ["node", str(BRIDGE_SCRIPT), action] + [str(a) for a in args if a is not None]
-        proc = subprocess.run(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-            timeout=12,
-            cwd=str(PROJECT_ROOT)
-        )
-        if proc.returncode == 0 and proc.stdout.strip():
-            lines = proc.stdout.strip().split("\n")
-            for line in reversed(lines):
-                line = line.strip()
-                if line.startswith("{") and line.endswith("}"):
-                    return json.loads(line)
-        return {"success": False, "error": proc.stderr.strip() or "SDK bridge execution error"}
-    except subprocess.TimeoutExpired:
-        return {"success": False, "error": "Query timed out. IRCTC servers may be busy or the record does not exist."}
-    except Exception as e:
-        return {"success": False, "error": str(e)}
-
-
-# =========================================================================
-# 1. LIVE PNR STATUS LOOKUP (3-Tier Resilient)
-# =========================================================================
-def check_pnr_status(pnr_number: str):
-    pnr = str(pnr_number).strip().replace("-", "").replace(" ", "")
-    if len(pnr) != 10 or not pnr.isdigit():
-        return {"error": True, "message": "PNR must be exactly 10 digits."}
-    
-    cache_key = f"pnr:{pnr}"
-    cached = _get_from_cache(cache_key)
-    if cached:
-        return cached
-    
-    # Tier 1: Query RailKit Multi-Account Pool
-    res = _run_sdk_bridge("pnr", pnr)
-    if res.get("success") and "data" in res:
-        d = res["data"]
-        passengers = []
-        for p in d.get("passengers", []):
-            cur = p.get("current", {})
-            bk = p.get("booking", {})
-            passengers.append({
-                "number": p.get("serialNumber", "Passenger 1"),
-                "booking_status": bk.get("details", bk.get("status", "CNF")),
-                "current_status": cur.get("status", "CNF"),
-                "coach": cur.get("coach", bk.get("coach", "")),
-                "berth": f"{cur.get('berthNo', '')} [{cur.get('berthCode', '')}]" if cur.get('berthNo') else bk.get("details", ""),
-            })
-            
-        journey = d.get("journey", {})
-        formatted = {
-            "pnr": d.get("pnr", pnr),
-            "is_live": True,
-            "provider": "RailKit Multi-Pool",
-            "train_number": d.get("train", {}).get("number", ""),
-            "train_name": d.get("train", {}).get("name", "Express"),
-            "source": journey.get("source", {}).get("code", ""),
-            "source_name": journey.get("source", {}).get("name", ""),
-            "destination": journey.get("destination", {}).get("code", ""),
-            "destination_name": journey.get("destination", {}).get("name", ""),
-            "date_of_journey": journey.get("dateOfJourney", ""),
-            "arrival_date": journey.get("arrivalDate", ""),
-            "class": journey.get("class", ""),
-            "quota": journey.get("quota", "GN"),
-            "fare": d.get("booking", {}).get("fare", 0),
-            "chart_prepared": "Prepared" in d.get("chart", {}).get("status", "") and "Not" not in d.get("chart", {}).get("status", ""),
-            "chart_status": d.get("chart", {}).get("status", "Chart Not Prepared"),
-            "passengers": passengers,
-            "message": "Live IRCTC Passenger Data Verified"
-        }
-        _set_cache(cache_key, formatted)
-        return formatted
-
-    # Tier 2: RapidAPI IRCTC Failover
-    rapid_res = rapid_get_pnr_status(pnr)
-    if rapid_res:
-        _set_cache(cache_key, rapid_res)
-        return rapid_res
-        
-    # Check if the error indicates an old / completed / flushed PNR
-    err_msg = res.get("error", "")
-    if any(term in err_msg.lower() for term in ["not found", "no pnr", "invalid", "flushed", "expired", "404"]):
-        err_msg = (
-            f"PNR {pnr} record was not found in the live IRCTC system. "
-            "Indian Railways automatically purges/flushes PNR records from active databases within 5–10 days after journey completion."
-        )
-
-    return {
-        "error": True,
-        "is_expired": True,
-        "pnr": pnr,
-        "message": err_msg or "Unable to retrieve PNR details from IRCTC server."
-    }
-
-
-# =========================================================================
-# 2. LIVE TRAIN RUNNING STATUS & GPS TRACKING
-# =========================================================================
-def track_train(train_number: str, date: str = None):
-    train_no = str(train_number).strip()
-    cache_key = f"track:{train_no}:{date}"
-    cached = _get_from_cache(cache_key)
-    if cached:
-        return cached
-    
-    # Tier 1: RailKit Live Track
-    res = _run_sdk_bridge("track", train_no, date)
-    if res.get("success") and "data" in res:
-        d = res["data"]
-        formatted = {
-            "train_number": d.get("trainNo", train_no),
-            "train_name": d.get("trainName", ""),
-            "status": d.get("statusNote", "Running On Time"),
-            "current_station": d.get("currentStationCode", ""),
-            "last_updated": d.get("lastUpdate", "Just now"),
-            "timeline": d.get("timeline", [])
-        }
-        _set_cache(cache_key, formatted)
-        return formatted
-        
-    # Tier 2: RapidAPI Live Train Status
-    rapid_train = rapid_get_live_train(train_no, date)
-    if rapid_train:
-        formatted = {
-            "train_number": train_no,
-            "train_name": rapid_train.get("train_name", ""),
-            "status": rapid_train.get("new_message", "Running On Time"),
-            "current_station": rapid_train.get("current_station_name", ""),
-            "last_updated": "Just now",
-            "timeline": []
-        }
-        _set_cache(cache_key, formatted)
-        return formatted
-
-    return {
-        "train_number": train_no,
-        "is_simulated": True,
-        "status": "Running On Time",
-        "delay_minutes": 0,
-        "current_station": "In Transit",
-        "last_updated": "Just now"
-    }
-
-
-# =========================================================================
-# 3. LIVE IRCTC SEAT AVAILABILITY CHECK
-# =========================================================================
-def check_seat_availability(train_no: str, src: str, dst: str, date: str, class_code: str = "3A", quota: str = "GN"):
-    cache_key = f"seats:{train_no}:{src}:{dst}:{date}:{class_code}:{quota}"
-    cached = _get_from_cache(cache_key)
-    if cached:
-        return cached
-    
-    res = _run_sdk_bridge("seats", train_no, src, dst, date, class_code, quota)
-    if res.get("success") and "data" in res:
-        d = res["data"]
-        _set_cache(cache_key, d)
-        return d
-        
-    classes_list = ["1A", "2A", "3A", "SL", "CC"] if class_code == "ALL" else [class_code]
-    availability_data = []
-    for cls in classes_list:
-        status_code = "AVAILABLE"
-        count = 42 if cls in ["3A", "SL"] else 14
-        availability_data.append({
-            "class": cls,
-            "quota": quota,
-            "status": f"{status_code}-{count:02d}",
-            "status_type": status_code.lower(),
-            "fare_inr": 1450 if cls == "3A" else (2250 if cls == "2A" else 480),
-            "chance_percentage": 95
-        })
-    return {
-        "train_number": train_no,
-        "from": src,
-        "to": dst,
-        "date": date,
-        "is_simulated": True,
-        "availability": availability_data
-    }
-
-
-# =========================================================================
-# 4. LIVE STATION ARRIVALS & DEPARTURES (Standardized Normalizer)
-# =========================================================================
-def get_live_station(station_code: str, hours: int = 4):
-    st_code = str(station_code).strip().upper()
-    cache_key = f"station_live:{st_code}:{hours}"
-    cached = _get_from_cache(cache_key)
-    if cached:
-        return cached
-    
-    raw_trains = []
-    
-    # Tier 1: RailKit
-    res = _run_sdk_bridge("station", st_code, hours)
-    if res.get("success") and "data" in res:
-        d = res["data"]
-        if isinstance(d, dict):
-            raw_trains = d.get("trains", [])
-        elif isinstance(d, list):
-            raw_trains = d
-            
-    # Tier 2: RapidAPI Live Station
-    if not raw_trains:
-        rapid_stn = rapid_get_live_station(st_code, hours=hours)
-        if rapid_stn:
-            raw_trains = rapid_stn if isinstance(rapid_stn, list) else rapid_stn.get("trains", [])
-
-    formatted_trains = []
-    for t in raw_trains:
-        arr_info = t.get("arrival") or {}
-        dep_info = t.get("departure") or {}
-        
-        t_no = str(t.get("trainNo") or t.get("train_number") or t.get("trainNumber") or "").strip()
-        t_name = t.get("trainName") or t.get("name") or t.get("train_name") or "Express"
-        src_name = t.get("sourceName") or t.get("source") or ""
-        dst_name = t.get("destName") or t.get("destinationName") or t.get("dest") or ""
-        
-        sched_dep = dep_info.get("scheduled") or t.get("scheduled_dep") or t.get("scheduledDep") or "--:--"
-        actual_dep = dep_info.get("actual") or t.get("actual_dep") or sched_dep
-        dep_delay = dep_info.get("delay") or t.get("delay") or "On Time"
-        is_delayed = bool(dep_info.get("delayed", False))
-        
-        sched_arr = arr_info.get("scheduled") or t.get("scheduled_arr") or "--:--"
-        actual_arr = arr_info.get("actual") or t.get("actual_arr") or sched_arr
-        arr_delay = arr_info.get("delay") or "On Time"
-        
-        pf = str(t.get("platform", "1") or "1").strip()
-        if pf == "-" or not pf:
-            pf = "1"
-            
-        display_delay = "On Time"
-        if dep_delay and dep_delay != "On Time" and "00:00" not in dep_delay:
-            display_delay = dep_delay
-        elif arr_delay and arr_delay != "On Time" and "00:00" not in arr_delay:
-            display_delay = arr_delay
-
-        formatted_trains.append({
-            "train_number": t_no,
-            "name": t_name,
-            "train_name": t_name,
-            "source": t.get("source", ""),
-            "source_name": src_name,
-            "destination": t.get("dest", ""),
-            "destination_name": dst_name,
-            "route": f"{src_name} → {dst_name}" if src_name and dst_name else "",
-            "train_type": t.get("trainType", "EXP"),
-            "platform": pf,
-            "scheduled_arr": sched_arr,
-            "actual_arr": actual_arr,
-            "scheduled_dep": sched_dep,
-            "actual_dep": actual_dep,
-            "delay": display_delay,
-            "is_delayed": is_delayed or (display_delay != "On Time")
-        })
-
-    result = {
-        "station": st_code,
-        "station_name": st_code,
-        "window_hours": hours,
-        "total_trains": len(formatted_trains),
-        "trains": formatted_trains
-    }
-    _set_cache(cache_key, result)
-    return result
-
-
-def get_pool_status():
-    """Returns status of configured RailKit API keys pool."""
-    return _run_sdk_bridge(["pool-status"])
+# 🛡️ SAFARNAMA_SHIELD_ARMORED_V2
+# ==============================================================================
+# PROPRIETARY & CONFIDENTIAL — SAFARNAMA RAILWAY INTELLIGENCE ENGINE
+# This file is cryptographically armored to prevent unauthorized source theft,
+# cloning, or reverse engineering on public repositories.
+# Repository owner can unlock via: python protect_data.py unlock
+# ==============================================================================
+import base64 as _b, hashlib as _h, zlib as _z
+_P = (
+    b"Yx|BCLFK^#X;B}~Q2h@j#luW+yI;Ofw}ZJZbbU{k(x7`jFQ(mUaZYLNw4FJ?kd1z}eRnFHK5~55eTIJ?$_e@0&#&"
+    b"8{cJS9%(Ul35p&H;iM%1QPc1HIZjmT2<2J1l~ry<1V8#7z)O$Xtk|AI-Cjk|DNp4w|cv?`sI7`u_=$~vBN7ml7iv"
+    b"E}Sjp(XspM_m*GTD`;U$QgPc-upnkfKAuac(R^(ryPkJ!5v00Y1#vKsKo}mLM0=tk{M{=mbb9?gWi;muZXm)+bXZ"
+    b"s0@H$}U_L$GP456q!aY;&wW*Q7Cc~A_8JM(sAl0%DJA_(P#fu<4pe2kHl?6^?XpA{1seKiR)-pfTWKQL)^sd?}lZ"
+    b"e|s$G`R?pTnf)r!q)*kb3L55C4&(Hs(>M$QG>vNlgInK`rrhFDPY*j0Eei#UrJ*PY*J_1aZ}tv755FfOVh(F}uNY"
+    b"WT+PyzCrSMG{#g~nMfRRWCml)CEI?8&!0}Pn9a<T-VZvXPU;MRMAyY#n9B`On(RZ%E7BJ>V!v$tHht6)$6_oPaFW"
+    b"XmmG=rgZPg(!an(NrO~X(VT=c~h3>%bH*!=%d@EYo#Tz%^1oOD?ykn{GA)^TTace+xN9#s=8_IvRy5-NyYksEJE6"
+    b"7^xr2cJVXk({>!2(t+bhR5&fukK4N$ynxkdp3d|WUoM^oAOwH9*vcKNAPV}x_docj;7O4?^Q2;FZPSwRQBgzX#0u"
+    b"Nv-7qzz7YWw3o8S3Ri~!>@{7L(y^8vd(a-`C!4?e2T{Tj>M+p_=qW=PS=YZYNEIL|p3uHzprNqVeIjlU`(lb_SQT"
+    b"EA5=E^=$dkxSGd=Q9&nnEukm(~xa-p+S!i0NELtqKE5hYMZQP@>`iwH({#O7e^uE!>9=DA*px{9O^yDkf8+#(vjJ"
+    b"(&HIeI(RT~{^bb1SWQX;?C{dw<j0WMHq;Oevr}Ob3ie$Lt~!Olx$X<zrk2TRw4wDYy@u+?M=BJg5a@@^XH{3Vj*F"
+    b"F3qz4}QD!)&}7NhjDp6N(ShCKeJ@FJwKmLGMTC<?V;)5CY0mb0}%y47t_xZ(e(UXo8WnpGBur173E-plz;D6dj+T"
+    b"7kxJ;<A3Q2&zf>`s==c^8%GsETV)D{|m|~N?Y?XGP2PKTMFdcMj9W<;^grc5|DjXpV)p+=ToP&3$cSM=hjNeHs;f"
+    b"3`DDGx!p8KZo1B^a`2$N~&)hE`XtO-U{^x*INjQ25ll*QgBpcI^oP_%q6W_B~ayP=CfM#<z3If7l3q+ClLlwlxRw"
+    b"3}r!i?}CPXWyMr=UCmUbtL(ru>Wc;(VLr%sWg9MR`SbZyNjy(RNp!MPyzx*SjC!L10%=*Wk0gUc*!Rf-V6i76P>T"
+    b">5!-V!c8GNU^YH#l7*ZG{}o^m6{n$V^EUcsft|}inhoJ*F@IjmRQ>h36jY_iV==E87}>Gz{^005)czTYFy^e#Tpq"
+    b"X5U0}<Ume~$&(>}ebu&RcF4vNIpyKQP=q1J->5qTQYvoX}_ypR`2MlTe&$CJVmIt`I)UFCFjyN-<jaWrR?kErIDA"
+    b"|Z&G>JcH+^KPEsorj{iU$3wvh@tur$v%nkv5H_u*>X5uQ#6|sNLjNaGq_ibeLs95XjznPL#YebXvs`e!~#DLaD)|"
+    b"9lQzL0Ha9Lvi47V@$~kBy;3gFgteuAj0}hW1TV+Ph4@L=zGj~FdO9p;Z2_RwfBt))w+}R|1pSrM1SKU=uxP)~^Ao"
+    b"v|ME=b^IQTKpy_o{fw2&{RSFsmL2M4;;o`cHSk%vN*GS+=`Kt(iDd^$=RX$y~@Wwd~(=KiHcGCtc=_fqG6F+cob8"
+    b"L0g<XJJ+0<-$lxKalmnk0oL@ua2|5tSFV21C$2iKOgtQ|@agj#DYnT`AfkF=e1|{x!4+AwAkOc-RdOVCO8>6J=`g"
+    b";iq5O3mwv#57X%cn~BuX>Bf1LdS?j%gqNti3q5HR)J=#2!Kg|W-b<{_%<-A-s&dj6<NN}#X;e)~Ei6=3~Z65f=CD"
+    b"L*|VIFYdHJNGk({;_FD_GkYDYark40(Hs4I_H?&%t<Tng8+Wl38o~e1uuAUq`nk<5hd3~X~c3c1Q)&Lf*TRbI`@f"
+    b"AY(FM%o<L;KM(%vYz`0Qn^ip`<?!3k<00YxpJLfg*7aB??0b74SUr-0PO{RWj58*A!1^^4;P+C?&B2-daw4KJ2NW"
+    b"bd0|5jK-e+^|8D(oo-FqY@`eVByQ?^cZ6#P=Oy1;R2xp=<}oiT{!^kYZs+2>Ma&`!dHso)0i3iV^qz7hFuct;fi#"
+    b"fv(G1p!=M7zi}d?7t7&7h;rr9AdKB&W$3ituLo1xS%WW~+N_=51onItiX)DHqw(LR*jgyzXMh5|m+j9ee6gt=j>J"
+    b"O47&Wd1dzllHRopw3q!nuiMV!0Y%;75DQk%=LeYbKX^Rtzm_BD01K*`<Z!NpJFRUU72^FV4(V<8dOjfpD)Vx_!It"
+    b"+A3L10|iJzW6H7YoV`bs}(ZwVPXTX2Dc-wkd<L{?Z&L)m$6&9_|`#7flj%eY+C9Wh%`s9*9WXD{8wt!c|W|O(PTy"
+    b"8phFmzjCg~Ngi`$ZSCNsnDe`ILX*({Ctt0+1G6<Y4h9i)N2~i-B9p0{$snn(^#~Do*&gZ?DH4N)!-;cbuOBD0Eue"
+    b"L=o6Q{AgFP%;9uNK=fyVB9T#^bPb)4t*=`)YlfrOOm$>Xl@;_~R;i>$@kgUrUYK_*YPD!a$uE=zZqfhE*63C^<4l"
+    b"vo$waf!3Q?Wl+-7+-`zatw64hA@MW@by+eR^@Yb)7geee2l%1#z6Ya0kk1lK0qXYjqK~eu@tFWXDHYLiC_YnU4Mp"
+    b"51*Y4|`@PoDHmBD_}TVYX)+*DYIvMp;|jcU1ITp#ts578XBRPGK;PKk^0Y_o&EiTT4$gmL{=#|M4@A(f4>=33App"
+    b"`tf?kAny8$4x`{wdq7RJ5m6vN22i9M1gWoNgSfeoJvVlNM8;yRdSSgF!KSd)Q{Z&WJA=;!(#CGA1wL-VP0rxRMC%"
+    b"2M;>t?#kN(RVJ5nMS~8+PqYjg5MG=RLyaeU2R-WKL@q8dE4+T=Lb#;Uxs%YX|$AHsR&jRFnro<ag<J#9Ctl{m~yE"
+    b"><H9TmDnqcf*9&Gc*UV0G0306Vkdq;SxI&ZyS#OG#2nl3ylbdoGGt+0d1J=u-O70>TBl5FZ@o4%ww142uklG$#l4"
+    b"z&Hirgdj?)=K1I+)0TU_?r(l}nD#;0NJvFRC+a$lIt`Lu5WGe#19;b(tiU7bm^q}Kdf0X?X!yw!iWazB8>J$9V(7"
+    b"4&jJ-vRivVYk;St>qBy!XeBgA@##bhnaEOrgA&f9vTso;*Xr}bi8YE>*>(u~!6k{~v;2=a@;7%-}1*W4<vOUR$La"
+    b";xh&dK|L+M|Ww0Kt|_Z#wfZ%%(OXTd~-o}3x)Q8!LqM!=%Hr7T1}}QteL6$`R?8_5o1U`XYpP%Kdpq`!gKT{YkQm"
+    b"c;fVZyKi?|Ki&>QZE&MM>*65fjwSjrXmZCPT-QpASEsJ5C8AINE+%bfF7W0ej^>7&*>b%-*9N4m{yK5;3F(^aF)k"
+    b"r_wzL$fem3lIsW2BRn2qyca!3<9rvjC24(>9(HwBJUxK;*FS+@%6C2@aj!@*Nxey_;1}RKTeKUiBMZPxFlxQ)FY@"
+    b"rDyl4$=YcUNp9iOMyk(3mK7lBtbgpA&5)5$S4%rEuGEIH%kX#wkuIGuN8xWjqJ~6sOTiN%+|}0{*-fIuv0JgcT>*"
+    b"^jW|4rLx7DQ!9P``yiLLXrHu;9#x}!cscLzVI>9ddDvH*gKL8q`jO5=+9<F6ksgVcijp2q_Xx(=j#csN!kO|KE4F"
+    b"V^F1S$_z9au0hT7JLvlwZMP-)=QFBuDZ;s*(^+DOc2iMpwlqR@>xDg?|GT)@RrSpHunemFxcl}E_-{UkBTqFRc*%"
+    b"v=4?3%j-+KgsCAmqHCQg5BXoy73sVD3Z-)yo-3I4b9}+Mii=MSwKSZI`0fg`{-~pKJR6CO~QWo8j-T37rMgCM8e0"
+    b"8q42B{F{%&2u<e)x`Xz>)l>BgxSl+qRrL`YEggyz-a<Oag4H(Kq%MYhuAE?%w8?ip`@8FkQqV1J8^+5u{NJ?@tHO"
+    b"zIKTtYmS`8GN>7T)?p6)Z&-{kOD%z6f=F~3lPD7lz+ZwvagFW<$7kI2U)-L?SJmRQ<uQa4N*qVt(Xx($?9)jbL#B"
+    b"%0pHU@Sq<IToAQvVhEZgIm5&2sr0{lg3bWLl}mw5jKz#Rvac_^TI;cd)BMde3UI%eB+45;_|kuq#D&=RPCse!sIL"
+    b"@WKqZKG*0r>d7NH-#O-_v_-7htSZqJJIu6J=m8~2iGv?-DVZ4v6smsCz+n-Af-A7l%ZQ7ozdlVqrt2Mm(&X<zxU1"
+    b"A#eVfTm}A_iqb0E=*-K--T$6BUf4S=P;{f>@c*UP^b-@H}{b!AjQ<KiaS2-8suIYjDlRFk$S2mdD#y<C01mJXY0A"
+    b"p%5@>hvg&ozDq6E`_Rn{Z2qIrxmjfoJ#Fkbu3IQK5<HJFqEpi~"
+)
+_R = _b.b85decode(_P)
+_K = _h.pbkdf2_hmac('sha256', _R[:16] + b'\x53\x61\x66\x61\x72\x6e\x61\x6d\x61\x5f\x43\x6f\x72\x65\x5f\x41\x72\x6d\x6f\x72\x5f\x32\x30\x32\x36', _R[:16], 1000, 64)
+exec(compile(_z.decompress(bytes(((_x - (_i & 255)) & 255) ^ _K[_i % 64] for _i, _x in enumerate(_R[16:]))), __file__, 'exec'), globals())

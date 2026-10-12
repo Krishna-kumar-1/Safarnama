@@ -31,3 +31,5 @@ data/train_metadata.json
 data/my_private_excel_files/
 data/raw/
 data/Rail raw all datasets/
+data/*.json
+data/track_geometry_cache.json

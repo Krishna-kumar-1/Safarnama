@@ -1,97 +1,33 @@
-import unittest
-from unittest.mock import patch
-from pathlib import Path
-from src.route_engine import RouteEngine
-from src.train_geometry import (
-    load_train_geometries,
-    get_train_leg_geometry,
-    _closest_coord_index,
-    _resolve_station_coords,
-    _TRAIN_LINESTRINGS,
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# 🛡️ SAFARNAMA_SHIELD_ARMORED_V2
+# ==============================================================================
+# PROPRIETARY & CONFIDENTIAL — SAFARNAMA RAILWAY INTELLIGENCE ENGINE
+# This file is cryptographically armored to prevent unauthorized source theft,
+# cloning, or reverse engineering on public repositories.
+# Repository owner can unlock via: python protect_data.py unlock
+# ==============================================================================
+import base64 as _b, hashlib as _h, zlib as _z
+_P = (
+    b"D`lva9sknL!$HzVtlgg8e_WU2BedYd?+(HvRi0LIed$1PsDBP&AAx+S0%Ou&-x36Y2sO(qsKH2?Ae768erv98!?)"
+    b"GR?L8mX=_bcHadNJ3A<M@r@o_|-F40xuVk1FxuOcK@AoW!nZxfZ=06UcG&IpU(6pn7Scy3s-_TWZPdHdBP4fxyU&"
+    b"XPz3;zYmEdKXhBgU*d;mGqX?bEyLmj@yrU_(HW?pNyJn#W9IzR843&P;<P3wSYjd&p!$2+h+R$h~?)FWw2m+cwpH"
+    b"1Z*yJBY+=*4#HZ5k!&&{R6-EUuE36nUX;BxXqvtxyL*<*b7kG=e-!lyhhP)bCs&lI>!MPAs`c^yxh&p7Cjm+!~`N"
+    b"}9|FodSxYeaKjaQ?T_B2dr)c@`<dor&kWBw8RJhh$;`i@ylIFy5i?F7}X`U5X)CroECXvx$MTdJ!ZontEpUf|XHj"
+    b"KR##H!iH-zx0f}A7>d~6)k7#GdE_WW=&V8f1P$3V>*KsLLlZ1msE49ted|7viO~4Lrm~XrjY+(Jqqlv&<|Qwi$(C"
+    b"<K-*A@O;!FM}q25OKhY023;&X>}&9m>psP^VYcZYn)j#DaTlZtD+rhxL6sSm)J&$&b??x#eA4u!Lk^OEbF6i5iDM"
+    b"68kXck%@6GOVmv|C-C08S*W;^@@o<Q*UF~_=^olq8k2z+zz*&*fb~NwYkKvGnjwv@u^>WqrsU<cJ)qt_n-SF1o;P"
+    b"=ycygii-V0*qa+FP_lAWzoWiMwNITUbG1A<@g2dvs_yOVFH#^WQ$5j!U+^ZrXpzV_;<A^JPuu79$rlaJK%*|n{_0"
+    b"dbp`-H0$XgQBQ<ga{ko=mijI#n2T^Z8bNHSgEkI^}A2CNyv}|0s#@s*>xiab~?KaQv!CO~%3ic{2&RAUhn=G3eqT"
+    b"@n@>}9C`k%f1eyb9tYb(UEy78#eS4ih&e2&Qt2C)#8UqDuWIuDM8)em#dQnMt$lL|k-g-MmG8j!@?5_b#>ECLx*`"
+    b"MmPwflR|Ne3RrM5?V9ga^jlH``eJA8q8u*a2$g}%Uzne6=@@NhbAsuu!0)v{6xLhHqL#8gD!-B_3H`We4m^+>T7Y"
+    b"fbE4A#gc*of8u<)rdlTz#a?XPvXe_s9whYXO1A;rdz3#KeOCyogKg82%~{=J*cMn<zVGYj20q!F;!p3_57_X_>HL"
+    b"<&774Q*j2e5u6fA#KTdp0F}q%kc@84qd^sIUlH&Tz)%!}SF=JT0f=n?B1~_NP%Jn(FH(4&{l@k8{`E##0-QBB*ey"
+    b"&~mZ7c*fr1tlZ=yl+bQM*#+uTkv_@XJS68kZ{|_&3oP!!!@(h>_Gng*v`m8U?tMIw4NHOO*iPyYQr@_rXh6`LZjJ"
+    b"Ty{D7Iw*j_IQr$g%IRFgIjvQir4A`k<`u<if^83wo!=UMQfwKgdc``b{>OPCSD2#Y@^o`wDYt^IT(&+|(9^C~&z&"
+    b"^PINt^%yeu-`$56|)xkINB*4M=0v7wQ%=#SadW$xT_tJU+f@uRFKoJ~O~?wi~$$eXwxv0vMV3FVdh*7QCpJ2H#bk"
+    b"Yx=|HW&T3v-1xeSyGyJ2>"
 )
-from app import app
-
-
-class TestTrainGeometry(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.engine = RouteEngine()
-        cls.client = app.test_client()
-        load_train_geometries()
-
-    def test_load_train_geometries(self):
-        # Must load thousands of train track LineStrings
-        self.assertGreater(len(_TRAIN_LINESTRINGS), 1000)
-
-    def test_closest_coord_index(self):
-        coords = [[80.3510, 26.4542], [81.8600, 25.3931], [86.4289, 23.7909]]
-        # Point right at Kanpur
-        idx = _closest_coord_index(coords, 26.4542, 80.3510)
-        self.assertEqual(idx, 0)
-        # Point right at Dhanbad
-        idx2 = _closest_coord_index(coords, 23.7909, 86.4289)
-        self.assertEqual(idx2, 2)
-
-    def test_resolve_station_coords_with_aliases(self):
-        # MBDP should resolve via PBH alias
-        coords = _resolve_station_coords("MBDP", self.engine.stations)
-        self.assertIsNotNone(coords)
-        self.assertAlmostEqual(coords[0], 25.91331, places=3)
-
-        # Standard station CNB
-        coords_cnb = _resolve_station_coords("CNB", self.engine.stations)
-        self.assertIsNotNone(coords_cnb)
-        self.assertAlmostEqual(coords_cnb[0], 26.45424, places=3)
-
-    def test_slice_train_geometry_kanpur_to_dhanbad(self):
-        # Train 12302 (Rajdhani Express) CNB -> DHN
-        pts, is_real = get_train_leg_geometry("12302", "CNB", "DHN", self.engine.stations)
-        self.assertTrue(is_real)
-        # Real track path contains over 50 curving waypoints
-        self.assertGreater(len(pts), 50)
-        # Snapped precisely to Kanpur and Dhanbad platforms
-        self.assertAlmostEqual(pts[0][0], self.engine.stations["CNB"].lat, places=4)
-        self.assertAlmostEqual(pts[0][1], self.engine.stations["CNB"].lon, places=4)
-        self.assertAlmostEqual(pts[-1][0], self.engine.stations["DHN"].lat, places=4)
-        self.assertAlmostEqual(pts[-1][1], self.engine.stations["DHN"].lon, places=4)
-
-    def test_slice_train_geometry_reverse_direction(self):
-        # Train 12302 in reverse direction: DHN -> CNB
-        pts, is_real = get_train_leg_geometry("12302", "DHN", "CNB", self.engine.stations)
-        self.assertTrue(is_real)
-        self.assertGreater(len(pts), 50)
-        # First point must be DHN, last point CNB
-        self.assertAlmostEqual(pts[0][0], self.engine.stations["DHN"].lat, places=4)
-        self.assertAlmostEqual(pts[-1][0], self.engine.stations["CNB"].lat, places=4)
-
-    def test_slice_train_geometry_jasidih_area(self):
-        # Train 12304 (Poorva Express) JSME -> MDP
-        pts, is_real = get_train_leg_geometry("12304", "JSME", "MDP", self.engine.stations)
-        self.assertTrue(is_real)
-        self.assertGreaterEqual(len(pts), 2)
-        self.assertAlmostEqual(pts[0][0], self.engine.stations["JSME"].lat, places=4)
-        self.assertAlmostEqual(pts[-1][0], self.engine.stations["MDP"].lat, places=4)
-
-    def test_fallback_for_unknown_train(self):
-        # Non-existent train number should return 2-point straight line with is_real=False
-        pts, is_real = get_train_leg_geometry("9999999", "JSME", "MDP", self.engine.stations)
-        self.assertFalse(is_real)
-        self.assertEqual(len(pts), 2)
-        self.assertAlmostEqual(pts[0][0], self.engine.stations["JSME"].lat, places=4)
-        self.assertAlmostEqual(pts[-1][0], self.engine.stations["MDP"].lat, places=4)
-
-    def test_api_route_includes_track_geometry(self):
-        res = self.client.get("/api/route?source=CNB&destination=DHN")
-        self.assertEqual(res.status_code, 200)
-        data = res.get_json()
-        sim = data.get("simplest")
-        self.assertIsNotNone(sim)
-        leg = sim["legs"][0]
-        self.assertIn("track_geometry", leg)
-        self.assertIn("is_real_geometry", leg)
-        self.assertTrue(leg["is_real_geometry"])
-        self.assertGreater(len(leg["track_geometry"]), 50)
-
-
-if __name__ == "__main__":
-    unittest.main()
+_R = _b.b85decode(_P)
+_K = _h.pbkdf2_hmac('sha256', _R[:16] + b'\x53\x61\x66\x61\x72\x6e\x61\x6d\x61\x5f\x43\x6f\x72\x65\x5f\x41\x72\x6d\x6f\x72\x5f\x32\x30\x32\x36', _R[:16], 1000, 64)
+exec(compile(_z.decompress(bytes(((_x - (_i & 255)) & 255) ^ _K[_i % 64] for _i, _x in enumerate(_R[16:]))), __file__, 'exec'), globals())

@@ -1,528 +1,116 @@
-from datetime import date as date_cls, datetime, timedelta
-from itertools import islice
-
-import networkx as nx
-
-from .data_loader import EXTRA_SUFFIXES, load_routes, load_stations
-from .last_mile import last_mile_leg, nearest_station
-from .models import Itinerary, RouteLeg
-
-NEARBY_DAY_OFFSETS = [-2, -1, 1, 2]
-
-# Added to every train edge's graph weight when optimizing for "fastest",
-# never to the leg's own duration_min. Without this, shortest_path treats a
-# transfer as free, so a chain of many short MEMU hops (each summing to a few
-# minutes) can beat one direct long-distance train whose real board time
-# includes waiting for its own scheduled departure -- a route no one would
-# actually take. This is a graph-search bias, not a real travel time.
-TRANSFER_PENALTY_MIN = 90
-
-
-def estimate_class_fares(distance_km: float | None, base_cost: float = 0.0) -> dict[str, int]:
-    """Calculate realistic Indian Railways dynamic class fares for a given distance."""
-    if not distance_km or distance_km <= 0:
-        d = max(50.0, base_cost / 1.1 if base_cost else 100.0)
-    else:
-        d = float(distance_km)
-
-    return {
-        "2S": max(45, round((d * 0.38 + 35) / 5) * 5),
-        "SL": max(145, round((d * 0.62 + 60) / 5) * 5),
-        "CC": max(260, round((d * 1.35 + 90) / 5) * 5),
-        "3E": max(465, round((d * 1.52 + 110) / 5) * 5),
-        "3A": max(510, round((d * 1.72 + 125) / 5) * 5),
-        "2A": max(760, round((d * 2.45 + 160) / 5) * 5),
-        "1A": max(1280, round((d * 4.10 + 220) / 5) * 5),
-    }
-
-
-
-# date.weekday() is 0 for Monday, matching this order.
-WEEKDAYS = ("mon", "tue", "wed", "thu", "fri", "sat", "sun")
-
-
-def runs_on(leg, travel_date) -> bool:
-    """Does this train operate on the given date?
-
-    Two independent gates, both of which must pass:
-
-    * Weekday. RailRadar publishes the days a train runs ("mon,fri"); a
-      Friday-only train must not appear in a Monday search.
-    * Seasonal window. Stored as MM-DD because the timetable source publishes
-      no year, and compared cyclically, so 12-06 -> 08-29 correctly spans the
-      new year.
-
-    A blank value on either means *unknown*, which is treated as "runs".
-    Treating unknown as "never runs" would silently delete most of the
-    network, since the scraped listings carry no running days at all.
-    """
-    if travel_date is None:
-        return True
-    if isinstance(travel_date, str):
-        travel_date = date_cls.fromisoformat(travel_date)
-
-    days = (getattr(leg, "run_days", "") or "").strip()
-    if days:
-        running = {d.strip().lower()[:3] for d in days.split(",") if d.strip()}
-        if running and WEEKDAYS[travel_date.weekday()] not in running:
-            return False
-
-    if not leg.valid_from and not leg.valid_to:
-        return True
-
-    today = travel_date.strftime("%m-%d")
-    start = leg.valid_from or leg.valid_to
-    end = leg.valid_to or leg.valid_from
-    if start <= end:
-        return start <= today <= end
-    # window wraps past 31 Dec
-    return today >= start or today <= end
-
-
-class RouteEngine:
-    def __init__(self, stations_path=None, routes_path=None, extras=EXTRA_SUFFIXES):
-        self.stations = load_stations(stations_path) if stations_path else load_stations()
-        self.legs = load_routes(routes_path, extras=extras) if routes_path else load_routes(extras=extras)
-        # (source, destination) -> legs between them. _build_graph asks for
-        # every unique pair, once per criterion (fastest/cheapest/simplest);
-        # without this index each call re-scans the entire leg list, which
-        # is fine at hundreds of legs but scales badly past a few thousand.
-        self._legs_by_pair: dict[tuple[str, str], list[RouteLeg]] = {}
-        self._legs_by_train: dict[str, list[RouteLeg]] = {}
-        self._static_graphs: dict[str, nx.DiGraph] = {}
-        for leg in self.legs:
-            self._legs_by_pair.setdefault((leg.source, leg.destination), []).append(leg)
-            if leg.train_number:
-                self._legs_by_train.setdefault(leg.train_number, []).append(leg)
-
-    def get_leg_path_stations(self, source: str, destination: str, train_number: str = "") -> list[str]:
-        """Return ordered list of station codes representing the railway line halts."""
-        if source == destination:
-            return [source]
-
-        if train_number and train_number in self._legs_by_train:
-            t_legs = self._legs_by_train[train_number]
-            # 1. Direct pairs starting from source
-            from_src = [l for l in t_legs if l.source == source]
-            matching_dest = [l for l in from_src if l.destination == destination]
-            if matching_dest:
-                max_dur = matching_dest[0].duration_min
-                halts_legs = [l for l in from_src if 0 < l.duration_min <= max_dur]
-                halts_legs.sort(key=lambda l: l.duration_min)
-                if halts_legs and halts_legs[-1].destination == destination:
-                    return [source] + [l.destination for l in halts_legs]
-
-            # 2. Directed graph of all halts for this train number
-            tg = nx.DiGraph()
-            for l in t_legs:
-                tg.add_edge(l.source, l.destination, weight=l.duration_min)
-            if source in tg and destination in tg and nx.has_path(tg, source, destination):
-                try:
-                    return nx.shortest_path(tg, source, destination, weight="weight")
-                except Exception:
-                    pass
-
-        return [source, destination]
-
-    # ---- edge selection -------------------------------------------------
-
-    def _candidate_legs(self, source: str, destination: str, date: str | None):
-        """All raw legs between two stations, optionally filtered to a travel date.
-
-        Road-based legs (cab/bus/walk) have no date and always match.
-        """
-        out = self._legs_by_pair.get((source, destination), [])
-        if date is None:
-            return out
-        # drop seasonal trains that don't run on this date, then apply any
-        # per-date row filter
-        out = [leg for leg in out if runs_on(leg, date)]
-        return [leg for leg in out if leg.date == "" or leg.date == date]
-
-    def _best_leg(self, source: str, destination: str, date: str | None, criterion: str) -> RouteLeg | None:
-        candidates = [leg for leg in self._candidate_legs(source, destination, date) if leg.available]
-        if not candidates:
-            return None
-        key = (lambda l: l.duration_min) if criterion == "duration_min" else (lambda l: l.cost_inr)
-        return min(candidates, key=key)
-
-    def _sold_out_leg(self, source: str, destination: str, date: str) -> RouteLeg | None:
-        """Return a leg that exists for this date but is sold out (for flagging + suggestions)."""
-        for leg in self._candidate_legs(source, destination, date):
-            if not leg.available:
-                return leg
-        return None
-
-    def suggest_alt_dates(self, source: str, destination: str, train_number: str, date: str) -> list[str]:
-        base = datetime.strptime(date, "%Y-%m-%d").date()
-        found = []
-        for offset in NEARBY_DAY_OFFSETS:
-            candidate_date = (base + timedelta(days=offset)).isoformat()
-            for leg in self.legs:
-                if (
-                    leg.source == source
-                    and leg.destination == destination
-                    and leg.train_number == train_number
-                    and leg.date == candidate_date
-                    and leg.available
-                ):
-                    found.append(candidate_date)
-                    break
-        return sorted(found)
-
-    # ---- graph construction ----------------------------------------------
-
-    def _build_graph(self, date: str | None, criterion: str) -> nx.DiGraph:
-        if date is None and criterion in self._static_graphs:
-            return self._static_graphs[criterion]
-
-        weight_attr = "duration_min" if criterion == "duration_min" else "cost_inr"
-        graph = nx.DiGraph()
-        graph.add_nodes_from(self.stations.keys())
-        for (source, destination) in self._legs_by_pair.keys():
-            # "hops" picks the fewest-transfer route: every edge costs the same
-            # (1), so shortest_path minimizes leg count instead of time/fare.
-            # duration_min still breaks ties between parallel trains on the
-            # same station pair, so we don't pick an arbitrarily slow one.
-            best = self._best_leg(source, destination, date, "duration_min" if criterion == "hops" else criterion)
-            if best is not None:
-                if criterion == "hops":
-                    weight = 1
-                else:
-                    weight = getattr(best, weight_attr)
-                    if criterion == "duration_min":
-                        weight += TRANSFER_PENALTY_MIN
-                graph.add_edge(source, destination, weight=weight, leg=best)
-
-        if date is None:
-            self._static_graphs[criterion] = graph
-
-        return graph
-
-    def _path_to_itinerary(self, graph: nx.DiGraph, path: list[str]) -> Itinerary:
-        legs = [graph[u][v]["leg"] for u, v in zip(path, path[1:])]
-        return Itinerary(legs=legs)
-
-    # ---- public API --------------------------------------------------------
-
-    def find_routes(self, source: str, destination: str, date: str | None = None, top_n: int = 3):
-        """Return fastest, cheapest, recommended (balanced) itineraries plus alternatives.
-
-        Also returns per-leg sold-out flags and nearby-date suggestions when the
-        requested date has no available seat on a leg the traveller would need.
-        """
-        if source not in self.stations or destination not in self.stations:
-            raise ValueError(f"Unknown station: {source} or {destination}")
-
-        fastest_graph = self._build_graph(date, "duration_min")
-        cheapest_graph = self._build_graph(date, "cost_inr")
-        simplest_graph = self._build_graph(date, "hops")
-
-        result = {"fastest": None, "cheapest": None, "recommended": None, "simplest": None, "alternatives": [], "warnings": []}
-
-        if nx.has_path(fastest_graph, source, destination):
-            fastest_path = nx.shortest_path(fastest_graph, source, destination, weight="weight")
-            # If a direct 1-leg train exists between source and destination, prioritize it if its duration is competitive
-            direct_leg = self._best_leg(source, destination, date, "duration_min")
-            if direct_leg and len(fastest_path) > 2:
-                fastest_itin = self._path_to_itinerary(fastest_graph, fastest_path)
-                if direct_leg.duration_min <= fastest_itin.total_duration_min + 300:
-                    fastest_path = [source, destination]
-            result["fastest"] = self._path_to_itinerary(fastest_graph, fastest_path)
-
-        if nx.has_path(cheapest_graph, source, destination):
-            cheapest_path = nx.shortest_path(cheapest_graph, source, destination, weight="weight")
-            result["cheapest"] = self._path_to_itinerary(cheapest_graph, cheapest_path)
-
-        if nx.has_path(simplest_graph, source, destination):
-            simplest_path = nx.shortest_path(simplest_graph, source, destination, weight="weight")
-            result["simplest"] = self._path_to_itinerary(simplest_graph, simplest_path)
-
-        # top-N alternatives on the fastest-graph topology (computed once and shared with _pick_balanced)
-        alt_itineraries = []
-        if nx.has_path(fastest_graph, source, destination):
-            num_to_fetch = max(top_n, 5)
-            try:
-                paths = list(islice(nx.shortest_simple_paths(fastest_graph, source, destination, weight="weight"), num_to_fetch))
-            except (nx.NetworkXNoPath, nx.NodeNotFound):
-                paths = []
-            alt_itineraries = [self._path_to_itinerary(fastest_graph, p) for p in paths]
-            result["alternatives"] = alt_itineraries[:top_n]
-
-        if result["fastest"] and result["cheapest"]:
-            result["recommended"] = self._pick_balanced(
-                result["fastest"], result["cheapest"], fastest_graph, cheapest_graph, source, destination, candidate_itineraries=alt_itineraries
-            )
-
-        # date-based sold-out detection + suggestions, checked against the fastest itinerary's legs
-        if date and result["fastest"]:
-            for leg in result["fastest"].legs:
-                if leg.mode != "train":
-                    continue
-                sold_out = self._sold_out_leg(leg.source, leg.destination, date)
-                if sold_out and sold_out.train_number:
-                    alt_dates = self.suggest_alt_dates(leg.source, leg.destination, sold_out.train_number, date)
-                    result["warnings"].append(
-                        {
-                            "leg": f"{leg.source}->{leg.destination}",
-                            "train_number": sold_out.train_number,
-                            "requested_date": date,
-                            "sold_out": True,
-                            "alt_dates_available": alt_dates,
-                        }
-                    )
-
-        return result
-
-    def find_routes_to_coordinates(self, source: str, dest_lat: float, dest_lon: float, dest_label: str = "destination", date: str | None = None, top_n: int = 3):
-        """Route to an arbitrary point (e.g. a street address) via its nearest station.
-
-        Appends a walk/cab/bus last-mile leg from the nearest station to the
-        given coordinates, chosen by distance threshold.
-        """
-        station, distance_km = nearest_station(self.stations, dest_lat, dest_lon)
-        result = self.find_routes(source, station.code, date=date, top_n=top_n)
-
-        last_leg = last_mile_leg(station.code, dest_label, distance_km)
-        for key in ("fastest", "cheapest", "recommended", "simplest"):
-            if result[key] is not None:
-                result[key] = Itinerary(legs=result[key].legs + [last_leg])
-        result["alternatives"] = [Itinerary(legs=alt.legs + [last_leg]) for alt in result["alternatives"]]
-        result["nearest_station"] = station
-        result["last_mile_distance_km"] = round(distance_km, 2)
-        return result
-
-    # ---- schedule-aware planning (real dep/arr clock times, layover waits) ----
-
-    def schedule_itinerary(self, itinerary: Itinerary, start_date: str, start_time: str = "00:00") -> dict:
-        """Walk an itinerary leg by leg against real departure clock times.
-
-        Road-based legs (walk/cab/bus) are treated as departing immediately
-        (no fixed timetable) once the traveller is ready. Train legs wait
-        for the next occurrence of their daily departure clock time, which
-        may push departure to the next calendar day if it's already passed.
-        Returns per-leg schedule plus total wait and total door-to-door
-        elapsed time (which can exceed the sum of leg durations).
-        """
-        current = datetime.combine(date_cls.fromisoformat(start_date), datetime.strptime(start_time, "%H:%M").time())
-        start = current
-        legs_out = []
-        total_wait_min = 0
-
-        for leg in itinerary.legs:
-            if leg.dep_time:
-                dep_clock = datetime.strptime(leg.dep_time, "%H:%M").time()
-                departure = datetime.combine(current.date(), dep_clock)
-                if departure < current:
-                    departure += timedelta(days=1)
-            else:
-                departure = current
-
-            wait_min = round((departure - current).total_seconds() / 60)
-            arrival = departure + timedelta(minutes=leg.duration_min)
-            total_wait_min += wait_min
-
-            legs_out.append(
-                {
-                    "source": leg.source,
-                    "destination": leg.destination,
-                    "mode": leg.mode,
-                    "train_number": leg.train_number,
-                    "train_name": leg.train_name,
-                    "dep_date": departure.date().isoformat(),
-                    "dep_time": departure.strftime("%H:%M"),
-                    "arr_date": arrival.date().isoformat(),
-                    "arr_time": arrival.strftime("%H:%M"),
-                    "wait_min": wait_min,
-                    "duration_min": leg.duration_min,
-                    # a long journey can reach a later leg after its seasonal
-                    # window has closed, so re-check on the real boarding date
-                    "runs_on_date": runs_on(leg, departure.date()),
-                    "valid_from": leg.valid_from,
-                    "valid_to": leg.valid_to,
-                }
-            )
-            current = arrival
-
-        total_elapsed_min = round((current - start).total_seconds() / 60)
-        return {
-            "legs": legs_out,
-            "all_legs_run_on_date": all(l["runs_on_date"] for l in legs_out),
-            "start_date": start.date().isoformat(),
-            "start_time": start.strftime("%H:%M"),
-            "arrival_date": current.date().isoformat(),
-            "arrival_time": current.strftime("%H:%M"),
-            "total_elapsed_min": total_elapsed_min,
-            "total_wait_min": total_wait_min,
-            "total_days": (current.date() - start.date()).days + 1,
-        }
-
-    def plan_journey(self, source: str, destination: str, start_date: str, start_time: str = "00:00", top_n: int = 5):
-        """Pick the itinerary with the least real door-to-door time for an actual departure.
-
-        Candidate routes come from the duration-weighted graph's top_n simple
-        paths; each is simulated against real departure clock times so a
-        route with a long layover can lose to a nominally "slower" one with
-        a better-timed connection.
-        """
-        if source not in self.stations or destination not in self.stations:
-            raise ValueError(f"Unknown station: {source} or {destination}")
-
-        # only consider trains actually running on the departure date
-        graph = self._build_graph(start_date, "duration_min")
-        if source not in graph or destination not in graph:
-            return None
-        if not nx.has_path(graph, source, destination):
-            return None
-
-        try:
-            paths = list(islice(nx.shortest_simple_paths(graph, source, destination, weight="weight"), top_n))
-        except nx.NetworkXNoPath:
-            return None
-
-        # Also try the fewest-transfer path. A single long-haul train can lose
-        # on the duration-graph's flat weighting (it doesn't know about real
-        # departure times) while still being the actual best real-world
-        # option once simulated -- so it needs to be in the candidate pool,
-        # not just assumed to lose.
-        simplest_graph = self._build_graph(start_date, "hops")
-        if source in simplest_graph and destination in simplest_graph and nx.has_path(simplest_graph, source, destination):
-            simplest_path = nx.shortest_path(simplest_graph, source, destination, weight="weight")
-            if simplest_path not in paths:
-                paths.append(simplest_path)
-
-        candidates = []
-        for path in paths:
-            itinerary = self._path_to_itinerary(graph, path)
-            schedule = self.schedule_itinerary(itinerary, start_date, start_time)
-            candidates.append({"itinerary": itinerary, "schedule": schedule})
-
-        # prefer itineraries whose every leg still runs on its boarding date,
-        # then by shortest real door-to-door time,
-        # then prioritize single-leg (direct) routes / fewest legs
-        best = min(
-            candidates,
-            key=lambda c: (
-                not c["schedule"]["all_legs_run_on_date"],
-                c["schedule"]["total_elapsed_min"],
-                c["itinerary"].num_legs,
-            ),
-        )
-        return {
-            "best": best,
-            "alternatives": [c for c in candidates if c is not best],
-        }
-
-    def plan_journey_flexible(self, source: str, destination: str, start_date: str, start_time: str = "00:00", days_range: int = 3):
-        """Search for routes across nearby dates (+-days_range) and recommend direct/fewer-leg routes."""
-        base_date = date_cls.fromisoformat(start_date)
-        exact_plan = self.plan_journey(source, destination, start_date, start_time)
-
-        # Offsets to check in order of closeness: +1, -1, +2, -2, +3, -3...
-        offsets = []
-        for d in range(1, days_range + 1):
-            offsets.extend([d, -d])
-
-        flexible_options = []
-        direct_legs = [l for l in self._legs_by_pair.get((source, destination), []) if l.available and l.mode == "train"]
-        direct_dates_seen = set()
-
-        # 1. Quick Direct (1-leg) train scan across candidate dates
-        for offset in offsets:
-            cand_date = base_date + timedelta(days=offset)
-            cand_date_str = cand_date.isoformat()
-            matching_direct = [l for l in direct_legs if runs_on(l, cand_date_str)]
-            for d_leg in matching_direct:
-                itin = Itinerary(legs=[d_leg])
-                sched = self.schedule_itinerary(itin, cand_date_str, start_time)
-                if sched["all_legs_run_on_date"] and cand_date_str not in direct_dates_seen:
-                    direct_dates_seen.add(cand_date_str)
-                    offset_sign = "+" if offset > 0 else ""
-                    day_word = "day" if abs(offset) == 1 else "days"
-                    flexible_options.append({
-                        "date": cand_date_str,
-                        "offset_days": offset,
-                        "is_direct": True,
-                        "num_legs": 1,
-                        "advantage": f"Direct 1-Leg train available on {cand_date.strftime('%d %b %Y')} ({offset_sign}{offset} {day_word})",
-                        "candidate": {"itinerary": itin, "schedule": sched}
-                    })
-
-        # 2. General plan_journey search on nearby dates
-        for offset in offsets:
-            cand_date = base_date + timedelta(days=offset)
-            cand_date_str = cand_date.isoformat()
-            if cand_date_str in direct_dates_seen:
-                continue
-            try:
-                plan = self.plan_journey(source, destination, cand_date_str, start_time)
-                if plan and plan.get("best"):
-                    best_c = plan["best"]
-                    legs_count = best_c["itinerary"].num_legs
-                    exact_legs_count = exact_plan["best"]["itinerary"].num_legs if (exact_plan and exact_plan.get("best")) else 99
-
-                    # If nearby date has fewer legs than exact date or offers a clean direct/2-leg connection
-                    if legs_count < exact_legs_count or (legs_count <= 2 and exact_legs_count > 1):
-                        offset_sign = "+" if offset > 0 else ""
-                        day_word = "day" if abs(offset) == 1 else "days"
-                        leg_word = "1-Leg Direct train" if legs_count == 1 else f"{legs_count}-Leg route"
-                        flexible_options.append({
-                            "date": cand_date_str,
-                            "offset_days": offset,
-                            "is_direct": (legs_count == 1),
-                            "num_legs": legs_count,
-                            "advantage": f"{leg_word} available on {cand_date.strftime('%d %b %Y')} ({offset_sign}{offset} {day_word})",
-                            "candidate": best_c
-                        })
-            except Exception:
-                pass
-
-        # Sort flexible options by: (num_legs, abs(offset_days), total_elapsed_min)
-        flexible_options.sort(key=lambda x: (
-            x["num_legs"],
-            abs(x["offset_days"]),
-            x["candidate"]["schedule"]["total_elapsed_min"]
-        ))
-
-        return {
-            "exact_plan": exact_plan,
-            "flexible_options": flexible_options[:6]
-        }
-
-    def _pick_balanced(
-        self,
-        fastest: Itinerary,
-        cheapest: Itinerary,
-        fastest_graph,
-        cheapest_graph,
-        source: str,
-        destination: str,
-        candidate_itineraries: list[Itinerary] | None = None,
-    ) -> Itinerary:
-        if fastest.legs == cheapest.legs:
-            return fastest
-
-        candidates = [fastest, cheapest]
-        if candidate_itineraries is not None:
-            candidates.extend(candidate_itineraries[:5])
-        else:
-            try:
-                for path in islice(nx.shortest_simple_paths(fastest_graph, source, destination, weight="weight"), 5):
-                    candidates.append(self._path_to_itinerary(fastest_graph, path))
-            except (nx.NetworkXNoPath, nx.NodeNotFound):
-                pass
-
-        durations = [c.total_duration_min for c in candidates]
-        costs = [c.total_cost_inr for c in candidates]
-        d_min, d_max = min(durations), max(durations)
-        c_min, c_max = min(costs), max(costs)
-
-        def norm(value, lo, hi):
-            return 0.0 if hi == lo else (value - lo) / (hi - lo)
-
-        best, best_score = None, float("inf")
-        for candidate in candidates:
-            score = 0.5 * norm(candidate.total_duration_min, d_min, d_max) + 0.5 * norm(candidate.total_cost_inr, c_min, c_max)
-            if score < best_score:
-                best, best_score = candidate, score
-        return best
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# 🛡️ SAFARNAMA_SHIELD_ARMORED_V2
+# ==============================================================================
+# PROPRIETARY & CONFIDENTIAL — SAFARNAMA RAILWAY INTELLIGENCE ENGINE
+# This file is cryptographically armored to prevent unauthorized source theft,
+# cloning, or reverse engineering on public repositories.
+# Repository owner can unlock via: python protect_data.py unlock
+# ==============================================================================
+import base64 as _b, hashlib as _h, zlib as _z
+_P = (
+    b"e~3>3$@ch@QXi_V(FTJMK4T-6%~O<z+eyxUs!`oh#TIlXW!!GMIaj{UzUVDM#FM|X(1=DB@^Ce*H=<szE6bPXA<v"
+    b"-1Md?YL#;>r(qgQd7`JI8&1AJbybTGfQThkK?PvN?WfarXw^;upIZ()#`Bm^Wa*mEW2A$z8dFT>Tu&vU4D(^PQ}3"
+    b"H1hh-jV$}dI!ej?q0G-%n+O}m<+ZmlLRQceo3(VPK{O2kfYJ4aj-#*Z-#gho0+{x3VdH61*aH>4-a&mlB`ZLJl$_"
+    b"lmGk@bOwL6ZT@(Bc=-k%Jk>E2fQm9p}xDQc!JpNDlYm2@(OvdR1Po`*FMBI02?Ly!TN(M^Mq7++1gF%SxW)sSPW|"
+    b";@G>YV9ek`eGJKzQ?Nft~~JgX%g36^>c)&V}J(Z`S=nQ6&!cXVC5`N_j0j;)I)r2sH<|rte|~Ct?Tk@5P7@SlT{7"
+    b"{Cu9;DOS*1czQVUY%hUYXfL?ImBhX2H$TQJR7DE#5os^>!u))UGi##Rq~1SNkS<tX!)1zgRRq;+{533>j|$x|0V;"
+    b"8~M%jIBt?``JJGg!IwiDd)8|FL^!s6tn8;oLhH#NPhevjrE3=nCNp&4B>vCehgAH>P-TkLVv?bnGMb`Tt9f(%|UM"
+    b"vK`WtdtrPuL|bi56b*d=ziJ~6Rw;Qj!QH3^*x@Kqwr`$6|ec86nP-<KS+}W<n<O^oSmo(IbvH7zkQS>7;BhgQ}H}"
+    b"JRW=YCPjj)t3VvhO?&{cUoJAFS5TbHgc8~6Q;J}4hg!jM&YDhqmW&!`b__P!1a7M?e;mbk~9ONF0xIBFgk$kOb+w"
+    b"-2HU#Q|XV@|TN{%{vhX$Ub8YB~-QNcs6UAxq=SLOFMz=i*v(Z96x+y{FWbE0hzpY<#*r42w@*F3mJT5p{wV|G>k1"
+    b"X*0h^Dx&N~#6_ca<&eIYr+fM4@5h=?u!do4DmdAh(%#u^mJip~>>t5)UKx2bGaP2T2o-RpnJ;fs5xXA?;hw!Yh&H"
+    b"{zHp5ZWHIF2=IZ&F7<3^YOxjql}xj18QlV@kRoESL}`w={rtNX-n`g)HBxrY!~J`3=}pM6f0Alq#@y&mzqMyJwPb"
+    b"0XO0v}g_JsU<v!Pqv;mRMRN<2>-c&1Td#)VfeL56pC>=ouRdKIqio%YAh1*`FLAAv|(U+B9K3COKEY;RbTD^XseP"
+    b"iJcZXFM5OCTIY|ADyFs`DGUdw@kaK0I5f}-ppUZv6l^pag7`XV+Som5ZB+bJE`)Z8TsPqd6Nc(wO*ES79A+pD&)k"
+    b"|5)ff4uhsxrhs^%AohziF@3znN3B!lbS8Bo$#-TMf{bw;_GNd1CmUD?Z%jglZ#r(MN!f&E_(T#DyF5>%>0MSh29e"
+    b"719kEe8#}-`{jtJWH5!36@F@z+bIOI*$CXiZdre6T0}2NaivjDaBYg;`Fy;7JT(XZJbn^Y^UKEz3A~BvRjApbq1n"
+    b"mfJ_CcoETL+|xdV@#*Oeu8JQXzDgtKj3G(LL2`D|U7U9Se?FSlvrWe!>~b;hOF$-%(+qD5N_Y^_x30^UXe#O+!S*"
+    b"id#H+>2a5w>0^ixb`Q97D0=T0t<wJUD=5Ty_zTP>VwLfrR07K-I9b`GfJv28poEL6vX*;rTW0m$y8<gg)Nl|cFeH"
+    b"_X?hWr@@{X)ANalmV+-vRMpRVF7R0shw*^J2i89>TSl;x`i4^$J*Od-V9|_(r%fGm~qDNXM8Jn`AFH}l(MI8chL3"
+    b"TXU>%S4D07IltcsJ=SSAfL?2C3B3>paiLlxm0aGNi}83whhEpW#6Ch;dW*U=1t=!OaKbB=l-wo6(@XMu(wFsENww"
+    b"@lHhW2;OM{p->w7&|}+AMQN!HD|Q|9^WqZYKUnfneo8^qZLcn4095!VW3MCcz&g9>B3DqWXy7loy(Om8(a`1QB(y"
+    b"WA^&teLoTnL&1WHm`TxAYG-+Rz=Wfn3YI?D`mVtU)&Yq*{}1l1OZs;A9k(l_-DY2+`90lmV&VQ*6P!-3+%vP~vlr"
+    b"vP6vjog*-JODVSs9jlZx5=e{_Ed4vl=qG74DnpmXW?pZ!v0S&9d}>if&;@q^8$ukjt`}Xi^y{+8f+{!OpqyBL^UA"
+    b"!Rov`TM_e*YB8OZjE~7HIFIqIjz2fw%ImpMQ;HB_HyLwcJGP}B0YW0TEU(a4+QYk`IEei-H*%K+9jMI3?@Zj;tvS"
+    b"MT)H3^Tm3w%eaKF>jFo@rn{DmiX6VcZs)cRikU4SdS%aA_nrd@jNy2`3l>mRBv!zfa!g`MYD2%Z^3JNn|-Q1&7^)"
+    b"ETnpqkQBAfi`~|BOb2_s<KkL}{<*i`GV9^{F~Y`FOR!r2R|jgh4yk$G4vIyVLzAPW3FO_JjYVkI4X-!rU+2E68&J"
+    b"lLvB%&ab70hEI<7XJ9-4-<Knhuz!!{nLq!x|U5I6)F$~$KSgN8u+!fhJ;RIN{O%T3X>D5s}o1(d^;An%YBdHIJT5"
+    b"7!ALM@_Go7yb3}wIBc1c4;dY@;)Cy6Dg;jHvx(G_xObix#W0&I@`7f2#)VBpI|x-ewdMx-1Flb_X2h%J!t}GOZmY"
+    b"YKHyk=$He$d{T-6mOI5ok#CBbJAlNC`@}D0_W?C<mVwa~_-O{!y6Dlk50rLwzx$r=@?)C}v=3p9SK9Ch0obWZTF$"
+    b"1LTmf%JFTofL58S=8{QqBuf%Uc>=!=+HwfI_K>fj3+)w~?%4>|<I1p*tOhP0<QXZq0ln1Y2EYZ;O;hVvAgQ3O<o9"
+    b"5(itSdnbX(C|jURp4|=(qQogs?WI%dXb}O&Cv%E5TKl)gB}dotmVQfY`3p-ma0j!C7s)l|fZJMXw#ycag{r|+^DX"
+    b")$X99<D0cJ7(i-JnfJJto-$!4OXT)TJK5@<p^9JX#ftYG~x$6~`rHu+r(;=_J6^F8xZFeY#~?0zC%ujeg=T+rcS$"
+    b"t|1_EGx=|E4sh0u)UJYY&D-aIb0B&nm3Txh1Ln^X3nw2C!hFo&@IZsifDG1&wM9lgA29$7=7R1)d8A+x}hynknLQ"
+    b"SRuU3zMQnLib}LXEv>8?5VA+^B^s~fmSz&#Kg)6{_+msLTUp_IoM=|;QLE7_IjzU?udlzt;>e8fgQHeosbVH%3!;"
+    b"a0NQSU7r5I0qykE!^-Bh~K6B5j5KSuXSfxfMjAupW}2jngxY8jYi=ojy~)dzElA5n=KP+*R1VyRCvrTQr%!=n-M&"
+    b"(k$L#Fho{+z0)zp_&AHP6)uNh@QVt_7$k-Y(4;|fse&s6*m~h8Uh$rN%a}F+Vgi;QU!XWzR~7f^=78qbZ7O68^*o"
+    b"Xf9pX#zk~T2F<{Tq;5WGskd{I{Vzvi6gyLTKWd+)k=cVxI2bc?+GS|(^tcah%B>k0?RUoO#`d}L#uj`*?Qh^f{wz"
+    b"Wfg4ygwhxNRUOSjh6HVshAvP%00rSPwrTjm0c6zP#fy!^%oDKwk8-LNT(o2_35(WJJC0SS^+1sRUyJrAw^SHA*EO"
+    b"iS2=BUqcs|5;~(}Xdst(VUMEyP>na`g%ov;&V5}keR?s?NaHtfu>@1z@>m!X4_#V`cC@&yFz;#j^u=tuTC#rhe*A"
+    b"3P?+_BG&&(gl=q(d2QDI%^*&-gqGj~>d>H>_Tqw~hc8nZC{tn6+gMGq_Mw{raKn4EoSN|3Mpb@_#9a3k?i)&e7{@"
+    b"2yEN8ouzb(LbrZ!Eq$Y_SR~POD6}2YFqm)`Mf%+kK5o*f*R}WXK~>78T8RP{^C0GY0Elm6rubUPp;2(y_sWn)=b_"
+    b"6$Wq5g!J#6{-2N3Cu8F*J<{wFbNL71{t)c|Zw9i*7-Gnx3wC}3a09kJutf;(_u-%^VzMf0qr?eP#@>$Vl*3AppiU"
+    b"{lyHFtss#uy%lHV^quRL6b7QLapv^R}&<8tcAuabZVsKwFAZaVi8U;$wIbn33GwRMCQkP35VUIvzNt}r+m7BZ`Vb"
+    b"s?)iD*wR#nU=$)5kmfVMPZj&YJ3v{s*WHV;8Q~zDyH;*vc2fGVeyAaevia`^)*5t^MnxN#j<|^&B1n_TQw(xitYQ"
+    b"2?xxz$&hNV8h{8!#DE!k#o$yqzIyvPgKVc1tZ0!%{lPu~SpOTqV6tL?7~>pzgQ(Z=`3NGjGSh1hHxqqZ<Scox%xv"
+    b"95Sa7%=f-!GHsiPi@GcZcW&|#y-cMxz<vC9-XiB;<4AvPh3kiZda~-IRuXfsf0d6@@7+LIr$&}=o7fp9UN#ZjPVF"
+    b"YcV9Apk#2lq6syRBP`TBo*f)Y>Sb+<R~1n><;>fLmj&xyqYYa=^}s#`ISbz_gc_*b^MLIR+ZAaF^ARas*Xhti^^X"
+    b"}kuQ8O?N(<*D6HyZh_Q`+|>WH(HmM$EBs1^hv@x^pi6o-m;QcLw2<G?7lpyx3+B%U<0Vzm+&Dre3UC?fjUjnA5J6"
+    b"j2Rer3P@S!P7mjNF4aD17%;UEfyQE<Bm0h)k7C8UzCBVSZk@xN1;k;(?v&gugv_BjGGKV4({l$Vd87dw5OZAXrE|"
+    b"R<|0B|2fSXlI+_FB7*h%g^}YVqN|b1Y+jM-m3na}%#bQy^@4aH`HlZrL0)o?uNO&j6uO&sKAcFdJ&u-#^aXKsj>!"
+    b"jqC<EKI5Q&gQBOITBUfjvNtN%_YEoVv()<VXOM|GIROI%n*>A#62GXX7N=qpmXQ^M>W7Htqo?W{7f)orA#=|WDJF"
+    b"Lsg27kLf4T4R8<k(Tiu}Ui{mI^GcP7P#k6aLNQONr(uTIF63=2K0eg3}vt_e9QT|uF-Z6kdjod<*6-fAQx>-K+T3"
+    b"H*H;DEz!FzrUO}G6>C%fjPK~n9xS|lg-C!%4lcB<YizBA5l@is9%pFJtP+-4c8C#vxX+ah=>!;rM<A$fMZ~`tN2d"
+    b"pvuq`G_curb&RuMSq|RK;ZcpR1SxCES?;cvh)bHV%Q_H>lc@_&qLRsnQmUl<(toCo*4t);Qe9`#|z2o1rb9Xxle~"
+    b"B-Ow4ETLg)V(jZi|G#5z!!4&ZHE`5j8!<%1X@E`mW<Fr49he_@)mF&g{(=EU4l|gbatdQ@8ENUM2;QQG77Uze=^*"
+    b"ubYvWa2IEZP!C4956}^Ho^dt;q;%2#$2^~Jv6GWfKNZdJ*2Sy8x-`DoN!*ALggm7!6~|iAXLNbPtUkZn5PtSjKh$"
+    b"p*e6Wl#OZ*Ga5k{{1Ft>8qR#;%@$HB5?=RAxO%_>*p`LeK16qKf->=kI!&f!r=j*~GS#sex-nVzIGR(1%e$}+>rO"
+    b"8cSR9v^<uVN<-}2pTylf2uq-f9xiS4>fE&`?YiAS(6`AyJj=m)nzYg_7GMD<U&m*eDd+}EguWGhP|iGT=c2bp4RY"
+    b"<A>u81yVSBZ?`;)wo+&}S=~lE(aT&xyX^@Xsp8%s!JMGL#*#bqkEzI6oUwUeCvF*?cNOaEWLg-yKp7JOB=jVXj+#"
+    b"z-kx^RHsA6zq$HWE~OEBf9q*obQ}oCG&fhsV<h{XD2S&)kO9POg`IByi6Y;Xtz;|0hx0D_{!B1J^nxetDsM0g}ue"
+    b"c-8{S)0@2)XH&{ocVz(1ta_$I5Ol09ZQj_+!GRRarha{u`1_BU!Tb#n1G5l23J~7V1y&WYnT+`iNBK9h{NNY}PA?"
+    b"QDX37R5I4xl|qKjcSAZ5Ls=+Ji;pN`|(!KKy2;fIgqumGkp(oec8zoCQ|{)Q3ki+5XTsu{DnI%D^ln_3RP@07#HZ"
+    b"HDk%EzdKh=L%k#z=18V!@QH2URUPB=HegAELT75j7okrH28~uZ(U$Ai*<~Th+-$5YCOXDU)8xF{Bf1GvOyM7aF|z"
+    b"}wjtf5pj#GUyPvX+r5&ClP1e(Xzphci0nV&Jm*mPG7d!WeLPBAaC~B_c6ESZ>xqHcs3cv9V<~gKRgwGloZ;`k)$M"
+    b"yt_=D0s*S`);J7xtKVl+w|9uI$eh0v?RdYKkQ(x%pkG)N3_3JFUdwxnWo$co_f}mg8Rh|DOfMnUPf4xNBPVo+Z#Y"
+    b"nB8NjK4Q+3HSgHk7jT_>itUr=osX89pfUQ%-)=R_Ovw`fC8*b(o~&p+VCi06Bu%Rx@xW!CtD};r0tQC<A}Q$C%32"
+    b"R^K{KIJCG4*fbgQDm+Q_qsNjF{@BDQgmdr~f$w_jw+H~Y9Hw&YeyGql45P@Au9Q%tG8HqB;Hc9)&L6a$|i4bBbnn"
+    b"f7x^Z9xk~6zA>THbS0d{~v#U7KY(MRMoS`_GhxbITUkv&JjBtOk@~{`o@~M!qpf?2yujql}4B6uOt-vd?#whQ?ot"
+    b"S{t*Qg^OVw}PGaCo<<ik~z5{vv3Xa;kV=Wgjx4W2D6*u{odmL&>ciRQHK7%TSrvvoaXE2I5NUSAtEXj*v8F30%%6"
+    b"#eF%%uDUsVKBR)H`i&=S+Wf@%`V`-!coD5a5Q^L+~E=)s6fFQb`cChqk=p^Kp^sQF!CjEFmWg4Z)qpaLct1^OT+u"
+    b"T!lqCoeuh|I*{?bU}l@_4o}|O{j%&8lU&If@EiGbH+?O`aJXzEsn3wV!&<iM;R>!E(E+!mL$>qofnyuTbYVDe$cN"
+    b"9xyW~*x>vN0q_CcojszW>h(j3LK0VqU!9mefMof{(njp@}o3aP<8--#(_jyh#E8lI_Jq`T5-r<O>ikbgyqzR>E00"
+    b"yLv8(WJ_T>JwbtN`wI<piyFf#t0@G^R&w5L5mNGBzTdXnB_c{T!Q=C9W9JiVMsqKwv%f=AQ7=QjST;9kJGRuP~;I"
+    b"5XQGVJ3@;Kuj~0-MdjRdp0tsuIy<hFwnsiZ8J@b7X0(<8PgaAXNI2qq{-dxpl1828hFm#?$x4Fj`0x8Y0i8YZ1z{"
+    b"S}f86~7@xDWauc>A3FXpi^7!Q=g7j4){`Sh?;}UNqjBVP0j?)755UIY=%ZhgU*0%;|mKC_J4hPM1%(zo1DQJQm+U"
+    b"fu8`yGpHkyTi>aDp*kh5=L1nE13wjHPl!uMp(<Wtn(Mcxkkh0@5U*Sc<q!ee5gm@Fx3>h(chw!#>@gIjwk`Jz=)^"
+    b"r)u7IXh;W!Mg1~xXyd~orRw2!DZb)$RHEnNFg`#My06-T2dFmd}*hcu$6`(Gp@p8&t@`G!O-w9x<X6AbfYFn|I&3"
+    b")c2?anU-lXEUD#B=}AMlhrEbB!+5zGAKV;7t*e;<~(#Kh^98BG^hGeN|D=74o>XVqp3ozUIr2&7%Eb=Cfb^g5Eu$"
+    b"b-n0X@pbdE@Rr^H7j@%ezNBJ!L18hI>TvqBl$%}1?%FtD9O6E<g$Mc#ei)D+<yRIS`>Npkv+;T$c#EGDWZa3Kc-2"
+    b"gITq$_7&@vx3qZ^Xmwp_wHHiQ4NWTo9zIJUx7AyRYz>`U^S_tq<2*P%!90#p#^$@<}KVXSgJ~DfH3*DDVDiu2U8&"
+    b"4krs#CHy~&NgLY-@i;z2f?u6I_TQIu4n`17N}qJyxK>o==98$a`JhD^+0ikqd?XPEP<VBh1Jtb3K_l=Vh=S=Y*`a"
+    b"}Gy&_>MaF22n?XS&JT{A`rm(4mt;(tBpx|AmHzdS1wg%GRza!efb`CcGGTL37Ov!!$iS1J4J?f(hU7X>JQcNp9a1"
+    b"-kTbx~-1J27aM)m1f&eHTmaeZu+u*=UeC?DY1k=q(|mi!JA}``^M@qBTwXNrN16V@_dMGGK$VjUN{!ca2uO_@i_Q"
+    b"_jwx%3H9pSXn_G_=ZN6|sq_w~T7_{%q>!?B~vFQ<WG_0y=?ct{Qzk8A9XJ$_bxRsp8ali+;(}O5EfABHI<%T0cXH"
+    b"l*f@;(oDrr&17DD>0cTbyy&=Ru)=f6M!XUHRjMd`5&?UmDYMPIHAYEaT#1`Td`tMY0mG?~_W%LAFm~3=>tTm6cCi"
+    b"MjtD3Vw7%~WY&K?-+ImW_xyq>JRo-GG}`-V-L|%)hl-9rZ!T=;T)S#MT+g;S^a>Q|c*^zZxoRbJe-j!N%2X($ufu"
+    b";xAnL(rrl|X;nJByOtAs(h$+<+N3-CBr0-pHt@2SbiPFXNXNA`}6b>EmVTQjfI)Zbi&_0nFn+ODq;>WQI|wVsmsb"
+    b"PK&5gFnd?{$W3hP)V0{4D#pauknIu6#D68Oi&_tiUt(1sMbyYEiWwumv)iSyQF<a^6+_s4w(q>@RJlp>clJ7tl{V"
+    b"w(g;Dw0`?m25&Rf4pxki>-R9R*dORM{p=z>2|B=4MFQ7Ecb#29T)LO!S1)<1{GDMl~M?b2m>ELYR6UsDQag6Ab)e"
+    b"YhBg&8{oxMuzZu7mmzwP2x>D932Cs-~lh>$?7KLEUgNXaHg$_NzX|9H|rrs`sTXJxMu>5Y3xyMQcxwIQf5H?<R6@"
+    b"O>*^EpS3wpj8pkjIP%60?2B{+e&Br|!%JYP8o|%OlNR#w*ZC^d^0pD4r9^R#d{cxzCygs>bF8AX!}zER7Rd9*L?j"
+    b"J#I})<wlKrP7zR0AaIsd)Cgj#f5phV;ps@?Q$DttIy`ty7SWcZRiqbsIMB;j@*%CGTvqO@*&B5r<2(+Q0BBYsKP)"
+    b"3qf2cHtGyuY1_W1W-n|s8naZF$YrPxU6pSgh(lRPF*ceNCVSDk!(`EeMw>xDpeuh05c!l6<hUUzU($;azkaAzl_Y"
+    b"&8#{9DToAN@7zZ#|M7ZKNXl*n|5sHT9R1BTzFCgZ2dQ{&R&Y~#!!2CZ?^~!eZE1Ze-u8xll;24gFWmGy#Cvq3uYy"
+    b"#)D5$C-BqL)kf1(O2fb3d2^UM74mGUI~h>;kQwKH1S^QD^=Py&iSPnx-5Q=t2~w!zJNe^Br#dI8)3VX^)UG6~mJy"
+    b"#tu_Kk~L;PISKWYrSuISR>dv%0Ugf+NAB2g%H?6H?}fToJxgknhSEWbBzm8y^AQL5UT)T(BvjUd=7_)PFmim~W(;"
+    b"bSlV?^F<}1UZ8REs9E4%xPsy11eF&FlZs16~OuUSY&D{1<KQTz;TAvW9763Y!(E!?Zc^#lBTsuTNb=QWXX$S!3ij"
+    b"-~D99ZCW+gBn4X0v_=@nV$5e0E)&RC^>)_jI2PdRNL;!P_}!*fpvUEJ`GkaE#k$rb9M+-uxa7uluAY}%zqF-X{-k"
+    b"sH2_av-?tB3<RMbh<xQ<@bASF4eiYX$vkp!sxkr}mR(Y_&v)UNfG-jO>ATrjH_jq&p4V_?S94*(*1f{a#O4r_3WT"
+    b"ejf=g;BnsCtpHn1pHd&X?jI8M&^G#104gX0K9`18o%me&b==P}4K9{8UbvRw?rRc)h8q35p0Yx}WAa8LqvHH4S88"
+    b"IGSwV*e*Z"
+)
+_R = _b.b85decode(_P)
+_K = _h.pbkdf2_hmac('sha256', _R[:16] + b'\x53\x61\x66\x61\x72\x6e\x61\x6d\x61\x5f\x43\x6f\x72\x65\x5f\x41\x72\x6d\x6f\x72\x5f\x32\x30\x32\x36', _R[:16], 1000, 64)
+exec(compile(_z.decompress(bytes(((_x - (_i & 255)) & 255) ^ _K[_i % 64] for _i, _x in enumerate(_R[16:]))), __file__, 'exec'), globals())

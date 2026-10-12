@@ -1,743 +1,153 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Safarnama AI Voice & Chatbot Engine (Powered by Google Gemini 3.6 Flash)
-Provides conversational Hinglish route finding, slot filling, voice queries, PNR, and live train tracking.
-"""
-
-import os
-import re
-import json
-import urllib.request
-import urllib.error
-import ssl
-from datetime import date as date_cls, datetime, timedelta
-
-_ssl_ctx = ssl.create_default_context()
-_ssl_ctx.check_hostname = False
-_ssl_ctx.verify_mode = ssl.CERT_NONE
-
-_WORKING_MODEL = None
-
-GEMINI_MODELS = [
-    os.environ.get("GEMINI_MODEL", "gemini-3.6-flash"),
-    "gemini-3.6-flash",
-    "gemini-flash-latest",
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-1.5-flash"
-]
-
-HINDI_MONTHS = {
-    "जनवरी": 1, "फरवरी": 2, "फ़रवरी": 2, "मार्च": 3,
-    "अप्रैल": 4, "अप्रेल": 4, "मई": 5, "जून": 6,
-    "जुलाई": 7, "अगस्त": 8, "सितंबर": 9, "सितम्बर": 9,
-    "अक्टूबर": 10, "अक्तूबर": 10, "नवंबर": 11, "नवम्बर": 11,
-    "दिसंबर": 12, "दिसम्बर": 12
-}
-
-ENGLISH_MONTHS = {
-    "january": 1, "jan": 1,
-    "february": 2, "feb": 2,
-    "march": 3, "mar": 3,
-    "april": 4, "apr": 4,
-    "may": 5,
-    "june": 6, "jun": 6,
-    "july": 7, "jul": 7,
-    "august": 8, "aug": 8,
-    "september": 9, "sep": 9, "sept": 9,
-    "october": 10, "oct": 10,
-    "november": 11, "nov": 11,
-    "december": 12, "dec": 12
-}
-
-POPULAR_STATION_ALIASES = {
-    # English aliases & city names
-    "DELHI": "NDLS", "NEW DELHI": "NDLS", "OLD DELHI": "DLI", "NIZAMUDDIN": "NZM",
-    "HAZRAT NIZAMUDDIN": "NZM", "ANAND VIHAR": "ANVT", "ANAND VIHAR TERMINAL": "ANVT",
-    "DHANBAD": "DHN", "DHANBAD JN": "DHN",
-    "GOVINDPURI": "GOY",
-    "KANPUR": "CNB", "KANPUR CENTRAL": "CNB", "KANPUR ANWARGANJ": "CPA",
-    "HOWRAH": "HWH", "KOLKATA": "KOAA", "SEALDAH": "SDAH",
-    "PRAYAGRAJ": "PRYJ", "ALLAHABAD": "PRYJ", "PRAYAGRAJ JN": "PRYJ",
-    "VARANASI": "BSB", "BANARAS": "BSBS", "MANDUADIH": "BSBS",
-    "PATNA": "PNBE", "PATNA JN": "PNBE", "RAJENDRA NAGAR": "RJPB",
-    "MUMBAI": "MMCT", "MUMBAI CENTRAL": "MMCT", "CSMT": "CSMT", "BOMBAY": "MMCT",
-    "PUNE": "PUNE", "PUNE JN": "PUNE",
-    "JAIPUR": "JP", "JAIPUR JN": "JP",
-    "AHMEDABAD": "ADI", "AHMEDABAD JN": "ADI",
-    "LUCKNOW": "LKO", "LUCKNOW CHARBAGH": "LKO", "LUCKNOW JN": "LJN", "LKO": "LKO",
-    "GORAKHPUR": "GKP", "GORAKHPUR JN": "GKP",
-    "CHENNAI": "MAS", "CHENNAI CENTRAL": "MAS", "MADRAS": "MAS",
-    "BANGALORE": "SBC", "BENGALURU": "SBC", "KSR BENGALURU": "SBC",
-    "HYDERABAD": "HYB", "SECUNDERABAD": "SC",
-    "CHANDIGARH": "CDG", "AMRITSAR": "ASR",
-    "GWALIOR": "GWL", "BHOPAL": "BPL", "HABIBGANJ": "RKMP", "RANI KAMLAPATI": "RKMP",
-    "JABALPUR": "JBP", "INDORE": "INDB",
-    "RANCHI": "RNC", "GAYA": "GAYA", "DEHRADUN": "DDN", "HARIDWAR": "HW",
-    "AGRA": "AGC", "AGRA CANTT": "AGC", "AGRA FORT": "AF", "MATHURA": "MTJ",
-    "SURAT": "ST", "VADODARA": "BRC", "KOTA": "KOTA", "JAMMU": "JAT",
-    "AYODHYA": "AY", "AYODHYA DHAM": "AY", "AYODHYA CANTT": "AYC",
-    "BAREILLY": "BE", "MORADABAD": "MB", "ALIGARH": "ALJN", "MEERUT": "MTC",
-    
-    # Hindi Devanagari aliases
-    "धनबाद": "DHN", "गोविंदपुरी": "GOY",
-    "कानपुर": "CNB", "कानपुर सेंट्रल": "CNB",
-    "हावड़ा": "HWH", "दिल्ली": "NDLS", "नई दिल्ली": "NDLS", "पुरानी दिल्ली": "DLI",
-    "निज़ामुद्दीन": "NZM", "निजामुद्दीन": "NZM", "आनंद विहार": "ANVT",
-    "कोलकाता": "KOAA", "सियालदह": "SDAH",
-    "प्रयागराज": "PRYJ", "इलाहाबाद": "PRYJ",
-    "वाराणसी": "BSB", "बनारस": "BSBS",
-    "पटना": "PNBE", "मुंबई": "MMCT", "पुणे": "PUNE",
-    "जयपुर": "JP", "अहमदाबाद": "ADI",
-    "लखनऊ": "LKO", "चारबाग": "LKO",
-    "गोरखपुर": "GKP", "चेन्नई": "MAS",
-    "बैंगलोर": "SBC", "बेंगलुरु": "SBC", "हैदराबाद": "HYB", "सिकंदराबाद": "SC",
-    "चंडीगढ़": "CDG", "अमृतसर": "ASR",
-    "ग्वालियर": "GWL", "भोपाल": "BPL", "रानी कमलापति": "RKMP",
-    "जबलपुर": "JBP", "इंदौर": "INDB",
-    "राँची": "RNC", "रांची": "RNC", "गया": "GAYA",
-    "देहरादून": "DDN", "हरिद्वार": "HW",
-    "आगरा": "AGC", "मथुरा": "MTJ", "सूरत": "ST", "वडोदरा": "BRC",
-    "कोटा": "KOTA", "जम्मू": "JAT", "अयोध्या": "AY", "अयोध्या धाम": "AY",
-    "बरेली": "BE", "मुरादाबाद": "MB", "अलीगढ़": "ALJN", "मेरठ": "MTC",
-}
-
-
-def _get_gemini_api_key():
-    key = os.environ.get("GEMINI_API_KEY", "")
-    if key:
-        return key.strip()
-    
-    # Read from local .env
-    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
-    if os.path.exists(env_path):
-        try:
-            with open(env_path, "r", encoding="utf-8", errors="ignore") as f:
-                for line in f:
-                    line = line.strip()
-                    if line.startswith("GEMINI_API_KEY="):
-                        return line.split("=", 1)[1].strip().strip('"').strip("'")
-        except Exception:
-            pass
-    return ""
-
-
-def detect_language(text: str) -> str:
-    """
-    Detects whether the text is Hindi (Devanagari script), Hinglish (Roman Hindi), or English.
-    """
-    if not text:
-        return "hinglish"
-    # Devanagari script detection
-    if re.search(r"[\u0900-\u097F]", text):
-        return "hindi"
-
-    low = text.lower()
-    hinglish_markers = {
-        "kahan", "kaha", "jana", "jaana", "chahiye", "batao", "bataiye", "batayein",
-        "tareekh", "taarikh", "tarikh", "mahina", "mahine", "kaunsa", "konsa",
-        "se", "tak", "liye", "subah", "sham", "shaam", "raat", "dopahar",
-        "aaj", "kal", "parso", "parson", "bhejo", "hoga", "hai", "hain", "hoon",
-        "kaise", "milegi", "milega", "kardo", "kar do", "dikhao", "karo", "bhi",
-        "mujhe", "humko", "aap", "tum", "mera", "meri", "gaadi", "gadi",
-        "batana", "dhundo", "dhoondo", "agle", "agla", "pichle", "wali", "wale"
-    }
-    words = set(re.findall(r"\b[a-z]+\b", low))
-    if words & hinglish_markers:
-        return "hinglish"
-
-    if re.search(r"\b(se|tak|ke\s+liye|ki|ko|mein|me)\b", low):
-        return "hinglish"
-
-    return "english"
-
-
-def extract_day(text: str):
-    """Extracts day of month (1-31) from natural text."""
-    if not text:
-        return None
-    # 1. Day with explicit date/ordinal suffix or keyword
-    m = re.search(r'\b([1-9]|[12]\d|3[01])\s*(?:st|nd|rd|th|वीं|vi|taarikh|tareekh|tarikh|तारीख|ko|को)\b', text, re.IGNORECASE)
-    if m:
-        return int(m.group(1))
-    # 2. Prefix keyword e.g. "tareekh 25", "taarikh 25", "तारीख 25", "date 25"
-    m2 = re.search(r'(?:taarikh|tareekh|tarikh|तारीख|date)\s*([1-9]|[12]\d|3[01])\b', text, re.IGNORECASE)
-    if m2:
-        return int(m2.group(1))
-    # 3. e.g. "25 ke liye" or "25 के लिए"
-    m3 = re.search(r'\b([1-9]|[12]\d|3[01])\s+(?:ke\s+liye|के\s+लिए)', text, re.IGNORECASE)
-    if m3:
-        return int(m3.group(1))
-    # 4. Standalone number when user enters just the day e.g. "25"
-    m4 = re.fullmatch(r'\s*([1-9]|[12]\d|3[01])\s*', text)
-    if m4:
-        return int(m4.group(1))
-    return None
-
-
-def extract_month(text: str):
-    """Extracts month number (1-12) and name from English, Hindi, or relative references."""
-    if not text:
-        return None, None
-    low = text.lower().strip()
-
-    # 1. Hindi Devanagari months
-    for m_hi, m_num in HINDI_MONTHS.items():
-        if m_hi in text:
-            return m_num, m_hi
-
-    # 2. English months
-    for m_en, m_num in ENGLISH_MONTHS.items():
-        if re.search(rf'\b{m_en}\b', low):
-            return m_num, m_en.title()
-
-    # 3. Relative month
-    if re.search(r'\b(next\s+month|agle\s+mahine?|अगले\s+महीने|अगला\s+महीना)\b', low):
-        today = datetime.now()
-        nm = today.month + 1 if today.month < 12 else 1
-        return nm, "next month"
-
-    if re.search(r'\b(this\s+month|is\s+mahine?|इसी\s+महीने|इस\s+महीने)\b', low):
-        today = datetime.now()
-        return today.month, "this month"
-
-    return None, None
-
-
-def call_gemini(prompt: str, system_instruction: str = None, temperature: float = 0.3):
-    """Executes a fast request to Google Gemini with verified working model caching and 3.5s timeout."""
-    global _WORKING_MODEL
-    api_key = _get_gemini_api_key()
-    if not api_key:
-        return None, "Gemini API key is not configured in .env."
-
-    models_to_try = [_WORKING_MODEL] if _WORKING_MODEL else []
-    for m in GEMINI_MODELS:
-        if m not in models_to_try:
-            models_to_try.append(m)
-
-    for model in models_to_try:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={api_key}"
-        
-        payload = {
-            "contents": [
-                {
-                    "parts": [
-                        {"text": prompt}
-                    ]
-                }
-            ],
-            "generationConfig": {
-                "temperature": temperature,
-                "maxOutputTokens": 350,
-            }
-        }
-        
-        if system_instruction:
-            payload["systemInstruction"] = {
-                "parts": [{"text": system_instruction}]
-            }
-
-        req = urllib.request.Request(
-            url,
-            data=json.dumps(payload).encode("utf-8"),
-            headers={"Content-Type": "application/json"}
-        )
-        
-        try:
-            with urllib.request.urlopen(req, timeout=3.5, context=_ssl_ctx) as res:
-                if res.status == 200:
-                    resp_json = json.loads(res.read().decode("utf-8"))
-                    candidates = resp_json.get("candidates", [])
-                    if candidates:
-                        content = candidates[0].get("content", {})
-                        parts = content.get("parts", [])
-                        if parts:
-                            _WORKING_MODEL = model
-                            return parts[0].get("text", "").strip(), None
-        except Exception:
-            continue
-
-    return None, "Unable to reach Gemini API. Please check your internet connection or API key."
-
-
-class SafarnamaAssistant:
-    def __init__(self, route_engine=None):
-        self.engine = route_engine
-        self.stations_map = {}
-        if self.engine and hasattr(self.engine, "stations"):
-            self.stations_map = self.engine.stations
-
-    def resolve_station(self, text: str):
-        """Fuzzy and alias resolver for Indian Railway stations (English & Hindi)."""
-        if not text:
-            return None, None
-            
-        cleaned = text.strip().upper()
-        cleaned_raw = text.strip()
-        
-        # 1. Direct code lookup
-        if cleaned in self.stations_map:
-            st = self.stations_map[cleaned]
-            return st.code, st.name
-
-        # 2. Exact alias match
-        if cleaned in POPULAR_STATION_ALIASES:
-            code = POPULAR_STATION_ALIASES[cleaned]
-            name = self.stations_map[code].name if code in self.stations_map else cleaned.title()
-            return code, name
-            
-        if cleaned_raw in POPULAR_STATION_ALIASES:
-            code = POPULAR_STATION_ALIASES[cleaned_raw]
-            name = self.stations_map[code].name if code in self.stations_map else cleaned_raw
-            return code, name
-
-        # Word boundary or substring alias match
-        for k, code in POPULAR_STATION_ALIASES.items():
-            if len(cleaned) >= 4 and (k == cleaned or k in cleaned or (len(k) >= 4 and cleaned in k)):
-                if code in self.stations_map:
-                    return code, self.stations_map[code].name
-                return code, k.title()
-                
-        # 3. Match against loaded station database
-        low_t = text.lower().strip()
-        for code, st in self.stations_map.items():
-            st_name_low = st.name.lower()
-            if low_t == st_name_low:
-                return code, st.name
-            if len(low_t) >= 4 and (low_t in st_name_low or st_name_low in low_t):
-                return code, st.name
-                
-        return None, None
-
-    def parse_date(self, text: str):
-        """Converts natural Hinglish/English/Hindi dates and ISO dates into YYYY-MM-DD."""
-        if not text:
-            return None
-
-        today = datetime.now()
-        low = text.lower().strip()
-
-        # Relative keywords (English, Hinglish & Hindi)
-        if "aaj" in low or "today" in low or "आज" in text:
-            return today.strftime("%Y-%m-%d")
-        if "kal" in low or "tomorrow" in low or "next day" in low or "कल" in text:
-            return (today + timedelta(days=1)).strftime("%Y-%m-%d")
-        if "parso" in low or "day after" in low or "+2" in low or "परसों" in text:
-            return (today + timedelta(days=2)).strftime("%Y-%m-%d")
-
-        # 1. ISO format: YYYY-MM-DD or YYYY/MM/DD (e.g. 2026-09-16) - MUST BE CHECKED FIRST!
-        iso_match = re.search(r"\b(20\d{2})[-/.](\d{1,2})[-/.](\d{1,2})\b", text)
-        if iso_match:
-            y, mth, d = int(iso_match.group(1)), int(iso_match.group(2)), int(iso_match.group(3))
-            try:
-                dt = datetime(y, mth, d)
-                return dt.strftime("%Y-%m-%d")
-            except Exception:
-                pass
-
-        # 2. DD-MM-YYYY or DD/MM/YYYY (e.g. 16-09-2026 or 16/09/2026)
-        dmy_match = re.search(r"\b(\d{1,2})[-/.](\d{1,2})[-/.](20\d{2})\b", text)
-        if dmy_match:
-            d, mth, y = int(dmy_match.group(1)), int(dmy_match.group(2)), int(dmy_match.group(3))
-            try:
-                dt = datetime(y, mth, d)
-                return dt.strftime("%Y-%m-%d")
-            except Exception:
-                pass
-
-        # 3. DD-MM-YY or DD/MM/YY (e.g. 16-09-26 or 16/09/26)
-        dmy_short = re.search(r"\b(\d{1,2})[-/.](\d{1,2})[-/.](\d{2})\b", text)
-        if dmy_short:
-            d, mth, y_short = int(dmy_short.group(1)), int(dmy_short.group(2)), int(dmy_short.group(3))
-            y = 2000 + y_short
-            try:
-                dt = datetime(y, mth, d)
-                return dt.strftime("%Y-%m-%d")
-            except Exception:
-                pass
-
-        # 4. Month name + Day (e.g. "25 October", "25th Oct 2026", "25 अक्टूबर", "अक्टूबर 25")
-        m_num, m_name = extract_month(text)
-        if m_num:
-            day_num = extract_day(text)
-            if not day_num:
-                days = [int(x) for x in re.findall(r"\b(\d{1,2})\b", text) if 1 <= int(x) <= 31]
-                if days:
-                    day_num = days[0]
-            if day_num:
-                yr_match = re.search(r"\b(20\d{2})\b", text)
-                year_num = int(yr_match.group(1)) if yr_match else today.year
-                try:
-                    dt = datetime(year_num, m_num, day_num)
-                    if not yr_match and (today - dt).days > 30:
-                        dt = datetime(year_num + 1, m_num, day_num)
-                    return dt.strftime("%Y-%m-%d")
-                except Exception:
-                    pass
-
-        return None
-
-    def extract_slots_from_history(self, history):
-        """Reconstructs previously extracted slots from multi-turn history."""
-        slots = {
-            "source": None,
-            "source_name": None,
-            "destination": None,
-            "destination_name": None,
-            "date": None,
-            "day": None,
-            "month": None,
-            "language": None
-        }
-        if not history or not isinstance(history, list):
-            return slots
-
-        for item in history:
-            if not isinstance(item, dict):
-                continue
-            # Check attached extracted metadata
-            ext = item.get("extracted")
-            if isinstance(ext, dict):
-                for k in ("source", "source_name", "destination", "destination_name", "date", "day", "month", "language"):
-                    if ext.get(k):
-                        slots[k] = ext[k]
-            
-            # If user message, update language
-            if item.get("role") == "user":
-                u_content = item.get("content", "")
-                if u_content:
-                    u_lang = detect_language(u_content)
-                    if u_lang:
-                        slots["language"] = u_lang
-
-        return slots
-
-    def extract_slots(self, text: str, prev_slots=None):
-        """
-        Fast local deterministic slot-extractor (< 2ms) for Indian Railways queries.
-        Handles source, destination, day, month, date, and multi-turn merges.
-        """
-        prev = prev_slots or {}
-        slots = {
-            "source": prev.get("source"),
-            "source_name": prev.get("source_name"),
-            "destination": prev.get("destination"),
-            "destination_name": prev.get("destination_name"),
-            "date": prev.get("date"),
-            "day": prev.get("day"),
-            "month": prev.get("month"),
-            "language": prev.get("language")
-        }
-
-        # Check full date first
-        full_dt = self.parse_date(text)
-        if full_dt:
-            slots["date"] = full_dt
-
-        # Check day and month
-        d = extract_day(text)
-        if d:
-            slots["day"] = d
-            
-        m_num, m_name = extract_month(text)
-        if m_num:
-            slots["month"] = m_num
-
-        # If we have both day and month but no date yet, combine them
-        if slots.get("day") and slots.get("month") and not slots.get("date"):
-            today = datetime.now()
-            yr_match = re.search(r"\b(20\d{2})\b", text)
-            year_num = int(yr_match.group(1)) if yr_match else today.year
-            try:
-                dt = datetime(year_num, slots["month"], slots["day"])
-                if not yr_match and (today - dt).days > 30:
-                    dt = datetime(year_num + 1, slots["month"], slots["day"])
-                slots["date"] = dt.strftime("%Y-%m-%d")
-            except Exception:
-                pass
-
-        # Stop words that should not be parsed as stations
-        stop_words = {"where", "kahan", "kaha", "ticket", "train", "gaadi", "gadi", "booking", "seat", "date", "tarikh", "taarikh"}
-
-        # 1. Look for explicit pairs: "X se Y" or "X to Y"
-        se_match = re.search(r"([a-zA-Z\u0900-\u097F]+)\s+(?:se|से)\s+([a-zA-Z\u0900-\u097F]+)", text, re.IGNORECASE)
-        to_match = re.search(r"([a-zA-Z\u0900-\u097F]+)\s+(?:to|tak|तक)\s+([a-zA-Z\u0900-\u097F]+)", text, re.IGNORECASE)
-
-        if se_match:
-            c1, c2 = se_match.group(1).strip(), se_match.group(2).strip()
-            if c1.lower() not in stop_words:
-                s_code, s_name = self.resolve_station(c1)
-                if s_code:
-                    slots["source"] = s_code
-                    slots["source_name"] = s_name
-            if c2.lower() not in stop_words:
-                d_code, d_name = self.resolve_station(c2)
-                if d_code:
-                    slots["destination"] = d_code
-                    slots["destination_name"] = d_name
-
-        elif to_match:
-            c1, c2 = to_match.group(1).strip(), to_match.group(2).strip()
-            if c1.lower() not in stop_words:
-                s_code, s_name = self.resolve_station(c1)
-                if s_code:
-                    slots["source"] = s_code
-                    slots["source_name"] = s_name
-            if c2.lower() not in stop_words:
-                d_code, d_name = self.resolve_station(c2)
-                if d_code:
-                    slots["destination"] = d_code
-                    slots["destination_name"] = d_name
-
-        # 2. Look for isolated source: "X se" or "from X"
-        if not slots.get("source"):
-            from_match = re.search(r"(?:from)\s+([a-zA-Z\u0900-\u097F]+)", text, re.IGNORECASE)
-            se_single = re.search(r"([a-zA-Z\u0900-\u097F]+)\s+(?:se|से)\b", text, re.IGNORECASE)
-            src_cand = from_match.group(1) if from_match else (se_single.group(1) if se_single else None)
-            if src_cand and src_cand.lower() not in stop_words:
-                s_code, s_name = self.resolve_station(src_cand)
-                if s_code:
-                    slots["source"] = s_code
-                    slots["source_name"] = s_name
-
-        # 3. Look for isolated destination: "to Y", "Y ke liye", "Y tak"
-        if not slots.get("destination"):
-            to_single = re.search(r"(?:to|tak|तक)\s+([a-zA-Z\u0900-\u097F]+)", text, re.IGNORECASE)
-            liye_single = re.search(r"([a-zA-Z\u0900-\u097F]+)\s+(?:ke\s+liye|के\s+लिए|jana\s+hai|जाना\s+है)", text, re.IGNORECASE)
-            dst_cand = to_single.group(1) if to_single else (liye_single.group(1) if liye_single else None)
-            if dst_cand and dst_cand.lower() not in stop_words:
-                d_code, d_name = self.resolve_station(dst_cand)
-                if d_code:
-                    slots["destination"] = d_code
-                    slots["destination_name"] = d_name
-
-        # 4. Multi-turn single station input (e.g. user just replies "Kanpur" or "कानपुर")
-        tokens = re.findall(r"[a-zA-Z\u0900-\u097F]+", text)
-        for token in tokens:
-            t_low = token.lower()
-            if t_low in stop_words or t_low in {"train", "chahiye", "batao", "please", "yes", "ha", "haan", "bhejo"}:
-                continue
-            st_code, st_name = self.resolve_station(token)
-            if st_code:
-                if not slots.get("source"):
-                    slots["source"] = st_code
-                    slots["source_name"] = st_name
-                elif not slots.get("destination") and st_code != slots.get("source"):
-                    slots["destination"] = st_code
-                    slots["destination_name"] = st_name
-                break
-
-        return slots
-
-    def process_message(self, user_message: str, history=None):
-        """
-        Main Conversational AI agent pipeline with zero-latency local slot-filling,
-        multi-turn context memory, Hindi/Hinglish/English language matching, and Gemini fallback.
-        """
-        user_message = user_message.strip()
-        lang = detect_language(user_message)
-
-        if not user_message:
-            if lang == "hindi":
-                reply = "नमस्ते! मैं सफ़रनामा एआई सहायक हूँ। आप मुझसे किसी भी ट्रेन, रूट, पीएनआर या स्टेशन के बारे में पूछ सकते हैं!"
-            elif lang == "english":
-                reply = "Hello! I am the Safarnama AI Assistant. Ask me anything about trains, routes, PNR, or live status!"
-            else:
-                reply = "Namaste ji! Main Safarnama AI Assistant hoon. Aap mujhe kisi bhi train, route, PNR ya station ke baare mein bol kar ya likh kar pooch sakte hain!"
-            return {"reply": reply, "action": None}
-
-        # Check for 10-digit PNR query
-        pnr_match = re.search(r"\b(\d{10})\b", user_message)
-        if pnr_match and any(w in user_message.lower() for w in ("pnr", "status", "ticket", "टिकट", "पीएनआर")):
-            pnr_no = pnr_match.group(1)
-            if lang == "hindi":
-                reply = f"मैं आपका पीएनआर **{pnr_no}** चेक कर रहा हूँ... आप लाइव पीएनआर टैब में भी इसका रियल-टाइम स्टेटस देख सकते हैं।"
-            elif lang == "english":
-                reply = f"Checking real-time status for PNR **{pnr_no}**... You can view the berth and coach details in the Live PNR tab."
-            else:
-                reply = f"Main aapka PNR **{pnr_no}** check kar raha hoon... Aap Live PNR tab mein bhi iska real-time coach aur berth status dekh sakte hain."
-            return {
-                "reply": reply,
-                "action": {"type": "pnr_lookup", "pnr": pnr_no}
-            }
-
-        # Check for Train Spotting / Tracking query
-        train_match = re.search(r"\b(\d{5})\b", user_message)
-        if train_match and any(w in user_message.lower() for w in ("kahan", "live", "spot", "track", "कहाँ", "लाइव", "ट्रैक")):
-            t_no = train_match.group(1)
-            if lang == "hindi":
-                reply = f"ट्रेन **{t_no}** की लाइव रनिंग स्थिति और जीपीएस लोकेशन ट्रैक की जा रही है। आप इसे लाइव स्पॉट टैब पर देख सकते हैं।"
-            elif lang == "english":
-                reply = f"Tracking live running status and GPS position for train **{t_no}**. Opening Spot Your Train view."
-            else:
-                reply = f"Train **{t_no}** ka live running status aur GPS position check kar raha hoon. Aap ise Train-Dhundho Spot Your Train portal par track kar sakte hain!"
-            return {
-                "reply": reply,
-                "action": {"type": "spot_train", "train_number": t_no}
-            }
-
-        # Multi-turn slot resolution
-        prev_slots = self.extract_slots_from_history(history)
-        slots = self.extract_slots(user_message, prev_slots)
-        
-        # If user explicitly used Hindi or Hinglish, respect that; otherwise preserve previous turn language
-        effective_lang = lang if (lang != "english" or not prev_slots.get("language")) else prev_slots.get("language", "english")
-        slots["language"] = effective_lang
-
-        # Detect travel intent
-        travel_keywords = {
-            "train", "ticket", "route", "se", "to", "tak", "jana", "jaana", "chahiye",
-            "batao", "chalegi", "booking", "seat", "गाड़ी", "ट्रेन", "सफ़र", "सफर",
-            "जाना", "टिकट", "बताओ", "चाहिए"
-        }
-        msg_words = set(re.findall(r"[a-zA-Z\u0900-\u097F]+", user_message.lower()))
-        has_travel_intent = bool(
-            slots.get("source") or slots.get("destination") or slots.get("day") or
-            (msg_words & travel_keywords)
-        )
-
-        if has_travel_intent:
-            src = slots.get("source")
-            src_name = slots.get("source_name") or src
-            dst = slots.get("destination")
-            dst_name = slots.get("destination_name") or dst
-            dt = slots.get("date")
-            day = slots.get("day")
-            month = slots.get("month")
-
-            # CASE 1: Route is 100% complete! (Source, Destination, and valid Date)
-            if src and dst and dt:
-                if effective_lang == "hindi":
-                    reply = f"मैंने आपके लिए **{src_name} ({src})** से **{dst_name} ({dst})** के लिए दिनांक **{dt}** की सभी ट्रेनें खोज ली हैं!"
-                elif effective_lang == "english":
-                    reply = f"I have found train routes from **{src_name} ({src})** to **{dst_name} ({dst})** on **{dt}**!"
-                else:
-                    reply = f"Maine aapke liye **{src_name} ({src})** se **{dst_name} ({dst})** ke liye date **{dt}** ki trains search kar li hain!"
-
-                action = {
-                    "type": "fill_and_search",
-                    "source": src,
-                    "source_name": src_name,
-                    "destination": dst,
-                    "destination_name": dst_name,
-                    "date": dt,
-                    "time": "00:00"
-                }
-                return {
-                    "reply": reply,
-                    "action": action,
-                    "extracted": slots
-                }
-
-            # CASE 2: Source known, Destination missing, AND Month is missing (e.g. "25 taarikh ke liye lucknow se train")
-            if src and not dst and day and not month:
-                if effective_lang == "hindi":
-                    reply = f"आप **{src_name}** से कहाँ जाना चाहते हैं? और कौन से महीने की {day} तारीख को यात्रा करना चाहते हैं (जैसे सितंबर या अक्टूबर)?"
-                elif effective_lang == "english":
-                    reply = f"Where would you like to travel to from **{src_name}**? And which month's {day}th would you like to travel on (for example, September or October)?"
-                else:
-                    reply = f"Aap **{src_name}** se kahan jaana chahte hain? Aur kaunse mahine ki {day} tareekh ko travel karna chahte hain (jaise September ya October)?"
-                return {
-                    "reply": reply,
-                    "action": None,
-                    "extracted": slots
-                }
-
-            # CASE 3: Source known, Destination missing (e.g. "Dhanbad se train" / "from Dhanbad to where")
-            if src and not dst:
-                if effective_lang == "hindi":
-                    reply = f"आप **{src_name}** से कहाँ जाना चाहते हैं और किस तारीख को?"
-                elif effective_lang == "english":
-                    reply = f"Where would you like to travel to from **{src_name}**, and on which date?"
-                else:
-                    reply = f"Aap **{src_name}** se kahan jaana chahte hain aur kis date ko travel karna chahte hain?"
-                return {
-                    "reply": reply,
-                    "action": None,
-                    "extracted": slots
-                }
-
-            # CASE 4: Destination known, Source missing (e.g. "train to Kanpur tomorrow")
-            if dst and not src:
-                if effective_lang == "hindi":
-                    reply = f"आप **{dst_name}** जाने के लिए किस स्टेशन से ट्रेन पकड़ना चाहते हैं?"
-                elif effective_lang == "english":
-                    reply = f"Which station will you be boarding from to travel to **{dst_name}**?"
-                else:
-                    reply = f"Aap **{dst_name}** jaane ke liye kaunse station se board karna chahte hain?"
-                return {
-                    "reply": reply,
-                    "action": None,
-                    "extracted": slots
-                }
-
-            # CASE 5: Source and Destination known, but Month is missing (Day is known)
-            if src and dst and day and not month and not dt:
-                if effective_lang == "hindi":
-                    reply = f"आप **{src_name}** से **{dst_name}** के लिए कौन से महीने की {day} तारीख को यात्रा करना चाहते हैं (जैसे सितंबर या अक्टूबर)?"
-                elif effective_lang == "english":
-                    reply = f"Which month's {day}th would you like to travel from **{src_name}** to **{dst_name}** (e.g. September or October)?"
-                else:
-                    reply = f"Aap **{src_name}** se **{dst_name}** ke liye kaunse mahine ki {day} tareekh ko travel karna chahte hain (jaise September ya October)?"
-                return {
-                    "reply": reply,
-                    "action": None,
-                    "extracted": slots
-                }
-
-            # CASE 6: Source and Destination known, but Date is completely missing
-            if src and dst and not dt:
-                if effective_lang == "hindi":
-                    reply = f"आप **{src_name}** से **{dst_name}** के लिए किस तारीख को यात्रा करना चाहते हैं? (जैसे 'आज', 'कल' या कोई विशेष तारीख)"
-                elif effective_lang == "english":
-                    reply = f"On which date would you like to travel from **{src_name}** to **{dst_name}**? (e.g. 'today', 'tomorrow', or a specific date)"
-                else:
-                    reply = f"Aap **{src_name}** se **{dst_name}** ke liye kis date par travel karna chahte hain? (Jaise 'aaj', 'kal' ya koi specific date)"
-                return {
-                    "reply": reply,
-                    "action": None,
-                    "extracted": slots
-                }
-
-        # If conversational chit-chat or general question, query Gemini with 3.5s timeout
-        system_instruction = f"""
-You are Safarnama AI, a very helpful, friendly, and knowledgeable Indian Railways journey assistant.
-Language rule: If user writes in Hindi (Devanagari), reply purely in polite Hindi.
-If user writes in English, reply purely in polite English.
-If user writes in Hinglish, reply in warm, polite conversational Hinglish.
-Keep responses concise, polite, and under 3 sentences.
-"""
-        prompt = f"""User message: "{user_message}"\nProvide a direct, helpful, and polite answer."""
-        gemini_reply, err = call_gemini(prompt, system_instruction=system_instruction, temperature=0.3)
-
-        if gemini_reply and not err:
-            return {
-                "reply": gemini_reply.strip(),
-                "action": None,
-                "extracted": slots
-            }
-
-        # Graceful fast fallback if Gemini is offline
-        return self._heuristic_fallback(user_message, slots, effective_lang)
-
-    def _heuristic_fallback(self, msg: str, slots=None, lang="hinglish"):
-        """Instant polite fallback when Gemini is unreachable."""
-        if lang == "hindi":
-            return {
-                "reply": "नमस्ते! कृपया बताएं आप किस स्टेशन से कहाँ तक और किस तारीख को यात्रा करना चाहते हैं? (जैसे: 'लखनऊ से कानपुर कल सुबह')",
-                "action": None,
-                "extracted": slots or {}
-            }
-        elif lang == "english":
-            return {
-                "reply": "Hello! Please tell me your boarding station, destination, and travel date (e.g., 'Lucknow to Kanpur tomorrow morning').",
-                "action": None,
-                "extracted": slots or {}
-            }
-        else:
-            return {
-                "reply": "Namaste ji! Kripya batayein aap kaunse station se kahan tak aur kis date par travel karna chahte hain? (Jaise: *'Lucknow se Kanpur kal subah'*).",
-                "action": None,
-                "extracted": slots or {}
-            }
+# 🛡️ SAFARNAMA_SHIELD_ARMORED_V2
+# ==============================================================================
+# PROPRIETARY & CONFIDENTIAL — SAFARNAMA RAILWAY INTELLIGENCE ENGINE
+# This file is cryptographically armored to prevent unauthorized source theft,
+# cloning, or reverse engineering on public repositories.
+# Repository owner can unlock via: python protect_data.py unlock
+# ==============================================================================
+import base64 as _b, hashlib as _h, zlib as _z
+_P = (
+    b"mEjtl%BmObSh{&C)YEf%KGJ1kT^KDBOH@!DE06V%_kta_c7fv0;&UqNu%1crM*YbJ6RtTOeYC6I^F~6Bwgc?@TvX"
+    b"Rw*U5ec==ahmzc8Y=uB*#lJLKb_h9v=l4h4u&CpR-0P%Xni6MY*8L;!i;M2j)Q9!{!{fc9tuf1m;N0v)OCUGWqf)"
+    b"de58(gMxHNhn;H^GPmF@c?&WVwP627Fbx0>KkLwB>^WrlaOcMRsHP+l^@rgP-O<e94H<6o^}@|kPGAfOyB}@5x%s"
+    b"LBwDHw=@9_|7L`mA9OCYaxT;Ugzm%rdsiuNQe9{OfK6F3&a4Va6%OXtTX}(Z6-@L#(EC+g998-``&nM0R+9k&O5H"
+    b")qi!XPQo{N@rC)-6u%0vmX)Yt^=6IxaGJ&j$amlZHt5aybii@5mc0Z%H>_`#95cO#nj0{$^z59&8tpomDLbe4}#9"
+    b"{5za<tvyVZ)H&)My%);2^QnF*6g#+CBQ;pwu-$MJh)-|!VM!GY|9bpG>OZr@L0&Kwi-jtc`WZ@Y6|-cehoJ(h?dM"
+    b"{9$_@AZTYY|X=lge6sdyCJM{)W~*kV(qD)fDZcTE|?)U_OrJl?k_Lc4WXqSb-5KfBF=@j7N^HbWVgC_As_&YA1U6"
+    b"ntEmVHHnArm_!WA<OgF-2cEO8+{1t4{bu}?`a7IhLQb(D(a{|+On}@QXe0o&Sxi)ly$R%DAB5-4c#&iR|(}4C#_S"
+    b"*#8{(d^g0tU8f!`_b|^_qZgM>X#oIPbCwZGr|09R&hcOFmID4XjM0J}&el0q7HR}3>pA}|?>i2|PK2eqg)S|mnG9"
+    b"k0|#{$%-J%w|c5j*1^q&g=aG}p3;X)Ggc;Nd7iXa@r#z5zmX+{rK8pZrnPy`DiR<jgx{b{vzySte<Yyt+~CGQvb7"
+    b"juDub?!sC8+Mb8ox7RnXpdLM61-IAxzr}?6sP5KAEvo_zFd*flI4g#!i-jLYLl=lH=#*5ElVl$VzY+u)@Hz~pRr!"
+    b"aCn->ioT(1=s8YuXQhpN=NwXhp2E4$)Ie<QF*`?{<T!f@|0LKscf5>qXyWWYEb3qteBA<c%2N%s89pNsDs0ZB`E8"
+    b"PW%j_7<W)P1dYGs2xKfIKSk`5#g2(WD<26kaHGf1^<y!=vsPL>65~q*f_PwweC=!NbFliiJrCj<vm-f=0I9GDCXM"
+    b")<O@*bNC4d?<=i{}r7uw~<}17ukzVC|{sP2Mc3pFNnqC3;XpAJwX3@4V>&$FK=ESw9X3)+IF8i8i?MEFu{UNIEeN"
+    b"XzACTU&1jAxn0xh0d1!jnr1JVhVH*fuu=FN92xuz#IM4X=c`<#z?gtFTT*5oswAaB%N&lK_}l&rn_0RUF!&vu`4@"
+    b"g!mNj@xrGb0y7heR>KL{Q$)#uD;`7<07jNQs|?uSg1P0N1?kU&_h9%98Q$-?j&oJKp&2k1<hfWn=94y5P%I(%RM@"
+    b"$SNZNv(<^x)^qRy)0TK4NABV612|L;_Ej(elgVKwWDH=sll9g3%f@qSwRJIoQp3rPo@hVyUl8GRWo*v~gM$SZO!y"
+    b"rJd&K@7P@@I$|kmgENzf(cDlq-Z`VT7jyQ9R(f@JyW5D7FqZ`jnpB%L)M4WfZK34GHP9z{M7E7a>+I&^Q6i5e}Wo"
+    b"{x}H~Ho_$*f+fKr*xrb^z7cfb4?P+p+)_HbV3yRu^al5XL7=@`sJF?Jst|Bs{6X?4NGhQU))^-G>L>qXHsazsZ&f"
+    b"JW8U&=&pKk-IzsOQwpFalD;w~L>tAkum=;~e(M24(&85~J@J>3kV-;iM4$bvlhr1Q8uo^f#;EMT$JPz2}LNqiH6W"
+    b"qbfKlvJ+q?{SF;}bDKYnoq6hSK4jysCIF9)<P3=uta_Cnba+^sS}e6&Y#8_K#b&D@e~%5)iX>L~P8rbvV9E$BpX*"
+    b"ahToBKX%3e)U$vNjA0{~R{R*{Jb-11}{L0cM&kN81MJ7{Smm_EAWcz#KJ%^5vp%27S?&B71n;Qgt9F3GLh-QdZ&`"
+    b"IWpNG+ggtf2yM;b_0Y}b0AiwguoCS#4;HIUz;N$ySv0)w-94-Q5FF2AP-Nz0-a%q7xtK?S9>*Be{GJkxZ9Tlfq3R"
+    b"RfaQq9%$x}38@bo77}2^gCqc<MkQLL?R$lI$bV9wZc__4uZ$-kMul!F}b<2*cD-x_^eTJQ;sdm%Y6%&q0m_TkWx`"
+    b"O#w!L;7=Erm?>fgK*=jt3>Opw(3az0JVVBZH7VK4i#^sO%g%<sSsxQXfu9AF3yx6VFyoPZ-k$O%?fjaxm2qx{gHt"
+    b"3^cYSo0}RNYXKc|iCwtlO(cFjFygMjG?PWWuqD`%yP{^Y*tR2K;nsi-SOn?L)%zKqtH*{qfjG+Z|8@M$tbm!x(i)"
+    b"*_f`*Z8BX}`8t^9Ge3DOzY(>J`~&{W(;ui0t!A1Y371@kyTHDcbidB|}@k8NHa@+nxcXNQJMZMs)ZR+d5Sdr9O!2"
+    b"cLt&zUPY2&1*w+D*amkM+p#l6j!PIc*TcNP#w!R{^gDU7xFYn=5@zUuRT1X1jh21vB>7vC4Too_tyq=VJ_HlAO-B"
+    b"aS4b=T%&**?##A_>VyaQ0eyYh>j(ex?EA%t7vZEk@9HzvJ`f6kx(W@vajD=bv>q0g!$rz6C%a3utFy_=AhL`S-nu"
+    b"W3|7^tK|S+`;bhX$@)4=fc3I;f~UGxAvd5iR)dVL+hiJ^JpW?=tScD>JyO9h?AMQ_@mfla`}#b8Z|@rs&&VVBX7l"
+    b"7Zom^6$c?dxEL?aqhSHCZQ5G{+(>g}y#LW_uj6`fpIra#cJbWO5j<|bNC!?^;1mI*3riI;H16fsi3_p5P=Wmi`(3"
+    b"rOz*q=}R+JP=vEF_7?{u1IYiv!Ikt&#hn75x=7UI1YW+QT!CtR?J9eZhajZnJi`M6x5g^pGX0&)<cJ`GDpjxkCUo"
+    b"Q#Uwt*X-y=j5qXDT;&N#?5`oEPjhOY$0^58JmSWgQ)Gr#dqyUzm`Ri<jpEFT1U8wDu+Z4-;I^Ja7GW4`SBo6D8EL"
+    b"^n!&n_n&b^<&baE-IO+$^1zvutneAGZAuqIE)itd4vP<Nb{5*>}GmuygZEZ5~4{rW$`;V1%Vm6#&X!!jhlS@eI7B"
+    b"j#yO1s7Ir#VG$YZee+4eXE$cBt0+WU>p_XbO#IK<7(ap4{AjTwyP>i=r`(D3!vN<)}MAmj%s?<@u~P966_J;=&Ug"
+    b"Na2F`9pdq{CYyTDH)wCs2jd@F{J(HEeQ5*}?+Bu}u={Y{BVf}`EkVq0h>tYgKBpN5FHiq|y5#L?0#4;8ck==?!lf"
+    b"*n(Ib=IC#tm2eX^#dK&hhLK7phm`e~<KrX&-I3FahBQl*uYGG>0##9~CK(av)>iDE3I=Q1h*L*<g)h76;yZ&Slc6"
+    b"p;>Zb-ExdbyWx&h>IDLHAZdSWk^4eZv3)H>Op=4&EsJtCKzTFD>9E=Z$;syn@fVD!vwj&yfY@wBY~6D#onzk=h|W"
+    b"#=g2lJbNHDWc6#T%uQ~$QeJC@S_YR33!n3|YruqG!-u2#loZRczez)_7&xLh-O0$)1@{CTBzk4oDZ)iE!Lb%5L40"
+    b"&^focuS0^X;>8fiWn1aphMXY|G=#aOcZLgG22(Ybb=QyeEz#r!2LwKqj3OHLR~Tyyf`ptM96#WZ6&qNx^KxH0Ahf"
+    b"=f4rJ^N%WwBbil~8a)nkgn3lXEhg)CUu`f0IPop<&SE(C2Lu7a*7Rs;dCLEm`*Eq6avIrswD(3m#`BXtB=iMR+xI"
+    b"bDraTMY+Z@xl6MxGJ(pceQ?fPET@wk+|Nqo{<Ln+wXl(yw}FVWe<=yzXl!{oPfISDq0=E^8ZjY2(3E+kB0JOJ(k^"
+    b"Vf{6YWX^QgWrTF=M#G?K!|0K7WW+k0?+W6=)*G63U!n!HWl(2s>$Inf3CKu03^xQOa>EqR~H)K>-VuYHNeMLPC>9"
+    b"pB-&q?Uc7NwcGC&KM(0_@;f--#T~{jv`=_!!y<LUY$5FvSfhCd8{MSCBxAahnbe8$Iie+`c;84423L0fTJDMxoR9"
+    b"vI*qMySG@P$F~&gFhn4~RE3^B7fhgn#Y1M>)|ysPQ~Th@Ab9NBCUNlO+Lj5T1)%#~;Q@HsOo9t%pAF_V)P7r|y~f"
+    b"(PJ(=(1d8O&I;Pe_Ih%+<zWo|{Ce0_7rCl~F9epz{W#wuB>XlQ;EV}vz|JWMER+D8AzvSdgXbJ+c&$MMD#Tt_48#"
+    b"zk27o$x6z^Df(W62Jf+|-y5aQ)0Ram|NHO%@%ig6Z9`~w|1k_%!?h|>H4JB-G(1Ds>QI#$B9oOW(?(|c8r2ndVB!"
+    b"tac!DQOf5DEHw;7nHC4)reMh!5Espt?=NUFtoANeLBi+E4;OXC24Y3;fT>dMw3L*k!xC17Q;j6<UJ7i!gDlFP@NP"
+    b"75`Ne^4UE~N&lK}GH!xakEPRnHnbYyXF!AbMfZUw9W&3ZiM@9*~tdyJeucrDB+!JnKm*hIbOajy_08i;pYXQzgzN"
+    b"6n}AgAFAUAOnq#cpZE$`zIONm2tev<?@9o^j&9uyDFIHxN(8!Eman(#9fhZhG5fe}#hA_Mj?5eZ8l+R%DD=KJOJN"
+    b"QyoNrEfQ+`31n>JU|B)F+}V141%5;zBtTMspT+Sv*`t>8w?=U%o?Bdo7w;Fu$&P4DQ-~5NVU`VbpP>&)t2SRtlkq"
+    b"xXIvSxyVMfe^M;8LUB*Mcl&$Rt!G|V#^pC(?Sts+g9jhRcU@Z0)lrsJ~Ea$|izP?2!V@U)mTU|~c-gr<~K4)tuMh"
+    b"juz=puNawTydiJ-`xYc1_nl)R2R=-Fc>J>l=fpwtrhJ=fS<)tx}U0Y2(!E$wy#kLJ#G;6%$Nj^&T%E?hZXvc$k~T"
+    b"F=pZF0QLO?fzD;)#r?0qUeaAiek|V~NocqHpnR&Q9QXw}!hu&G%L2f86^G?kI1|)v;fbi?|cbmM?X8aY-Z5}t@l4"
+    b"vyIh4rqFdu0UD0}VMG@BpCGMu@^901iWz2&JH*m_p5rV|1sqW_73a`^@!;bxltz%Ah4jmP1N155y+y@kj)lc8N6S"
+    b"8My`^G4^_CF{T(igs&uaF0WO|*)UFfHk(k%Db%F4tl~R^XT@>W>$fmrXXZ2ch~idEuV!V&oR-8nZt^Fd`QDa)1e0"
+    b"~E_u7$?{K!PrsZU854!1LQr?by)KaSAW_U;61TSP&<q0*X?LP_*}tiSFQli-sbn%h!$2)Mt(Jz^w<F|vXzw6A}$e"
+    b"}6?Fx9-?<@x>8Q6tbY+*VcPYdX6~6@$@lXk#n*)!;OGI5bt8Ief2;(=oGj&e|m3BkYq&*OJ3XRK?pybG;gGb?J8o"
+    b"Q;5kj8d*>(BV*)m{lZx&EVrSf=ECP2!I~tr<HgME7GnCbtXP1lPYL+bw7?46l1Rj(b+)xCraViwWHNR+m4}RSou-"
+    b"7A$Wo&o`0CE2R3w`~0Ej>~=duC|RO4|OJ`Yy<~^32><#EoowBE$MqgUWG0WJo_Pb<9)-3=Xb=$kkwR>&WU%U!VJh"
+    b"&>kqqb>CqNU*1LktwUdB{<6!$1L|$Mtj0`!fh&Jy5%>T_UVotaA-D>iO!dV}0BJL71S{&SG(D}hyodn)P5=1i9L)"
+    b"{dO4x7zHvWuL1RNMU&aEQJa&HIDeA2r#iXN2KY6{DMr|a&TwPOVnBvC9$V~37?X!Mb;l+ICSo+mzCD^tpoJ~)a8R"
+    b"CGa0mL-|a5Yn^_`6m&=<-pv>4I82v(W`<Cx5`7(a;I2$j1j5j(+KsaYA31FFp9?KKdjp|htem<gLf+zgkAxBBCxd"
+    b"BMPsf9FI$+u6lesN=ugli1V}2r(=UYsvnw|f03e$XA3S`aDUdrTU(XVHkj43~Tz{_~h58DJJw=o<R}%hdvVGjip("
+    b"1D&!@MvZJ+3EbPfZLxWHL=biN4vQ*8tw62o?QWomMlLx$ZxCDedJ5D$rx=B4SYWn-WEKUO*b@*;V0}%T>@Vi4|}>"
+    b"QdAYiS;?860K--%5qTWUC}@a$x6bq>G0A>l3A1q^E=rak{M_?+8gAS}udnFY1)9I}R7z}_x75UhU`tH#44}4PGXh"
+    b"_pn6HaJ@|^n`E4lyTGjtc6MIcq~oV{C#n&kOMHW2*?c1g9qj||SshF6ept{Z~=B`PR4eep4mmn)49BIR3js{PM>Z"
+    b";UBt{Vq%%(eRaZv3S`dG%u+t2Yp=!{DER!>4-WNNoXiLOkZrpDo)@qTqUsSyLD(1L3JTjtgC8GH$QHp&SP$+GLL#"
+    b"Q0>caL=Fa55g`_!GP^lETTi0T2U7mGCff87)?KPWU={2K?wj^jIQ)qfI<cgawDY^IIsVCT|K$9}4ZY8C^Zz0(L27"
+    b"#T~F%ADn>^s)02r_`-hzB|ou4ui%M!cdg2`$FCP#Zw(-{Uj$eSvN@$O+otSo3varA`ev7TSJeWj;O{A797NOh)#{"
+    b"gjphtp|@mU;t2nBT2%`HmR~Q<kCkBZcY+>}NS0@7kem7BK7E1oU&#&qES%Z7#3jaM<%hz?r#5QSEFj`q6FaFkqlB"
+    b"W5hXzDKhO6xtCUgeBogCc*ipkZuCEJsmfGdHW)}kWBGgZnx|8t#}Ss#swU)*R5adJGZql|TdEcS3Dwm*Ez>=#QoQ"
+    b"iXhUU>txX1&i1u1UyVa`S4Jqu#@g6+tm}?K7n!*QEv=G^*In6C)B-@9OE`7;VibwwXw?Bl&7A9CV|qb-YYW6h2Kx"
+    b"nC6JkovgEEjqC?Id@}`e})?D7#+Gz;WD43Y8S>aJN3;8h;IVew#PCKZgCC^WPF)lIWyK%}E`T-gpiDjMQx}!H(KM"
+    b"Lj42`SR{!Si&rpxIFaQ)#X-Om^g`p-5W!*4d0`RhLZ>G(qMy#cQf`;6SC*LCC6^4kxk>dYS)8Byz_y0m5X0#nQ}c"
+    b"qar21w&b+ozCL(Y?v5?xF@UCvsA}#=Z?iTTJ-|RO;YODc88xurikF+%AThX#4^_wU?zcB9CB0*VLCR5P!9=C*3C_"
+    b";kc6o$sBkxhN<%Ku>l<IW9By9m&;9J+Wy7j_<dLT&{zf2vy^Hxv(gJ9>ru;;_JZ-FhpRi0a*&U?e9|KI5t>85Z`%"
+    b";0c<1|?Kbw~zpW`Q93gqQ5bt;Q&Q<VgF$OkA!liAO^|7G912g=HX%nacc*E9YFQ?6dFge8}Z7pY@P9SLV8~BQAA)"
+    b"SQWkA~)EHkg2AzyH;^;ipyO<Fs=w>Z-Lfu$bO(-;j&=thOY(U2a%uVhiTcW;92gc-)Ln)wuQxeTTQPxjXcWIl>cy"
+    b"o3OoKFwm8UXs~G_o;JoAKY<_z9P{CqB}udmNM*RGC^ZDSkA3s$3g^L=q#Eg`8bLl0ad5(IlelKOTez1+$tY1+{QA"
+    b"c$LL_(p$AaFyOCVEowZSQS&;<D6Vg~V?y<PiowM8>Hx`rVcnT_y<F2sPv3&{$bHQdARb>zGpBTZQ|<+6^B-XscjP"
+    b"yQ<Z3^2c>B2McAfg=PMoB^KNZV1%MYuFF9H)>gd2?iZ?OP*6!0F6Oo-DrIi(Zb*FheVt%@kV82A0^mLohFRgA9!W"
+    b"J&z8Ujf>thjCqYwYhS6sXO{8f3PV7FsnPvzX!55m|n-hCuERsz2seb)P6UN=GSpG3A23Me6T0PSM}mGf?e0JMD~B"
+    b">eLrO>J*M|bOul^>FQ&0S-i0|vL~>yuj(rhtSjJW`@||tIF0qsZtErTADEN%z;O{xr@yF6Ixi=Ve-s5fl%uAIpqb"
+    b"+Y+#lLZ^bwCV)U>5WIy^s6YyI22D{BkPjhO5r3EVQ=PDkd(X@Hxo?NJ>P_KSFWI0~~J}QIq_}fn7W?ywS#S!VXE)"
+    b"v>JH=WHwbqIWK1yKvK{X<%qmHrpKJ$?`0B?8wgl6oF^O^9eOwW^ny*-M^FL(S+o`?m>5%5BG5wyQTS$v(Oc?$al;"
+    b")!VJQ~RgFN7=%(nlm>59X4qdhRktsBZqyqN&c@mZ9Sf9`qC+5A>nG=1R!MAbPTDZOq-+?v(I9A>nv%GTCrFIR?m#"
+    b"e`>Lh_neBnJI8W_1NUFBrA{x@p8492STtNfCLhKg3Cdjy<Ag={p=)TxPZQS8@Q?dzQ;aOyc6L>eiBDth4SSq;}Hi"
+    b"5jQu^uR$eh6vBY2-K^V1b&ccGZf_viJr9akX*ai#)`e$1zV4vOFhnqBWo2U`Na+q7J8^nf@aF^z+$onxfk;%sG&m"
+    b"|Uc$GS{9d4h}|9Cvu1{1{C+4~<ZO-UFm+S|5Mw>F^Fw1GyLfu<Xkh44%?T%wMpaftUF58q#L@l(nMdnQy(3)xcF)"
+    b"gR=k_|GC`Pd?4eVVRG0)<}EhmcN76y6koH5N>*#jsIUmjJ-CSbSVIbfEs;W}to`IInpTkPhfZHthZp%#sPv-8Nv_"
+    b"HDa&0EiisN*75hK@)iRBuJ^PaKCK-$+4P?4Dt!lm2HYquUUC)wM_SjFr)1$G&$g@fw4RdC45OgdNoXaoi}mL$lDJ"
+    b"bZ)Ix5GKx+p~7{W_eg6EvFJWw%;U<*kPGam)>`|uUg-`RWBn<zeq4-3hvo<1<S@-1WP6J;Q<TI&5NOBz?gA?Cudj"
+    b"fs2m`(hYIaz&8m$(ji{$icSW7J8{@qoE@%v>-1Uz`KI_hxSF(gsU^d>;i#!>n`o-ql9Eq-&4egl6bmhK57{+ll!N"
+    b"NxheO>aJiX&YH{HQl%lrmD<&*}pzkdTvK<hKt;?bpRA&R2$uIIf!=oW#oFK9~8~yH{DgZ(y=!X6i*(i)*l0v-&$<"
+    b"YHPR>Bd`ff4lt((Eap-SnulR_?Ika|X6ieG(5HFuXb0wBow$1VFArWGm4KB9AU)i!9rOyEg4e&Am=J8Ix>lbc9DN"
+    b"R?CV30vtjW(?5`fndRk0#rdp$ntix5nmjV}IV$8W0VlQ8tm7dfp6$$tkX(P6hDJgvV91(sK|4H*LX#(?c_!GJ7$1"
+    b"5`nEg(v05u5A(M3G+$X+Q94FV`+87qY$M!&4Z?aZ?;`|TbTDH;Q;bRwYgYOhJZZjJ@F?r_VB7n3Rf|-@sqqJV#Y^"
+    b"{e}0P0DQ-ppi6qPiqwGZWi`l)4mWkbH??R%B10@GzeMhyCaEv1^=WWO@2zKxLbA741Z1#m}4!ld2@Z3_nl`i4`xS"
+    b"AOOcEnQxcPSoB1vBVXIoICZU_5dciqT5&Kl5+ZQUmXt9bMl}yVhnuG@TgkuE%XkVyO-HCD%u8IOLy?NrAGg7WP#-"
+    b"2(tQQ3w6zD)9CSfy0jNkUqwaS7!hdT-HCMHr9%GPmi4{xppFh0*!><j#4g3!*B>4&2*K=7-;;+MVX;r<72c8zd~C"
+    b"<?)3zt~a{LCTSSs$T<^Uo-q;zc^VoqZh6PXYif#Fid=XcIOHFtqiK+1M<0_vNdNr;vuFgjraga?#I6y|fj^?Iixb"
+    b"+UXH?vecgq>Z%S@sPzip!;f}H$LD}bp}M5OaaO%Y86~#q=-b!vURCpca=kMkXJT=j&gl}>gL10clp7a0Xg89o?qw"
+    b"Q@PbQq*4Rf7N{}gi+cpOM5pcmq14sv;Sn@KZ;1{@N!yCYj)4c=~fUZpHucS*Fx(MLix)p(c_Z+{M%1Zfqlf(bNHu"
+    b"CqN#l~u@W}tv?8xm`%;aN~T%OvUCTZ<L}KWT_4i8AN;!V&iuT($*Xofb=TLz_PzL<ERd6Hg?VVU7151ogsXPp$D8"
+    b"FB0~?VVi5HWH6ievv_PoX!*v#lP|AZ7rS|PZ1Yv?zYwG9{$`R|XauKqQ1Y&%j@HU^Xa54-a9WLJ_LBEo`0$v@jNe"
+    b"I4oA*3>thwlxn!OBJNj*zu%68v9yP9<V4h6@lie&<NDV5o&p%^eraWbxleCIX!m!2|1?My8T*N8mfy=}HZYp|Ql="
+    b"s=K}L0Lyz<@hc+Qw}QPCVaSFhzBD1IQ}V~*4#by<GjXOt#YA!JLto*_`aaNZ{|!xlt(RTV)wed`7as<k#qH6Vt)u"
+    b"I)vvf7y~!PHrLmmasCY~1)R%syu;qC)atD9CZgtB^AA2@%t`dAd8{xUOwSeADCY(?zg-BgAZHmEWCfleukhx%YI-"
+    b"i+OEpJLaUls76>EW$Wxt%G}AAxQAk<XiM+g-)1KyiWp7%2oT671nci^ucG+Hfi7_Fpzx)ck{pK1iPum4#%a;_DMH"
+    b"zReo}NlyS(YDUS0EErfFE3y)6EX7KcWug-*BNW!`(8+AmF5h%e0UxCIc_bo{r)pSWj&C>s+b0&uNoMR;wAR#k=Rd"
+    b"SU0sus9JZR+CjkA9V6F<1l`-yCm9dE2LpIG%w&A?f^O%g@#l>@lQlx419$EsZ=#1b{37_FDKY}uLytB&fY9$K_FI"
+    b")SdIy)+Z}u2ht^UR|@u-Jem_TN2FR&K|z>#f{x@)`292F19mEJJ|VhACZ^yVIvi$mk{dAau}NaY7L1ja8GZ@RVxB"
+    b"FUO7xOzL3_Te!W#dt49EWY{!VQDlsIp{#hYW{n&`M{DC=XW_Wn?(<*lI@g#+!O=d+~Pek<cKD=kCSqNw*zbjKKe?"
+    b"D+{AYHsAdA6Ea&r)Q{;l~;l#*?q4)yQy^$#hB3P}75$bXkAoPW@iFonf&59j$8fhd+g;m%eVD!1DyimDiVI16iNk"
+    b"iJqcAahUg$QD#oYs`^T{XKkd#w2IUR29p$Z#hKg7yFDtz+TyZ*^FtHk%K7wGeWv6IAZYHOqs!Bv?{NM;vZZidxkg"
+    b"fPjC|3Ksvs`pvV)|URTf1+t%8()`8@$%^9ON01{eoz7%@v83)%Y8^u4KL`?qt>UX8l+5~!o#RRM>~HX@V_pm470T"
+    b"pS`<Zh3M!<PHTmo`i6+Tq?XDVDMm^6}LTxcr^FdC3lpEVQ5OCd>l{V-z~X?9B>kgvg6OGm%INmDW?}&@F*)DqYMI"
+    b"UFC_MqF!Gk(FoYWYEDLer!8H)RUo%^$>@l)5RFRfH-A8VK-GM`XjcvDMBa&s)KqC9OxphY6?Nq#<-pUw+*R0S*-K"
+    b"FNdO4N}ej<x@NEnbvi0t^%Ykf(=`vuG;O&p*xjYa+e%gHOYtnQ*0<&IAekwU1w=b3SONi{{cbSmUqL-Tf{(u^U}b"
+    b"wLOY@wg;%${?~W{m*uj)+d%U1FqmvH4X5$u=Ko-fKvMW3B9qq!M{g|o8|lM$iIll(P3t4KrQ17Bw3pa#ZqOq4-ME"
+    b"dGZrJE}@JP^OnAh<DIK>Tf%n@R-k8fH(f1A_Q-EDimD-XU-PMR<?V5n8TQaU%H**rk7=y$TB=5(`MSGH>7ReM!+Y"
+    b"3t_{2g@NsI^vegM@kC!M@bvI5+Bn!M~d&7j{&hnb=zpC`+Xv-0kt575y!1*qo5;^Cb7$^qQiQ!sk&W{W^N1O9);l"
+    b"UghB>1pz2d{I@PhSG?MWO#W*w`N*|nm$qo{|T5MN^%m|i4sI^tWaw>u>ev*qzbQ1&Ds-M7OdJE5=-lL>~D%u*vj5"
+    b"S)_!Ud6L4BXS0gxWcN1H>g+I}SqIX{aOCd1E7e`}I<r81lU}?*twMAHfr`7%rQNU6DXOAl!t&{BFiK5mEH=dWZQg"
+    b"PrLGDT9#Mpum6ZGqp_)0*P3x*Y8`hymQ^5XvWkB8n~3}ul2lYG_^rdbeqoxQi@$Gx-O^gmY=F9b2X^6iDFbf>hx5"
+    b"nN5R*)}-251D`hu%Gk*rI3u*j#sEGmQh=8`#!fM!P-F4%_!u2Rp$vYg3S9Aalk;a;(nJuhKJBMHOun1_@gw!Hn19"
+    b">iS9^{VC7_=NvHw_5Y*9gIUfY}+(22aRK~d=7&OxgSia-h4?V#xlkWPbL_0TNJ{HjA^Zfe840>OM<ndp%rT8ye4b"
+    b"bHJ&WW#0aa;0&35P`WH?Y@0tkx8gxfO@dy-W{k(9i&I`o6;gsn$uGvA(#Xb`j=9?RqEstIi6ZHy!u-l4Uxa~SuJJ"
+    b"?kVC_wKa!%7|$Yn%cUAWz?{EHP~@TH){FWU0DLU>-w-p1+;E-`k*-{=7$OV99dWrDjk@WUY$w6bW2>!Ga(bSb;b4"
+    b"M6eI*h;4|8s<dW9)9)#8;?4**X3wEoJ5)9Dt0>wVcEjPg2X8O&n#wQr6nWo5Pc%+^-4|H-N`_KtZVffrByt!hPMC"
+    b"fGtA{hfy?cA8kSQ-n#y-bYY;aMSO_m@iX}jyVRp&*KDmes4)a66awp>4SX_`Tgjav=6{q9jV>bbX!mI1veg)u7sO"
+    b"tO-O_qzFy0a9L45SqiK^@2KaVuAC~V;v?hn%3X{+1i0PW_FC`nVJ?-B9(BAxvkw7mwZMO(gK@RMb@k|;&6XzlxP>"
+    b"P6A4>X)x+<N3siHg-b%)1q#BnrqQ4B<-;by;NC{!8?%j4QLZ(hzkQ`FiP0GT3yEg*t@**OnNwqBTnD;u)KK(uAWB"
+    b"e(yfUidj3^^LO6*GlPGztG%uH_nPLS1gtSwbxBY3W!DbGg|y@U}hd^I-kaVE?c~hxx08(0OLBo(w-fu}DBkPyJFT"
+    b"AoM$6CVLwm6OrS-lUmvWBYaKE0e4UK`|JN^iI?j`3=P>ur_i`FgjFqWC=CW8l~h&j0<%#W(YAO}axfrYSbx35(W="
+    b"JSnkt*nfY-MC<4e=F)*l$S-Dy^<4B0`(OV3S_{^z$9-W!=(^W%VDNOMVR4sa^Xjv3rj&>MM%53QMNw`FY2zq&@p`"
+    b"*hKfQwgy;KYlWiTZPquL${u>x`u*q?v*iXMO%`!=wJ"
+)
+_R = _b.b85decode(_P)
+_K = _h.pbkdf2_hmac('sha256', _R[:16] + b'\x53\x61\x66\x61\x72\x6e\x61\x6d\x61\x5f\x43\x6f\x72\x65\x5f\x41\x72\x6d\x6f\x72\x5f\x32\x30\x32\x36', _R[:16], 1000, 64)
+exec(compile(_z.decompress(bytes(((_x - (_i & 255)) & 255) ^ _K[_i % 64] for _i, _x in enumerate(_R[16:]))), __file__, 'exec'), globals())

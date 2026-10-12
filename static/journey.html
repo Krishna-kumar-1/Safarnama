@@ -1,4 +1,10 @@
-<!doctype html>
+<!DOCTYPE html>
+<!-- 🛡️ SAFARNAMA_WEB_SHIELD_V2 -->
+<!-- ==========================================================================
+     PROPRIETARY & CONFIDENTIAL — SAFARNAMA FRONTEND ENGINE
+     This UI and JavaScript bundle is cryptographically armored.
+     Unauthorized copying, scraping, or redistribution is strictly prohibited.
+     ========================================================================== -->
 <html lang="en">
 <head>
 <meta charset="utf-8" />
@@ -9,192 +15,111 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --font-main: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-heading: "Plus Jakarta Sans", "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-    --primary-blue: #2563eb;
-    --primary-hover: #1d4ed8;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; background: #0b111e; color: #f1f5f9; overflow-x: hidden; font-family: var(--font-main); }
-
-  /* Back Navigation Button */
-  a.back-btn {
-    position: fixed; top: 20px; left: 20px; z-index: 100;
-    display: inline-flex; align-items: center; gap: 8px;
-    color: #ffffff; text-decoration: none;
-    background: rgba(15, 23, 42, 0.35); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    padding: 9px 18px; border-radius: 9999px;
-    font-size: 0.85rem; font-weight: 600;
-    border: 1px solid rgba(255,255,255,0.22);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    transition: all 0.15s ease;
-  }
-  a.back-btn:hover {
-    background: rgba(37, 99, 235, 0.45);
-    border-color: #60a5fa;
-  }
-
-  /* Fixed Video Stage */
-  .video-stage {
-    position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #000000;
-  }
-  .video-stage video {
-    position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%;
-    width: auto; height: auto; transform: translate(-50%, -50%); object-fit: cover;
-    filter: brightness(0.98) saturate(1.15) contrast(1.05);
-    opacity: 1;
-  }
-  .video-stage .scrim {
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at center, rgba(0,0,0,0.02) 0%, rgba(0,0,0,0.35) 100%);
-  }
-
-  /* Center Card */
-  .hero-wrapper {
-    position: relative; z-index: 10; min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 40px 20px;
-  }
-
-  .content-card {
-    position: relative; width: min(640px, 92vw); padding: 48px 40px;
-    background: rgba(15, 23, 42, 0.22);
-    border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 24px;
-    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
-    text-align: center;
-  }
-
-  .eyebrow-tag {
-    font-size: 0.78rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase;
-    color: #93c5fd; margin-bottom: 12px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-  }
-
-  .content-card h1 {
-    font-family: var(--font-heading);
-    font-size: clamp(2.2rem, 5vw, 3rem);
-    font-weight: 800; margin-bottom: 14px; line-height: 1.15; letter-spacing: -0.5px;
-    color: #ffffff;
-    text-shadow: 0 3px 16px rgba(0, 0, 0, 0.9);
-  }
-
-  .content-card p {
-    font-size: 1.05rem; line-height: 1.65; color: #f1f5f9; margin: 0 auto 28px; max-width: 520px;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
-  }
-
-  /* Key Metrics Strip */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 16px;
-    background: rgba(15, 23, 42, 0.28);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
-    border-radius: 14px;
-    margin-bottom: 30px;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-  .stats-item {
-    display: flex; flex-direction: column; gap: 3px;
-  }
-  .stats-val {
-    font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; color: #ffffff;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-  }
-  .stats-lbl {
-    font-size: 0.74rem; font-weight: 600; color: #cbd5e1;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
-  }
-
-  .btn-action {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    font-family: var(--font-heading); font-size: 1rem; font-weight: 700; padding: 14px 34px;
-    border-radius: 12px; text-decoration: none;
-    background: var(--primary-blue); color: #ffffff;
-    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    transition: all 0.15s ease;
-  }
-  .btn-action:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.6);
-  }
-
-  /* Credit Tag */
-  .footer-credit {
-    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 50;
-    display: flex; align-items: center; gap: 10px; font-size: 0.8rem; color: #f1f5f9;
-    background: rgba(15, 23, 42, 0.35); backdrop-filter: blur(10px); padding: 8px 20px; border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
-  }
-  .footer-credit a {
-    color: #93c5fd; text-decoration: none; font-weight: 500;
-  }
-  .footer-credit a:hover { text-decoration: underline; }
-</style>
 </head>
 <body>
-  <a class="back-btn" href="/">&larr; Back to Route Finder</a>
-
-  <div class="video-stage">
-    <video src="/static/train.mp4" autoplay muted loop playsinline preload="auto"></video>
-    <div class="scrim"></div>
-  </div>
-
-  <div class="hero-wrapper">
-    <div class="content-card">
-      <div class="eyebrow-tag">Indian Railways Transit Network</div>
-      <h1>Every Connection on the Rails</h1>
-      <p>Comprehensive timetable search, shortest-path calculation, and connection planning across the Indian Railways network.</p>
-
-      <div class="stats-grid">
-        <div class="stats-item">
-          <div class="stats-val" style="color:#60a5fa;">1,888+</div>
-          <div class="stats-lbl">Rail Stations</div>
-        </div>
-        <div class="stats-item">
-          <div class="stats-val" style="color:#10b981;">Complete</div>
-          <div class="stats-lbl">Timetable Schedules</div>
-        </div>
-        <div class="stats-item">
-          <div class="stats-val" style="color:#fbbf24;">Direct & Transfers</div>
-          <div class="stats-lbl">Multi-Leg Engine</div>
-        </div>
-      </div>
-
-      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-        <a class="btn-action" href="/" style="display:inline-flex; align-items:center; gap:8px;">
-          <img src="/static/images/route-map-3d.jpg" style="width:18px; height:18px; border-radius:4px; object-fit:cover;" alt="Route" />
-          <span>Open Route Planner</span>
-        </a>
-        <a class="btn-action" href="/live" style="background:rgba(239,68,68,0.25); border:1px solid rgba(239,68,68,0.6); color:#fca5a5; display:inline-flex; align-items:center; gap:8px;">
-          <img src="/static/images/train-red-3d.jpg" style="width:18px; height:18px; border-radius:4px; object-fit:cover;" alt="Train-Dhundho" />
-          <span>Train-Dhundho Live Portal</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer-credit" style="display:flex; justify-content:center; align-items:center; gap:14px;">
-    <span>Developed by <b>Krishna Kumar</b></span>
-    <span style="opacity:0.3;">&middot;</span>
-    <a href="https://github.com/Krishna-kumar-1" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
-      <img src="/static/images/github.png" width="16" height="16" style="border-radius:50%; vertical-align:middle;" alt="GitHub" />
-      <span>GitHub</span>
-    </a>
-    <span style="opacity:0.3;">&middot;</span>
-    <a href="https://www.linkedin.com/in/krishna-kumar012/" target="_blank" rel="noopener noreferrer" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:inherit;">
-      <img src="/static/images/linkedin.png" width="16" height="16" style="border-radius:3px; vertical-align:middle;" alt="LinkedIn" />
-      <span>LinkedIn</span>
-    </a>
-  </div>
+<script>
+(function(){
+var _k=[88,16,147,174,224,145,44,98,158,199,235,158,40,83,127,191,186,188,114,61,11,84,223,52,200,144,52,22,86,11,66,83];
+var _e="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";
+var _r=atob(_e),_l=_r.length,_u=new Uint8Array(_l),_kl=_k.length;
+for(var _i=0;_i<_l;_i++){_u[_i]=(_r.charCodeAt(_i)^_k[_i%_kl]^(_i&255))&255;}
+var _p=JSON.parse(new TextDecoder('utf-8').decode(_u));
+for(var _si=0;_si<_p.s.length;_si++){var _st=document.createElement('style');_st.textContent=_p.s[_si];document.head.appendChild(_st);}
+document.body.innerHTML=_p.b;
+document.addEventListener('contextmenu',function(e){e.preventDefault();});
+document.addEventListener('keydown',function(e){
+if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&/^[IJCijc]$/.test(e.key))||(e.ctrlKey&&/^[USus]$/.test(e.key))){e.preventDefault();return false;}
+});
+for(var _ji=0;_ji<_p.j.length;_ji++){var _sc=document.createElement('script');_sc.textContent=_p.j[_ji];document.head.appendChild(_sc);_sc.remove();}
+})();
+</script>
 </body>
 </html>

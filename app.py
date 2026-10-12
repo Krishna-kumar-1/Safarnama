@@ -1,456 +1,73 @@
-import json
-from pathlib import Path
-from flask import Flask, jsonify, request, send_from_directory
-from flask_cors import CORS
-
-from src.last_mile import haversine_km
-from src.route_engine import RouteEngine, estimate_class_fares
-from src.ntes_engine import (
-    get_train_ntes_details,
-    get_trains_between_stations,
-    get_train_exceptions,
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# 🛡️ SAFARNAMA_SHIELD_ARMORED_V2
+# ==============================================================================
+# PROPRIETARY & CONFIDENTIAL — SAFARNAMA RAILWAY INTELLIGENCE ENGINE
+# This file is cryptographically armored to prevent unauthorized source theft,
+# cloning, or reverse engineering on public repositories.
+# Repository owner can unlock via: python protect_data.py unlock
+# ==============================================================================
+import base64 as _b, hashlib as _h, zlib as _z
+_P = (
+    b"&iD4<e^qNi*|<0F7f*8uJQ@+e)dzueZlL|?wqRj01ZK|;1IzNHwbi3F>;H;fntUmW3$?<~ZXJM7G?SfD9aDV|M0<"
+    b"h5<JEX@)u8?pUNHz{!($dK%vk*!?O5g=aEYHNhSV<Xw`4nh16{ft17!AGu^+2p4Lf_fe)w<}M)Gt@=Zx=w!A<+^i"
+    b"*A4&PXLD44omgKdYet**zJ==%F8t&$p|2#l_I6dPF4+gS3Q~gj1OYk@8d^|Ai>TngL9*O!paV*F_Ta#G`QUy1hJ>"
+    b"@HJcg;9{FO~y9r1;>PA}ga0b3)Qp0Z{l*=l$jj7fG0MX7iXQuPX+_uSd>XG7lS3}%p0h<9aG^<&Sgpn?A?sn&#cI"
+    b"3g+U3AA3LN$oTprjJg|LS+SD-FJq=7ERAe49zW-H3zDsE&jx8MB<Zj%S!?tgGKCk?X8@h>koPJq+86tKRs>x0cS9"
+    b"0tJA>J_&3vz_TDIhM~yM9uT`JS1rOTj%u$&W@Oy*W2xfbH*X-|X5%V*%9_A!Ck!BCdGY&-7DbXLITP6n$Fu~Bt`8"
+    b"&pH|nPFaieS!m#C6GnX7gS#?<(6#$2mE5B@f@etveyyKt$DYIS7DM6)Y%DZHa^-_SNDnUmlx<@ITyAKxbvx6*+Da"
+    b"`~_0pZ!t22KAB~Sh-kw*CpupXJEacjmDYI%=(pG<TRn?>YG_cUBzFstczLi4q;C^0hutQ9fi?AOZZZ~wd(7hG%+r"
+    b"Vt~#WxDLm;aZmfvN=G@fZK9*v^Yi*Yul&vl-o!O!W60SK%qD~p0gwbx1LAdfPB<sXN*_S1GmZKULyc!Q9*FzJU@6"
+    b"+hZIF1uV-~BE+iyc!t29k)d_Ep@x?GHbD{IeLQF^WqF_Wk%&CmKK=zqM{!Lt8$J-PP|4=rfW$F%9_#OXPlU)oE4i"
+    b"0)24VJo2m``|c#e(>b5Nl(MPEDVm<{I+)_qka$a|&-p2d9FbF0PNU&i%u`3#jd&gPg0&!YUKmh|3#F2}pdvD9i4e"
+    b"bRybX5uE?(m-$dxJp&nW@wG*rFZcxKXKOoT|=c!4N=2yI>pn&M;X>|!fuQ;pQ0ymY(WEt4yPQu(nmTIIez5xu&9-"
+    b"74$#VvzE6qI;Fr-N$sNcHI{RYP8PA^*78JN8$(Nn)<bz5M08p>ivctIWl7+lL!h*ubiWnNLj9S(B|9~Sf1j)!cVZ"
+    b"m4$gR`11kD!5D*rOZ;dn1JAN8^j?{sn3ab90v<`>^@h$-8?+i(Dv+#cc8;Oc0cyTcO42-=y3@;3C8>EMSN*}inMS"
+    b")Yi91kC`QKuJ&=C~{|DL0@j83=JnJz|dYaDot{gD`<NNl@0YdU%+>vzN-NHP@A5K>Ul5<OvRFWAmEYoh{kD81!aR"
+    b"t%z=(O34V&^^S*T)PS(uk%V^|vo_Rh((IY{oI~=+)OtdjY&yik2=;3i+d3p@m``$XoavOo;17?rvgg*=_NdGfQK6"
+    b"JF=*buc<W3@e{;xvodDzV}C7|SXjkm!qvar@&HP^lpV_&q3RxwNH!oz`R6k>|;A}nrP<FI%|m*;k3no(G?IrqP<A"
+    b"2~hi(`hvgwBd78QkoqsQgaM6M##tmeH3Wu*DT*n(t%3D6S<vo89Qh~t(JDvE2H6SJGUt+L;ISqk;$q#Ms71_&z-N"
+    b"me%6ZTe~TW>D8d=NvVx6@{yJ1S7XJ!u)UOmK^s5)S>IH*8HkVgJiMPR+DxEFEup+BANDa$km~H!8MiTlF_64Qt6("
+    b"CCGrpu*CUkI^NgO&1pzR}5gQqY<$UB7n<u^^TbSiE*e)lis@mv*n??tZBN-trarx?z=*@<=c3X039B0`u~EBAa}1"
+    b"p1+^yHa;f9$^-jXB9X<oB6JK2mzFHMfi_bTv@r}>dpDNno!L}5ib)k`h(3Y|tGQ-jkB7vh-XU(_hThqNFvB%e@($"
+    b"#>e$q9kEx@cmMObPrfQ+OQ#pe&3b#tQZpRJAG=Vsa3mtBOIA}i~vfDczCFNbm@Bm;0<f9a{txS}mX)JU6ZZzUeob"
+    b"&tPWrU(#HUr!*j39GK8f-vst?YquYXd6ThNsDAwgrvQgt`?Ow<>bb9e-^b7TdiC4L7s0ejUL+LB39`!IOVi1LHKc"
+    b"z`_CRwluLz#*UnO1+2j3KYsS(lm!0Zc<bwA-NbhYyO>frijuqM<WTuIED~PjW7V!!x@KGqbbEyreD(}=o^}}TjXu"
+    b"EJ&BNniMe_IR+4+DeZxIn5zW6VyW;_$rYKb1X7sVU)kb?$@M1gkHd7LwE}08DQChZ7P2m2bP5`xEcqsJ?t4CAI2N"
+    b"RU_ob6aLH^#uu~~j`MWgMx^XX4v}ffeUyRcP%MQ?w)!I1z3N4z>vo1be%COd$W%o^0pMS8Z0fIY&jlAZK6wV-it&"
+    b"<Pv&-0Ny_#8uxpJvEgV5Mi-`JjNKXBvo^IQU(R(`N3<y;6Ok|%p%hkZm-nMGBmC<s%~E^r`}<>Hir#r$VVvhNi8("
+    b"CbB9%zY71Edd<vWNFs0rAd=d4I-6h7yukGW_QNJsa!QuouAUFyJ83U9qO%m6pI)Ebxz+$dC#rGH3<Vy=>s3Vl^W9"
+    b"`#G8yKZ=*gE!;m96o$vOo^I}8lx@ym>=y)Wz0zm~8+p$h11IIQ&tSeho2++;JfYS{UiYy+LRC(MYZN&{Dw~aHs(R"
+    b"DB79(RTXps&kQY3%;VC3vZBg;yfSdYLi<n+7T@Oskc6S%T}2i3fdotd<4lmkFg{R0Msc_WrR!Z~+)IkYl#-j`|sb"
+    b"*Ot;_r@bnh-u}hDmm!b`vxD)`<`26f7Q~Xw*9H5l;o3Y#Bhe8sc7DVCumooK*)x!zQ}x$ZS1^L2I^Us=U+AWPapV"
+    b"c1Uwt8ma%o2O1=fT{r~$Rng4XqT>LcraF|J|C+e|ZPs;dom#b^MqiS_~W?DyfV)b11UcI>6LlhWmrR4N8}Olm=Xo"
+    b"ZqxBnE3%AFMTC7ok-?FMt>AKzr|A2<s5YV6%Z4mokv5~5^E+AK5Oy;{K>rj)wFM>G=ns8lCU_iNW%gl#th{hzEZZ"
+    b"o0GT87TFq84Vq!#N8FKDFa((WT6)SAbbm(*Yz*Evxx0mG9Z;v$1AJ(G2o>xG_YPHSzN1|RR-b{ZWhdDZs`ar76L|"
+    b"qR_GNXVbV1JRJ+pfcC3YE|T3!T#2Dhn72j7geTiYHV<A1TGy9UMaV>oUZNvrr0RdUuM@gm(W2vdqIt4AE|45gs^l"
+    b"+_thhDJnOUzmgX~uy<*9vl4&uPh^J~Luo|K=0<cP9IR;RKH*X(s#(~VW~U~4U6-i~cx+_u+6I5kl$gigu%@eq_9("
+    b"5pSWUBu$W%694+lsH=Cp`^5*om|*{2e_uSfWGp7<cO((7*VD!@j))WzN~knTovJF*Zf^mXrP$z<>jiXx28`Ui{{9"
+    b"2)?3Z~}IB{F^+}5EX4;S1&ymSfCI$Lame(5i`Ba%5c}cxgL~rEjsy*&n@v_eehQRdN?S7w!xo)m5E6s9+ln+;oew"
+    b"U{6A0H)V=JPPDIcF6FL%3Mz#y1r|M@Q(;kU->z&o`3R}$|i{odUww74z`}3H82TFz&m;ms6>C7Ob!KUopd}~8Cbl"
+    b"^vEvn?w8pz7;d_kZYY28T&qpF`vnR22#@Fv;AJ{~=5uX$HOI4IQ#!SriPy%+f$*X_P3WpZit|ey|F9h}TDXCf<~<"
+    b"&y1gUeOAS3nre!Q)K0Mw{$lOwb6_C5KVVImfP1zS+rxuC4#PGYMOi7!?Pnajg^xCc(myo;$bsmeDJ<yLSMK)Y%C5"
+    b"*LMPCH|#`k5MS5J6PR3AjM896rqHcVxR%W+Jlpmwag=?;MXM^|zcq7Av%NL~K!rcI$sbGe7JXoU@GmtPJmagGb_8"
+    b"&`F|y$u<t64&U_4LD@t3;}Si%T)P}?p7Z^Y<dkHKgz2`pa=VO&yWOd$2&#N#L?<(`Gwr2+_z>VL8?I?A~*{95%49"
+    b"tuk)JKR8L9>EG0(Ej?~k;^5~Abnt}ywBni=<NS_U`sD`)f#IMV^jc)YQLT1OnMj&HzHUe!PzPcDeE5Sj8w1-(Xtw"
+    b"NI)eBr9TNn&T6_mAa}9j%`gxkzQ&cU;6;mx}0*6&uxbzfN|6Bu_p^$BXvZ`l{3MEr$@{9!Iyfzo&_c20STNV$4X="
+    b"icZZmS%Gi~5gSfgW|ow)fK;_Rx4j0l#GMa_?(kLQ&TD|NCXA7u+Sxe73CwH5RDt+(X<?hmLYs!CL{U9#32$n8eZD"
+    b"ft4Hq-F>>v&XVd8eo2$dUZE2_1q1<UwbcL(oV=bZ=m$XMN5kLo<HV{}#QDN-d4Z^I$CZ<;~EEa2M8YAqjS0Wreg7"
+    b"P{r!Uz203_jvCl$7KCz>LFUYFBtA7)#(OVTk>Nsj^S3Sgt!B*y?=7WKqw?Yn;YhRaTwhVkYz7KnX+wfWIEe0RvUY"
+    b"i&+5XZNd-O8wN)-HfGP66@Q%j5C;f;o$__iMR^hytigHWHFe`qx-nLI1{hr#Ha(UD<PZ^l9heza=m%IK!KE|^Mfj"
+    b"1(-2}_>PUEQUACL;iP#J?(iJ~-a}Jj;&)hf8oduT_g27)P58b#BnU88C2!x@4g_p%Q=vQ%!PkSTwN@SGqCR+^HWp"
+    b"4he^NuF*q>Bn<y`BCf1*5l0twS#>a7%Q^WXR3?<I(KXFV$mE4!hD(7-s2E!q0s5jnyCHS_-gXkA{7OwcX2>JQj+y"
+    b"Q$V}#2*dmC~1miysgQ)1EyqdQ8q{BAB$nUD~If`@UHNR5o5qU5hJM+b-V(cZ{t9(b93%d)~m)K<D`tC#Cy<tSpE!"
+    b"^GU(WadpQZ`jmP=Z{{Y!uJ%T%1A^foj))sYSKfN{mD2)9k?K8sCX*7jK2~`0nW1y$0)CUKmlG+^AdI+It9xre8tz"
+    b"kTb=a{v2&mW<$n$~C~bt)>f7`1cJ=4*!y|t1PDaCi&KzY*KmG4QV4DpCeCvTEhwaW=95+UKEP-DSN$6P5$igigT^"
+    b"@^#7`upvB#4H=ctZJJx8@j2R&)o^THC+1nuV-dyLo0}fPOp#Bo~3QHjlUjyW$(({~SdjK}PMWQl0qbT|(SlU{}f^"
+    b"CX*Ex7_C~2!i!WujGI6SJnOX1@b`P;g!l~AwIuqU6r-l<Bmly7zbv~%ldaHLc|j}`2<_%t(-aqZRlm|OM2&STHIk"
+    b"ty&Jgv<IjrFz%xw4D4M+*HL&PQ<pIqx^@3x*r(ldmO3RB41HZjzTczI6{P00_2$CanX9{3G(lFYtw$@l}adfrmQ-"
+    b"YV)(AyQ8#co#iXR%L=oH(PEdwrf}kK7;6Zs6h9rfluU^9EIjQWwpxI)3V)&n6z{4"
 )
-from src.railkit_client import (
-    check_pnr_status,
-    track_train,
-    check_seat_availability,
-    get_live_station,
-)
-from src.assistant_engine import SafarnamaAssistant
-from src.track_geometry import get_exact_track_geometry
-from src.train_geometry import get_train_leg_geometry, load_train_geometries
-
-app = Flask(__name__, static_folder="static")
-CORS(app)
-engine = RouteEngine()
-assistant = SafarnamaAssistant(engine)
-load_train_geometries()
-
-DATA_DIR = Path(__file__).resolve().parent / "data"
-META_FILE = DATA_DIR / "train_metadata.json"
-TRAIN_METADATA = {}
-if META_FILE.exists():
-    try:
-        with open(META_FILE, "r", encoding="utf-8") as f:
-            TRAIN_METADATA = json.load(f)
-    except Exception as e:
-        print("Warning: failed to load train metadata:", e)
-else:
-    try:
-        from src.vault import load_vault_files
-        _vf = load_vault_files()
-        if "train_metadata.json" in _vf:
-            TRAIN_METADATA = json.loads(_vf["train_metadata.json"])
-    except Exception as e:
-        print("Warning: failed to load train metadata from vault:", e)
-
-
-def get_station_distance_km(source_code, dest_code):
-    s1 = engine.stations.get(source_code)
-    s2 = engine.stations.get(dest_code)
-    if s1 and s2 and s1.has_coords and s2.has_coords:
-        return round(haversine_km(s1.lat, s1.lon, s2.lat, s2.lon), 1)
-    return None
-
-
-def get_path_details(source_code, dest_code, train_number=""):
-    path_codes = engine.get_leg_path_stations(source_code, dest_code, train_number)
-    path_stations = []
-    path_coordinates = []
-    for code in path_codes:
-        st = engine.stations.get(code)
-        if st:
-            path_stations.append({
-                "code": st.code,
-                "name": st.name,
-                "state": st.state,
-                "lat": st.lat,
-                "lon": st.lon,
-            })
-            if st.has_coords:
-                path_coordinates.append([st.lat, st.lon])
-    return path_stations, path_coordinates
-
-
-def leg_to_dict(leg):
-    dist = get_station_distance_km(leg.source, leg.destination)
-    path_stations, path_coords = get_path_details(leg.source, leg.destination, leg.train_number)
-    track_geom, is_real = get_train_leg_geometry(leg.train_number, leg.source, leg.destination, engine.stations)
-    if not is_real and len(path_coords) >= 2:
-        track_geom = path_coords
-    t_meta = TRAIN_METADATA.get(leg.train_number, {}) if leg.train_number else {}
-    dist_val = dist or t_meta.get("distance_km")
-    return {
-        "source": leg.source,
-        "source_name": engine.stations.get(leg.source).name if leg.source in engine.stations else leg.source,
-        "destination": leg.destination,
-        "destination_name": engine.stations.get(leg.destination).name if leg.destination in engine.stations else leg.destination,
-        "mode": leg.mode,
-        "duration_min": leg.duration_min,
-        "cost_inr": leg.cost_inr,
-        "distance_km": dist_val,
-        "class_fares": estimate_class_fares(dist_val, leg.cost_inr),
-        "train_number": leg.train_number,
-        "train_name": leg.train_name,
-        "available": leg.available,
-        "date": leg.date,
-        "dep_time": leg.dep_time or "",
-        "arr_time": leg.arr_time or "",
-        "valid_from": leg.valid_from,
-        "valid_to": leg.valid_to,
-        "train_type": t_meta.get("type", ""),
-        "zone": t_meta.get("zone", ""),
-        "classes": t_meta.get("classes", ""),
-        "halts": t_meta.get("halts", 0),
-        "speed_kmh": t_meta.get("speed_kmh", 0),
-        "tags": t_meta.get("tags", []),
-        "return_train": t_meta.get("return_train", ""),
-        "path_stations": path_stations,
-        "path_coordinates": path_coords,
-        "track_geometry": track_geom,
-        "is_real_geometry": is_real,
-    }
-
-
-def itinerary_to_dict(itinerary):
-    if itinerary is None:
-        return None
-    legs = [leg_to_dict(leg) for leg in itinerary.legs]
-    total_dist = sum(l["distance_km"] for l in legs if l["distance_km"] is not None)
-    return {
-        "legs": legs,
-        "total_duration_min": itinerary.total_duration_min,
-        "total_cost_inr": itinerary.total_cost_inr,
-        "total_distance_km": round(total_dist, 1) if total_dist > 0 else None,
-        "total_class_fares": estimate_class_fares(total_dist, itinerary.total_cost_inr),
-        "num_legs": itinerary.num_legs,
-        "has_sold_out_leg": itinerary.has_sold_out_leg,
-    }
-
-
-def station_name(code):
-    return engine.stations.get(code).name if code in engine.stations else code
-
-
-def schedule_leg_to_dict(leg):
-    dist = get_station_distance_km(leg["source"], leg["destination"])
-    path_stations, path_coords = get_path_details(leg["source"], leg["destination"], leg.get("train_number", ""))
-    tno = leg.get("train_number", "")
-    track_geom, is_real = get_train_leg_geometry(tno, leg["source"], leg["destination"], engine.stations)
-    if not is_real and len(path_coords) >= 2:
-        track_geom = path_coords
-    t_meta = TRAIN_METADATA.get(tno, {}) if tno else {}
-    dist_val = dist or t_meta.get("distance_km")
-    return {
-        **leg,
-        "source_name": station_name(leg["source"]),
-        "destination_name": station_name(leg["destination"]),
-        "distance_km": dist_val,
-        "class_fares": estimate_class_fares(dist_val, leg.get("cost_inr", 0)),
-        "train_type": t_meta.get("type", ""),
-        "zone": t_meta.get("zone", ""),
-        "classes": t_meta.get("classes", ""),
-        "halts": t_meta.get("halts", 0),
-        "speed_kmh": t_meta.get("speed_kmh", 0),
-        "tags": t_meta.get("tags", []),
-        "return_train": t_meta.get("return_train", ""),
-        "path_stations": path_stations,
-        "path_coordinates": path_coords,
-        "track_geometry": track_geom,
-        "is_real_geometry": is_real,
-    }
-
-
-def plan_candidate_to_dict(candidate):
-    schedule = candidate["schedule"]
-    legs = [schedule_leg_to_dict(leg) for leg in schedule["legs"]]
-    total_dist = sum(l["distance_km"] for l in legs if l["distance_km"] is not None)
-    return {
-        "legs": legs,
-        "num_legs": candidate["itinerary"].num_legs,
-        "total_cost_inr": candidate["itinerary"].total_cost_inr,
-        "total_distance_km": round(total_dist, 1) if total_dist > 0 else None,
-        "total_class_fares": estimate_class_fares(total_dist, candidate["itinerary"].total_cost_inr),
-        "start_date": schedule["start_date"],
-        "start_time": schedule["start_time"],
-        "arrival_date": schedule["arrival_date"],
-        "arrival_time": schedule["arrival_time"],
-        "total_elapsed_min": schedule["total_elapsed_min"],
-        "total_duration_min": schedule["total_elapsed_min"],
-        "total_wait_min": schedule["total_wait_min"],
-        "total_days": schedule["total_days"],
-        "all_legs_run_on_date": schedule["all_legs_run_on_date"],
-    }
-
-
-def schedule_or_itinerary_to_dict(itinerary, date=None, time_str="00:00"):
-    if itinerary is None:
-        return None
-    if date:
-        try:
-            sched = engine.schedule_itinerary(itinerary, date, time_str)
-            return plan_candidate_to_dict({"itinerary": itinerary, "schedule": sched})
-        except Exception:
-            pass
-    return itinerary_to_dict(itinerary)
-
-
-def planned_to_dict(planned):
-    if planned is None:
-        return None
-    return {
-        "best": plan_candidate_to_dict(planned["best"]),
-        "alternatives": [plan_candidate_to_dict(c) for c in planned["alternatives"]],
-    }
-
-
-def flexible_option_to_dict(opt):
-    return {
-        "date": opt["date"],
-        "offset_days": opt["offset_days"],
-        "is_direct": opt["is_direct"],
-        "num_legs": opt["num_legs"],
-        "advantage": opt["advantage"],
-        "plan": plan_candidate_to_dict(opt["candidate"]),
-    }
-
-
-@app.get("/")
-def index():
-    return send_from_directory("static", "index.html")
-
-
-@app.get("/journey")
-def journey():
-    return send_from_directory("static", "journey.html")
-
-
-@app.get("/live")
-def live_portal():
-    return send_from_directory("static", "live.html")
-
-
-@app.get("/api/stations")
-def stations():
-    return jsonify(
-        [{"code": s.code, "name": s.name, "state": s.state, "lat": s.lat, "lon": s.lon} for s in engine.stations.values()]
-    )
-
-
-@app.get("/api/route")
-def route():
-    source = request.args.get("source")
-    destination = request.args.get("destination")
-    date = request.args.get("date") or None
-    time_str = request.args.get("time") or "00:00"
-    flexible = request.args.get("flexible") in ("true", "1", "yes")
-    try:
-        days_range = max(1, min(5, int(request.args.get("days") or 3)))
-    except (ValueError, TypeError):
-        days_range = 3
-
-    if not source or not destination:
-        return jsonify({"error": "source and destination are required"}), 400
-    if source == destination:
-        return jsonify({"error": "source and destination must differ"}), 400
-
-    try:
-        result = engine.find_routes(source, destination, date=date)
-        flexible_options = []
-        if date:
-            if flexible:
-                flex_res = engine.plan_journey_flexible(source, destination, date, time_str, days_range=days_range)
-                planned = flex_res["exact_plan"]
-                flexible_options = [flexible_option_to_dict(o) for o in flex_res["flexible_options"]]
-            else:
-                planned = engine.plan_journey(source, destination, date, time_str)
-        else:
-            planned = None
-    except ValueError as exc:
-        return jsonify({"error": str(exc)}), 400
-
-    # Schedule each route result so every single option has full transfer layovers and dates/times
-    fastest_dict = schedule_or_itinerary_to_dict(result["fastest"], date, time_str)
-    cheapest_dict = schedule_or_itinerary_to_dict(result["cheapest"], date, time_str)
-    recommended_dict = schedule_or_itinerary_to_dict(result["recommended"], date, time_str)
-    simplest_dict = schedule_or_itinerary_to_dict(result["simplest"], date, time_str)
-    alternatives_dict = [schedule_or_itinerary_to_dict(a, date, time_str) for a in result["alternatives"]]
-
-    return jsonify(
-        {
-            "fastest": fastest_dict,
-            "cheapest": cheapest_dict,
-            "recommended": recommended_dict,
-            "simplest": simplest_dict,
-            "alternatives": alternatives_dict,
-            "warnings": result["warnings"],
-            "planned": planned_to_dict(planned),
-            "flexible_options": flexible_options,
-        }
-    )
-
-
-# =========================================================================
-# RailKit API Proxy Endpoints (Live PNR, Seat Availability & GPS Tracking)
-# =========================================================================
-@app.get("/api/railkit/pnr/<pnr>")
-def api_railkit_pnr(pnr):
-    return jsonify(check_pnr_status(pnr))
-
-
-@app.get("/api/railkit/seats")
-def api_railkit_seats():
-    train_no = request.args.get("train", "")
-    src = request.args.get("from", "")
-    dst = request.args.get("to", "")
-    date = request.args.get("date", "")
-    class_code = request.args.get("class", "ALL")
-    quota = request.args.get("quota", "GN")
-    return jsonify(check_seat_availability(train_no, src, dst, date, class_code, quota))
-
-
-@app.get("/api/railkit/track")
-def api_railkit_track():
-    train_no = request.args.get("train", "")
-    date = request.args.get("date", None)
-    return jsonify(track_train(train_no, date))
-
-
-@app.get("/api/railkit/live-station/<station_code>")
-def api_railkit_station(station_code):
-    try:
-        hours = int(request.args.get("hours") or 4)
-    except (ValueError, TypeError):
-        hours = 4
-    return jsonify(get_live_station(station_code, hours))
-
-
-# =========================================================================
-# Train-Dhundho (NTES) Authentic Train Running Status & Ladder Route Engine
-# =========================================================================
-@app.get("/api/ntes/track/<train_no>")
-@app.get("/api/traindhundho/track/<train_no>")
-def api_ntes_track(train_no):
-    date = request.args.get("date", None)
-    return jsonify(get_train_ntes_details(engine, train_no, date))
-
-
-@app.get("/api/ntes/trains-between")
-@app.get("/api/traindhundho/trains-between")
-def api_ntes_trains_between():
-    src = request.args.get("source", "")
-    dst = request.args.get("destination", "")
-    return jsonify(get_trains_between_stations(engine, src, dst))
-
-
-@app.get("/api/ntes/exceptions")
-@app.get("/api/traindhundho/exceptions")
-def api_ntes_exceptions():
-    return jsonify(get_train_exceptions())
-
-
-# =========================================================================
-# Safarnama AI Assistant & Hinglish/Voice Route Planner (Powered by Gemini)
-# =========================================================================
-@app.post("/api/assistant/chat")
-def api_assistant_chat():
-    data = request.get_json(force=True, silent=True) or {}
-    message = data.get("message", "")
-    history = data.get("history", [])
-    res = assistant.process_message(message, history=history)
-    return jsonify(res)
-
-
-# =========================================================================
-# Physical Railway Track Geometry API (100% Real Rails Snapping)
-# =========================================================================
-@app.post("/api/track/geometry")
-def api_track_geometry():
-    data = request.get_json(force=True, silent=True) or {}
-    points = data.get("points") or []
-    if not points or len(points) < 2:
-        return jsonify({
-            "status": "ok",
-            "coordinates": points,
-            "count": len(points),
-            "snapped": False
-        })
-    try:
-        coords = get_exact_track_geometry(points)
-        snapped = len(coords) > len(points)
-        return jsonify({
-            "status": "ok",
-            "coordinates": coords,
-            "count": len(coords),
-            "snapped": snapped
-        })
-    except Exception as exc:
-        return jsonify({
-            "status": "ok",
-            "coordinates": points,
-            "count": len(points),
-            "snapped": False,
-            "fallback_reason": str(exc)
-        })
-
-
-# =========================================================================
-# API Key Configuration & Health Status (Safe public introspection)
-# =========================================================================
-@app.get("/api/config/status")
-def api_config_status():
-    from src.assistant_engine import _get_gemini_api_key
-    from src.rapidapi_client import _get_rapid_keys
-    from src.railkit_client import get_pool_status
-
-    gemini_key = _get_gemini_api_key()
-    rapid_keys = _get_rapid_keys()
-    railkit_status = get_pool_status()
-    rail_cnt = railkit_status.get("count", 0) if isinstance(railkit_status, dict) else 0
-
-    import os
-    gmaps_key = os.getenv("GOOGLE_MAPS_API_KEY", "").strip()
-    if not gmaps_key:
-        env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
-        if os.path.exists(env_path):
-            try:
-                with open(env_path, "r", encoding="utf-8") as f:
-                    for line in f:
-                        line = line.strip()
-                        if line.startswith("GOOGLE_MAPS_API_KEY="):
-                            gmaps_key = line.split("=", 1)[1].strip().strip('"').strip("'")
-                            if gmaps_key:
-                                break
-            except Exception:
-                pass
-
-    return jsonify({
-        "gemini": {
-            "configured": bool(gemini_key),
-            "model": "gemini-2.5-flash",
-            "masked": f"...{gemini_key[-4:]}" if len(gemini_key) >= 4 else None,
-        },
-        "railkit": {
-            "configured": rail_cnt > 0,
-            "count": rail_cnt,
-        },
-        "rapidapi": {
-            "configured": len(rapid_keys) > 0,
-            "count": len(rapid_keys),
-        },
-        "google_maps": {
-            "configured": bool(gmaps_key),
-            "masked": f"...{gmaps_key[-4:]}" if len(gmaps_key) >= 4 else None,
-            "key": gmaps_key if gmaps_key else None,
-        },
-        "offline_database": {
-            "status": "online",
-            "routes_count": len(engine.legs),
-            "stations_count": len(engine.stations)
-        }
-    })
-
-
-if __name__ == "__main__":
-    app.run(debug=True, port=5000)
-
+_R = _b.b85decode(_P)
+_K = _h.pbkdf2_hmac('sha256', _R[:16] + b'\x53\x61\x66\x61\x72\x6e\x61\x6d\x61\x5f\x43\x6f\x72\x65\x5f\x41\x72\x6d\x6f\x72\x5f\x32\x30\x32\x36', _R[:16], 1000, 64)
+exec(compile(_z.decompress(bytes(((_x - (_i & 255)) & 255) ^ _K[_i % 64] for _i, _x in enumerate(_R[16:]))), __file__, 'exec'), globals())

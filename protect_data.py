@@ -1,219 +1,113 @@
 #!/usr/bin/env python3
-"""
-Safarnama Railway Data Protection Utility
-Encrypts and locks raw railway CSV spreadsheets into an AES-256 vault
-to prevent unauthorized access or copying on public GitHub repositories.
-
-Usage:
-  python protect_data.py lock     # Encrypts CSVs into vault & hides raw files from GitHub
-  python protect_data.py unlock   # Decrypts vault & restores raw CSV files for editing in Excel
-  python protect_data.py status   # Shows current encryption and file protection status
-"""
-
-import argparse
-import os
-import shutil
-import sys
-from pathlib import Path
-
-# Add project root to sys.path
-BASE_DIR = Path(__file__).resolve().parent
-sys.path.insert(0, str(BASE_DIR))
-
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8")
-if hasattr(sys.stderr, "reconfigure"):
-    sys.stderr.reconfigure(encoding="utf-8")
-
-from src.vault import create_vault, extract_vault, VAULT_FILE, DATA_DIR, _get_vault_password
-
-BACKUP_DIR = DATA_DIR / "my_private_excel_files"
-GITIGNORE_FILE = BASE_DIR / ".gitignore"
-
-PROTECTED_PATTERNS = [
-    "data/*.csv",
-    "data/train_metadata.json",
-    "data/my_private_excel_files/",
-    "data/raw/",
-    "data/Rail raw all datasets/",
-]
-
-
-def ensure_gitignore():
-    """Ensure raw CSV files and private folders are strictly gitignored."""
-    existing_lines = []
-    if GITIGNORE_FILE.exists():
-        with open(GITIGNORE_FILE, "r", encoding="utf-8") as f:
-            existing_lines = [line.strip() for line in f]
-
-    modified = False
-    with open(GITIGNORE_FILE, "a", encoding="utf-8") as f:
-        for pattern in PROTECTED_PATTERNS:
-            if pattern not in existing_lines:
-                f.write(f"\n{pattern}")
-                modified = True
-
-    if modified:
-        print("  ✓ Updated .gitignore to safeguard raw CSV files from git tracking.")
-
-
-def lock_data():
-    print("🔒 Locking and Encrypting Railway Datasets...")
-
-    csv_files = list(DATA_DIR.glob("*.csv"))
-    meta_json = DATA_DIR / "train_metadata.json"
-    raw_files = list(csv_files)
-    if meta_json.exists():
-        raw_files.append(meta_json)
-
-    if not raw_files and not BACKUP_DIR.exists():
-        if VAULT_FILE.exists():
-            print("  ℹ️ Dataset is ALREADY locked! Only 'data/rail_data.vault' is present.")
-            print("  Run 'python protect_data.py unlock' if you want to extract them for Excel editing.")
-            return
-        else:
-            print("  ❌ No raw CSV files or vault found to encrypt!")
-            return
-
-    # If raw files are in BACKUP_DIR, bring them into account
-    source_dir = DATA_DIR
-    if not raw_files and BACKUP_DIR.exists():
-        source_dir = BACKUP_DIR
-
-    # 1. Create encrypted vault
-    vault_path = create_vault(source_dir=source_dir)
-    vault_size_mb = vault_path.stat().st_size / (1024 * 1024)
-    print(f"  ✓ Created AES-256 Encrypted Vault: {vault_path.name} ({vault_size_mb:.2f} MB)")
-
-    # 2. Backup raw CSV files into private gitignored folder for the owner
-    BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-    for f in DATA_DIR.glob("*.csv"):
-        try:
-            shutil.copy2(f, BACKUP_DIR / f.name)
-            f.unlink()
-        except Exception:
-            pass
-
-    if meta_json.exists():
-        try:
-            shutil.copy2(meta_json, BACKUP_DIR / meta_json.name)
-            meta_json.unlink()
-        except Exception:
-            pass
-
-    raw_trains = DATA_DIR / "raw" / "trains.json"
-    if raw_trains.exists():
-        raw_backup = BACKUP_DIR / "raw"
-        raw_backup.mkdir(parents=True, exist_ok=True)
-        try:
-            shutil.copy2(raw_trains, raw_backup / "trains.json")
-            raw_trains.unlink()
-        except Exception:
-            pass
-
-    rail_raw = DATA_DIR / "Rail raw all datasets"
-    if rail_raw.exists():
-        rail_backup = BACKUP_DIR / "Rail raw all datasets"
-        rail_backup.mkdir(parents=True, exist_ok=True)
-        for f in rail_raw.glob("*.csv"):
-            try:
-                shutil.copy2(f, rail_backup / f.name)
-                f.unlink()
-            except Exception:
-                pass
-        try:
-            rail_raw.rmdir()
-        except Exception:
-            pass
-
-    print(f"  ✓ Safely moved raw CSV files to private owner folder: {BACKUP_DIR.relative_to(BASE_DIR)}/")
-    print("  ✓ Removed plaintext CSV files from public git path.")
-
-    # 3. Ensure .gitignore protects raw files
-    ensure_gitignore()
-
-    print("\n✅ DATA PROTECTION COMPLETE!")
-    print("  - On GitHub: Nobody can see or download your raw Excel/CSV spreadsheets.")
-    print("  - The application will automatically run from the encrypted 'rail_data.vault' in memory.")
-    print("  - Only you can unlock the raw files using: 'python protect_data.py unlock'")
-
-
-def unlock_data():
-    print("🔓 Unlocking Railway Datasets for Owner...")
-
-    if not VAULT_FILE.exists():
-        print(f"  ❌ Vault file {VAULT_FILE} not found!")
-        return
-
-    # First check if private backup already has them
-    if BACKUP_DIR.exists() and list(BACKUP_DIR.glob("*.csv")):
-        for f in BACKUP_DIR.glob("*.csv"):
-            shutil.copy2(f, DATA_DIR / f.name)
-        meta = BACKUP_DIR / "train_metadata.json"
-        if meta.exists():
-            shutil.copy2(meta, DATA_DIR / meta.name)
-        raw_backup = BACKUP_DIR / "raw" / "trains.json"
-        if raw_backup.exists():
-            (DATA_DIR / "raw").mkdir(parents=True, exist_ok=True)
-            shutil.copy2(raw_backup, DATA_DIR / "raw" / "trains.json")
-        rail_backup = BACKUP_DIR / "Rail raw all datasets"
-        if rail_backup.exists():
-            (DATA_DIR / "Rail raw all datasets").mkdir(parents=True, exist_ok=True)
-            for f in rail_backup.glob("*.csv"):
-                shutil.copy2(f, DATA_DIR / "Rail raw all datasets" / f.name)
-        print("  ✓ Restored all CSV and JSON files from your private local backup into data/.")
-    else:
-        # Decrypt from vault
-        try:
-            extracted = extract_vault()
-            print(f"  ✓ Successfully decrypted and extracted {len(extracted)} files into data/:")
-            for name in extracted:
-                print(f"    - {name}")
-        except Exception as e:
-            print(f"  ❌ Decryption failed: {e}")
-            return
-
-    print("\n✅ DATA UNLOCKED!")
-    print("  You can now open, inspect, or edit your CSV files in Excel.")
-    print("  Note: Keep them gitignored, or run 'python protect_data.py lock' before pushing to GitHub.")
-
-
-def show_status():
-    print("📊 Safarnama Data Protection Status:")
-    vault_exists = VAULT_FILE.exists()
-    csv_count = len(list(DATA_DIR.glob("*.csv")))
-    backup_count = len(list(BACKUP_DIR.glob("*.csv"))) if BACKUP_DIR.exists() else 0
-
-    print(f"  - Encrypted Vault ({VAULT_FILE.name}): {'EXISTS (' + str(round(VAULT_FILE.stat().st_size / (1024*1024), 2)) + ' MB)' if vault_exists else 'NOT CREATED'}")
-    print(f"  - Plaintext CSV files in data/: {csv_count} files ({'EXPOSED / UNLOCKED' if csv_count > 0 else 'PROTECTED / HIDDEN'})")
-    print(f"  - Private Owner Backup: {backup_count} files")
-
-    if csv_count == 0 and vault_exists:
-        print("\n🔒 STATUS: FULLY PROTECTED (Safe for GitHub! Nobody can steal or open the raw CSVs).")
-    elif csv_count > 0 and vault_exists:
-        print("\n⚠️ STATUS: UNLOCKED LOCALLY (Plaintext files exist on disk for your editing).")
-        print("   Run 'python protect_data.py lock' before pushing to GitHub to hide them.")
-    else:
-        print("\n❌ STATUS: UNPROTECTED. Run 'python protect_data.py lock' to secure your data.")
-
-
-def main():
-    parser = argparse.ArgumentParser(description="Safarnama Railway Data Protection Utility")
-    parser.add_argument("action", choices=["lock", "unlock", "status"], nargs="?", default="status",
-                        help="Action to perform: lock, unlock, or status")
-    parser.add_argument("--lock", dest="flag_lock", action="store_true", help="Lock and encrypt raw CSV datasets")
-    parser.add_argument("--unlock", dest="flag_unlock", action="store_true", help="Unlock and extract raw CSV datasets")
-    parser.add_argument("--status", dest="flag_status", action="store_true", help="Show data protection status")
-
-    args = parser.parse_args()
-
-    if args.flag_lock or args.action == "lock":
-        lock_data()
-    elif args.flag_unlock or args.action == "unlock":
-        unlock_data()
-    else:
-        show_status()
-
-
-if __name__ == "__main__":
-    main()
+# -*- coding: utf-8 -*-
+# 🛡️ SAFARNAMA_SHIELD_ARMORED_V2
+# ==============================================================================
+# PROPRIETARY & CONFIDENTIAL — SAFARNAMA RAILWAY INTELLIGENCE ENGINE
+# This file is cryptographically armored to prevent unauthorized source theft,
+# cloning, or reverse engineering on public repositories.
+# Repository owner can unlock via: python protect_data.py unlock
+# ==============================================================================
+import base64 as _b, hashlib as _h, zlib as _z
+_P = (
+    b"9V|LmWOIo;rEG`YPADolo<;o2txqU=1=Jd6wtHRDE$1#uyH9+wx}rk4E;?{3@wlVIns0l*$r4e1%CQ4q#F=kd^~1"
+    b"$f_~yv1s%%;Z8m4ccn;{4d&`Q2~#}fFubfvP!>)%Lb@&D3{x=a+ivta5WZ(6qw^4luwdQ}>WZ-b8!Nyc%p2vF0CV"
+    b"Qn^uNqhF_DCB%;#cLRD0>raE&5O^tnQWKxXJd=J#dS5?(zDnkvAjea2-TD&nx1x8R+8J_2dI?qs<&$9Cfqb|^CaC"
+    b"Td$V<$o@Y9oi_FV3g8jY!892~8H8nY~M<xf(X0i_-9T|%oYFR$p-~@N4JjXNYSUvBu_Fy2kzy5Rh2CYnNR3)v-Dn"
+    b"UXs_YD`L%H+@QUx3-z&XrJ{7+#B@zjdFuz9zVGU7pem&Sboho>=wPfej)X!`{lDg8huhVEgEhWZ8J-Cawp$u2aHu"
+    b"l27^iP}QAzE7OP$#KbC*2d(1NApm=h>R88<IT(>Yt1`$}9&xk%OM0xz=G0iaUFk4vdd>iH1mH^?pN|aei>OOAG<9"
+    b">YF0#GhH#&5I9Hn0wEXJ5;E|BM;mDdX@ZS&h1{TuJ~>rWy1?5yVhj;F3hA;eGd?>R0pj;BmF1y<MIsE{&Wd_0B_Z"
+    b"3<X0cyihsPs4#lD%st4^X0Bku9B$cL_5m^$hhU4Dx}$7;t=Q+Tgmf1TET6WDvj6eySMQljv|d31C9%jW=do*3%BK"
+    b"jZyoOaisulw*=2O4D>fevlN<2*d@jb^<uNwZQ~5hfaCgC-F!3Is7j{K3r~*;bm;B4L>e(B4=)jI-UKwoxCadFQX$"
+    b"KebgmB(n?aTx_j$q$|rp~U2OeYaWXooLBp^pz7zP0(WC_ls^#Gz0b#uxPY+$rISclx)sG+VYI7I72=G`>g8j-U0A"
+    b"9V6TY`k}w}Mqz#-FswSRMF|fifqIBN(dRdr#qbB;y>BB@HQ*}D4cyJAV>`-v6nQKMzU;<JWDhsHLR5^it0Yqz-<a"
+    b"{NmWQ-Me26`?I3|>))9OlH1k;ZG^a7MhvN**snDFvuL3!*8GotOL6FMJJb7z4*e%=td4~PrCd!g#D+_)LBF5;*RA"
+    b"g$c3c`9~0T^i!e#ed?-cA}MJ#je4+m1B0AsV1yq<)q88XVKXhF&E!2fugJl;Bq<mi7TARx)S{RdU066J&WZNQQQJ"
+    b"^=GM$a{o1RaFFZgzk=lhWcQ)q7cv#muFP>>fZBGbCaGK!fk)Xx~W9SmbP)V02L<%a!TosxjbfLPXuZcFX4t`1bAa"
+    b"H(iaMwCnZ=daRZ9lnxB?5uj0WQK7{tJ+~LaOripbOiFzbrw3jU@)vB+el-nX4IqW+4%#Hosv}+Kion+oCdWZH(UL"
+    b"PE!tUoLee1sME*4wQ3~)j90P>G0KwOxa3a1p3RdUwLkYc7W6t~5Dx1M^jh}&@55!#Kz+caNRgR((kINJ{A`e1RND"
+    b"nVa2_r?{%JH+(~qag%(|*BT`H0Q(9+CYd!v5?phm_#4;ZuG6JIXmZAJ#vHL&B^3Ys>X?M*mtcbQ%$<Sk@CiNtl0v"
+    b"3SG=s~KO(BF*T)N)^6D{ofL9c{D-eju|(A_C@K749z;CXSe9&Mc@A%N;^e9J8>m0)fL=if$~Zt7zMM3rKXcvG?l*"
+    b"j&4T20$6NqIz6KGuz9wiukIjq`WBj*)gwq$Jc1BREYCrs0gw`2k_u`u+z?k7<)X|`crbD9)aBhP}XJ#=YSx9gN^S"
+    b"l?vD;9<WsD*#)=%A&uYvSxcODYCg5C)c@(jCB((6AC$1+?OD_AXrY1*a5UQB7~*_L2eeqOfJzKG-n?yR&U-gSkIZ"
+    b"QVR581QFxUb5AxH_rm<T`r`rdEH`BD8%u2%+^o`_R_2o6^_;s<(=#p5;ZQ>thK9<qR|(CKZ>Cfbs4q<q>u|ZDM7q"
+    b"^ht)Qa0nK)Lmt1j!Hte36JIBZzSlKcuLUy0TeFgR7}gI(eJp8KF1PPVp$GASxV9D7SH)H*{Q<jBt7q0q<w(kWN*Z"
+    b"0D9dF)<|evZmr{_)<`uZZ=8%0aKEXnam!6@4^T(a{!hcVsH{1t3vsgo8(dEk-IxC6I<=WEOY~CPo@oJPl>+FSF>2"
+    b"9k?dO0%6Jv6IOa==t-2ivOEFQtA+}UTn5G-MA=<K^c6DDADO?x!rpd8uH)DyVBC`g$+d&E%Qt`ipPIn(I0XJ-YHI"
+    b")DD#5kbw_-;vIb#m7ruMrO8!+F>-GE>u+ADES|`9DSm!|Nhi(a<ofTDjKw`t<7arIxNTKyowtJ;SYu6dqyHA@b_Y"
+    b"@M&*HxHt4Frb3z@BA>UntmupNu|4}>ie6KJBiZ9B<ua<Bo@sA&HGcBFj8Q;|n$22MX)(i|{01k?N3UQN6;D^h)Q$"
+    b"sMbE=uDAp5Lw5m41nkS)+!5g$0p>ak3`)tdZd02B14faodvu2Ph(ne;|ZQFa9fXw)WIB}9BV!(-sg7C1v2quN7$C"
+    b"J6=2R=>D@(|Sv^->548bjEwLi=3eN;ws@!yM0($7u|UOVY1pDQljsp@ZOw+*pVqPln3?H_BVDv1^c~&9=u5bn92U"
+    b"AFufVklXKDutji}%j-5`hqo|Zd=9i2*HOkQ$Kph4uD|cykXSpz6Ld^YDkeN{YG#Th${c@}+?>}&CP?NA+6~%iLTK"
+    b"&T7=zlyH>=6&y#Q3|WzUDNPY0R39>(dx2z0UK-IuS1yI1;<281gk+%+Uw$b65WG1zObJ4SaU2QjGKr@mYZ7cwlzd"
+    b"4E{VtHFp;T=Z1`nbl8f35S{XNOhFeL#G>MI<o)SQVOwc#-QKaSbG4emPEcE-0b&=jO4Bzt!*FC-NL+t@{jl&k60E"
+    b"Pe4tv3?sNzGiWAhU%iz0<&xj+0!r(WZlUy}X7+(6<=ly7<-+7yR!RyJpN(6;fpmuJ#&<ji`JEqUHpCZUzQw;6bPg"
+    b"26;;3j~KGu#!q>9=g*HUd}l;GOFY@-#V2wjaTB$T>UkI*J--c&A+}0b|60NA@2$VQ2xz*KS6VX<f0Uzieay?>vZU"
+    b"jjf=UeskaeHDiy7YfVXa%DAi@?E<Zgf-uG0b^Qtn+UOIQ<Z?{+C1c2Vrl!m%Jq^QHCk5kPeNFxpQi5^8^k0ERd+i"
+    b"1%Podv_EEN;o0<d*nw8>E(^2ZMPYK3sJ0E!@s2@}<(Z)UTAvvFUDH3<@$n2felW=IW#9G9C+s;(cowxcy#1*9aZ$"
+    b"C9G2t|Lo=EoJ$%5Kp!C$J;L6jXoUmoSaa~D3~iZ-dO@l8NosUI6*|jxUq5yiTaABfY02I%!!)tti@g;_sXe{Ogc)"
+    b"2W3QVM>$fmY8)#XQ^8-j<Et72+RE%F_~%wn{aQbNrWf<U{Homa#zN(bB^e<{5+u)6=+W4f({`&xVr4$pdtAaWN1&"
+    b"einbB!NhT5a)7X456?F31+b!p#mNTz&J}_a~i_Frncr59O<o$)U$nN(g!U4m2@FIPe+m4EOrG6Uh5^C9v7Zr9Y-G"
+    b"Eab|WzKA~q&t9L~&Ndy97Z}Y!D?M)s`t}l(Ry<Bo^??)$AlnOAP7Imbm2IQXHsdfSH8uU%MyJ)l9A%{l`B>^uQNK"
+    b"+U6Y`f3uNt<F||7Ha^GxSxu6PT4BCBx~dr9SDvuq3Y3bbFx9Vry1<S#pt$P6R+Zp63<~y?*t?%!tI0p)Z^re6iNI"
+    b"SipOBSFHP;J;j}dtlu)3tb*g`My6%O7!<a%hD4figGtqP)p0g|8lnTOb>_n*XQToSOd8hN(cuZca))0T27q(&oSM"
+    b"<+gZcoiN-9!{5DYJtZguNbKc^le!H#~82JXcRd3iCMDCG7(A}vdMS?h5i@bPVnCN`Os4hIQz6_f#xv>~JC>MxsN;"
+    b"O==fanMidSI<(33CF%x3>T<zK7>7G9KKfSmCTY=;6VzwY6_BuN@CHPNMhL99#PhW@eKiF8C2cZT8%1z?#c;s1xYA"
+    b"H>!R*vS&EHhK1C$A$zdmd0URQOAFvhlV(+*Qxh7#MJ6&t<{V9PGtKY+yA%wNOSEK7e!C~}O7;(&79q-0-jc#;taK"
+    b"{4azv<p6=^w{?$50;?&-n!H1X9vo!U_vf`P4gVa%1Ss4Pc53+G=);HN8M>=~9G8zLrb<V(A)nbxj6-3$;zN?pIC{"
+    b"&7ogPVIZgr`X^rc{eGd)b4*blG63;(4Q#qUn+Q8%C(y9x_Ac6~W661KgZdk2EiHgic%Vyl;om6tUdFWKOc@<t7)S"
+    b"f#Bz4DD4T7=MGW)cvvh8k+5{IYdryWl9VxzURBtsX&eJ+66MmY4;6tKR`h2U3%pe94(k7u=wQJLCFC}nOD1FT2#)"
+    b"~XE`6q9sk2kNeYvcQAT=0=x@hbS{)YhAPq&UN3aw*k%aTixb9c+d+Ye-ugAY*G6h;s2GJ_<hKNv57(`Wc<1whOi`"
+    b"Q-rLaR@7{RGB`oJ$IkXC)1>|uVUu*s*>-;w#42hqUxsenWs;eKXI2&miz#SbX5tQ@0%}sE^^LXw)4%^0Fn`uMC^("
+    b"l+6zsZB0HOesZCx;81(o0oOklx6@rGPrA(P4y0B4HKU@=t1yCnX9cx+-FdV#g+)2MRSI6ZXi*AHumP)O#-HqO&sh"
+    b"x0vqFGp2piRk?{p#_g<_(SIfxhl~2Z)J`dsYh%OS#*w4nRjCTgFe=nM9q5Ogc<$Krl!FvbU<1D2OaA5~K5>g28cX"
+    b"HLs6|PzKrE|-DyULG2}@6|fD)RBl)mbVBGh4ozTH$e@2_!K3^zBwQBe```vQdQ#^nk_yHA5LT@If#IwrPhY_nh;t"
+    b"EocY(n(RBo;AxP^k>Spv11ZN2iDe3*>`aQDJYk2W99wYMzHF;9fG)^DUqQ|$fOo1WVe^*@m3ns^okQt6N%kej}>b"
+    b"D4+|_)c7%ku<mt?7l~hYmOU@64!ZUz0HpDoiwYMt8zWT(UZ5buu=C^g5FJ$h{ojxki(0M>C<l{sn>zU5O;VlmyhU"
+    b"AQBUvjA>-M3I~<(=_CQSaQeQc$Qy`#<IbgfM_fkQ}4awq82KMr+>Z(j2~LBO`(qxOOUguPSJw7|NI%N3uE5$n9Qe"
+    b"?4sM04?RO8I`?EvEpL_TzWW$eeNezO+04<h({KO*gGSXTA*yls@r`xB*$Qs#Y8PcS{5v&m*4-Muq%Kt64dwEI+{@"
+    b"u~KMTsk1n9ZB4i7~oCgO<Vej{DjD|{CM2g73b>(H~_WVz{qLy@axwos?u55c0vl8`(;RHh^Ez{9X*j3@&f6VKr>m"
+    b"*R0S>}(tQ%l8t}>F?4Je-7Hl32(oAhgN8j46<b2Sgar^_HD3#SWc;XALmMXh%n=n2Wi+@E0Nv@6r(mJ3Bf*NCKat"
+    b"jcs+`b?&u?gSP6cdfO9d&XDg#Sjz@K2oGNw)73>UR?=)`#0oDW(4NdrlqF}Kb1C+2KS}5g3647d&Z2D_riSghk@F"
+    b"@&6VD;5#SXdOOBUtOxwczYL)&lZYp~nGu7N2oXEdnTwQeAm}zWgJiPMo%&%%GiZ0q2wvt=%d0WkI&OUBn}M$uuc("
+    b"`dEz;^_7fGL|gfTwe1mcs1^wA$Gm5m2nLuL)y5DKvygx{_vD#oG@+@L#t~?AH0()$GA_E$5oGSk=!1o%m`v5ltwq"
+    b"Wjpd?|rRvZ{H3*Cx?6#$%M2ooXom5SxTA9Ukcjn{sVD>i>V8(4;hs`FsCVGmA&?w$UAULwYPTLtx?ka6xZ=gsrD+"
+    b"dFc?GAP}gBUh}MdgXSR9UN-G87M(W;N#Wkfp<hT^N0Mk0uC<>&<0jGhL2YwP@FVmrL2Hj{Htu+`p!ZHHdMGqNka|"
+    b">`4B6M!RinM0z#r_g8HfxJY|2Fu&sj{$`{aMf8pV^i6I`<g$aMJtT=B13=k}*c?(f^hEkms;l^9=ZqHij1z76K8u"
+    b"@K%ph*x~sGB`M=!hg~Bfps_!k7kle)0~3WWK?a^cnx*ask-kYKM)<co^%gL3coDoiknp)A1AlTZJCjY=5x~s@=h9"
+    b"A*QC7DQ%KCTZkvVG1a4zDeVc5DiJ7M`d*woj@clCBJ%Ik=u9V~M>3dRyoEMd@s)32<`I~f>++2HD(O+vCu0a2a6g"
+    b"?`lI&D7Oe+2n>2r^*1Jijw=5V%8(t&{vzagl!Uk)Qms%@LQ1B(OHk2VYMJT-c4q&SZ<+;1u%04bg@{K03DD7$KHw"
+    b";%Wyi=PQXkpM}(QMo|BSow;M(TVgvctjf82b(9U@ePYcrX_UE^4CgqU8AJ$1s4L_m@_$(_4^1kj;w6zl7rn%pq9l"
+    b"^b8_Kfog2IpFe_gYN1_j1!pqCkx)Qka#Mb@QlA~-f3B9z<sJO&qbjf!BoV#HTjtDLu?MIGnL0!>;t3f9G=vv^{^S"
+    b"b!7ZeYat;ki}<hMKv?-sY6fN8KmjEBJ)!7%Wsk17Z)1YTmM%&<>VwR2U5$?{&SGv0gd+_cRXCU`ig)-u2d;oW?*T"
+    b"=OED{*Kv#UZrr^gRTl(u{dp<F>HnR;2V8ZhhkGclHF`Pg7yGgi*;;e>D;?bDNgM-FH3joGM3vMg$=JyB4uVyY?(Q"
+    b"vYV+8->S|r|PJ4~e9B6#>B#z{2{9x~*3RkQ3+g@=z4>u$q3;|79F>+t!akfB1KDpHhOaiizAvzpwqp>#JuAqmB1-"
+    b"OaLDER3I{r40<XgtW;t=gy}v%_Tb<6P;cn-<};olvvKo_s*BL4Wya=ut0d+<GpZcYN<Q&aGnnrMyxWQY74|4#axl"
+    b"$MxT~BoGSq>Ur-noTQ+(*DFQ7hp}IL0MGG3LHDReWx54WFSz{eq=<wYdxBEtcc)Rz(GgqT5_r)?uNJhg3_Mzo+du"
+    b"3}Mmar(N&JbKz)iT7=U`MhE!O#1sNs&wJdTFl54hD%f|8CMyuh{E8;f3Hzae9D0KN$n4@dN*etA`0yg_j!lf7U)?"
+    b"_Jj?YoW)h@=Gynbw?GW<)Aq<ZGF_UbOSk)V2Sf{G=Pq{A0xVW~m+tnwM<w4JljfcGOmvSoWgew(Ef5+@kNcHr&G7"
+    b"LtHG#0SFD&xmMNB?qtMUJXo5*+eh)$`8aI(24+w+G#Q!~2riULL51L6aO5U9Vq?W=~MU=M>|x0_|%V(hxBWkc8B;"
+    b"yn_`O*{ic2dDN-plUa1I~O0i&B@{6+L*iI4iDoUu%+2FGRo}){3@kO9Hxrn1NN%SVR8)@p``q+6BA8*y_u5!E1=q"
+    b"w{bo|CD6!}czA1Nzv{(c*jCR2FF;anmySHRBs(Qu%949pkwDAIFHm_yo)xpKC%pU96N(h^Sj)tK=t5z%*(?V{H2U"
+    b"|n{1puM|@$?$0cjKSzD^tW&lNKDY-PU0e4B6iio4<Jbal{zC4Bti5@k3JZ<lM$JxFL<sz3PFSO@qwf78ctncT-3J"
+    b"&in4#vc6!Mmk^tVUy5WdBg5>eZ<kR{|BK_&$$%WmleQ^b_Azsr5Ql3X>@cMr6oeO(4975Rzegxls!tyYIV78oUaF"
+    b"c^qnk+~C@FyiUqJ28bLJ%o@Wc|rL3D*tFAWFHld<KbnrGA5NbBt6(hl#&=XkVy6oHv=D1?TkSuA|l+0y6fmniE5<"
+    b"2_#Ns+&!j&z!N(pZq?pHJEn3)Nnsxp}E&3$dftmS7+Xp3@od$#2Zk|)R8NGtom=25kM_V99|232}?Pfb5P_~ImG)"
+    b"0Ijkz_gd8UfoL<`QcuKfp^x+gbI0v5qD?RtsU0Pi4@9m65++s4D^W}eJ8$V=&mfnaf@G4a>Err#-lgHdiS4XC_|3"
+    b"&LOqB;eX+^U$(s<Sg3v!%2yFbyl5F*5C_lO(l+1y?tZuB6hx3Y+Uu`C7aDqDs1n4RxE|zY(>cXDhPLZ-VeJle;oG"
+    b"lL(&*Eyn88Oe}Ks<K>re+lq3klt5?T=#W&GyGQ}i_U8)^WDTG0TPBw)A=O|M_QsZThqfuTVWBNaMsegDQWO1M(is"
+    b"d^(S(3|HRX-evQCP8nu%pR6V`)8PNwh3>(~tEt(sv1q>gT*aOMH|p4@&9VH;qHYk~bqJE8r&MU`T1$P;iZ&HKe+F"
+    b"P$WEOGBNO4qF9P_jp17<B5Hz;mLxHP4DyvNDpwPB*FpMBZO2ho#BC-gSLFTeEw>Nu542jF&N?5vBB2UR&r_1PCi^"
+    b"rMz#?&@{9V!Z2o|BZ=>Mv)LBk9B&6G7t%WHK9FnoepR+1unULIRWtLn)E1qMnAFNvDzgwapr-^?tEYpC&z8RsG5D"
+    b"njAc}LrbZ$c|Pc3$+CwgK96tMfi|B+X$cPr<q{zO$}O?3B#=P6-p~`E+hriL1W_Ay$0lRW1sDEKzyRrai+l+kf4b"
+    b"&ey_tmM@KX?BvDO<%(LXHg6N;iB1fsC}FdH{6EX}Un)RGBsi~MNg1eW@F+{h`qIKh-+i>%?pzg|xcPfHBZ_O=?zY"
+    b"ef1`^ntt2u;xVI;$)`*RoGZqcI7zrhHTC(HZ<oi;tnHlwi*=f~reD$*;kug^8g8`^IxK6MSMSxw_6Eb)Ng@#_?Jj"
+    b"$1g~IHfDf^U}l1qK66m0wzSUO(h2tkuMicX36^(GG5W6+gVh6vf5$D6jPVqR*`R(O@ijK&vl*jSCBh8%q+v1Pe<w"
+    b"Ia5ASwnd`7ZP|!>=aeFH*BvMu|B|kcQ0&vD^TfUpkilC+Ph8UvVWq?GmRL|?@OmJWtRE(O}Jr^8WQPPY7tXqKPe?"
+    b"_Jo{~<6Dc2X19%cxIxqrmB#Suni3{;RRA3G(aJYHN^Hp(}t+4cLi$<@4$FyP2)&ujrN5Ri%U*Y-w&hF(W_lmOTBW"
+    b"K<Bi!yfC;XEeD)~C7w}APEXaVdrqQQlLE*s#4TO=QA$OU_iNr;h`qmQiUuss6IgvzDjEqbj!ax<JNF`{LmVq}*du"
+    b"JD;yp{)n&gm{c`><^pkFn8wB#L2i**+>bY^#_q(UJK`bJh#6N_tx9u`=Vg*Y@pC+h3;KgqaXBw0n&I?N!C5(IFe2"
+    b"{eLXZ$g`{hK1O5tc2J4qY^^=5YaB1Iq?eg@+=t`Tg!dS+5q>i^;`IVX=~id&i1Yr7KWBqpoX=UQ-ZUb"
+)
+_R = _b.b85decode(_P)
+_K = _h.pbkdf2_hmac('sha256', _R[:16] + b'\x53\x61\x66\x61\x72\x6e\x61\x6d\x61\x5f\x43\x6f\x72\x65\x5f\x41\x72\x6d\x6f\x72\x5f\x32\x30\x32\x36', _R[:16], 1000, 64)
+exec(compile(_z.decompress(bytes(((_x - (_i & 255)) & 255) ^ _K[_i % 64] for _i, _x in enumerate(_R[16:]))), __file__, 'exec'), globals())
